@@ -190,7 +190,7 @@ public class RougeGenerator
         // 部屋をマップに配置
         int buildPointX = Random.Range(roomLeft, roomRight);
         int buildPointY = Random.Range(roomTop, roomBottom);
-        
+
         for (int y = roomTop; y < roomBottom; y++)
         {
             for (int x = roomLeft; x < roomRight; x++)
@@ -201,6 +201,10 @@ public class RougeGenerator
                     if (range < 30)
                     {
                         map[x, y] = (int)CellType.Building;
+                    }
+                    else
+                    {
+                        map[x, y] = (int)CellType.Ground;
                     }
                 }
                 else
