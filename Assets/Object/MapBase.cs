@@ -7,6 +7,7 @@ public class MapBase : ScriptableObject
 {
     [SerializeField] new string name;
     [SerializeField] new int level;
+    [SerializeField] new int building;
     [SerializeField] new bool openTop;
     [SerializeField] new bool openLeft;
     [SerializeField] new bool openRight;
@@ -17,6 +18,7 @@ public class MapBase : ScriptableObject
 
     public string Name { get => name; }
     public int Level { get => level; }
+    public int Building { get => building; }
     public bool OpenTop { get => openTop; }
     public bool OpenLeft { get => openLeft; }
     public bool OpenRight { get => openRight; }

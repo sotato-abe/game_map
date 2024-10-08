@@ -13,7 +13,7 @@ public class GenarateSeedMap : MonoBehaviour
 
     [Range(0, 100)]
     public int randomFillPercent; // 壁のランダムな埋め込み率
-    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab; // 地面と壁のプレファブ
+    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab, buildingPrefab; // 地面と壁のプレファブ
     [SerializeField] MapBase mapBase; //各種プレファブ
 
     int[,] map;             // マップデータ
@@ -50,6 +50,7 @@ public class GenarateSeedMap : MonoBehaviour
             SmoothMap();
         }
         createEntry();
+        createBuilding();
         createWall();
         layTileMap();
     }
@@ -119,6 +120,23 @@ public class GenarateSeedMap : MonoBehaviour
         }
 
         return groundCount;
+    }
+
+    void createBuilding()
+    {
+        int buildingCount = mapBase.Building;
+        for (int i = 0; i < buildingCount; i++)
+        {
+            int targetX, targetY;
+            do
+            {
+                targetX = UnityEngine.Random.Range(0, width);
+                targetY = UnityEngine.Random.Range(0, height);
+            }
+            while (map[targetX, targetY] != (int)TileType.Ground); // Ground でなければ繰り返し
+
+            map[targetX, targetY] = (int)TileType.Building;
+        }
     }
 
     void createEntry()
@@ -236,13 +254,13 @@ public class GenarateSeedMap : MonoBehaviour
             {
                 Vector2 pos = GetWorldPositionFromTile(x, y); // タイルのワールド座標を計算
                 GameObject obj;
-                if (map[x, y] == (int)TileType.Ground)
+                if (map[x, y] != (int)TileType.Layer && map[x, y] != (int)TileType.Wall)
                 {
                     obj = Instantiate(groundPrefab1, pos, Quaternion.identity); // 地面を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapGround"; // 地面用のソーティングレイヤーを設定
                     spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
-                else if (map[x, y] == (int)TileType.Wall)
+                if (map[x, y] == (int)TileType.Wall)
                 {
                     obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
@@ -251,6 +269,12 @@ public class GenarateSeedMap : MonoBehaviour
                 else if (map[x, y] == (int)TileType.Entry)
                 {
                     obj = Instantiate(entryPrefab, pos, Quaternion.identity); // 壁を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
+                    spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
+                }
+                else if (map[x, y] == (int)TileType.Building)
+                {
+                    obj = Instantiate(buildingPrefab, pos, Quaternion.identity); // 壁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
                     spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
@@ -282,5 +306,6 @@ public enum TileType
     Layer,
     Ground,
     Wall,
-    Entry
+    Entry,
+    Building
 }
