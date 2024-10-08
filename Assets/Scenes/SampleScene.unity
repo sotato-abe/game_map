@@ -443,7 +443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1203124853
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1018,10 +1018,11 @@ MonoBehaviour:
   width: 100
   height: 70
   seed: test
-  useRandamSeed: 0
+  useRandamSeed: 1
   randomFillPercent: 46
   groundPrefab1: {fileID: 1489375870}
   wallPrefab1: {fileID: 1455657591}
+  entryPrefab: {fileID: 1114513787}
   mapBase: {fileID: 11400000, guid: fe45e07fabe81034ab6cba712d26ba59, type: 2}
 --- !u!1 &2008697023
 GameObject:
