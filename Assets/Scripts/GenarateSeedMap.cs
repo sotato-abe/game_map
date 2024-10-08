@@ -47,6 +47,7 @@ public class GenarateSeedMap : MonoBehaviour
         {
             SmoothMap();
         }
+        createWall();
 
         // 実際にマップにオブジェクトを配置する処理
         tileSize = groundPrefab1.GetComponent<SpriteRenderer>().bounds.size.x; // タイルサイズを取得
@@ -58,15 +59,20 @@ public class GenarateSeedMap : MonoBehaviour
             {
                 Vector2 pos = GetWorldPositionFromTile(x, y); // タイルのワールド座標を計算
                 GameObject obj;
-                if (map[x, y] == 1)
-                {
-                    obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
-                }
-                else
+                if (map[x, y] == (int)TileType.Ground)
                 {
                     obj = Instantiate(groundPrefab1, pos, Quaternion.identity); // 地面を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapGround"; // 地面用のソーティングレイヤーを設定
+                    obj.GetComponent<SpriteRenderer>().sortingOrder = 1; // レイヤー内での描画順を設定
+                    spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
-                spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
+                else if (map[x, y] == (int)TileType.Wall)
+                {
+                    obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
+                    obj.GetComponent<SpriteRenderer>().sortingOrder = 2; // レイヤー内での描画順を設定
+                    spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
+                }
             }
         }
     }
@@ -87,11 +93,11 @@ public class GenarateSeedMap : MonoBehaviour
             {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
                 {
-                    map[x, y] = 1;
+                    map[x, y] = (int)TileType.Layer;
                 }
                 else
                 {
-                    map[x, y] = (pseudoRandom.Next(0, 100) < randomFillPercent) ? 1 : 0; // ランダムな値で壁か地面を決定
+                    map[x, y] = (pseudoRandom.Next(0, 100) < randomFillPercent) ? (int)TileType.Layer : (int)TileType.Ground; // ランダムな値で壁か地面を決定
                 }
             }
         }
@@ -103,24 +109,24 @@ public class GenarateSeedMap : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                int neighbourWallTiles = GetSurroundingWallCount(x, y);
+                int neighbourGroundTiles = GetSurroundingGroundCount(x, y);
 
-                if (neighbourWallTiles > 4)
+                if (4 < neighbourGroundTiles)
                 {
-                    map[x, y] = 1;
+                    map[x, y] = (int)TileType.Ground;
                 }
-                else if (neighbourWallTiles < 4)
+                else if (neighbourGroundTiles < 4)
                 {
-                    map[x, y] = 0;
+                    map[x, y] = (int)TileType.Layer;
                 }
 
             }
         }
     }
 
-    int GetSurroundingWallCount(int gridX, int gridY)
+    int GetSurroundingGroundCount(int gridX, int gridY)
     {
-        int wallCount = 0;
+        int groundCount = 0;
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
         {
             for (int neighbourY = gridY - 1; neighbourY <= gridY + 1; neighbourY++)
@@ -129,17 +135,13 @@ public class GenarateSeedMap : MonoBehaviour
                 {
                     if (neighbourX != gridX || neighbourY != gridY)
                     {
-                        wallCount += map[neighbourX, neighbourY];
+                        groundCount += map[neighbourX, neighbourY];
                     }
-                }
-                else
-                {
-                    wallCount++;
                 }
             }
         }
 
-        return wallCount;
+        return groundCount;
     }
 
     // マップのクリアメソッド
@@ -158,4 +160,52 @@ public class GenarateSeedMap : MonoBehaviour
     {
         return new Vector2(x * tileSize, (height - y) * tileSize) - mapCenterPos; // マップの中心を考慮して座標を計算
     }
+
+    void createWall()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (map[x, y] == (int)TileType.Layer && CheckSurroundingGround(x, y))
+                {
+                    map[x, y] = (int)TileType.Wall; // 隣に1がある0の位置を2に変更
+                }
+            }
+        }
+    }
+
+    bool CheckSurroundingGround(int x, int y)
+    {
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                // 自分自身の位置は無視する
+                if (dx == 0 && dy == 0)
+                    continue;
+
+                int nx = x + dx;
+                int ny = y + dy;
+
+                // マップの範囲外を除外する
+                if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                {
+                    if (map[nx, ny] == (int)TileType.Ground)
+                    {
+                        return true; // 隣接する1が見つかった場合
+                    }
+                }
+            }
+        }
+
+        return false; // 隣接する1が見つからなかった場合
+    }
+}
+
+public enum TileType
+{
+    Layer,
+    Ground,
+    Wall
 }
