@@ -13,7 +13,7 @@ public class GenarateSeedMap : MonoBehaviour
 
     [Range(0, 100)]
     public int randomFillPercent; // 壁のランダムな埋め込み率
-    [SerializeField] GameObject groundPrefab1, wallPrefab1; // 地面と壁のプレファブ
+    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab; // 地面と壁のプレファブ
     [SerializeField] MapBase mapBase; //各種プレファブ
 
     int[,] map;             // マップデータ
@@ -49,6 +49,7 @@ public class GenarateSeedMap : MonoBehaviour
         {
             SmoothMap();
         }
+        createEntry();
         createWall();
         layTileMap();
     }
@@ -120,6 +121,82 @@ public class GenarateSeedMap : MonoBehaviour
         return groundCount;
     }
 
+    void createEntry()
+    {
+        int minX = int.MaxValue;
+        int maxX = int.MinValue;
+        int minY = int.MaxValue;
+        int maxY = int.MinValue;
+
+        System.Random pseudoRandom = new System.Random(seed.GetHashCode());
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (map[x, y] != (int)TileType.Layer)
+                {
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+        Debug.Log($"Min X: {minX}, Max X: {maxX}, Min Y: {minY}, Max Y: {maxY}");
+
+        // 各方向の入口を生成
+        if (mapBase.OpenTop)
+            CreateEntryForDirection(0, 1, minX, maxX, true, pseudoRandom);
+        if (mapBase.OpenBottom)
+            CreateEntryForDirection(height - 1, -1, minX, maxX, true, pseudoRandom);
+        if (mapBase.OpenLeft)
+            CreateEntryForDirection(0, 1, minY, maxY, false, pseudoRandom);
+        if (mapBase.OpenRight)
+            CreateEntryForDirection(width - 1, -1, minY, maxY, false, pseudoRandom);
+    }
+
+    void CreateEntryForDirection(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom)
+    {
+        int entryPoint = pseudoRandom.Next(min, max + 1);
+        if (isVertical)
+        {
+            map[entryPoint, start] = (int)TileType.Entry;
+            for (int y = start + step; y >= 0 && y < height; y += step)
+            {
+                if (map[entryPoint, y] == (int)TileType.Layer)
+                    map[entryPoint, y] = (int)TileType.Ground;
+                else
+                    break;
+            }
+        }
+        else
+        {
+            map[start, entryPoint] = (int)TileType.Entry;
+            for (int x = start + step; x >= 0 && x < width; x += step)
+            {
+                if (map[x, entryPoint] == (int)TileType.Layer)
+                    map[x, entryPoint] = (int)TileType.Ground;
+                else
+                    break;
+            }
+        }
+    }
+
+    void createWall()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (map[x, y] == (int)TileType.Layer && CheckSurroundingGround(x, y))
+                {
+                    map[x, y] = (int)TileType.Wall;
+                }
+            }
+        }
+    }
+
     bool CheckSurroundingGround(int x, int y)
     {
         for (int dx = -1; dx <= 1; dx++)
@@ -150,7 +227,7 @@ public class GenarateSeedMap : MonoBehaviour
     void layTileMap()
     {
         // 実際にマップにオブジェクトを配置する処理
-        tileSize = groundPrefab1.GetComponent<SpriteRenderer>().bounds.size.x; // タイルサイズを取得
+        tileSize = groundPrefab1.GetComponent<SpriteRenderer>().size.x; // タイルサイズを取得
         mapCenterPos = new Vector2(width * tileSize / 2, height * tileSize / 2); // マップの中心座標を計算
 
         for (int x = 0; x < width; x++)
@@ -163,14 +240,18 @@ public class GenarateSeedMap : MonoBehaviour
                 {
                     obj = Instantiate(groundPrefab1, pos, Quaternion.identity); // 地面を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapGround"; // 地面用のソーティングレイヤーを設定
-                    obj.GetComponent<SpriteRenderer>().sortingOrder = 1; // レイヤー内での描画順を設定
                     spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
                 else if (map[x, y] == (int)TileType.Wall)
                 {
                     obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
-                    obj.GetComponent<SpriteRenderer>().sortingOrder = 2; // レイヤー内での描画順を設定
+                    spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
+                }
+                else if (map[x, y] == (int)TileType.Entry)
+                {
+                    obj = Instantiate(entryPrefab, pos, Quaternion.identity); // 壁を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
                     spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
             }
@@ -182,20 +263,6 @@ public class GenarateSeedMap : MonoBehaviour
     Vector2 GetWorldPositionFromTile(int x, int y)
     {
         return new Vector2(x * tileSize, (height - y) * tileSize) - mapCenterPos; // マップの中心を考慮して座標を計算
-    }
-
-    void createWall()
-    {
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                if (map[x, y] == (int)TileType.Layer && CheckSurroundingGround(x, y))
-                {
-                    map[x, y] = (int)TileType.Wall; // 隣に1がある0の位置を2に変更
-                }
-            }
-        }
     }
 
     // マップのクリアメソッド
@@ -214,5 +281,6 @@ public enum TileType
 {
     Layer,
     Ground,
-    Wall
+    Wall,
+    Entry
 }
