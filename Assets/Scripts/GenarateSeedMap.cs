@@ -13,10 +13,11 @@ public class GenarateSeedMap : MonoBehaviour
 
     [Range(0, 100)]
     public int randomFillPercent; // 壁のランダムな埋め込み率
-    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab, buildingPrefab; // 地面と壁のプレファブ
+    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab, buildingPrefab, areaPrefab1; // 地面と壁のプレファブ
     [SerializeField] MapBase mapBase; //各種プレファブ
 
     int[,] map;             // マップデータ
+    int[,] area;             // エリアデータ
     Vector2 mapCenterPos;    // マップの中心座標
     float tileSize;          // プレファブのサイズ
 
@@ -42,67 +43,75 @@ public class GenarateSeedMap : MonoBehaviour
     // マップ生成のメソッド
     void GenarateMap()
     {
+        if (useRandamSeed)
+        {
+            seed = Time.time.ToString(); // ランダムシードを現在の時間から生成
+        }
+        System.Random pseudoRandomMap = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
+        System.Random pseudoRandomArea = new System.Random(seed.GetHashCode() - 1); // シード値に基づいた擬似乱数生成器を作成
+
         map = new int[width, height];
-        RandamFillMap(); // マップにランダムな値を埋め込む
+        area = new int[width, height];
+        map = RandamFillMap(map, pseudoRandomMap); // マップにランダムな値を埋め込む
+        area = RandamFillMap(area, pseudoRandomArea); // マップにランダムな値を埋め込む
 
         for (int i = 0; i < 5; i++)
         {
-            SmoothMap();
+            map = SmoothMap(map);
+            area = SmoothMap(area);
         }
-        createEntry();
+        margeArea();
         createBuilding();
+        createEntry();
         createWall();
         layTileMap();
     }
 
     // マップをランダムに埋めるメソッド
-    void RandamFillMap()
+    int[,] RandamFillMap(int[,] field, System.Random seedPercent)
     {
-        if (useRandamSeed)
-        {
-            seed = Time.time.ToString(); // ランダムシードを現在の時間から生成
-        }
-
-        System.Random pseudoRandom = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
-
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
                 {
-                    map[x, y] = (int)TileType.Layer;
+                    field[x, y] = (int)TileType.Layer;
                 }
                 else
                 {
-                    map[x, y] = (pseudoRandom.Next(0, 100) < randomFillPercent) ? (int)TileType.Layer : (int)TileType.Ground; // ランダムな値で壁か地面を決定
+                    field[x, y] = (seedPercent.Next(0, 100) < randomFillPercent) ? (int)TileType.Layer : (int)TileType.Ground; // ランダムな値で壁か地面を決定
                 }
             }
         }
+
+        return field;
     }
 
-    void SmoothMap()
+    int[,] SmoothMap(int[,] field)
     {
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                int neighbourGroundTiles = GetSurroundingGroundCount(x, y);
+                int neighbourGroundTiles = GetSurroundingGroundCount(x, y, field);
 
                 if (4 < neighbourGroundTiles)
                 {
-                    map[x, y] = (int)TileType.Ground;
+                    field[x, y] = (int)TileType.Ground;
                 }
                 else if (neighbourGroundTiles < 4)
                 {
-                    map[x, y] = (int)TileType.Layer;
+                    field[x, y] = (int)TileType.Layer;
                 }
 
             }
         }
+
+        return field;
     }
 
-    int GetSurroundingGroundCount(int gridX, int gridY)
+    int GetSurroundingGroundCount(int gridX, int gridY, int[,] field)
     {
         int groundCount = 0;
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
@@ -113,13 +122,27 @@ public class GenarateSeedMap : MonoBehaviour
                 {
                     if (neighbourX != gridX || neighbourY != gridY)
                     {
-                        groundCount += map[neighbourX, neighbourY];
+                        groundCount += field[neighbourX, neighbourY];
                     }
                 }
             }
         }
 
         return groundCount;
+    }
+
+    void margeArea()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (map[x, y] == (int)TileType.Ground && area[x, y] != (int)TileType.Ground)
+                {
+                    map[x, y] = (int)TileType.Area;
+                }
+            }
+        }
     }
 
     void createBuilding()
@@ -133,7 +156,7 @@ public class GenarateSeedMap : MonoBehaviour
                 targetX = UnityEngine.Random.Range(0, width);
                 targetY = UnityEngine.Random.Range(0, height);
             }
-            while (map[targetX, targetY] != (int)TileType.Ground); // Ground でなければ繰り返し
+            while (map[targetX, targetY] != (int)TileType.Ground && map[targetX, targetY] != (int)TileType.Area); // Ground か area でなければ繰り返し
 
             map[targetX, targetY] = (int)TileType.Building;
         }
@@ -231,7 +254,7 @@ public class GenarateSeedMap : MonoBehaviour
                 // マップの範囲外を除外する
                 if (nx >= 0 && nx < width && ny >= 0 && ny < height)
                 {
-                    if (map[nx, ny] == (int)TileType.Ground)
+                    if (map[nx, ny] == (int)TileType.Ground || map[nx, ny] == (int)TileType.Area)
                     {
                         return true; // 隣接する1が見つかった場合
                     }
@@ -260,23 +283,29 @@ public class GenarateSeedMap : MonoBehaviour
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapGround"; // 地面用のソーティングレイヤーを設定
                     spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
+                if (map[x, y] == (int)TileType.Area)
+                {
+                    obj = Instantiate(areaPrefab1, pos, Quaternion.identity); // エリアを生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    spawnedObjects.Add(obj);
+                }
                 if (map[x, y] == (int)TileType.Wall)
                 {
                     obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
-                    spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Entry)
                 {
-                    obj = Instantiate(entryPrefab, pos, Quaternion.identity); // 壁を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
-                    spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
+                    obj = Instantiate(entryPrefab, pos, Quaternion.identity); // 入口を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Building)
                 {
-                    obj = Instantiate(buildingPrefab, pos, Quaternion.identity); // 壁を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall"; // 壁用のソーティングレイヤーを設定
-                    spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
+                    obj = Instantiate(buildingPrefab, pos, Quaternion.identity); // 建物を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    spawnedObjects.Add(obj);
                 }
             }
         }
@@ -307,5 +336,6 @@ public enum TileType
     Ground,
     Wall,
     Entry,
-    Building
+    Building,
+    Area
 }
