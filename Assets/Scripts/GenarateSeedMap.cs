@@ -13,7 +13,7 @@ public class GenarateSeedMap : MonoBehaviour
 
     [Range(0, 100)]
     public int randomFillPercent; // 壁のランダムな埋め込み率
-    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab, buildingPrefab, areaPrefab1; // 地面と壁のプレファブ
+    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab, buildingPrefab, objectItemPrefab, areaPrefab1; // 地面と壁のプレファブ
     [SerializeField] MapBase mapBase; //各種プレファブ
 
     int[,] map;             // マップデータ
@@ -62,6 +62,7 @@ public class GenarateSeedMap : MonoBehaviour
         }
         margeArea();
         createBuilding();
+        createObjectItem();
         createEntry();
         createWall();
         layTileMap();
@@ -156,9 +157,29 @@ public class GenarateSeedMap : MonoBehaviour
                 targetX = UnityEngine.Random.Range(0, width);
                 targetY = UnityEngine.Random.Range(0, height);
             }
-            while (map[targetX, targetY] != (int)TileType.Ground && map[targetX, targetY] != (int)TileType.Area); // Ground か area でなければ繰り返し
+            while (map[targetX, targetY] != (int)TileType.Ground && map[targetX, targetY] != (int)TileType.Area && map[targetX, targetY] != (int)TileType.Building); // Ground か area でなければ繰り返し
+            Debug.Log($"build:{buildingCount}:{targetX}:{targetY}");
 
             map[targetX, targetY] = (int)TileType.Building;
+        }
+    }
+
+    void createObjectItem()
+    {
+        int objectItemCount = mapBase.ObjectItem;
+        Debug.Log($"objectCount:{objectItemCount}");
+
+        for (int i = 0; i < objectItemCount; i++)
+        {
+            int targetX, targetY;
+            do
+            {
+                targetX = UnityEngine.Random.Range(1, width - 1);
+                targetY = UnityEngine.Random.Range(1, height - 1);
+            }
+            while (map[targetX, targetY] == (int)TileType.Building); // Building 以外となるまで繰り返し
+
+            map[targetX, targetY] = (int)TileType.Object;
         }
     }
 
@@ -254,7 +275,8 @@ public class GenarateSeedMap : MonoBehaviour
                 // マップの範囲外を除外する
                 if (nx >= 0 && nx < width && ny >= 0 && ny < height)
                 {
-                    if (map[nx, ny] == (int)TileType.Ground || map[nx, ny] == (int)TileType.Area)
+                    // 地面、エリア、建物がある場合にtrueとする
+                    if (map[nx, ny] == (int)TileType.Ground || map[nx, ny] == (int)TileType.Area || map[nx, ny] == (int)TileType.Object)
                     {
                         return true; // 隣接する1が見つかった場合
                     }
@@ -307,6 +329,12 @@ public class GenarateSeedMap : MonoBehaviour
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
                     spawnedObjects.Add(obj);
                 }
+                else if (map[x, y] == (int)TileType.Object)
+                {
+                    obj = Instantiate(objectItemPrefab, pos, Quaternion.identity); // 建物を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    spawnedObjects.Add(obj);
+                }
             }
         }
     }
@@ -337,5 +365,6 @@ public enum TileType
     Wall,
     Entry,
     Building,
+    Object,
     Area
 }
