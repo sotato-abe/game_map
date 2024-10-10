@@ -13,7 +13,7 @@ public class GenarateSeedMap : MonoBehaviour
 
     [Range(0, 100)]
     public int randomFillPercent; // 壁のランダムな埋め込み率
-    [SerializeField] GameObject groundPrefab1, wallPrefab1, entryPrefab, buildingPrefab, objectItemPrefab, areaPrefab1; // 地面と壁のプレファブ
+    [SerializeField] GameObject groundPrefab1, wallPrefab1, edgePrefab, entryPrefab, buildingPrefab, objectItemPrefab, areaPrefab1; // 地面と壁のプレファブ
     [SerializeField] MapBase mapBase; //各種プレファブ
 
     int[,] map;             // マップデータ
@@ -154,11 +154,10 @@ public class GenarateSeedMap : MonoBehaviour
             int targetX, targetY;
             do
             {
-                targetX = UnityEngine.Random.Range(0, width);
-                targetY = UnityEngine.Random.Range(0, height);
+                targetX = UnityEngine.Random.Range(1, width - 1);
+                targetY = UnityEngine.Random.Range(1, height - 1);
             }
             while (map[targetX, targetY] != (int)TileType.Ground && map[targetX, targetY] != (int)TileType.Area && map[targetX, targetY] != (int)TileType.Building); // Ground か area でなければ繰り返し
-            Debug.Log($"build:{buildingCount}:{targetX}:{targetY}");
 
             map[targetX, targetY] = (int)TileType.Building;
         }
@@ -253,7 +252,15 @@ public class GenarateSeedMap : MonoBehaviour
             {
                 if (map[x, y] == (int)TileType.Layer && CheckSurroundingGround(x, y))
                 {
-                    map[x, y] = (int)TileType.Wall;
+                    if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+                    {
+                        Debug.Log($"edge");
+                        map[x, y] = (int)TileType.Edge;
+                    }
+                    else
+                    {
+                        map[x, y] = (int)TileType.Wall;
+                    }
                 }
             }
         }
@@ -299,7 +306,7 @@ public class GenarateSeedMap : MonoBehaviour
             {
                 Vector2 pos = GetWorldPositionFromTile(x, y); // タイルのワールド座標を計算
                 GameObject obj;
-                if (map[x, y] != (int)TileType.Layer && map[x, y] != (int)TileType.Wall)
+                if (map[x, y] != (int)TileType.Layer && map[x, y] != (int)TileType.Wall && map[x, y] != (int)TileType.Edge)
                 {
                     obj = Instantiate(groundPrefab1, pos, Quaternion.identity); // 地面を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapGround"; // 地面用のソーティングレイヤーを設定
@@ -314,6 +321,12 @@ public class GenarateSeedMap : MonoBehaviour
                 if (map[x, y] == (int)TileType.Wall)
                 {
                     obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    spawnedObjects.Add(obj);
+                }
+                if (map[x, y] == (int)TileType.Edge)
+                {
+                    obj = Instantiate(edgePrefab, pos, Quaternion.identity); // 壁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
                     spawnedObjects.Add(obj);
                 }
@@ -363,6 +376,7 @@ public enum TileType
     Layer,
     Ground,
     Wall,
+    Edge,
     Entry,
     Building,
     Object,
