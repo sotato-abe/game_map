@@ -310,42 +310,51 @@ public class GenarateSeedMap : MonoBehaviour
                 {
                     obj = Instantiate(groundPrefab1, pos, Quaternion.identity); // 地面を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapGround"; // 地面用のソーティングレイヤーを設定
+                    obj.layer = LayerMask.NameToLayer("Ground");
                     spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
                 if (map[x, y] == (int)TileType.Area)
                 {
                     obj = Instantiate(areaPrefab1, pos, Quaternion.identity); // エリアを生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapArea";
+                    obj.layer = LayerMask.NameToLayer("Ground");
                     spawnedObjects.Add(obj);
                 }
                 if (map[x, y] == (int)TileType.Edge)
                 {
                     obj = Instantiate(edgePrefab, pos, Quaternion.identity); // 縁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapEdge";
+                    obj.layer = LayerMask.NameToLayer("Wall");
+                    obj.AddComponent<BoxCollider2D>(); 
                     spawnedObjects.Add(obj);
                 }
                 if (map[x, y] == (int)TileType.Wall)
                 {
                     obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    obj.layer = LayerMask.NameToLayer("Wall");
+                    obj.AddComponent<BoxCollider2D>(); 
                     spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Entry)
                 {
                     obj = Instantiate(entryPrefab, pos, Quaternion.identity); // 入口を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapBuilding";
+                    obj.layer = LayerMask.NameToLayer("Building");
                     spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Building)
                 {
                     obj = Instantiate(buildingPrefab, pos, Quaternion.identity); // 建物を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapBuilding";
+                    obj.layer = LayerMask.NameToLayer("Building");
                     spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Object)
                 {
                     obj = Instantiate(objectItemPrefab, pos, Quaternion.identity); // アイテムを生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "ObjectItem";
+                    obj.layer = LayerMask.NameToLayer("Object");
                     spawnedObjects.Add(obj);
                 }
             }
