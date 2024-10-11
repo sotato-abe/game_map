@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 513887579}
   - component: {fileID: 513887581}
   - component: {fileID: 513887582}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ MonoBehaviour:
   distanceTraveled: 0
   blockLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 256
   encountLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -306,7 +306,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 32
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
