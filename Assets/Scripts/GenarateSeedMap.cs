@@ -315,7 +315,13 @@ public class GenarateSeedMap : MonoBehaviour
                 if (map[x, y] == (int)TileType.Area)
                 {
                     obj = Instantiate(areaPrefab1, pos, Quaternion.identity); // エリアを生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapArea";
+                    spawnedObjects.Add(obj);
+                }
+                if (map[x, y] == (int)TileType.Edge)
+                {
+                    obj = Instantiate(edgePrefab, pos, Quaternion.identity); // 縁を生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapEdge";
                     spawnedObjects.Add(obj);
                 }
                 if (map[x, y] == (int)TileType.Wall)
@@ -324,28 +330,22 @@ public class GenarateSeedMap : MonoBehaviour
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
                     spawnedObjects.Add(obj);
                 }
-                if (map[x, y] == (int)TileType.Edge)
-                {
-                    obj = Instantiate(edgePrefab, pos, Quaternion.identity); // 壁を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
-                    spawnedObjects.Add(obj);
-                }
                 else if (map[x, y] == (int)TileType.Entry)
                 {
                     obj = Instantiate(entryPrefab, pos, Quaternion.identity); // 入口を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapBuilding";
                     spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Building)
                 {
                     obj = Instantiate(buildingPrefab, pos, Quaternion.identity); // 建物を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapBuilding";
                     spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Object)
                 {
-                    obj = Instantiate(objectItemPrefab, pos, Quaternion.identity); // 建物を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
+                    obj = Instantiate(objectItemPrefab, pos, Quaternion.identity); // アイテムを生成
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "ObjectItem";
                     spawnedObjects.Add(obj);
                 }
             }
@@ -375,10 +375,10 @@ public enum TileType
 {
     Layer,
     Ground,
-    Wall,
+    Area,
     Edge,
-    Entry,
+    Wall,
     Building,
+    Entry,
     Object,
-    Area
 }
