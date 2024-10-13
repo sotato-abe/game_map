@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] Battler battler;
-    private GenarateSeedMap genarateSeedMap;
+    private GenerateSeedMap generateSeedMap;
 
     public UnityAction OnEncount;
 
@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         height = mapBase.MapHeight;
 
         lastPosition = transform.position;
-        genarateSeedMap = FindObjectOfType<GenarateSeedMap>();
+        generateSeedMap = FindObjectOfType<GenerateSeedMap>();
 
     }
 
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
                 if (entryNum != 0)
                 {
                     Debug.Log($"IsEntry");
-                    genarateSeedMap.ReloadMap(entryNum);
+                    generateSeedMap.ReloadMap(entryNum);
                 }
                 else
                 {
