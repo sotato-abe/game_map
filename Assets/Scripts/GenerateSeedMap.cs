@@ -345,13 +345,15 @@ public class GenerateSeedMap : MonoBehaviour
                     obj = Instantiate(groundPrefab1, pos, Quaternion.identity); // 地面を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapGround"; // 地面用のソーティングレイヤーを設定
                     obj.layer = LayerMask.NameToLayer("Ground");
+                    obj.AddComponent<BoxCollider2D>();
                     spawnedObjects.Add(obj); // 生成されたオブジェクトをリストに追加
                 }
                 if (map[x, y] == (int)TileType.Area)
                 {
                     obj = Instantiate(areaPrefab1, pos, Quaternion.identity); // エリアを生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapArea";
-                    obj.layer = LayerMask.NameToLayer("Ground");
+                    obj.layer = LayerMask.NameToLayer("Area");
+                    obj.AddComponent<BoxCollider2D>();
                     spawnedObjects.Add(obj);
                 }
                 if (map[x, y] == (int)TileType.Edge)

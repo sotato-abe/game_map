@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     Animator animator;
     bool isMoving = false;
-    public int width;        // マップの幅
-    public int height;       // マップの高さ
+    public int width; // マップの幅
+    public int height; // マップの高さ
 
     public float encounterThreshold = 5.0f;
     public float distanceTraveled = 0.0f;
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] MapBase mapBase; //マップデータ(ここもゲームコントローラーから受け取るようにする)
     [SerializeField] LayerMask blockLayer;
     [SerializeField] LayerMask entryLayer;
+    [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] Battler battler;
     private GenerateSeedMap generateSeedMap;
@@ -78,7 +79,6 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Move");
                     StartCoroutine(Move(targetPosition));
                 }
                 animator.SetBool("isMoving", true);
@@ -111,17 +111,24 @@ public class PlayerController : MonoBehaviour
 
     void CheckForEncount()
     {
-
-        if (Physics2D.OverlapCircle(transform.position, 0.2f, encountLayer))
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer))
         {
 
-            if (Random.Range(0, 100) < 3)
+            if (Random.Range(0, 100) < encounterThreshold * 2)
             {
                 Debug.Log("encount!!");
                 OnEncount?.Invoke();
             }
         }
+        else if (Physics2D.OverlapCircle(transform.position, 0.2f, encountLayer))
+        {
 
+            if (Random.Range(0, 100) < encounterThreshold)
+            {
+                Debug.Log("encount!!");
+                OnEncount?.Invoke();
+            }
+        }
     }
 
     int IsEntry(Vector3 targetPos)
@@ -129,7 +136,6 @@ public class PlayerController : MonoBehaviour
         // 移動先にエントリーレイヤーがあったときはその方角の位置を返す
         if (Physics2D.OverlapCircle(targetPos, 0.2f, entryLayer))
         {
-            Debug.Log($"isEntry!!x:{targetPos.x} y:{targetPos.y}");
             if (targetPos.x < 1)
             {
                 return 1; // left
