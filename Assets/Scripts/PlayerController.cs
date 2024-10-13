@@ -136,23 +136,10 @@ public class PlayerController : MonoBehaviour
         // 移動先にエントリーレイヤーがあったときはその方角の位置を返す
         if (Physics2D.OverlapCircle(targetPos, 0.2f, entryLayer))
         {
-            if (targetPos.x < 1)
-            {
-                return 1; // left
-            }
-            else if (targetPos.x > width - 1)
-            {
-                return 2; // right
-
-            }
-            else if (targetPos.y < 1)
-            {
-                return 3; // bottom
-            }
-            else if (targetPos.y > height - 1)
-            {
-                return 4; // top
-            }
+            if (targetPos.x < 1) return 1;  // left
+            if (targetPos.x > width - 1) return 2;  // right
+            if (targetPos.y < 1) return 3;  // bottom
+            if (targetPos.y > height - 1) return 4;  // top
         }
         return 0;
     }
