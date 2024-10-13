@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenarateSeedMap : MonoBehaviour
+public class GenerateSeedMap : MonoBehaviour
 {
     public int width;        // マップの幅
     public int height;       // マップの高さ
@@ -40,7 +40,6 @@ public class GenarateSeedMap : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            // character.transform.position = mapCenterPos;
             characterDirection = 1;
             Debug.Log("reload");
             ClearMap();   // 現在のマップをクリア

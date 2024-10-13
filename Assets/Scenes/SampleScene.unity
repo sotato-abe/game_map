@@ -202,7 +202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 513887578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.1364584, y: 0.99952865, z: 0}
+  m_LocalPosition: {x: 34.52, y: 29.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1202,6 +1202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1987937761}
   - component: {fileID: 1987937762}
+  - component: {fileID: 1987937763}
   m_Layer: 7
   m_Name: Map2
   m_TagString: Untagged
@@ -1239,7 +1240,7 @@ MonoBehaviour:
   width: 100
   height: 100
   seed: test
-  useRandamSeed: 1
+  useRandamSeed: 0
   randomFillPercent: 46
   groundPrefab1: {fileID: 1489375870}
   wallPrefab1: {fileID: 1238815581}
@@ -1249,6 +1250,39 @@ MonoBehaviour:
   objectItemPrefab: {fileID: 1321916297}
   areaPrefab1: {fileID: 2099008210}
   mapBase: {fileID: 11400000, guid: fe45e07fabe81034ab6cba712d26ba59, type: 2}
+  character: {fileID: 513887578}
+  characterPosition: {x: 0, y: 0}
+  characterDirection: 0
+  mapCenterPos: {x: 0, y: 0}
+  tileSize: 0
+  spawnedObjects: []
+  entryPositions: []
+--- !u!114 &1987937763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987937759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07e215114f43b846a725d34647f45ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 50
+  height: 50
+  seed: test
+  useRandamSeed: 1
+  randomFillPercent: 42
+  groundPrefab1: {fileID: 1489375870}
+  wallPrefab1: {fileID: 1455657591}
+  edgePrefab: {fileID: 1472923847}
+  entryPrefab: {fileID: 1114513787}
+  buildingPrefab: {fileID: 570781252}
+  objectItemPrefab: {fileID: 1321916297}
+  areaPrefab1: {fileID: 2099008210}
+  mapBase: {fileID: 11400000, guid: fe45e07fabe81034ab6cba712d26ba59, type: 2}
+  character: {fileID: 513887578}
 --- !u!1 &2008697023
 GameObject:
   m_ObjectHideFlags: 0
