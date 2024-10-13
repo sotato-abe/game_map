@@ -356,7 +356,7 @@ public class GenerateSeedMap : MonoBehaviour
                     obj.AddComponent<BoxCollider2D>();
                     spawnedObjects.Add(obj);
                 }
-                
+
                 if (map[x, y] == (int)TileType.Edge)
                 {
                     obj = Instantiate(edgePrefab, pos, Quaternion.identity); // 縁を生成
@@ -364,7 +364,8 @@ public class GenerateSeedMap : MonoBehaviour
                     obj.layer = LayerMask.NameToLayer("Wall");
                     obj.AddComponent<BoxCollider2D>();
                     spawnedObjects.Add(obj);
-                }else if (map[x, y] == (int)TileType.Wall)
+                }
+                else if (map[x, y] == (int)TileType.Wall)
                 {
                     obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
