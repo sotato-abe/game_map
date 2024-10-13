@@ -14,7 +14,10 @@ public class GenarateSeedMap : MonoBehaviour
     [Range(0, 100)]
     public int randomFillPercent; // 壁のランダムな埋め込み率
     [SerializeField] GameObject groundPrefab1, wallPrefab1, edgePrefab, entryPrefab, buildingPrefab, objectItemPrefab, areaPrefab1; // 地面と壁のプレファブ
-    [SerializeField] MapBase mapBase; //各種プレファブ
+    [SerializeField] MapBase mapBase; //マップデータ
+    [SerializeField] GameObject character; //キャラクター
+    Vector2 characterPosition;
+    int characterDirection;
 
     int[,] map;             // マップデータ
     int[,] area;             // エリアデータ
@@ -22,22 +25,35 @@ public class GenarateSeedMap : MonoBehaviour
     float tileSize;          // プレファブのサイズ
 
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
+    List<Vector2> entryPositions = new List<Vector2>(); // エントリーポイントのリスト
 
     void Start()
     {
+        characterDirection = 0;
         width = mapBase.MapWidth;
         height = mapBase.MapHeight;
         GenarateMap(); // ゲーム開始時にマップ生成
+        character.transform.position = mapCenterPos;
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
+            // character.transform.position = mapCenterPos;
+            characterDirection = 1;
             Debug.Log("reload");
             ClearMap();   // 現在のマップをクリア
             GenarateMap();
         }
+    }
+
+    public void ReloadMap(int entryNum)
+    {
+        Debug.Log($"reload{entryNum}");
+        characterDirection = entryNum;
+        ClearMap();   // 現在のマップをクリア
+        GenarateMap();
     }
 
     // マップ生成のメソッド
@@ -166,7 +182,6 @@ public class GenarateSeedMap : MonoBehaviour
     void createObjectItem()
     {
         int objectItemCount = mapBase.ObjectItem;
-        Debug.Log($"objectCount:{objectItemCount}");
 
         for (int i = 0; i < objectItemCount; i++)
         {
@@ -207,19 +222,40 @@ public class GenarateSeedMap : MonoBehaviour
         Debug.Log($"Min X: {minX}, Max X: {maxX}, Min Y: {minY}, Max Y: {maxY}");
 
         // 各方向の入口を生成
-        if (mapBase.OpenTop)
-            CreateEntryForDirection(0, 1, minX, maxX, true, pseudoRandom);
-        if (mapBase.OpenBottom)
-            CreateEntryForDirection(height - 1, -1, minX, maxX, true, pseudoRandom);
         if (mapBase.OpenLeft)
             CreateEntryForDirection(0, 1, minY, maxY, false, pseudoRandom);
         if (mapBase.OpenRight)
             CreateEntryForDirection(width - 1, -1, minY, maxY, false, pseudoRandom);
+        if (mapBase.OpenBottom)
+            CreateEntryForDirection(height - 1, -1, minX, maxX, true, pseudoRandom);
+        if (mapBase.OpenTop)
+            CreateEntryForDirection(0, 1, minX, maxX, true, pseudoRandom);
     }
 
     void CreateEntryForDirection(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom)
     {
+        Debug.Log($"CreateEntryForDirection!!{characterDirection}");
         int entryPoint = pseudoRandom.Next(min, max + 1);
+        if (isVertical == false && 0 < step && characterDirection == 2)
+        {
+            // Left
+            character.transform.position = GetWorldPositionFromTile(start, entryPoint);
+        }
+        else if (isVertical == false && step < 0 && characterDirection == 1)
+        {
+            // Right
+            character.transform.position = GetWorldPositionFromTile(start, entryPoint);
+        }
+        else if (isVertical == true && step < 0 && characterDirection == 4)
+        {
+            // Bottom
+            character.transform.position = GetWorldPositionFromTile(entryPoint, start);
+        }
+        else if (isVertical == true && 0 < step && characterDirection == 3)
+        {
+            // Top
+            character.transform.position = GetWorldPositionFromTile(entryPoint, start);
+        }
         if (isVertical)
         {
             map[entryPoint, start] = (int)TileType.Entry;
@@ -254,7 +290,6 @@ public class GenarateSeedMap : MonoBehaviour
                 {
                     if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
                     {
-                        Debug.Log($"edge");
                         map[x, y] = (int)TileType.Edge;
                     }
                     else
@@ -325,7 +360,7 @@ public class GenarateSeedMap : MonoBehaviour
                     obj = Instantiate(edgePrefab, pos, Quaternion.identity); // 縁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapEdge";
                     obj.layer = LayerMask.NameToLayer("Wall");
-                    obj.AddComponent<BoxCollider2D>(); 
+                    obj.AddComponent<BoxCollider2D>();
                     spawnedObjects.Add(obj);
                 }
                 if (map[x, y] == (int)TileType.Wall)
@@ -333,14 +368,15 @@ public class GenarateSeedMap : MonoBehaviour
                     obj = Instantiate(wallPrefab1, pos, Quaternion.identity); // 壁を生成
                     obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapWall";
                     obj.layer = LayerMask.NameToLayer("Wall");
-                    obj.AddComponent<BoxCollider2D>(); 
+                    obj.AddComponent<BoxCollider2D>();
                     spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Entry)
                 {
                     obj = Instantiate(entryPrefab, pos, Quaternion.identity); // 入口を生成
-                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapBuilding";
-                    obj.layer = LayerMask.NameToLayer("Building");
+                    obj.GetComponent<SpriteRenderer>().sortingLayerName = "MapEntry";
+                    obj.layer = LayerMask.NameToLayer("Entry");
+                    obj.AddComponent<BoxCollider2D>();
                     spawnedObjects.Add(obj);
                 }
                 else if (map[x, y] == (int)TileType.Building)
@@ -365,7 +401,7 @@ public class GenarateSeedMap : MonoBehaviour
     // 座標をタイルからワールド座標に変換するメソッド
     Vector2 GetWorldPositionFromTile(int x, int y)
     {
-        return new Vector2(x * tileSize, (height - y) * tileSize) - mapCenterPos; // マップの中心を考慮して座標を計算
+        return new Vector2(x * tileSize, (height - y) * tileSize); // マップの中心を考慮して座標を計算
     }
 
     // マップのクリアメソッド

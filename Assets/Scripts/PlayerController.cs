@@ -7,13 +7,20 @@ public class PlayerController : MonoBehaviour
 {
     Animator animator;
     bool isMoving = false;
+    public int width;        // マップの幅
+    public int height;       // マップの高さ
+
     public float encounterThreshold = 5.0f;
     public float distanceTraveled = 0.0f;
     private Vector3 lastPosition;
 
+    [SerializeField] MapBase mapBase; //マップデータ(ここもゲームコントローラーから受け取るようにする)
     [SerializeField] LayerMask blockLayer;
+    [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] Battler battler;
+    private GenarateSeedMap genarateSeedMap;
+
     public UnityAction OnEncount;
 
     public Battler Battler { get => battler; }
@@ -25,7 +32,13 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 仮でここで定義（後でマップ更新時に更新されるようにする）
+        width = mapBase.MapWidth;
+        height = mapBase.MapHeight;
+
         lastPosition = transform.position;
+        genarateSeedMap = FindObjectOfType<GenarateSeedMap>();
+
     }
 
     // Update is called once per frame
@@ -56,18 +69,30 @@ public class PlayerController : MonoBehaviour
                 }
                 animator.SetFloat("inputX", x);
                 animator.SetFloat("inputY", y);
-                StartCoroutine(Move(new Vector3(x, y, 0)));
+                Vector3 targetPosition = transform.position + (new Vector3(x, y, 0));
+                int entryNum = IsEntry(targetPosition);
+                if (entryNum != 0)
+                {
+                    Debug.Log($"IsEntry");
+                    genarateSeedMap.ReloadMap(entryNum);
+                }
+                else
+                {
+                    Debug.Log($"Move");
+                    StartCoroutine(Move(targetPosition));
+                }
                 animator.SetBool("isMoving", true);
-            }else {
+            }
+            else
+            {
                 animator.SetBool("isMoving", false);
             }
         }
     }
 
-    IEnumerator Move(Vector3 direction)
+    IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
-        Vector3 targetPos = transform.position + direction;
         if (IsWalkable(targetPos) == false)
         {
             isMoving = false;
@@ -99,9 +124,43 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    int IsEntry(Vector3 targetPos)
+    {
+        // 移動先にエントリーレイヤーがあったときはその方角の位置を返す
+        if (Physics2D.OverlapCircle(targetPos, 0.2f, entryLayer))
+        {
+            Debug.Log($"isEntry!!x:{targetPos.x} y:{targetPos.y}");
+            if (targetPos.x < 1)
+            {
+                return 1; // left
+            }
+            else if (targetPos.x > width - 1)
+            {
+                return 2; // right
+
+            }
+            else if (targetPos.y < 1)
+            {
+                return 3; // bottom
+            }
+            else if (targetPos.y > height - 1)
+            {
+                return 4; // top
+            }
+        }
+        return 0;
+    }
+
     bool IsWalkable(Vector3 targetPos)
     {
         // 移動先にブロックレイヤーがあったときはfalseになる
-        return Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
+        if (targetPos.x < 1 || targetPos.x > width || targetPos.y < 1 || targetPos.y > height)
+        {
+            return false;
+        }
+        else
+        {
+            return Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
+        }
     }
 }
