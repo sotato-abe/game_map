@@ -11,7 +11,7 @@ public class BattleSystem : MonoBehaviour
     // [SerializeField] ActionController actionController;
     // [SerializeField] SkillDialog skillDialog;
     [SerializeField] MapDialog mapDialog;
-    [SerializeField] EnemyDialog enemyDialog;
+    [SerializeField] BattleCanvas battleCanvas;
 
     // [SerializeField] MessageDialog messageDialog;
     // [SerializeField] BattleUnit enemyUnit;
@@ -41,7 +41,7 @@ public class BattleSystem : MonoBehaviour
         // ActionDialogOpen();
 
         MapDialogClose();
-        EnemyDialogOpen();
+        BattleCanvasOpen();
     }
 
     public void RunTurn()
@@ -68,10 +68,10 @@ public class BattleSystem : MonoBehaviour
         mapDialog.gameObject.SetActive(false);
     }
 
-    public void EnemyDialogOpen()
+    public void BattleCanvasOpen()
     {
         Debug.Log("The enemy are coming!!");
-        enemyDialog.gameObject.SetActive(true);
+        battleCanvas.gameObject.SetActive(true);
     }
 
     // public void SkillDialogOpen()
