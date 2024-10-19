@@ -80,18 +80,18 @@ public class ActionController : MonoBehaviour
 
     void HandleAttackAction()
     {
-        battleSystem.SkillDialogOpen();
+        // battleSystem.SkillDialogOpen();
     }
 
     void HandleItemAction()
     {
         // アイテムの処理をここに追加
-        StartCoroutine(battleSystem.SetMessage("The player fished through his backpack but found nothing."));
+        // StartCoroutine(battleSystem.SetMessage("The player fished through his backpack but found nothing."));
     }
 
     void HandleTalkAction()
     {
-        StartCoroutine(battleSystem.SetMessage("The player  tried talking to him, but he didn't respond."));
+        // StartCoroutine(battleSystem.SetMessage("The player  tried talking to him, but he didn't respond."));
         // トークの処理をここに追加
     }
 
