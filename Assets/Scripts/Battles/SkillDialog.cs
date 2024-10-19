@@ -36,7 +36,7 @@ public class SkillDialog : MonoBehaviour
     {
         Debug.Log("SkillDialogInit");
         selectableTexts = GetComponentsInChildren<SelectableText>();
-        StartCoroutine(battleSystem.SetMessage("The player braced himself!!"));
+        // StartCoroutine(battleSystem.SetMessage("The player braced himself!!"));
     }
 
     public void Update()
@@ -82,19 +82,19 @@ public class SkillDialog : MonoBehaviour
     private void HandleAttackAction()
     {
         Debug.Log("Attack!!");
-        StartCoroutine(battleSystem.SetMessage("Attack!!"));
+        // StartCoroutine(battleSystem.SetMessage("Attack!!"));
     }
 
     void HandleSpellAction()
     {
         Debug.Log("Spell!!");
-        StartCoroutine(battleSystem.SetMessage("Spell!!"));
+        // StartCoroutine(battleSystem.SetMessage("Spell!!"));
 
     }
 
     void HandleBackAction()
     {
         Debug.Log("Back!!");
-        battleSystem.ActionDialogOpen();
+        // battleSystem.ActionDialogOpen();
     }
 }

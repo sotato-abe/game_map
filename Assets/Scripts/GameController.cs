@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
     [SerializeField] BattleSystem battleSystem;
-    [SerializeField] Battler enemy;
+    // [SerializeField] Battler enemy;
 
     private void Start()
     {
@@ -16,14 +16,16 @@ public class GameController : MonoBehaviour
 
     public void BattleStart()
     {
-        playerController.gameObject.SetActive(false);
+        Debug.Log("BattleStart!!");
+        // playerController.gameObject.SetActive(false);
         battleSystem.gameObject.SetActive(true);
-        battleSystem.BattleStart(playerController.Battler, enemy);
+        // battleSystem.BattleStart(playerController.Battler, enemy);
+        battleSystem.BattleStart();
     }
 
     public void BattleEnd()
     {
-        playerController.gameObject.SetActive(true);
+        // playerController.gameObject.SetActive(true);
         battleSystem.gameObject.SetActive(false);
     }
 
