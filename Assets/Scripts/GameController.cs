@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
     [SerializeField] BattleSystem battleSystem;
+    [SerializeField] FieldInfoSystem fieldInfoSystem;
     // [SerializeField] Battler enemy;
 
     private void Start()
@@ -18,6 +19,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("BattleStart!!");
         // playerController.gameObject.SetActive(false);
+        fieldInfoSystem.FieldDialogClose();
         battleSystem.gameObject.SetActive(true);
         // battleSystem.BattleStart(playerController.Battler, enemy);
         battleSystem.BattleStart();
@@ -25,9 +27,10 @@ public class GameController : MonoBehaviour
 
     public void BattleEnd()
     {
-        Debug.Log("BattleEnd");
+        Debug.Log("Game_Controller_BattleEnd");
         // playerController.gameObject.SetActive(true);
         battleSystem.gameObject.SetActive(false);
+        fieldInfoSystem.FieldDialogOpen();
     }
 
     // Update is called once per frame
