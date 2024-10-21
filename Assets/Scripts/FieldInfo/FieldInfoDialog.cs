@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class MapDialog : MonoBehaviour
+public class FieldInfoDialog : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

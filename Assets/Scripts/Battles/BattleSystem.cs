@@ -10,7 +10,6 @@ public class BattleSystem : MonoBehaviour
 
     // [SerializeField] ActionController actionController;
     // [SerializeField] SkillDialog skillDialog;
-    [SerializeField] MapDialog mapDialog;
     [SerializeField] BattleCanvas battleCanvas;
 
     // [SerializeField] MessageDialog messageDialog;
@@ -36,7 +35,6 @@ public class BattleSystem : MonoBehaviour
     {
         // StartCoroutine(SetupBattle(player, enemy));
         SetupBattle();
-        mapDialog.gameObject.SetActive(false);
         battleCanvas.gameObject.SetActive(true);
     }
 
@@ -50,8 +48,6 @@ public class BattleSystem : MonoBehaviour
         // yield return messageDialog.TypeDialog("XX is coming!!");
         // yield return new WaitForSeconds(0.5f);
         // ActionDialogOpen();
-
-        MapDialogClose();
         BattleCanvasOpen();
     }
 
@@ -70,16 +66,9 @@ public class BattleSystem : MonoBehaviour
     {
         Debug.Log("battle canvas close");
         battleCanvas.gameObject.SetActive(false);
-        mapDialog.gameObject.SetActive(true);
         // yield return StartCoroutine(SetMessage("The player braced himself."));
         yield return new WaitForSeconds(0.5f);
         OnBattleEnd?.Invoke();
-    }
-
-    public void MapDialogClose()
-    {
-        Debug.Log("map close");
-        mapDialog.gameObject.SetActive(false);
     }
 
     public void BattleCanvasOpen()
