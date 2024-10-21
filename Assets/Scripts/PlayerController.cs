@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     Animator animator;
     bool isMoving = false;
+    bool canMove = true;
     public int width; // マップの幅
     public int height; // マップの高さ
 
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isMoving == false)
+        if (isMoving == false && canMove)
         {
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
@@ -155,5 +156,10 @@ public class PlayerController : MonoBehaviour
         {
             return Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
         }
+    }
+
+    public void SetMoveFlg(bool flg)
+    {
+        canMove = flg;
     }
 }
