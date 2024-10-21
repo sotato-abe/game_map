@@ -98,7 +98,7 @@ public class ActionController : MonoBehaviour
     void HandleRunAction()
     {
         
-        StartCoroutine(battleSystem.BattleEnd());
+        battleSystem.BattleEnd();
         // ここでselectedIndexを初期化すると、ダイアログが閉じなくなる（処理が非同期になっているから？）；
         // selectedIndex = 0;
     }

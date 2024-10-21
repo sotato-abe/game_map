@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour
     [SerializeField] PlayerController playerController;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
-    // [SerializeField] Battler enemy;
+    [SerializeField] Battler enemy;
 
     private void Start()
     {

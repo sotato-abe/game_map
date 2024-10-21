@@ -13,8 +13,12 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleCanvas battleCanvas;
 
     // [SerializeField] MessageDialog messageDialog;
-    // [SerializeField] BattleUnit enemyUnit;
+    [SerializeField] EnemyDialog enemyDialog;
     // [SerializeField] BattleUnit playerUnit;
+
+    public Vector3 enemyClosePosition = new Vector3(960 + 1250, 540 - 200, 0);
+    public Vector3 enemyOpenPosition = new Vector3(960 + 750, 540 - 200, 0);
+
 
     void Start()
     {
@@ -26,7 +30,7 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Debug.Log("BattleEnd!!");
-            StartCoroutine(BattleEnd());
+            BattleEnd();
         }
     }
 
@@ -36,6 +40,34 @@ public class BattleSystem : MonoBehaviour
         // StartCoroutine(SetupBattle(player, enemy));
         SetupBattle();
         battleCanvas.gameObject.SetActive(true);
+        // コルーチンを使って1秒かけて移動させる
+        Vector3 enemyOpenPosition = new Vector3(960 + 750, 540 - 200, 0);
+        StartCoroutine(MoveEnemyDialog(enemyOpenPosition));
+    }
+
+    private IEnumerator MoveEnemyDialog(Vector3 targetPosition)
+    {
+        // 現在の位置
+        Vector3 startPosition = enemyDialog.transform.position;
+        Debug.Log($"startPosition!!:{startPosition}");
+
+        // 移動にかける時間
+        float moveDuration = 0.1f;
+        float elapsedTime = 0;
+
+        // 1秒間かけて徐々に移動
+        while (elapsedTime < moveDuration)
+        {
+            enemyDialog.transform.position = Vector3.MoveTowards(
+                enemyClosePosition, targetPosition, (elapsedTime / moveDuration) * Vector3.Distance(startPosition, targetPosition)
+            );
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // 次のフレームまで待つ
+        }
+
+        // 最後に正確な位置に設定
+        enemyDialog.transform.position = targetPosition;
     }
 
     // IEnumerator SetupBattle(Battler player, Battler enemy)
@@ -62,12 +94,14 @@ public class BattleSystem : MonoBehaviour
     //     // yield return messageDialog.TypeDialog(message);
     // }
 
-    public IEnumerator BattleEnd()
+    public void BattleEnd()
     {
-        Debug.Log("battle canvas close");
-        battleCanvas.gameObject.SetActive(false);
+        Vector3 enemyClosePosition = new Vector3(960 + 1250, 540 - 200, 0);
+        StartCoroutine(MoveEnemyDialog(enemyClosePosition));
+        // enemyDialog.transform.position = enemyClosePosition;
+        // battleCanvas.gameObject.SetActive(false);
         // yield return StartCoroutine(SetMessage("The player braced himself."));
-        yield return new WaitForSeconds(0.5f);
+        // yield return new WaitForSeconds(0.5f);
         OnBattleEnd?.Invoke();
     }
 
