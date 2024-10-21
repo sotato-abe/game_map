@@ -8,7 +8,7 @@ public class PlayerUnit : BattleUnit
 {
 
     [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI name;
+    [SerializeField] new TextMeshProUGUI name;
     [SerializeField] TextMeshProUGUI level;
     [SerializeField] TextMeshProUGUI hp;
     [SerializeField] TextMeshProUGUI mp;

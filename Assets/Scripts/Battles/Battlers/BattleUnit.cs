@@ -10,6 +10,5 @@ public class BattleUnit : MonoBehaviour
     public virtual void Setup(Battler battler)
     {
         Battler = battler;
-
     }
 }

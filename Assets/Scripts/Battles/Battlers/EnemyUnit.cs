@@ -7,7 +7,7 @@ using TMPro;
 public class EnemyUnit : BattleUnit
 {
     [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI name;
+    [SerializeField] new TextMeshProUGUI name;
     public override void Setup(Battler battler)
     {
         base.Setup(battler);

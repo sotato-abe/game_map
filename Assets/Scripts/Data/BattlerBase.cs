@@ -7,9 +7,9 @@ public class BattlerBase : ScriptableObject
 {
     // Start is called before the first frame update
     [SerializeField] new string name;
-    [SerializeField] new int maxHP;
-    [SerializeField] new int maxMP;
-    [SerializeField] new int attack;
+    [SerializeField] int maxHP;
+    [SerializeField] int maxMP;
+    [SerializeField] int attack;
     [SerializeField] Sprite sprite;
 
     public string Name { get => name; }
