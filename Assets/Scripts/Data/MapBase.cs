@@ -6,16 +6,16 @@ using UnityEngine;
 public class MapBase : ScriptableObject
 {
     [SerializeField] new string name;
-    [SerializeField] new int level;
-    [SerializeField] new int building;
-    [SerializeField] new int objectItem;
-    [SerializeField] new bool openTop;
-    [SerializeField] new bool openLeft;
-    [SerializeField] new bool openRight;
-    [SerializeField] new bool openBottom;
-    [SerializeField] new int mapTileSet;
-    [SerializeField] new int mapHeight;
-    [SerializeField] new int mapWidth;
+    [SerializeField] int level;
+    [SerializeField] int building;
+    [SerializeField] int objectItem;
+    [SerializeField] bool openTop;
+    [SerializeField] bool openLeft;
+    [SerializeField] bool openRight;
+    [SerializeField] bool openBottom;
+    [SerializeField] int mapTileSet;
+    [SerializeField] int mapHeight;
+    [SerializeField] int mapWidth;
 
     public string Name { get => name; }
     public int Level { get => level; }
