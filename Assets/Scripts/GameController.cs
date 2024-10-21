@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
 
     public void BattleEnd()
     {
+        Debug.Log("BattleEnd");
         // playerController.gameObject.SetActive(true);
         battleSystem.gameObject.SetActive(false);
     }

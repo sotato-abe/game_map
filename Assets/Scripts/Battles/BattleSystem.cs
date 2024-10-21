@@ -22,11 +22,22 @@ public class BattleSystem : MonoBehaviour
         transform.gameObject.SetActive(false);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Debug.Log("BattleEnd!!");
+            StartCoroutine(BattleEnd());
+        }
+    }
+
     // public void BattleStart(Battler player, Battler enemy)
     public void BattleStart()
     {
         // StartCoroutine(SetupBattle(player, enemy));
         SetupBattle();
+        mapDialog.gameObject.SetActive(false);
+        battleCanvas.gameObject.SetActive(true);
     }
 
     // IEnumerator SetupBattle(Battler player, Battler enemy)
@@ -57,6 +68,9 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator BattleEnd()
     {
+        Debug.Log("battle canvas close");
+        battleCanvas.gameObject.SetActive(false);
+        mapDialog.gameObject.SetActive(true);
         // yield return StartCoroutine(SetMessage("The player braced himself."));
         yield return new WaitForSeconds(0.5f);
         OnBattleEnd?.Invoke();
