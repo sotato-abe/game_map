@@ -41,16 +41,13 @@ public class GenerateSeedMap : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             characterDirection = 1;
-            Debug.Log("reload");
-            ClearMap();   // 現在のマップをクリア
-            GenarateMap();
+            ReloadMap(characterDirection);
         }
     }
 
     public void ReloadMap(int entryNum)
     {
-        Debug.Log($"reload{entryNum}");
-        characterDirection = entryNum;
+        Debug.Log($"reload");
         ClearMap();   // 現在のマップをクリア
         GenarateMap();
     }
@@ -218,8 +215,6 @@ public class GenerateSeedMap : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"Min X: {minX}, Max X: {maxX}, Min Y: {minY}, Max Y: {maxY}");
-
         // 各方向の入口を生成
         if (mapBase.OpenLeft)
             CreateEntryForDirection(0, 1, minY, maxY, false, pseudoRandom);
@@ -233,7 +228,6 @@ public class GenerateSeedMap : MonoBehaviour
 
     void CreateEntryForDirection(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom)
     {
-        Debug.Log($"CreateEntryForDirection!!{characterDirection}");
         int entryPoint = pseudoRandom.Next(min, max + 1);
         if (isVertical == false && 0 < step && characterDirection == 2)
         {
