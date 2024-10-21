@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     public void BattleStart()
     {
         Debug.Log("BattleStart!!");
-        // playerController.gameObject.SetActive(false);
+        playerController.SetMoveFlg(false);
         fieldInfoSystem.FieldDialogClose();
         battleSystem.gameObject.SetActive(true);
         // battleSystem.BattleStart(playerController.Battler, enemy);
@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour
     public void BattleEnd()
     {
         Debug.Log("Game_Controller_BattleEnd");
-        // playerController.gameObject.SetActive(true);
+        playerController.SetMoveFlg(true);
         battleSystem.gameObject.SetActive(false);
         fieldInfoSystem.FieldDialogOpen();
     }
