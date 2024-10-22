@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] Battler battler;
+    [SerializeField] PlayerUnit player;
     private GenerateSeedMap generateSeedMap;
 
     public UnityAction OnEncount;
@@ -40,6 +41,11 @@ public class PlayerController : MonoBehaviour
 
         lastPosition = transform.position;
         generateSeedMap = FindObjectOfType<GenerateSeedMap>();
+
+    }
+
+    public void SetUpPlayer()
+    {
 
     }
 

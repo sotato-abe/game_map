@@ -12,11 +12,6 @@ public class SelectableText : MonoBehaviour
         text = GetComponent<TextMeshProUGUI>();
     }
 
-    private void Start()
-    {
-        // SetSelectedColor(true);
-    }
-
     public void SetSelectedColor(bool selected)
     {
         if (text == null)
