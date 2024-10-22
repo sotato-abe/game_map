@@ -40,34 +40,53 @@ public class BattleSystem : MonoBehaviour
         // StartCoroutine(SetupBattle(player, enemy));
         SetupBattle();
         battleCanvas.gameObject.SetActive(true);
-        // コルーチンを使って1秒かけて移動させる
-        Vector3 enemyOpenPosition = new Vector3(960 + 750, 540 - 200, 0);
-        StartCoroutine(MoveEnemyDialog(enemyOpenPosition));
+        StartCoroutine(MoveEnemyDialog(enemyDialog));
     }
 
-    private IEnumerator MoveEnemyDialog(Vector3 targetPosition)
+    private IEnumerator MoveEnemyDialog(EnemyDialog targetObject)
     {
-        // 現在の位置
-        Vector3 startPosition = enemyDialog.transform.position;
-        Debug.Log($"startPosition!!:{startPosition}");
+        float initialBounceHeight = 40f;  // 初めのバウンドの高さ
+        float dampingFactor = 0.5f;      // 減衰率（バウンドの大きさがどれくらいずつ減るか）
+        float gravity = 3000f;            // 重力の強さ
+        float groundY = enemyOpenPosition.y;  // 地面のY座標（開始位置に基づく）
+        float currentBounceHeight = initialBounceHeight;
+        float verticalVelocity = Mathf.Sqrt(2 * gravity * currentBounceHeight);
+        bool isFalling = true;
 
-        // 移動にかける時間
-        float moveDuration = 0.1f;
-        float elapsedTime = 0;
-
-        // 1秒間かけて徐々に移動
-        while (elapsedTime < moveDuration)
+        while (currentBounceHeight >= 0.1f)  // バウンドが小さくなって停止するまでループ
         {
-            enemyDialog.transform.position = Vector3.MoveTowards(
-                enemyClosePosition, targetPosition, (elapsedTime / moveDuration) * Vector3.Distance(startPosition, targetPosition)
-            );
+            // バウンド中の垂直方向の動き
+            if (isFalling)
+            {
+                verticalVelocity -= gravity * Time.deltaTime;  // 重力で速度を減少させる
+                targetObject.transform.position += Vector3.up * verticalVelocity * Time.deltaTime;  // 垂直方向に移動
 
-            elapsedTime += Time.deltaTime;
-            yield return null; // 次のフレームまで待つ
+                // 地面に到達したらバウンド
+                if (targetObject.transform.position.y <= groundY)
+                {
+                    currentBounceHeight *= dampingFactor;  // バウンドの高さを減衰
+                    verticalVelocity = Mathf.Sqrt(2 * gravity * currentBounceHeight);  // 新しいバウンドの速度を計算
+                    isFalling = false;  // 上昇に切り替える
+                }
+            }
+            else
+            {
+                // 上昇中の処理
+                verticalVelocity -= gravity * Time.deltaTime;  // 上昇中の速度を減少
+                targetObject.transform.position += Vector3.up * verticalVelocity * Time.deltaTime;
+
+                // 上昇が終わったら落下に切り替える
+                if (verticalVelocity <= 0)
+                {
+                    isFalling = true;
+                }
+            }
+
+            yield return null;  // 次のフレームまで待つ
         }
 
-        // 最後に正確な位置に設定
-        enemyDialog.transform.position = targetPosition;
+        // 最終的な位置を調整（小さなバウンドを終えた後に地面に戻す）
+        targetObject.transform.position = new Vector3(targetObject.transform.position.x, groundY, targetObject.transform.position.z);
     }
 
     // IEnumerator SetupBattle(Battler player, Battler enemy)
@@ -96,9 +115,7 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleEnd()
     {
-        Vector3 enemyClosePosition = new Vector3(960 + 1250, 540 - 200, 0);
-        StartCoroutine(MoveEnemyDialog(enemyClosePosition));
-        // enemyDialog.transform.position = enemyClosePosition;
+        battleCanvas.gameObject.SetActive(false);
         // battleCanvas.gameObject.SetActive(false);
         // yield return StartCoroutine(SetMessage("The player braced himself."));
         // yield return new WaitForSeconds(0.5f);
