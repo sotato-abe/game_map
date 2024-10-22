@@ -144,7 +144,7 @@ public class BattleSystem : MonoBehaviour
     {
         // battleCanvas.gameObject.SetActive(false);
         StartCoroutine(SetMessage("The player braced himself."));
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.8f);
         battleCanvas.gameObject.SetActive(false);
         OnBattleEnd?.Invoke();
     }
