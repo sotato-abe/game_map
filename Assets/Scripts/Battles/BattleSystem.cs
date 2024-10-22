@@ -6,13 +6,23 @@ using UnityEngine.Events;
 
 public class BattleSystem : MonoBehaviour
 {
+    enum State
+    {
+        Start,
+        ActionSelection,
+        MoveSelection,
+        RunTurn,
+        BattleOver,
+    }
+
+    State state;
     public UnityAction OnBattleEnd;
 
     // [SerializeField] ActionController actionController;
     // [SerializeField] SkillDialog skillDialog;
     [SerializeField] BattleCanvas battleCanvas;
 
-    // [SerializeField] MessageDialog messageDialog;
+    [SerializeField] MessageDialog messageDialog;
     [SerializeField] EnemyDialog enemyDialog;
     // [SerializeField] BattleUnit playerUnit;
 
@@ -27,27 +37,51 @@ public class BattleSystem : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        switch (state)
         {
-            Debug.Log("BattleEnd!!");
-            BattleEnd();
+            case State.Start:
+                break;
+            case State.ActionSelection:
+                HandleActionSelection();
+                break;
+            case State.MoveSelection:
+                break;
+            case State.RunTurn:
+                break;
+            case State.BattleOver:
+                break;
         }
     }
 
     // public void BattleStart(Battler player, Battler enemy)
     public void BattleStart()
     {
+        state = State.Start;
         // StartCoroutine(SetupBattle(player, enemy));
         SetupBattle();
         battleCanvas.gameObject.SetActive(true);
-        StartCoroutine(MoveEnemyDialog(enemyDialog));
+        StartCoroutine(OpenEnemyDialog(enemyDialog));
     }
 
-    private IEnumerator MoveEnemyDialog(EnemyDialog targetObject)
+    // IEnumerator SetupBattle(Battler player, Battler enemy)
+    public void SetupBattle()
+    {
+        Debug.Log("SetupBattle!!");
+        // playerUnit.Setup(player);
+        // enemyUnit.Setup(enemy);
+        // actionController.Reset();
+        StartCoroutine(SetMessage("XX is coming!!"));
+        // yield return messageDialog.TypeDialog("XX is coming!!");
+        // yield return new WaitForSeconds(0.5f);
+        // ActionDialogOpen();
+        BattleCanvasOpen();
+    }
+
+    private IEnumerator OpenEnemyDialog(EnemyDialog targetObject)
     {
         float initialBounceHeight = 40f;  // 初めのバウンドの高さ
         float dampingFactor = 0.5f;      // 減衰率（バウンドの大きさがどれくらいずつ減るか）
-        float gravity = 3000f;            // 重力の強さ
+        float gravity = 5000f;            // 重力の強さ
         float groundY = enemyOpenPosition.y;  // 地面のY座標（開始位置に基づく）
         float currentBounceHeight = initialBounceHeight;
         float verticalVelocity = Mathf.Sqrt(2 * gravity * currentBounceHeight);
@@ -89,36 +123,29 @@ public class BattleSystem : MonoBehaviour
         targetObject.transform.position = new Vector3(targetObject.transform.position.x, groundY, targetObject.transform.position.z);
     }
 
-    // IEnumerator SetupBattle(Battler player, Battler enemy)
-    public void SetupBattle()
+    void HandleActionSelection()
     {
-        Debug.Log("SetupBattle!!");
-        // playerUnit.Setup(player);
-        // enemyUnit.Setup(enemy);
-        // actionController.Reset();
-        // yield return messageDialog.TypeDialog("XX is coming!!");
-        // yield return new WaitForSeconds(0.5f);
-        // ActionDialogOpen();
-        BattleCanvasOpen();
+
     }
+
 
     public void RunTurn()
     {
 
     }
 
-    // public IEnumerator SetMessage(string message)
-    // {
-    //     Debug.Log("SetMessage!!");
-    //     // yield return messageDialog.TypeDialog(message);
-    // }
-
-    public void BattleEnd()
+    public IEnumerator SetMessage(string message)
     {
-        battleCanvas.gameObject.SetActive(false);
+        Debug.Log("SetMessage!!");
+        yield return messageDialog.TypeDialog(message);
+    }
+
+    public IEnumerator BattleEnd()
+    {
         // battleCanvas.gameObject.SetActive(false);
-        // yield return StartCoroutine(SetMessage("The player braced himself."));
-        // yield return new WaitForSeconds(0.5f);
+        StartCoroutine(SetMessage("The player braced himself."));
+        yield return new WaitForSeconds(1.0f);
+        battleCanvas.gameObject.SetActive(false);
         OnBattleEnd?.Invoke();
     }
 

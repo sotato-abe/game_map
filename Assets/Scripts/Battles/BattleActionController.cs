@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionController : MonoBehaviour
+public class BattleActionController : MonoBehaviour
 {
     SelectableText[] selectableTexts;
     [SerializeField] BattleSystem battleSystem;
@@ -97,8 +97,8 @@ public class ActionController : MonoBehaviour
 
     void HandleRunAction()
     {
-        
-        battleSystem.BattleEnd();
+
+        StartCoroutine(battleSystem.BattleEnd());
         // ここでselectedIndexを初期化すると、ダイアログが閉じなくなる（処理が非同期になっているから？）；
         // selectedIndex = 0;
     }
