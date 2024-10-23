@@ -13,8 +13,8 @@ public class Battler
     public int Level { get => level; }
     public int Soul { get => soul; }
 
-    public int MaxHP { get; set; }
-    public int HP { get; set; }
+    public int MaxLife { get; set; }
+    public int Life { get; set; }
     public int MaxBattery { get; set; }
     public int Battery { get; set; }
     public int Attack { get; set; }
@@ -24,8 +24,8 @@ public class Battler
 
     public void Init()
     {
-        MaxHP = _base.MaxHP;
-        HP = MaxHP;
+        MaxLife = _base.MaxLife;
+        Life = MaxLife;
         MaxBattery = _base.MaxBattery;
         Battery = MaxBattery;
         Attack = _base.Attack;
