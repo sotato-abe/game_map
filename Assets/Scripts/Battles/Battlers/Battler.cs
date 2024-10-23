@@ -7,9 +7,11 @@ public class Battler
 {
     [SerializeField] BattlerBase _base;
     [SerializeField] int level;
+    [SerializeField] int soul;
 
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
+    public int Soul { get => soul; }
 
     public int MaxHP { get; set; }
     public int HP { get; set; }
