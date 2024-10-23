@@ -6,6 +6,7 @@ using TMPro;
 
 public class EnemyUnit : BattleUnit
 {
+    // TODO : エナジーUIを追加
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI attackText;
