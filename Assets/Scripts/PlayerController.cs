@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public int width; // マップの幅
     public int height; // マップの高さ
 
-    public float encounterThreshold = 5.0f;
+    public float encounterThreshold = 3f;
     public float distanceTraveled = 0.0f;
     private Vector3 lastPosition;
 
@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour
                 int entryNum = IsEntry(targetPosition);
                 if (entryNum != 0)
                 {
-                    Debug.Log($"IsEntry");
                     generateSeedMap.ReloadMap(entryNum);
                 }
                 else

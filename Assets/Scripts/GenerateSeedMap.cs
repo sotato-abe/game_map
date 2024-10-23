@@ -47,6 +47,7 @@ public class GenerateSeedMap : MonoBehaviour
 
     public void ReloadMap(int entryNum)
     {
+        characterDirection = entryNum;
         Debug.Log($"reload");
         ClearMap();   // 現在のマップをクリア
         GenarateMap();
@@ -217,38 +218,30 @@ public class GenerateSeedMap : MonoBehaviour
         }
         // 各方向の入口を生成
         if (mapBase.OpenLeft)
-            CreateEntryForDirection(0, 1, minY, maxY, false, pseudoRandom);
+            CreateEntryForDirection(0, 1, minY, maxY, false, pseudoRandom, 2); // Left
         if (mapBase.OpenRight)
-            CreateEntryForDirection(width - 1, -1, minY, maxY, false, pseudoRandom);
+            CreateEntryForDirection(width - 1, -1, minY, maxY, false, pseudoRandom, 1); // Right
         if (mapBase.OpenBottom)
-            CreateEntryForDirection(height - 1, -1, minX, maxX, true, pseudoRandom);
+            CreateEntryForDirection(height - 1, -1, minX, maxX, true, pseudoRandom, 4); // Top
         if (mapBase.OpenTop)
-            CreateEntryForDirection(0, 1, minX, maxX, true, pseudoRandom);
+            CreateEntryForDirection(0, 1, minX, maxX, true, pseudoRandom, 3); // Bottom
     }
 
-    void CreateEntryForDirection(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom)
+    void CreateEntryForDirection(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom, int direction)
     {
         int entryPoint = pseudoRandom.Next(min, max + 1);
-        if (isVertical == false && 0 < step && characterDirection == 2)
+        if (characterDirection == direction)
         {
-            // Left
-            character.transform.position = GetWorldPositionFromTile(start, entryPoint);
+            if (isVertical)
+            {
+                character.transform.position = GetWorldPositionFromTile(entryPoint, start + step);
+            }
+            else
+            {
+                character.transform.position = GetWorldPositionFromTile(start + step, entryPoint);
+            }
         }
-        else if (isVertical == false && step < 0 && characterDirection == 1)
-        {
-            // Right
-            character.transform.position = GetWorldPositionFromTile(start, entryPoint);
-        }
-        else if (isVertical == true && step < 0 && characterDirection == 4)
-        {
-            // Bottom
-            character.transform.position = GetWorldPositionFromTile(entryPoint, start);
-        }
-        else if (isVertical == true && 0 < step && characterDirection == 3)
-        {
-            // Top
-            character.transform.position = GetWorldPositionFromTile(entryPoint, start);
-        }
+
         if (isVertical)
         {
             map[entryPoint, start] = (int)TileType.Entry;
