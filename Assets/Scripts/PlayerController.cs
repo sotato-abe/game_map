@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] Battler battler;
+    [SerializeField] BattleUnit playerUnit;
+
     private GenerateSeedMap generateSeedMap;
 
     public UnityAction OnEncount;
@@ -35,6 +37,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        battler.Init();
+        playerUnit.Setup(battler);
         // 仮でここで定義（後でマップ更新時に更新されるようにする）
         width = mapBase.MapWidth;
         height = mapBase.MapHeight;
