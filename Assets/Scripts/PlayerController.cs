@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public int width; // マップの幅
     public int height; // マップの高さ
 
-    public int encounterThreshold = 2;
+    public int encounterThreshold = 1;
     public float distanceTraveled = 0.0f;
     private Vector3 lastPosition;
 
