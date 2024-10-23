@@ -21,7 +21,9 @@ public class GameController : MonoBehaviour
         playerController.SetMoveFlg(false);
         fieldInfoSystem.FieldDialogClose();
         battleSystem.gameObject.SetActive(true);
+        enemy.Init();
         battleSystem.BattleStart(playerController.Battler, enemy);
+
         // battleSystem.BattleStart();
     }
 

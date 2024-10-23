@@ -64,7 +64,6 @@ public class BattleSystem : MonoBehaviour
     public void SetupBattle(Battler player, Battler enemy)
     {
         Debug.Log("SetupBattle!!");
-        playerUnit.Setup(player);
         enemyUnit.Setup(enemy);
         Debug.Log($"player:{playerUnit.name}/enemy:{enemyUnit}");
         // actionController.Reset();
