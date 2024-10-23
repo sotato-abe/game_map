@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public int width; // マップの幅
     public int height; // マップの高さ
 
-    public float encounterThreshold = 3f;
+    public int encounterThreshold = 2;
     public float distanceTraveled = 0.0f;
     private Vector3 lastPosition;
 
@@ -117,21 +117,20 @@ public class PlayerController : MonoBehaviour
 
     void CheckForEncount()
     {
+        int randamEncounterThreshold = Random.Range(0, 100);
         if (Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer))
         {
-
-            if (Random.Range(0, 100) < encounterThreshold * 2)
+            if (randamEncounterThreshold < encounterThreshold * 2)
             {
-                Debug.Log("encount!!");
+                Debug.Log($"area encount!! randamEncounterThreshold:{randamEncounterThreshold}/encounterThreshold:{encounterThreshold}");
                 OnEncount?.Invoke();
             }
         }
         else if (Physics2D.OverlapCircle(transform.position, 0.2f, encountLayer))
         {
-
-            if (Random.Range(0, 100) < encounterThreshold)
+            if (randamEncounterThreshold < encounterThreshold)
             {
-                Debug.Log("encount!!");
+                Debug.Log($"ground encount!! randamEncounterThreshold:{randamEncounterThreshold}/encounterThreshold:{encounterThreshold}");
                 OnEncount?.Invoke();
             }
         }
