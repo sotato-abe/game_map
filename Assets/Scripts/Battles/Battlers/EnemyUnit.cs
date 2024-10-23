@@ -9,6 +9,9 @@ public class EnemyUnit : BattleUnit
     // TODO : エナジーUIを追加
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI lifeText;
+    [SerializeField] TextMeshProUGUI batteryText;
+    [SerializeField] TextMeshProUGUI soulText;
     [SerializeField] TextMeshProUGUI attackText;
     [SerializeField] TextMeshProUGUI techniqueText;
     [SerializeField] TextMeshProUGUI defenseText;
@@ -19,6 +22,9 @@ public class EnemyUnit : BattleUnit
 
         image.sprite = battler.Base.Sprite;
         nameText.SetText(battler.Base.Name);
+        lifeText.SetText($"{battler.Life}");
+        batteryText.SetText($"{battler.Battery}");
+        soulText.SetText($"{battler.Soul}");
         attackText.SetText($"{battler.Base.Attack}");
         techniqueText.SetText($"{battler.Base.Technique}");
         defenseText.SetText($"{battler.Base.Defense}");
