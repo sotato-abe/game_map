@@ -17,17 +17,17 @@ public class GameController : MonoBehaviour
 
     public void BattleStart()
     {
-        Debug.Log("BattleStart!!");
+        Debug.Log("[Game_Controller]:BattleStart!!");
         playerController.SetMoveFlg(false);
         fieldInfoSystem.FieldDialogClose();
         battleSystem.gameObject.SetActive(true);
-        // battleSystem.BattleStart(playerController.Battler, enemy);
-        battleSystem.BattleStart();
+        battleSystem.BattleStart(playerController.Battler, enemy);
+        // battleSystem.BattleStart();
     }
 
     public void BattleEnd()
     {
-        Debug.Log("Game_Controller_BattleEnd");
+        Debug.Log("[Game_Controller]:BattleEnd");
         playerController.SetMoveFlg(true);
         battleSystem.gameObject.SetActive(false);
         fieldInfoSystem.FieldDialogOpen();

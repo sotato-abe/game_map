@@ -232,7 +232,6 @@ public class RougeGenerator
             int maxRange = Mathf.Min(minPosition + MAX_ROOM_SIZE, maxPosition);//ランダムの最大値取得
             int minRange = minPosition + MIN_ROOM_SIZE;//ランダムの最小値取得
 
-            //Debug.Log($"minRange {minRange}/ maxRange {maxRange}");
             int position = Random.Range(minRange, maxRange + 1);//ポジション計算
             int diff = Random.Range(0, maxPosition - position);//すらす値を計算
             //水平（垂直）に座標をずらす

@@ -6,12 +6,22 @@ using TMPro;
 
 public class EnemyUnit : BattleUnit
 {
+    // TODO : エナジーUIを追加
     [SerializeField] Image image;
-    [SerializeField] new TextMeshProUGUI name;
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI attackText;
+    [SerializeField] TextMeshProUGUI techniqueText;
+    [SerializeField] TextMeshProUGUI defenseText;
+    [SerializeField] TextMeshProUGUI speedText;
     public override void Setup(Battler battler)
     {
         base.Setup(battler);
+
         image.sprite = battler.Base.Sprite;
-        name.text = battler.Base.Name;
+        nameText.SetText(battler.Base.Name);
+        attackText.SetText($"{battler.Base.Attack}");
+        techniqueText.SetText($"{battler.Base.Technique}");
+        defenseText.SetText($"{battler.Base.Defense}");
+        speedText.SetText($"{battler.Base.Speed}");
     }
 }
