@@ -48,7 +48,6 @@ public class GenerateSeedMap : MonoBehaviour
     public void ReloadMap(int entryNum)
     {
         characterDirection = entryNum;
-        Debug.Log($"reload");
         ClearMap();   // 現在のマップをクリア
         GenarateMap();
     }
