@@ -4,15 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PlayerUnit : MonoBehaviour
+public class PlayerUnit : BattleUnit
 {
+    [SerializeField] Image image;
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI attackText;
+    [SerializeField] TextMeshProUGUI techniqueText;
+    [SerializeField] TextMeshProUGUI defenseText;
+    [SerializeField] TextMeshProUGUI speedText;
 
-    [SerializeField] BattlerBase _base;
-    public Battler Battler { get; set; }
-    public BattlerBase Base { get => _base; }
-
-    public virtual void Setup(Battler battler)
+    public override void Setup(Battler battler)
     {
-        Battler = battler;
+        base.Setup(battler);
+
+        image.sprite = battler.Base.Sprite;
+        nameText.SetText(battler.Base.Name);
+        attackText.SetText($"{battler.Base.Attack}");
+        techniqueText.SetText($"{battler.Base.Technique}");
+        defenseText.SetText($"{battler.Base.Defense}");
+        speedText.SetText($"{battler.Base.Speed}");
     }
 }

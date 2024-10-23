@@ -19,12 +19,12 @@ public class BattleSystem : MonoBehaviour
     public UnityAction OnBattleEnd;
 
     // [SerializeField] ActionController actionController;
-    // [SerializeField] SkillDialog skillDialog;
     [SerializeField] BattleCanvas battleCanvas;
 
     [SerializeField] MessageDialog messageDialog;
     [SerializeField] EnemyDialog enemyDialog;
-    // [SerializeField] BattleUnit playerUnit;
+    [SerializeField] BattleUnit playerUnit;
+    [SerializeField] BattleUnit enemyUnit;
 
     public Vector3 enemyClosePosition = new Vector3(960 + 1250, 540 - 200, 0);
     public Vector3 enemyOpenPosition = new Vector3(960 + 750, 540 - 200, 0);
@@ -53,32 +53,30 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    // public void BattleStart(Battler player, Battler enemy)
-    public void BattleStart()
+    public void BattleStart(Battler player, Battler enemy)
     {
         state = State.Start;
-        // StartCoroutine(SetupBattle(player, enemy));
-        SetupBattle();
+        SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
         StartCoroutine(OpenEnemyDialog(enemyDialog));
     }
 
-    // IEnumerator SetupBattle(Battler player, Battler enemy)
-    public void SetupBattle()
+    public void SetupBattle(Battler player, Battler enemy)
     {
         Debug.Log("SetupBattle!!");
-        // playerUnit.Setup(player);
-        // enemyUnit.Setup(enemy);
+        playerUnit.Setup(player);
+        enemyUnit.Setup(enemy);
+        Debug.Log($"player:{playerUnit.name}/enemy:{enemyUnit}");
         // actionController.Reset();
-        StartCoroutine(SetMessage("XX is coming!!"));
+        StartCoroutine(SetMessage($"{enemy.Base.Name} is coming!!"));
         // yield return messageDialog.TypeDialog("XX is coming!!");
         // yield return new WaitForSeconds(0.5f);
-        // ActionDialogOpen();
         BattleCanvasOpen();
     }
 
     private IEnumerator OpenEnemyDialog(EnemyDialog targetObject)
     {
+        Debug.Log("OpenEnemyDialog!!");
         float initialBounceHeight = 40f;  // 初めのバウンドの高さ
         float dampingFactor = 0.5f;      // 減衰率（バウンドの大きさがどれくらいずつ減るか）
         float gravity = 5000f;            // 重力の強さ
@@ -155,19 +153,8 @@ public class BattleSystem : MonoBehaviour
         battleCanvas.gameObject.SetActive(true);
     }
 
-    // public void SkillDialogOpen()
-    // {
-    //     Debug.Log("SkillDialog!!");
-    //     StartCoroutine(SetMessage("The player braced himself."));
-    //     actionController.gameObject.SetActive(false);
-    //     skillDialog.Reset();
-    //     skillDialog.gameObject.SetActive(true);
-    // }
-
     // public void ActionDialogOpen()
     // {
-    //     Debug.Log("ActionDialog!!");
     //     actionController.gameObject.SetActive(true);
-    //     skillDialog.gameObject.SetActive(false);
     // }
 }

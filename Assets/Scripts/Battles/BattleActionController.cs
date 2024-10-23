@@ -20,7 +20,7 @@ public class BattleActionController : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("ActionController!!");
+        Debug.Log("BattleActionController!!");
         Init();
     }
 
@@ -80,7 +80,7 @@ public class BattleActionController : MonoBehaviour
 
     void HandleAttackAction()
     {
-        // battleSystem.SkillDialogOpen();
+        // バトルメソット
     }
 
     void HandleItemAction()
