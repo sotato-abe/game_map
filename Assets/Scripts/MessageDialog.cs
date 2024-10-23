@@ -13,7 +13,6 @@ public class MessageDialog : MonoBehaviour
 
     public IEnumerator TypeDialog(string line)
     {
-        Debug.Log("TypeDialog!!");
         text.SetText("");
         foreach (char letter in line)
         {

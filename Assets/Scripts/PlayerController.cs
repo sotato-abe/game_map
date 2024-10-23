@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] Battler battler;
-    [SerializeField] PlayerUnit player;
     private GenerateSeedMap generateSeedMap;
 
     public UnityAction OnEncount;
@@ -31,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        Debug.Log("PlayerController:Awake");
     }
     // Start is called before the first frame update
     void Start()
