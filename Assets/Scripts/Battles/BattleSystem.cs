@@ -56,7 +56,7 @@ public class BattleSystem : MonoBehaviour
     public void SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
-        StartCoroutine(SetMessage($"{enemy.Base.Name} is coming!!"));
+        StartCoroutine(SetDialogMessage($"{enemy.Base.Name} is coming!!"));
     }
 
     void HandleActionSelection()
@@ -68,31 +68,32 @@ public class BattleSystem : MonoBehaviour
     {
         state = State.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetMessage("The player is waving his arms around."));
+        StartCoroutine(SetDialogMessage("The player is waving his arms around."));
     }
 
     public void ItemTurn()
     {
         state = State.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetMessage("The player fished through his backpack but found nothing."));
+        StartCoroutine(SetDialogMessage("The player fished through his backpack but found nothing."));
     }
 
     public void TalkTurn()
     {
         state = State.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetMessage("The player tried talking to him, but he didn't respond."));
+        StartCoroutine(SetDialogMessage("The player tried talking to him, but he didn't respond."));
     }
 
-    public void RunTurn()
+    public IEnumerator RunTurn()
     {
         state = State.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
+        StartCoroutine(SetDialogMessage("Player is trying to escape."));
+        yield return StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(BattleEnd());
     }
 
-    public IEnumerator SetMessage(string message)
+    public IEnumerator SetDialogMessage(string message)
     {
         yield return messageDialog.TypeDialog(message);
     }
@@ -100,9 +101,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator BattleEnd()
     {
         state = State.BattleOver;
-        StartCoroutine(SetMessage("The player braced himself."));
-        yield return new WaitForSeconds(0.8f);
-        battleCanvas.gameObject.SetActive(false);
+        yield return StartCoroutine(SetDialogMessage("The player braced himself."));
         OnBattleEnd?.Invoke();
     }
 }
