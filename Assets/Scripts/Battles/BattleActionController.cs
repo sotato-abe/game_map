@@ -32,7 +32,7 @@ public class BattleActionController : MonoBehaviour
 
     public void Reset()
     {
-        selectedIndex = (int)State.Attack;
+        selectedIndex = (int)State.Talk;
     }
 
     public void Update()

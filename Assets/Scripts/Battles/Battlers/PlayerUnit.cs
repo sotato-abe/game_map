@@ -30,4 +30,15 @@ public class PlayerUnit : BattleUnit
         defenseText.SetText($"{battler.Base.Defense}");
         speedText.SetText($"{battler.Base.Speed}");
     }
+
+    public override void UpdateUI()
+    {
+        lifeText.SetText($"{Battler.Life}");
+        batteryText.SetText($"{Battler.Battery}");
+        soulText.SetText($"{Battler.Soul}");
+        attackText.SetText($"{Battler.Base.Attack}");
+        techniqueText.SetText($"{Battler.Base.Technique}");
+        defenseText.SetText($"{Battler.Base.Defense}");
+        speedText.SetText($"{Battler.Base.Speed}");
+    }
 }
