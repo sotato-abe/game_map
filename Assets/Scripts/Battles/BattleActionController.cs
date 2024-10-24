@@ -10,9 +10,10 @@ public class BattleActionController : MonoBehaviour
 
     enum State
     {
-        Attack,
-        Item,
         Talk,
+        Attack,
+        Command,
+        Item,
         Run
     }
 
@@ -62,15 +63,19 @@ public class BattleActionController : MonoBehaviour
     {
         switch ((State)selectedIndex)
         {
+            case State.Talk:
+                HandleTalkAction();
+                break;
             case State.Attack:
                 HandleAttackAction();
+                break;
+            case State.Command:
+                HandleCommandAction();
                 break;
             case State.Item:
                 HandleItemAction();
                 break;
-            case State.Talk:
-                HandleTalkAction();
-                break;
+
             case State.Run:
                 HandleRunAction();
                 break;
@@ -80,6 +85,11 @@ public class BattleActionController : MonoBehaviour
     void HandleAttackAction()
     {
         battleSystem.AttackTurn();
+    }
+
+    void HandleCommandAction()
+    {
+        battleSystem.CommandTurn();
     }
 
     void HandleItemAction()

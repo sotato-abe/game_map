@@ -50,6 +50,7 @@ public class BattleSystem : MonoBehaviour
         SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
+        StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
     }
 
@@ -71,6 +72,13 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetDialogMessage("The player is waving his arms around."));
     }
 
+    public void CommandTurn()
+    {
+        state = State.ActionExecution;
+        StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
+        StartCoroutine(SetDialogMessage("Implant activation start... Activation"));
+    }
+
     public void ItemTurn()
     {
         state = State.ActionExecution;
@@ -82,6 +90,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = State.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
+        StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(SetDialogMessage("The player tried talking to him, but he didn't respond."));
     }
 
