@@ -20,7 +20,6 @@ public class BattleActionController : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("BattleActionController!!");
         Init();
     }
 
