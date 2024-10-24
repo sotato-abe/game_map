@@ -2820,7 +2820,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4363,7 +4363,7 @@ RectTransform:
   - {fileID: 329474214}
   - {fileID: 1444874079}
   m_Father: {fileID: 1930026424}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6214,12 +6214,12 @@ RectTransform:
   m_Children:
   - {fileID: 1806571964}
   - {fileID: 847272665}
-  m_Father: {fileID: 1573952747}
-  m_RootOrder: 0
+  m_Father: {fileID: 1930026424}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60, y: 0}
+  m_AnchoredPosition: {x: 60, y: -389.28793}
   m_SizeDelta: {x: 772.1797, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171585232
@@ -6273,6 +6273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 1806571965}
+  dialogBackground: {fileID: 1171585232}
   letterPerSecond: 0
 --- !u!1 &1198090577
 GameObject:
@@ -8580,7 +8581,7 @@ RectTransform:
   - {fileID: 806754201}
   - {fileID: 1673203641}
   m_Father: {fileID: 1930026424}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8720,8 +8721,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1171585231}
+  m_Children: []
   m_Father: {fileID: 562228375}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9795,7 +9795,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: start
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 40e84ed11c91a3145b477753857c6a11, type: 2}
   m_sharedMaterial: {fileID: 3142952015169191744, guid: 40e84ed11c91a3145b477753857c6a11, type: 2}
@@ -10286,6 +10286,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2126254108}
+  - {fileID: 1171585231}
   - {fileID: 1561680657}
   - {fileID: 831489218}
   m_Father: {fileID: 0}
