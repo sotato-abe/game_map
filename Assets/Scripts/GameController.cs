@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] MessageDialog messageDialog;
     [SerializeField] PlayerController playerController;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
@@ -11,8 +12,10 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("[Game_Controller]:Start!!");
         playerController.OnEncount += BattleStart;
         battleSystem.OnBattleEnd += BattleEnd;
+        StartCoroutine(messageDialog.TypeDialog("game start"));
     }
 
     public void BattleStart()
