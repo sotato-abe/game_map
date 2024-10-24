@@ -108,8 +108,8 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         int damage = targetUnit.Battler.TakeDamege(sourceUnit.Battler);
-        yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
         targetUnit.UpdateUI();
+        yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
 
         if (targetUnit.Battler.Life <= 0)
         {
