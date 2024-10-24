@@ -67,24 +67,28 @@ public class BattleSystem : MonoBehaviour
     public void AttackTurn()
     {
         state = State.ActionExecution;
+        StartCoroutine(playerUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(SetMessage("The player is waving his arms around."));
     }
 
     public void ItemTurn()
     {
         state = State.ActionExecution;
+        StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(SetMessage("The player fished through his backpack but found nothing."));
     }
 
     public void TalkTurn()
     {
         state = State.ActionExecution;
+        StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(SetMessage("The player tried talking to him, but he didn't respond."));
     }
 
     public void RunTurn()
     {
         state = State.ActionExecution;
+        StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(BattleEnd());
     }
 
