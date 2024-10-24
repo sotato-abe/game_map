@@ -6,6 +6,7 @@ public class BattleUnit : MonoBehaviour
 {
 
     public Battler Battler { get; set; }
+    [SerializeField] TalkPanel talkPanel;
 
     public virtual void Setup(Battler battler)
     {
@@ -19,6 +20,21 @@ public class BattleUnit : MonoBehaviour
     }
 
     Motion motion;
+
+    public IEnumerator SetTalkMessage(string message)
+    {
+        if (talkPanel != null) // Nullチェックを追加
+        {
+            talkPanel.gameObject.SetActive(true);
+            yield return talkPanel.TypeDialog(message);
+            yield return new WaitForSeconds(1.3f);
+            talkPanel.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("talkPanel is not assigned!");
+        }
+    }
 
     public void SetMotion(Motion targetMotion)
     {

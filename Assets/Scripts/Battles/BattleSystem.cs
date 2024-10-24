@@ -50,6 +50,7 @@ public class BattleSystem : MonoBehaviour
         SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
+        StartCoroutine(playerUnit.SetTalkMessage("Damn,,"));
     }
 
     public void SetupBattle(Battler player, Battler enemy)
