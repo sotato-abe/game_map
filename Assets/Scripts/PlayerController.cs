@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        Debug.Log("PlayerController:Awake");
     }
     // Start is called before the first frame update
     void Start()
@@ -126,7 +125,6 @@ public class PlayerController : MonoBehaviour
         {
             if (randamEncounterThreshold < encounterThreshold * 2)
             {
-                Debug.Log($"area encount!! randamEncounterThreshold:{randamEncounterThreshold}/encounterThreshold:{encounterThreshold}");
                 OnEncount?.Invoke();
             }
         }
@@ -134,7 +132,6 @@ public class PlayerController : MonoBehaviour
         {
             if (randamEncounterThreshold < encounterThreshold)
             {
-                Debug.Log($"ground encount!! randamEncounterThreshold:{randamEncounterThreshold}/encounterThreshold:{encounterThreshold}");
                 OnEncount?.Invoke();
             }
         }

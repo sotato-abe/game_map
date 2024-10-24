@@ -50,12 +50,11 @@ public class BattleSystem : MonoBehaviour
         SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
-        StartCoroutine(playerUnit.SetTalkMessage("Damn,,"));
+        StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
     }
 
     public void SetupBattle(Battler player, Battler enemy)
     {
-        Debug.Log("SetupBattle!!");
         enemyUnit.Setup(enemy);
         StartCoroutine(SetMessage($"{enemy.Base.Name} is coming!!"));
     }
@@ -91,7 +90,6 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SetMessage(string message)
     {
-        Debug.Log("SetMessage!!");
         yield return messageDialog.TypeDialog(message);
     }
 

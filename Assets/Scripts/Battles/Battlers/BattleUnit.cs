@@ -27,7 +27,7 @@ public class BattleUnit : MonoBehaviour
         {
             talkPanel.gameObject.SetActive(true);
             yield return talkPanel.TypeDialog(message);
-            yield return new WaitForSeconds(1.3f);
+            yield return new WaitForSeconds(2.0f);
             talkPanel.gameObject.SetActive(false);
         }
         else
