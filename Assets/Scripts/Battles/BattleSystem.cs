@@ -98,6 +98,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = State.ActionExecution;
         StartCoroutine(SetDialogMessage("Player is trying to escape."));
+        StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(BattleEnd());
     }
