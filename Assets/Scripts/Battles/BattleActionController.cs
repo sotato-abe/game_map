@@ -81,18 +81,18 @@ public class BattleActionController : MonoBehaviour
     void HandleAttackAction()
     {
         // バトルメソット
+        battleSystem.AttackTurn();
     }
 
     void HandleItemAction()
     {
         // アイテムの処理をここに追加
-        // StartCoroutine(battleSystem.SetMessage("The player fished through his backpack but found nothing."));
+        battleSystem.ItemTurn();
     }
 
     void HandleTalkAction()
     {
-        // StartCoroutine(battleSystem.SetMessage("The player  tried talking to him, but he didn't respond."));
-        // トークの処理をここに追加
+        battleSystem.TalkTurn();
     }
 
     void HandleRunAction()

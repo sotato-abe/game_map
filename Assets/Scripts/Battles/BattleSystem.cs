@@ -10,7 +10,7 @@ public class BattleSystem : MonoBehaviour
     {
         Start,
         ActionSelection,
-        MoveSelection,
+        ActionExecution,
         RunTurn,
         BattleOver,
     }
@@ -37,9 +37,7 @@ public class BattleSystem : MonoBehaviour
             case State.ActionSelection:
                 HandleActionSelection();
                 break;
-            case State.MoveSelection:
-                break;
-            case State.RunTurn:
+            case State.ActionExecution:
                 break;
             case State.BattleOver:
                 break;
@@ -51,7 +49,7 @@ public class BattleSystem : MonoBehaviour
         state = State.Start;
         SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
-        StartCoroutine(enemyUnit.OpenEnemyDialog());
+        enemyUnit.SetMotion(BattleUnit.Motion.Jump);
     }
 
     public void SetupBattle(Battler player, Battler enemy)
@@ -66,9 +64,27 @@ public class BattleSystem : MonoBehaviour
 
     }
 
+    public void AttackTurn()
+    {
+        state = State.ActionExecution;
+        StartCoroutine(SetMessage("The player is waving his arms around."));
+    }
+
+    public void ItemTurn()
+    {
+        state = State.ActionExecution;
+        StartCoroutine(SetMessage("The player fished through his backpack but found nothing."));
+    }
+
+    public void TalkTurn()
+    {
+        state = State.ActionExecution;
+        StartCoroutine(SetMessage("The player tried talking to him, but he didn't respond."));
+    }
 
     public void RunTurn()
     {
+        state = State.ActionExecution;
         StartCoroutine(BattleEnd());
     }
 
@@ -80,6 +96,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator BattleEnd()
     {
+        state = State.BattleOver;
         StartCoroutine(SetMessage("The player braced himself."));
         yield return new WaitForSeconds(0.8f);
         battleCanvas.gameObject.SetActive(false);
