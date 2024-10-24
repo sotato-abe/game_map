@@ -79,13 +79,11 @@ public class BattleActionController : MonoBehaviour
 
     void HandleAttackAction()
     {
-        // バトルメソット
         battleSystem.AttackTurn();
     }
 
     void HandleItemAction()
     {
-        // アイテムの処理をここに追加
         battleSystem.ItemTurn();
     }
 
@@ -96,6 +94,6 @@ public class BattleActionController : MonoBehaviour
 
     void HandleRunAction()
     {
-        battleSystem.RunTurn();
+        StartCoroutine(battleSystem.RunTurn());
     }
 }
