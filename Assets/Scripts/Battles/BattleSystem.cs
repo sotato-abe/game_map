@@ -69,7 +69,9 @@ public class BattleSystem : MonoBehaviour
     {
         state = State.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetDialogMessage("The player is waving his arms around."));
+        StartCoroutine(enemyUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
+        enemyUnit.SetMotion(BattleUnit.Motion.Jump);
+        StartCoroutine(AttackAction(playerUnit, enemyUnit));
     }
 
     public void CommandTurn()
@@ -100,18 +102,36 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetDialogMessage("Player is trying to escape."));
         StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(BattleEnd());
+        BattleEnd();
+    }
+
+    private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
+    {
+        int damage = targetUnit.Battler.TakeDamege(sourceUnit.Battler);
+        yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
+        targetUnit.UpdateUI();
+
+        if (targetUnit.Battler.Life <= 0)
+        {
+            StartCoroutine(BattleResult());
+        }
+    }
+
+    public IEnumerator BattleResult()
+    {
+        yield return StartCoroutine(SetDialogMessage("You win"));
+        yield return new WaitForSeconds(2f);
+        BattleEnd();
+    }
+
+    public void BattleEnd()
+    {
+        state = State.BattleOver;
+        OnBattleEnd?.Invoke();
     }
 
     public IEnumerator SetDialogMessage(string message)
     {
         yield return messageDialog.TypeDialog(message);
-    }
-
-    public IEnumerator BattleEnd()
-    {
-        state = State.BattleOver;
-        yield return StartCoroutine(SetDialogMessage("The player braced himself."));
-        OnBattleEnd?.Invoke();
     }
 }

@@ -33,4 +33,12 @@ public class Battler
         Defense = _base.Defense;
         Speed = _base.Speed;
     }
+
+    public int TakeDamege(Battler attacker)
+    {
+        int damage = attacker.Attack;
+
+        Life = Mathf.Clamp(Life - damage, 0, MaxLife);
+        return damage;
+    }
 }
