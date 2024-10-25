@@ -84,7 +84,7 @@ public class BattleActionController : MonoBehaviour
 
     void HandleAttackAction()
     {
-        battleSystem.AttackTurn();
+        StartCoroutine(battleSystem.AttackTurn());
     }
 
     void HandleCommandAction()

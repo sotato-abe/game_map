@@ -65,13 +65,14 @@ public class BattleSystem : MonoBehaviour
 
     }
 
-    public void AttackTurn()
+    public IEnumerator AttackTurn()
     {
         state = State.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(enemyUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
-        enemyUnit.SetMotion(BattleUnit.Motion.Jump);
-        StartCoroutine(AttackAction(playerUnit, enemyUnit));
+        yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
+        if (state != State.BattleOver)
+        {
+            yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
+        }
     }
 
     public void CommandTurn()
@@ -107,19 +108,22 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
+        StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
         int damage = targetUnit.Battler.TakeDamege(sourceUnit.Battler);
         targetUnit.UpdateUI();
+        targetUnit.SetMotion(BattleUnit.Motion.Jump);
+        StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
 
         if (targetUnit.Battler.Life <= 0)
         {
-            StartCoroutine(BattleResult());
+            yield return StartCoroutine(BattleResult(sourceUnit));
         }
     }
 
-    public IEnumerator BattleResult()
+    public IEnumerator BattleResult(BattleUnit sourceUnit)
     {
-        yield return StartCoroutine(SetDialogMessage("You win"));
+        yield return StartCoroutine(SetDialogMessage($"{sourceUnit.Battler.Base.Name} win"));
         yield return new WaitForSeconds(2f);
         BattleEnd();
     }
