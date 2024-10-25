@@ -12,6 +12,7 @@ public class BattleSystem : MonoBehaviour
         ActionSelection,
         ActionExecution,
         RunTurn,
+        BattleResult,
         BattleOver,
     }
 
@@ -22,6 +23,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] EnemyDialog enemyDialog;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
+    [SerializeField] FieldInfoSystem fieldInfoSystem;
 
     void Start()
     {
@@ -38,6 +40,8 @@ public class BattleSystem : MonoBehaviour
                 HandleActionSelection();
                 break;
             case State.ActionExecution:
+                break;
+            case State.BattleResult:
                 break;
             case State.BattleOver:
                 break;
@@ -117,12 +121,16 @@ public class BattleSystem : MonoBehaviour
 
         if (targetUnit.Battler.Life <= 0)
         {
+            StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
+            enemyUnit.SetMotion(BattleUnit.Motion.Jump);
+            yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} walked away"));
             yield return StartCoroutine(BattleResult(sourceUnit));
         }
     }
 
     public IEnumerator BattleResult(BattleUnit sourceUnit)
     {
+        state = State.BattleResult;
         yield return StartCoroutine(SetDialogMessage($"{sourceUnit.Battler.Base.Name} win"));
         yield return new WaitForSeconds(2f);
         BattleEnd();

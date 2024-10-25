@@ -14,7 +14,7 @@ public class MessageDialog : MonoBehaviour
 
     public IEnumerator TypeDialog(string line)
     {
-        StartCoroutine(SetTransparency(1f));
+        // StartCoroutine(SetTransparency(1f));
         text.SetText("");
         foreach (char letter in line)
         {
@@ -22,7 +22,7 @@ public class MessageDialog : MonoBehaviour
             yield return new WaitForSeconds(letterPerSecond);
         }
         yield return new WaitForSeconds(2f);
-        StartCoroutine(SetTransparency(0.5f));
+        // StartCoroutine(SetTransparency(0.5f));
     }
 
     public IEnumerator SetTransparency(float alpha)
