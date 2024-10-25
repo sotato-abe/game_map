@@ -1427,7 +1427,7 @@ RectTransform:
   m_GameObject: {fileID: 329474213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 662253842}
@@ -3141,7 +3141,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &562228379
 MonoBehaviour:
@@ -3690,7 +3690,7 @@ RectTransform:
   m_GameObject: {fileID: 662253841}
   m_LocalRotation: {x: 0.008726558, y: 0, z: 0, w: 0.999962}
   m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1937433731}
@@ -4363,7 +4363,7 @@ RectTransform:
   - {fileID: 329474214}
   - {fileID: 1444874079}
   m_Father: {fileID: 1930026424}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6209,17 +6209,17 @@ RectTransform:
   m_GameObject: {fileID: 1171585230}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1806571964}
   - {fileID: 847272665}
-  m_Father: {fileID: 1930026424}
-  m_RootOrder: 1
+  m_Father: {fileID: 1573952747}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 60, y: -389.28793}
+  m_AnchoredPosition: {x: 60, y: 0}
   m_SizeDelta: {x: 772.1797, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171585232
@@ -7428,10 +7428,6 @@ MonoBehaviour:
   playerController: {fileID: 513887582}
   battleSystem: {fileID: 1571004520}
   fieldInfoSystem: {fileID: 1860617597}
-  enemy:
-    _base: {fileID: 11400000, guid: afb95766c8c50324f8b8b130c64665e4, type: 2}
-    level: 5
-    soul: 0
 --- !u!4 &1384630402
 Transform:
   m_ObjectHideFlags: 0
@@ -8576,17 +8572,17 @@ RectTransform:
   m_GameObject: {fileID: 1561680656}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 806754201}
   - {fileID: 1673203641}
-  m_Father: {fileID: 1930026424}
-  m_RootOrder: 2
+  m_Father: {fileID: 1573952747}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -350, y: -389.28793}
+  m_AnchoredPosition: {x: -350, y: 0}
   m_SizeDelta: {x: 186.184, y: 224.0362}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1561680658
@@ -8666,12 +8662,12 @@ RectTransform:
   m_GameObject: {fileID: 1571004518}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 562228375}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8695,6 +8691,7 @@ MonoBehaviour:
   enemyDialog: {fileID: 1070042307}
   playerUnit: {fileID: 329474217}
   enemyUnit: {fileID: 242925696}
+  fieldInfoSystem: {fileID: 0}
 --- !u!1 &1573952746
 GameObject:
   m_ObjectHideFlags: 0
@@ -8720,9 +8717,11 @@ RectTransform:
   m_GameObject: {fileID: 1573952746}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1171585231}
+  - {fileID: 1561680657}
   m_Father: {fileID: 562228375}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9980,6 +9979,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldMapDialog: {fileID: 360947658}
   fieldInfoDialog: {fileID: 237653653}
+  enemies:
+  - _base: {fileID: 11400000, guid: 68b491635af498f4598f586f90439224, type: 2}
+    level: 3
+    soul: 0
+  - _base: {fileID: 11400000, guid: afb95766c8c50324f8b8b130c64665e4, type: 2}
+    level: 3
+    soul: 0
+  - _base: {fileID: 11400000, guid: 5c9dcc0e11f7839449b62f96bbb204b7, type: 2}
+    level: 3
+    soul: 0
 --- !u!4 &1860617599
 Transform:
   m_ObjectHideFlags: 0
@@ -10272,7 +10281,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &1930026424
 RectTransform:
@@ -10287,11 +10296,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2126254108}
-  - {fileID: 1171585231}
-  - {fileID: 1561680657}
   - {fileID: 831489218}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -8,7 +8,8 @@ public class GameController : MonoBehaviour
     [SerializeField] PlayerController playerController;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
-    [SerializeField] Battler enemy;
+
+    Battler enemy;
 
     private void Start()
     {
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour
         playerController.SetMoveFlg(false);
         fieldInfoSystem.FieldDialogClose();
         battleSystem.gameObject.SetActive(true);
+        enemy = fieldInfoSystem.GetRandomEnemy();
         enemy.Init();
         battleSystem.BattleStart(playerController.Battler, enemy);
 
