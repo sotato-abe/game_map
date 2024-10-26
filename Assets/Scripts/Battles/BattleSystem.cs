@@ -149,7 +149,7 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
-        int damage = targetUnit.Battler.TakeDamege(sourceUnit.Battler);
+        int damage = targetUnit.Battler.TakeDamage(sourceUnit.Battler);
         targetUnit.UpdateUI();
         targetUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
@@ -193,7 +193,7 @@ public class BattleSystem : MonoBehaviour
             yield return StartCoroutine(SetDialogMessage("No items were found on the enemy."));
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         BattleEnd();
     }
 
