@@ -14,5 +14,7 @@ public class Item
 
     public void Init()
     {
+        Life = Life;
+        Battery = Battery;
     }
 }
