@@ -25,4 +25,5 @@ public class BattlerBase : ScriptableObject
     public int Defense { get => defense; }
     public int Speed { get => speed; }
     public Sprite Sprite { get => sprite; }
+    public List<Item> Items { get => items; }
 }

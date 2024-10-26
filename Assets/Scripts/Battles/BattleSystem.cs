@@ -105,7 +105,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("The player tried talking to him, but he didn't respond."));
     }
-    
+
     public IEnumerator AttackTurn()
     {
         state = State.ActionExecution;
@@ -151,12 +151,44 @@ public class BattleSystem : MonoBehaviour
 
         if (targetUnit.Battler.Life <= 0)
         {
-            StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
-            enemyUnit.SetMotion(BattleUnit.Motion.Jump);
-            yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
-            yield return new WaitForSeconds(2f);
-            BattleEnd();
+            yield return StartCoroutine(BattleResult(sourceUnit, targetUnit));
         }
+    }
+
+    public IEnumerator BattleResult(BattleUnit sourceUnit, BattleUnit targetUnit)
+    {
+        state = State.BattleResult;
+        StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
+        targetUnit.SetMotion(BattleUnit.Motion.Jump);
+        yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
+
+        List<Item> targetItems = targetUnit.Battler.Base.Items;
+        if (targetItems != null && targetItems.Count > 0)
+        {
+            // ランダムにアイテムを取得（例: 2つ取得）
+            int itemsToAward = Mathf.Min(2, targetItems.Count); // 最大2個
+            List<Item> awardedItems = new List<Item>();
+
+            for (int i = 0; i < itemsToAward; i++)
+            {
+                Item randomItem = targetItems[Random.Range(0, targetItems.Count)];
+                awardedItems.Add(randomItem);
+                sourceUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
+            }
+
+            // 獲得したアイテムを表示
+            foreach (Item item in awardedItems)
+            {
+                yield return StartCoroutine(SetDialogMessage($"{sourceUnit.Battler.Base.Name} obtained {item.Base.Name}!"));
+            }
+        }
+        else
+        {
+            yield return StartCoroutine(SetDialogMessage("No items were found on the enemy."));
+        }
+
+        yield return new WaitForSeconds(2f);
+        BattleEnd();
     }
 
     public void BattleEnd()
