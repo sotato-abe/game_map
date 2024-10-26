@@ -7,6 +7,8 @@ public class Item
 {
     [SerializeField] ItemBase _base;
 
+    int count = 0;
+
     public ItemBase Base { get => _base; }
 
     public int Life { get; set; }
@@ -14,5 +16,7 @@ public class Item
 
     public void Init()
     {
+        Life = Life;
+        Battery = Battery;
     }
 }

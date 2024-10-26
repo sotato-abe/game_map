@@ -45,6 +45,7 @@ public class BattleSystem : MonoBehaviour
     public void SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
+        messageDialog.changeDialogType(BattleDialogType.Message);
         StartCoroutine(SetDialogMessage($"{enemy.Base.Name} is coming!!"));
     }
 
@@ -102,6 +103,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator TalkTurn()
     {
         state = State.ActionExecution;
+        messageDialog.changeDialogType(BattleDialogType.Message);
         StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("The player tried talking to him, but he didn't respond."));
@@ -110,6 +112,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator AttackTurn()
     {
         state = State.ActionExecution;
+        messageDialog.changeDialogType(BattleDialogType.Message);
         yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
         if (state != State.BattleOver)
         {
@@ -120,6 +123,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator CommandTurn()
     {
         state = State.ActionExecution;
+        messageDialog.changeDialogType(BattleDialogType.Message);
         StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("Implant activation start... Activation"));
     }
@@ -127,6 +131,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ItemTurn()
     {
         state = State.ActionExecution;
+        messageDialog.changeDialogType(BattleDialogType.Item);
         StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("The player fished through his backpack but found nothing."));
     }
