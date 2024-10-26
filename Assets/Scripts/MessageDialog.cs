@@ -9,8 +9,35 @@ public class MessageDialog : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] GameObject itemList;
     [SerializeField] Image dialogBackground;
     [SerializeField] float letterPerSecond;
+
+
+    BattleDialogType battleDialogType;
+
+    public void changeDialogType(BattleDialogType type)
+    {
+        switch (type)
+        {
+            case BattleDialogType.Message:
+                SetMessageDialog();
+                break;
+            case BattleDialogType.Command:
+                SetCommandDialog();
+                break;
+            case BattleDialogType.Item:
+                SetItemDialog();
+                break;
+        }
+    }
+
+    private void SetMessageDialog()
+    {
+        Debug.Log("SetMessageDialog");
+        itemList.SetActive(false);
+        text.gameObject.SetActive(true);
+    }
 
     public IEnumerator TypeDialog(string line)
     {
@@ -21,6 +48,19 @@ public class MessageDialog : MonoBehaviour
             yield return new WaitForSeconds(letterPerSecond);
         }
         yield return new WaitForSeconds(2f);
+    }
+
+    private void SetCommandDialog()
+    {
+        Debug.Log("SetCommandDialog");
+
+    }
+
+    private void SetItemDialog()
+    {
+        Debug.Log("SetItemDialog");
+        text.gameObject.SetActive(false);
+        itemList.SetActive(true);
     }
 
     public IEnumerator SetTransparency(float alpha)
