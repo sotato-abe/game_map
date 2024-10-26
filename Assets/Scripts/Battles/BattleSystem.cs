@@ -29,12 +29,12 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         transform.gameObject.SetActive(false);
+        actionDialog.Init();
     }
 
     public void BattleStart(Battler player, Battler enemy)
     {
         state = State.Start;
-        actionDialog.Init();
         SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
