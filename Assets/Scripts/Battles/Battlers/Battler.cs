@@ -9,6 +9,9 @@ public class Battler
     [SerializeField] int level;
     [SerializeField] int soul;
 
+    [SerializeField] private List<Item> inventory = new List<Item>();
+    public List<Item> Inventory { get => inventory; }
+
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
     public int Soul { get => soul; }
@@ -40,5 +43,11 @@ public class Battler
 
         Life = Mathf.Clamp(Life - damage, 0, MaxLife);
         return damage;
+    }
+
+    public void AddItemToInventory(Item item)
+    {
+        // プレイヤーのインベントリにアイテムを追加する処理
+        inventory.Add(item); // inventory はプレイヤーのインベントリリスト
     }
 }
