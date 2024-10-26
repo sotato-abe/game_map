@@ -8557,7 +8557,7 @@ GameObject:
   - component: {fileID: 1561680658}
   - component: {fileID: 1561680660}
   m_Layer: 5
-  m_Name: ActionSelection
+  m_Name: ActionDialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8632,7 +8632,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1561680656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0c50a293220a34fa2e8f1b951ca496, type: 3}
+  m_Script: {fileID: 11500000, guid: 0867a147f28ef1a4fb2756f680d42131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   battleSystem: {fileID: 1571004520}
@@ -8688,6 +8688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleCanvas: {fileID: 562228379}
   messageDialog: {fileID: 1171585234}
+  actionDialog: {fileID: 1561680660}
   enemyDialog: {fileID: 1070042307}
   playerUnit: {fileID: 329474217}
   enemyUnit: {fileID: 242925696}
