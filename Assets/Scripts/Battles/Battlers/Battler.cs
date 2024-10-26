@@ -35,15 +35,16 @@ public class Battler
         Technique = _base.Technique;
         Defense = _base.Defense;
         Speed = _base.Speed;
+
+        inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
     }
 
-    public int TakeDamege(Battler attacker)
-    {
-        int damage = attacker.Attack;
-
-        Life = Mathf.Clamp(Life - damage, 0, MaxLife);
-        return damage;
-    }
+public int TakeDamage(Battler attacker)
+{
+    int damage = attacker.Attack;
+    Life = Mathf.Clamp(Life - damage, 0, MaxLife);
+    return damage;
+}
 
     public void AddItemToInventory(Item item)
     {
