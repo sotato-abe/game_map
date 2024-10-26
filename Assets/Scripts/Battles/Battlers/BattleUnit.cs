@@ -33,6 +33,11 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
+    public virtual void UpdateUI()
+    {
+
+    }
+
     public void SetMotion(Motion targetMotion)
     {
         motion = targetMotion;
