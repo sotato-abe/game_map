@@ -15,6 +15,8 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int speed;
     [SerializeField] Sprite sprite;
 
+    [SerializeField] List<Item> items;
+
     public string Name { get => name; }
     public int MaxLife { get => maxLife; }
     public int MaxBattery { get => maxBattery; }
@@ -23,4 +25,5 @@ public class BattlerBase : ScriptableObject
     public int Defense { get => defense; }
     public int Speed { get => speed; }
     public Sprite Sprite { get => sprite; }
+    public List<Item> Items { get => items; }
 }

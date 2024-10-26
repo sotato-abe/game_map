@@ -9,6 +9,8 @@ public class FieldInfoSystem : MonoBehaviour
     [SerializeField] WorldMapDialog worldMapDialog;
     [SerializeField] FieldInfoDialog fieldInfoDialog;
 
+    [SerializeField] List<Battler> enemies;
+
     void Start()
     {
         transform.gameObject.SetActive(true);
@@ -30,5 +32,11 @@ public class FieldInfoSystem : MonoBehaviour
     {
         worldMapDialog.gameObject.SetActive(false);
         fieldInfoDialog.gameObject.SetActive(false);
+    }
+
+    public Battler GetRandomEnemy()
+    {
+        int r = Random.Range(0, enemies.Count);
+        return enemies[r];
     }
 }

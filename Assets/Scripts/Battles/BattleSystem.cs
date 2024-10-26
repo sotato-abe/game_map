@@ -9,9 +9,10 @@ public class BattleSystem : MonoBehaviour
     enum State
     {
         Start,
+        TurnWait,
         ActionSelection,
         ActionExecution,
-        RunTurn,
+        BattleResult,
         BattleOver,
     }
 
@@ -19,6 +20,7 @@ public class BattleSystem : MonoBehaviour
     public UnityAction OnBattleEnd;
     [SerializeField] BattleCanvas battleCanvas;
     [SerializeField] MessageDialog messageDialog;
+    [SerializeField] BattleActionDialog actionDialog;
     [SerializeField] EnemyDialog enemyDialog;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
@@ -26,22 +28,7 @@ public class BattleSystem : MonoBehaviour
     void Start()
     {
         transform.gameObject.SetActive(false);
-    }
-
-    void Update()
-    {
-        switch (state)
-        {
-            case State.Start:
-                break;
-            case State.ActionSelection:
-                HandleActionSelection();
-                break;
-            case State.ActionExecution:
-                break;
-            case State.BattleOver:
-                break;
-        }
+        actionDialog.Init();
     }
 
     public void BattleStart(Battler player, Battler enemy)
@@ -52,6 +39,7 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
+        state = State.ActionSelection;
     }
 
     public void SetupBattle(Battler player, Battler enemy)
@@ -60,58 +48,158 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetDialogMessage($"{enemy.Base.Name} is coming!!"));
     }
 
+    private void Update()
+    {
+        switch (state)
+        {
+            case State.TurnWait:
+                break;
+            case State.ActionSelection:
+                HandleActionSelection();
+                break;
+            case State.ActionExecution:
+                break;
+            case State.BattleResult:
+                break;
+            case State.BattleOver:
+                break;
+        }
+    }
+
     void HandleActionSelection()
     {
-
+        actionDialog.SetActionValidity(1f);
+        actionDialog.HandleUpdate();
     }
 
-    public void AttackTurn()
+    public IEnumerator ActionExecution()
     {
         state = State.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetDialogMessage("The player is waving his arms around."));
+        actionDialog.SetActionValidity(0.2f);
+        BattleAction action = (BattleAction)actionDialog.selectedIndex;
+
+        switch (action)
+        {
+            case BattleAction.Talk:
+                yield return StartCoroutine(TalkTurn());
+                break;
+            case BattleAction.Attack:
+                yield return StartCoroutine(AttackTurn());
+                break;
+            case BattleAction.Command:
+                yield return StartCoroutine(CommandTurn());
+                break;
+            case BattleAction.Item:
+                yield return StartCoroutine(ItemTurn());
+                break;
+            case BattleAction.Run:
+                yield return StartCoroutine(RunTurn());
+                break;
+        }
+        state = State.ActionSelection;
     }
 
-    public void CommandTurn()
-    {
-        state = State.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetDialogMessage("Implant activation start... Activation"));
-    }
-
-    public void ItemTurn()
-    {
-        state = State.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetDialogMessage("The player fished through his backpack but found nothing."));
-    }
-
-    public void TalkTurn()
+    public IEnumerator TalkTurn()
     {
         state = State.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(SetDialogMessage("The player tried talking to him, but he didn't respond."));
+        yield return StartCoroutine(SetDialogMessage("The player tried talking to him, but he didn't respond."));
+    }
+
+    public IEnumerator AttackTurn()
+    {
+        state = State.ActionExecution;
+        yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
+        if (state != State.BattleOver)
+        {
+            yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
+        }
+    }
+
+    public IEnumerator CommandTurn()
+    {
+        state = State.ActionExecution;
+        StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
+        yield return StartCoroutine(SetDialogMessage("Implant activation start... Activation"));
+    }
+
+    public IEnumerator ItemTurn()
+    {
+        state = State.ActionExecution;
+        StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
+        yield return StartCoroutine(SetDialogMessage("The player fished through his backpack but found nothing."));
     }
 
     public IEnumerator RunTurn()
     {
         state = State.ActionExecution;
-        StartCoroutine(SetDialogMessage("Player is trying to escape."));
         StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(BattleEnd());
+        StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
+        yield return StartCoroutine(SetDialogMessage("Player is trying to escape."));
+        BattleEnd();
+    }
+
+    //AtackManagerに切り離す
+    private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
+    {
+        StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
+        int damage = targetUnit.Battler.TakeDamege(sourceUnit.Battler);
+        targetUnit.UpdateUI();
+        targetUnit.SetMotion(BattleUnit.Motion.Jump);
+        StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
+        yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
+
+        if (targetUnit.Battler.Life <= 0)
+        {
+            yield return StartCoroutine(BattleResult(sourceUnit, targetUnit));
+        }
+    }
+
+    public IEnumerator BattleResult(BattleUnit sourceUnit, BattleUnit targetUnit)
+    {
+        state = State.BattleResult;
+        StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
+        targetUnit.SetMotion(BattleUnit.Motion.Jump);
+        yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
+
+        List<Item> targetItems = targetUnit.Battler.Base.Items;
+        if (targetItems != null && targetItems.Count > 0)
+        {
+            // ランダムにアイテムを取得（例: 2つ取得）
+            int itemsToAward = Mathf.Min(2, targetItems.Count); // 最大2個
+            List<Item> awardedItems = new List<Item>();
+
+            for (int i = 0; i < itemsToAward; i++)
+            {
+                Item randomItem = targetItems[Random.Range(0, targetItems.Count)];
+                awardedItems.Add(randomItem);
+                sourceUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
+            }
+
+            // 獲得したアイテムを表示
+            foreach (Item item in awardedItems)
+            {
+                yield return StartCoroutine(SetDialogMessage($"{sourceUnit.Battler.Base.Name} obtained {item.Base.Name}!"));
+            }
+        }
+        else
+        {
+            yield return StartCoroutine(SetDialogMessage("No items were found on the enemy."));
+        }
+
+        yield return new WaitForSeconds(2f);
+        BattleEnd();
+    }
+
+    public void BattleEnd()
+    {
+        state = State.BattleOver;
+        OnBattleEnd?.Invoke();
     }
 
     public IEnumerator SetDialogMessage(string message)
     {
         yield return messageDialog.TypeDialog(message);
-    }
-
-    public IEnumerator BattleEnd()
-    {
-        state = State.BattleOver;
-        yield return StartCoroutine(SetDialogMessage("The player braced himself."));
-        OnBattleEnd?.Invoke();
     }
 }
