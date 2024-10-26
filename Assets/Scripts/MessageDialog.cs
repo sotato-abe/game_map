@@ -10,7 +10,10 @@ public class MessageDialog : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] GameObject itemList;
+    [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] Image dialogBackground;
+    [SerializeField] BattleUnit playerUnit;
+    // targetUnit.Battler.Base.Items;
     [SerializeField] float letterPerSecond;
 
 
@@ -61,6 +64,25 @@ public class MessageDialog : MonoBehaviour
         Debug.Log("SetItemDialog");
         text.gameObject.SetActive(false);
         itemList.SetActive(true);
+
+        // 既存の ItemUnit オブジェクトをクリア
+        // foreach (Transform child in itemList.transform)
+        // {
+        //     Destroy(child.gameObject);
+        // }
+
+        // playerUnitのアイテムを取得して表示
+        foreach (var item in playerUnit.Battler.Inventory)
+        {
+            // ItemUnitのインスタンスを生成
+            Debug.Log($"item:{item.Base.Name}");
+            GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
+            itemUnitObject.gameObject.SetActive(true);
+            ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
+
+            // ItemUnitのSetupメソッドでアイテムデータを設定
+            itemUnit.Setup(item);
+        }
     }
 
     public IEnumerator SetTransparency(float alpha)
