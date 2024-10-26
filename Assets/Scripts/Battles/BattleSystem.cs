@@ -24,7 +24,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] EnemyDialog enemyDialog;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
-    [SerializeField] FieldInfoSystem fieldInfoSystem;
 
     void Start()
     {
@@ -69,12 +68,14 @@ public class BattleSystem : MonoBehaviour
 
     void HandleActionSelection()
     {
+        actionDialog.SetActionValidity(1f);
         actionDialog.HandleUpdate();
     }
 
     public IEnumerator ActionExecution()
     {
         state = State.ActionExecution;
+        actionDialog.SetActionValidity(0.2f);
         BattleAction action = (BattleAction)actionDialog.selectedIndex;
 
         switch (action)

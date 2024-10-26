@@ -16,7 +16,6 @@ public class GameController : MonoBehaviour
         Debug.Log("[Game_Controller]:Start!!");
         playerController.OnEncount += BattleStart;
         battleSystem.OnBattleEnd += BattleEnd;
-        StartCoroutine(messageDialog.TypeDialog("game start"));
     }
 
     public void BattleStart()
