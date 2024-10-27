@@ -6,17 +6,7 @@ using UnityEngine.Events;
 
 public class BattleSystem : MonoBehaviour
 {
-    enum State
-    {
-        Start,
-        TurnWait,
-        ActionSelection,
-        ActionExecution,
-        BattleResult,
-        BattleOver,
-    }
-
-    State state;
+    public BattleState state;
     public UnityAction OnBattleEnd;
     [SerializeField] BattleCanvas battleCanvas;
     [SerializeField] MessageDialog messageDialog;
@@ -33,50 +23,54 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleStart(Battler player, Battler enemy)
     {
-        state = State.Start;
+        state = BattleState.Start;
         SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
-        state = State.ActionSelection;
+        state = BattleState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
+        StartCoroutine(SetBattleState(BattleState.ActionSelection));
     }
 
     public void SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
-        messageDialog.changeDialogType(BattleDialogType.Message);
+        messageDialog.changeDialogType(BattleAction.Talk);
         StartCoroutine(SetDialogMessage($"{enemy.Base.Name} is coming!!"));
     }
 
-    private void Update()
+    public IEnumerator SetBattleState(BattleState newState)
     {
+        state = newState;
         switch (state)
         {
-            case State.TurnWait:
+            case BattleState.Start:
                 break;
-            case State.ActionSelection:
+            case BattleState.TurnWait:
+                break;
+            case BattleState.ActionSelection:
                 HandleActionSelection();
                 break;
-            case State.ActionExecution:
+            case BattleState.ActionExecution:
+                yield return StartCoroutine(HandleActionExecution());
                 break;
-            case State.BattleResult:
+            case BattleState.BattleResult:
+                yield return StartCoroutine(BattleResult(playerUnit ,enemyUnit));
                 break;
-            case State.BattleOver:
+            case BattleState.BattleOver:
+                BattleEnd();
                 break;
         }
     }
 
     void HandleActionSelection()
     {
-        actionDialog.SetActionValidity(1f);
-        actionDialog.HandleUpdate();
     }
 
-    public IEnumerator ActionExecution()
+    public IEnumerator HandleActionExecution()
     {
-        state = State.ActionExecution;
-        actionDialog.SetActionValidity(0.2f);
+        Debug.Log("ActionExecution");
         BattleAction action = (BattleAction)actionDialog.selectedIndex;
 
         switch (action)
@@ -97,13 +91,13 @@ public class BattleSystem : MonoBehaviour
                 yield return StartCoroutine(RunTurn());
                 break;
         }
-        state = State.ActionSelection;
+        actionDialog.SetActionValidity(1f);
+        StartCoroutine(SetBattleState(BattleState.ActionSelection));
     }
 
     public IEnumerator TalkTurn()
     {
-        state = State.ActionExecution;
-        messageDialog.changeDialogType(BattleDialogType.Message);
+        state = BattleState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("The player tried talking to him, but he didn't respond."));
@@ -111,10 +105,9 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator AttackTurn()
     {
-        state = State.ActionExecution;
-        messageDialog.changeDialogType(BattleDialogType.Message);
+        state = BattleState.ActionExecution;
         yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
-        if (state != State.BattleOver)
+        if (state != BattleState.BattleOver)
         {
             yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
         }
@@ -122,27 +115,25 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator CommandTurn()
     {
-        state = State.ActionExecution;
+        state = BattleState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("Implant activation start... Activation"));
-        messageDialog.changeDialogType(BattleDialogType.Command);
     }
 
     public IEnumerator ItemTurn()
     {
-        state = State.ActionExecution;
+        state = BattleState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("The player fished through his backpack but found nothing."));
-        messageDialog.changeDialogType(BattleDialogType.Item);
     }
 
     public IEnumerator RunTurn()
     {
-        state = State.ActionExecution;
+        state = BattleState.ActionExecution;
         StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("Player is trying to escape."));
-        BattleEnd();
+        StartCoroutine(SetBattleState(BattleState.BattleOver));
     }
 
     //AtackManagerに切り離す
@@ -157,13 +148,12 @@ public class BattleSystem : MonoBehaviour
 
         if (targetUnit.Battler.Life <= 0)
         {
-            yield return StartCoroutine(BattleResult(sourceUnit, targetUnit));
+            StartCoroutine(SetBattleState(BattleState.BattleResult));
         }
     }
 
     public IEnumerator BattleResult(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
-        state = State.BattleResult;
         StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
         targetUnit.SetMotion(BattleUnit.Motion.Jump);
         yield return StartCoroutine(SetDialogMessage($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
@@ -199,7 +189,7 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleEnd()
     {
-        state = State.BattleOver;
+        StartCoroutine(SetBattleState(BattleState.BattleOver));
         OnBattleEnd?.Invoke();
     }
 
