@@ -123,17 +123,17 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator CommandTurn()
     {
         state = State.ActionExecution;
-        messageDialog.changeDialogType(BattleDialogType.Message);
         StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("Implant activation start... Activation"));
+        messageDialog.changeDialogType(BattleDialogType.Command);
     }
 
     public IEnumerator ItemTurn()
     {
         state = State.ActionExecution;
-        messageDialog.changeDialogType(BattleDialogType.Item);
         StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(SetDialogMessage("The player fished through his backpack but found nothing."));
+        messageDialog.changeDialogType(BattleDialogType.Item);
     }
 
     public IEnumerator RunTurn()

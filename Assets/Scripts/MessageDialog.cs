@@ -11,6 +11,7 @@ public class MessageDialog : MonoBehaviour
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] GameObject itemList;
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject commandList;
     [SerializeField] Image dialogBackground;
     [SerializeField] BattleUnit playerUnit;
     // targetUnit.Battler.Base.Items;
@@ -39,6 +40,7 @@ public class MessageDialog : MonoBehaviour
     {
         Debug.Log("SetMessageDialog");
         itemList.SetActive(false);
+        commandList.SetActive(false);
         text.gameObject.SetActive(true);
     }
 
@@ -55,14 +57,17 @@ public class MessageDialog : MonoBehaviour
 
     private void SetCommandDialog()
     {
+        itemList.SetActive(false);
+        text.gameObject.SetActive(false);
+        commandList.SetActive(true);
         Debug.Log("SetCommandDialog");
-
     }
 
     private void SetItemDialog()
     {
         Debug.Log("SetItemDialog");
         text.gameObject.SetActive(false);
+        commandList.SetActive(false);
         itemList.SetActive(true);
 
         // 既存の ItemUnit オブジェクトをクリア
