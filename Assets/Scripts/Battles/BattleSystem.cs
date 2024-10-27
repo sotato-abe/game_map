@@ -26,6 +26,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
         SetupBattle(player, enemy);
         battleCanvas.gameObject.SetActive(true);
+        actionDialog.SetActionValidity(1f);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
@@ -56,7 +57,7 @@ public class BattleSystem : MonoBehaviour
                 yield return StartCoroutine(HandleActionExecution());
                 break;
             case BattleState.BattleResult:
-                yield return StartCoroutine(BattleResult(playerUnit ,enemyUnit));
+                yield return StartCoroutine(BattleResult(playerUnit, enemyUnit));
                 break;
             case BattleState.BattleOver:
                 BattleEnd();
@@ -172,11 +173,14 @@ public class BattleSystem : MonoBehaviour
                 sourceUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
             }
 
+            string resultitemessage = $"{sourceUnit.Battler.Base.Name} obtained ";
+
             // 獲得したアイテムを表示
             foreach (Item item in awardedItems)
             {
-                yield return StartCoroutine(SetDialogMessage($"{sourceUnit.Battler.Base.Name} obtained {item.Base.Name}!"));
+                resultitemessage += $"{item.Base.Name},";
             }
+            yield return StartCoroutine(SetDialogMessage(resultitemessage));
         }
         else
         {

@@ -92,6 +92,11 @@ public class MessageDialog : MonoBehaviour
         commandList.SetActive(false);
         itemList.SetActive(true);
 
+        foreach (Transform child in itemList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         foreach (var item in playerUnit.Battler.Inventory)
         {
             // ItemUnitのインスタンスを生成
