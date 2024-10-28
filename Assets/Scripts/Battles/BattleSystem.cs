@@ -57,7 +57,7 @@ public class BattleSystem : MonoBehaviour
                 yield return StartCoroutine(HandleActionExecution());
                 break;
             case BattleState.BattleResult:
-                yield return StartCoroutine(BattleResult(playerUnit, enemyUnit));
+                // yield return StartCoroutine(BattleResult(playerUnit, enemyUnit));
                 break;
             case BattleState.BattleOver:
                 BattleEnd();
@@ -108,7 +108,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.ActionExecution;
         yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
-        if (state != BattleState.BattleOver)
+        if (state != BattleState.BattleResult)
         {
             yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
         }
@@ -150,6 +150,7 @@ public class BattleSystem : MonoBehaviour
         if (targetUnit.Battler.Life <= 0)
         {
             StartCoroutine(SetBattleState(BattleState.BattleResult));
+            yield return StartCoroutine(BattleResult(sourceUnit, targetUnit));
         }
     }
 
@@ -188,12 +189,11 @@ public class BattleSystem : MonoBehaviour
         }
 
         yield return new WaitForSeconds(1f);
-        BattleEnd();
+        StartCoroutine(SetBattleState(BattleState.BattleOver));
     }
 
     public void BattleEnd()
     {
-        StartCoroutine(SetBattleState(BattleState.BattleOver));
         OnBattleEnd?.Invoke();
     }
 

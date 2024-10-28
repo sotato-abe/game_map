@@ -53,6 +53,7 @@ public class MessageDialog : MonoBehaviour
     public IEnumerator TypeDialog(string line)
     {
         text.SetText("");
+        Debug.Log($"Line:{line}");
         foreach (char letter in line)
         {
             text.text += letter;
