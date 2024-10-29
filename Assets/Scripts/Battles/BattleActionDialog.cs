@@ -12,9 +12,10 @@ public class BattleActionDialog : MonoBehaviour
     [SerializeField] GameObject actionList; // ActionListのGameObjectをアサインします
     [SerializeField] Image dialogBackground;
     [SerializeField] BattleSystem battleSystem;
-
+    [SerializeField] MessageDialog messageDialog;
     private List<SelectableText> actionTexts; // ActionList内のテキストリスト
     BattleAction selectedAction;
+    private int previousAction;
     public int selectedIndex;
 
     private void Awake()
@@ -25,7 +26,9 @@ public class BattleActionDialog : MonoBehaviour
     public void Init()
     {
         selectedIndex = 0;
+        previousAction = 0;
         selectableTexts = GetComponentsInChildren<SelectableText>();
+        selectableTexts[0].SetSelectedColor(true);
 
         // ActionList内のSelectableTextコンポーネントのみを取得
         actionTexts = new List<SelectableText>(actionList.GetComponentsInChildren<SelectableText>());
@@ -49,17 +52,22 @@ public class BattleActionDialog : MonoBehaviour
 
         selectedIndex = Mathf.Clamp(selectedIndex, 0, selectableTexts.Length - 1);
 
-        for (int i = 0; i < selectableTexts.Length; i++)
+        if (previousAction != selectedIndex)
         {
-            selectableTexts[i].SetSelectedColor(selectedIndex == i);
+            for (int i = 0; i < selectableTexts.Length; i++)
+            {
+                selectableTexts[i].SetSelectedColor(selectedIndex == i);
+            }
+            messageDialog.changeDialogType((BattleAction)selectedIndex);
+            previousAction = selectedIndex;
         }
-    }
 
-    public void HandleUpdate()
-    {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            StartCoroutine(battleSystem.ActionExecution());
+            Debug.Log("BattleActionDialog:HandleUpdate_Return");
+            SetActionValidity(0.2f);
+            StartCoroutine(battleSystem.SetBattleState(BattleState.ActionExecution));
+
         }
     }
 
@@ -69,9 +77,10 @@ public class BattleActionDialog : MonoBehaviour
         // SelectableText の透明度を変更
         if (actionTexts != null && actionTexts.Count > 0)
         {
-            foreach (var selectableText in actionTexts)
+            for (int i = 0; i < selectableTexts.Length; i++)
             {
-                selectableText.SetTextValidity(alpha);
+                selectableTexts[i].SetTextValidity(alpha);
+                selectableTexts[i].SetSelectedColor(selectedIndex == i);
             }
         }
         else

@@ -11,6 +11,7 @@ public class MessageDialog : MonoBehaviour
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] GameObject itemList;
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject commandList;
     [SerializeField] Image dialogBackground;
     [SerializeField] BattleUnit playerUnit;
     // targetUnit.Battler.Base.Items;
@@ -19,18 +20,24 @@ public class MessageDialog : MonoBehaviour
 
     BattleDialogType battleDialogType;
 
-    public void changeDialogType(BattleDialogType type)
+    public void changeDialogType(BattleAction action)
     {
-        switch (type)
+        switch (action)
         {
-            case BattleDialogType.Message:
-                SetMessageDialog();
+            case BattleAction.Talk:
+                SetTalkDialog();
                 break;
-            case BattleDialogType.Command:
+            case BattleAction.Attack:
+                SetAttackDialog();
+                break;
+            case BattleAction.Command:
                 SetCommandDialog();
                 break;
-            case BattleDialogType.Item:
+            case BattleAction.Item:
                 SetItemDialog();
+                break;
+            case BattleAction.Run:
+                SetRunDialog();
                 break;
         }
     }
@@ -39,12 +46,14 @@ public class MessageDialog : MonoBehaviour
     {
         Debug.Log("SetMessageDialog");
         itemList.SetActive(false);
+        commandList.SetActive(false);
         text.gameObject.SetActive(true);
     }
 
     public IEnumerator TypeDialog(string line)
     {
         text.SetText("");
+        Debug.Log($"Line:{line}");
         foreach (char letter in line)
         {
             text.text += letter;
@@ -53,25 +62,42 @@ public class MessageDialog : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 
+    private void SetTalkDialog()
+    {
+        Debug.Log("SetTalkDialog");
+        itemList.SetActive(false);
+        commandList.SetActive(false);
+        text.gameObject.SetActive(true);
+    }
+
+    private void SetAttackDialog()
+    {
+        Debug.Log("SetTalkDialog");
+        itemList.SetActive(false);
+        commandList.SetActive(false);
+        text.gameObject.SetActive(true);
+    }
+
     private void SetCommandDialog()
     {
         Debug.Log("SetCommandDialog");
-
+        itemList.SetActive(false);
+        text.gameObject.SetActive(false);
+        commandList.SetActive(true);
     }
 
     private void SetItemDialog()
     {
         Debug.Log("SetItemDialog");
         text.gameObject.SetActive(false);
+        commandList.SetActive(false);
         itemList.SetActive(true);
 
-        // 既存の ItemUnit オブジェクトをクリア
-        // foreach (Transform child in itemList.transform)
-        // {
-        //     Destroy(child.gameObject);
-        // }
+        foreach (Transform child in itemList.transform)
+        {
+            Destroy(child.gameObject);
+        }
 
-        // playerUnitのアイテムを取得して表示
         foreach (var item in playerUnit.Battler.Inventory)
         {
             // ItemUnitのインスタンスを生成
@@ -85,6 +111,15 @@ public class MessageDialog : MonoBehaviour
         }
     }
 
+    private void SetRunDialog()
+    {
+        Debug.Log("SetRunDialog");
+        commandList.SetActive(false);
+        itemList.SetActive(false);
+        text.gameObject.SetActive(true);
+    }
+
+    // 現在使用していない
     public IEnumerator SetTransparency(float alpha)
     {
         // TextMeshProUGUI の透明度を変更

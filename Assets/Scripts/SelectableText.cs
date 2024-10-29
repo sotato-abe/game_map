@@ -39,10 +39,5 @@ public class SelectableText : MonoBehaviour
     public void SetTextValidity(float alpha)
     {
         textAlpha = alpha;
-
-        // Color textColor = text.color;
-        // textColor.a = Mathf.Clamp(alpha, 0f, 1f); // 透明度を 0～1 に制限
-        // text.color = textColor;
-        // Debug.Log($"SetTextValidity:{alpha}:{text.color.a}:{text.text}");
     }
 }
