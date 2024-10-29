@@ -98,6 +98,8 @@ public class MessageDialog : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        bool isFirstItem = true;
+
         foreach (var item in playerUnit.Battler.Inventory)
         {
             // ItemUnitのインスタンスを生成
@@ -108,7 +110,22 @@ public class MessageDialog : MonoBehaviour
 
             // ItemUnitのSetupメソッドでアイテムデータを設定
             itemUnit.Setup(item);
+
+            if (isFirstItem)
+            {
+                targetItem(itemUnit, true);
+                isFirstItem = false;  // 2回目以降は実行されないように設定
+            }
+            else
+            {
+                targetItem(itemUnit, false);
+            }
         }
+    }
+
+    public void targetItem(ItemUnit target, bool focusFlg)
+    {
+        target.Targetfoucs(focusFlg);
     }
 
     private void SetRunDialog()
