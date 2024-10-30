@@ -91,6 +91,8 @@ public class MessageDialog : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+        bool isFirstCommand = true;
+
         foreach (var command in playerUnit.Battler.Deck)
         {
             // CommandUnitのインスタンスを生成
@@ -101,7 +103,22 @@ public class MessageDialog : MonoBehaviour
 
             // CommandUnitのSetupメソッドでアイテムデータを設定
             commandUnit.Setup(command);
+
+            if (isFirstCommand)
+            {
+                targetCommand(commandUnit, true);
+                isFirstCommand = false;  // 2回目以降は実行されないように設定
+            }
+            else
+            {
+                targetCommand(commandUnit, false);
+            }
         }
+    }
+
+    public void targetCommand(CommandUnit target, bool focusFlg)
+    {
+        target.Targetfoucs(focusFlg);
     }
 
     private void SetItemDialog()
