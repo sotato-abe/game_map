@@ -21,6 +21,27 @@ public class BattleSystem : MonoBehaviour
         actionDialog.Init();
     }
 
+    public void Update()
+    {
+        if (state == BattleState.ActionSelection)
+        {
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                actionDialog.SetAction(true);
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                actionDialog.SetAction(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                actionDialog.SetActionValidity(0.2f);
+                StartCoroutine(SetBattleState(BattleState.ActionExecution));
+            }
+        }
+    }
+
     public void BattleStart(Battler player, Battler enemy)
     {
         state = BattleState.Start;
