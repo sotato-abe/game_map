@@ -11,6 +11,7 @@ public class MessageDialog : MonoBehaviour
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] GameObject itemList;
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject commandUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] GameObject commandList;
     [SerializeField] Image dialogBackground;
     [SerializeField] BattleUnit playerUnit;
@@ -84,6 +85,23 @@ public class MessageDialog : MonoBehaviour
         itemList.SetActive(false);
         text.gameObject.SetActive(false);
         commandList.SetActive(true);
+
+        foreach (Transform child in commandList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (var command in playerUnit.Battler.Deck)
+        {
+            // CommandUnitのインスタンスを生成
+            Debug.Log($"command:{command.Base.Name}");
+            GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
+            commandUnitObject.gameObject.SetActive(true);
+            CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
+
+            // CommandUnitのSetupメソッドでアイテムデータを設定
+            commandUnit.Setup(command);
+        }
     }
 
     private void SetItemDialog()
