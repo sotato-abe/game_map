@@ -54,6 +54,7 @@ public class MessageDialog : MonoBehaviour
                 commandPanel.SelectCommand(targetDirection);
                 break;
             case BattleAction.Item:
+                itemPanel.SelectItem(targetDirection);
                 break;
             case BattleAction.Run:
                 break;

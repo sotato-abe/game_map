@@ -10,6 +10,15 @@ public class ItemPanel : MonoBehaviour
     [SerializeField] GameObject itemList;
     [SerializeField] BattleUnit playerUnit;
 
+    int previousItem;
+    int selectedItem;
+
+    private void Init()
+    {
+        selectedItem = 0;
+        previousItem = selectedItem;
+    }
+
     private void OnEnable()
     {
         if (playerUnit != null && playerUnit.Battler != null)
@@ -31,7 +40,7 @@ public class ItemPanel : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        bool isFirstItem = true;
+        int itemNum = 0;
 
         foreach (var item in playerUnit.Battler.Inventory)
         {
@@ -41,23 +50,35 @@ public class ItemPanel : MonoBehaviour
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
 
-            // ItemUnitのSetupメソッドでアイテムデータを設定
-            itemUnit.Setup(item);
+             if (itemNum == selectedItem)
+            {
+                itemUnit.Targetfoucs(true);
+            }
 
-            if (isFirstItem)
-            {
-                targetItem(itemUnit, true);
-                isFirstItem = false;  // 2回目以降は実行されないように設定
-            }
-            else
-            {
-                targetItem(itemUnit, false);
-            }
+            itemNum++;
         }
     }
-
-    public void targetItem(ItemUnit target, bool focusFlg)
+    public void SelectItem(bool selectDirection)
     {
-        target.Targetfoucs(focusFlg);
+        if (selectDirection)
+        {
+            selectedItem++;
+        }
+        else
+        {
+            selectedItem--;
+        }
+        selectedItem = Mathf.Clamp(selectedItem, 0, playerUnit.Battler.Inventory.Count - 1);
+
+        if (itemList.transform.childCount > 0 && previousItem != selectedItem)
+        {
+            var previousItemUnit = itemList.transform.GetChild(previousItem).GetComponent<ItemUnit>();
+            previousItemUnit.Targetfoucs(false);
+            var currentItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
+            currentItemUnit.Targetfoucs(true);
+            previousItem = selectedItem;
+        }
+
+        Debug.Log($"selectItem:{selectedItem}");
     }
 }
