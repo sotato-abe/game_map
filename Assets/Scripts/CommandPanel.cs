@@ -10,21 +10,37 @@ public class CommandPanel : MonoBehaviour
     [SerializeField] GameObject commandList;
     [SerializeField] BattleUnit playerUnit;
 
+    int previousCommand;
+    int selectedCommand;
+
+    private void Init()
+    {
+        selectedCommand = 0;
+        previousCommand = selectedCommand;
+    }
+
     private void OnEnable()
     {
-        SetCommandDialog(); // commandPanelがアクティブ化されるたびに実行
+        if (playerUnit != null && playerUnit.Battler != null)
+        {
+            SetCommandDialog();
+        }
+        else
+        {
+            Debug.LogWarning("playerUnit or its properties are not initialized.");
+        }
     }
 
     private void SetCommandDialog()
     {
-        Debug.Log($"command:{playerUnit.Battler.Base.Name}");
+        Debug.Log($"playerUnit.Battler: {playerUnit?.Battler.Deck}");
 
         foreach (Transform child in commandList.transform)
         {
             Destroy(child.gameObject);
         }
 
-        bool isFirstCommand = true;
+        int commandNum = 0;
 
         foreach (var command in playerUnit.Battler.Deck)
         {
@@ -34,23 +50,36 @@ public class CommandPanel : MonoBehaviour
             commandUnitObject.gameObject.SetActive(true);
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
 
-            // CommandUnitのSetupメソッドでアイテムデータを設定
-            commandUnit.Setup(command);
+            if (commandNum == selectedCommand)
+            {
+                commandUnit.Targetfoucs(true);
+            }
 
-            if (isFirstCommand)
-            {
-                targetCommand(commandUnit, true);
-                isFirstCommand = false;  // 2回目以降は実行されないように設定
-            }
-            else
-            {
-                targetCommand(commandUnit, false);
-            }
+            commandNum++;
         }
     }
 
-    public void targetCommand(CommandUnit target, bool focusFlg)
+    public void SelectCommand(bool selectDirection)
     {
-        target.Targetfoucs(focusFlg);
+        if (selectDirection)
+        {
+            selectedCommand++;
+        }
+        else
+        {
+            selectedCommand--;
+        }
+        selectedCommand = Mathf.Clamp(selectedCommand, 0, playerUnit.Battler.Deck.Count - 1);
+
+        if (commandList.transform.childCount > 0 && previousCommand != selectedCommand)
+        {
+            var previousCommandUnit = commandList.transform.GetChild(previousCommand).GetComponent<CommandUnit>();
+            previousCommandUnit.Targetfoucs(false);
+            var currentCommandUnit = commandList.transform.GetChild(selectedCommand).GetComponent<CommandUnit>();
+            currentCommandUnit.Targetfoucs(true);
+            previousCommand = selectedCommand;
+        }
+
+        Debug.Log($"selectCommand:{selectedCommand}");
     }
 }
