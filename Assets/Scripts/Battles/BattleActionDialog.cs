@@ -39,19 +39,17 @@ public class BattleActionDialog : MonoBehaviour
         }
     }
 
-    public void Update()
+    public void SetAction(bool prev)
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (prev)
         {
             selectedIndex++;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else
         {
             selectedIndex--;
         }
-
         selectedIndex = Mathf.Clamp(selectedIndex, 0, selectableTexts.Length - 1);
-
         if (previousAction != selectedIndex)
         {
             for (int i = 0; i < selectableTexts.Length; i++)
@@ -60,14 +58,6 @@ public class BattleActionDialog : MonoBehaviour
             }
             messageDialog.changeDialogType((BattleAction)selectedIndex);
             previousAction = selectedIndex;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            Debug.Log("BattleActionDialog:HandleUpdate_Return");
-            SetActionValidity(0.2f);
-            StartCoroutine(battleSystem.SetBattleState(BattleState.ActionExecution));
-
         }
     }
 
