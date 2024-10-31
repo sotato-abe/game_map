@@ -13,6 +13,7 @@ public class MessageDialog : MonoBehaviour
     [SerializeField] ItemPanel itemPanel;
     [SerializeField] Image dialogBackground;
     BattleAction battleAction;
+    public ItemPanel ItemPanel => itemPanel;
 
     public void Init()
     {

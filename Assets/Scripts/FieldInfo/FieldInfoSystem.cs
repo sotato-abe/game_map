@@ -18,7 +18,6 @@ public class FieldInfoSystem : MonoBehaviour
 
     public void SetupFieldInfo()
     {
-        Debug.Log("SetupFieldInfo!!");
         FieldDialogOpen();
     }
 
