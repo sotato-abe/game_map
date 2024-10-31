@@ -33,7 +33,6 @@ public class CommandPanel : MonoBehaviour
 
     private void SetCommandDialog()
     {
-        Debug.Log($"playerUnit.Battler: {playerUnit?.Battler.Deck}");
 
         foreach (Transform child in commandList.transform)
         {
@@ -45,7 +44,6 @@ public class CommandPanel : MonoBehaviour
         foreach (var command in playerUnit.Battler.Deck)
         {
             // CommandUnitのインスタンスを生成
-            Debug.Log($"command:{command.Base.Name}");
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
             commandUnitObject.gameObject.SetActive(true);
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();

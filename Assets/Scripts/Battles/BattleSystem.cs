@@ -100,7 +100,6 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator HandleActionExecution()
     {
-        Debug.Log("ActionExecution");
         BattleAction action = (BattleAction)actionDialog.selectedIndex;
 
         switch (action)
@@ -153,7 +152,8 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ItemTurn()
     {
         state = BattleState.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("I wonder if he had any itemsitemsitems")); // TODO : キャラクターメッセージリストから取得する。
+        StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
+        messageDialog.ItemPanel.UseItem();
         yield return StartCoroutine(messageDialog.SetMessageText("The player fished through his backpack but found nothing"));
     }
 

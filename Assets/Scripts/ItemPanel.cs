@@ -33,8 +33,6 @@ public class ItemPanel : MonoBehaviour
 
     private void SetItemDialog()
     {
-        Debug.Log("SetItemDialog");
-
         foreach (Transform child in itemList.transform)
         {
             Destroy(child.gameObject);
@@ -45,12 +43,13 @@ public class ItemPanel : MonoBehaviour
         foreach (var item in playerUnit.Battler.Inventory)
         {
             // ItemUnitのインスタンスを生成
-            Debug.Log($"item:{item.Base.Name}");
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
 
-             if (itemNum == selectedItem)
+            itemUnit.Setup(item);
+
+            if (itemNum == selectedItem)
             {
                 itemUnit.Targetfoucs(true);
             }
@@ -78,7 +77,36 @@ public class ItemPanel : MonoBehaviour
             currentItemUnit.Targetfoucs(true);
             previousItem = selectedItem;
         }
+    }
 
-        Debug.Log($"selectItem:{selectedItem}");
+    public void UseItem()
+    {
+        // 選択されたアイテムの ItemUnit を取得
+        var targetItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
+
+        if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
+        {
+            Debug.Log($"Using item: {targetItemUnit.Item.Base}");
+
+            // アイテムを使用する処理をここに追加
+            // 例: playerUnit.Battler.UseItem(targetItemUnit.Item);
+            int MaxBattery = playerUnit.Battler.MaxBattery;
+            int battery = playerUnit.Battler.Battery + targetItemUnit.Item.Base.Battery;
+            battery = Mathf.Clamp(battery, 0, MaxBattery);
+
+            int maxLife = playerUnit.Battler.MaxLife;
+            int life = playerUnit.Battler.Life + targetItemUnit.Item.Base.Life;
+            life = Mathf.Clamp(life, 0, maxLife);
+
+            playerUnit.Battler.Life = life;
+            playerUnit.Battler.Battery = battery;
+            playerUnit.Battler.Inventory.Remove(targetItemUnit.Item);
+            SetItemDialog();
+            playerUnit.UpdateUI();
+        }
+        else
+        {
+            Debug.LogWarning("No item found to use.");
+        }
     }
 }
