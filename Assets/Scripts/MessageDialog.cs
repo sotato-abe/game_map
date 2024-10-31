@@ -9,14 +9,19 @@ public class MessageDialog : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] GameObject messagePanel;
-    [SerializeField] GameObject commandPanel;
-    [SerializeField] GameObject itemPanel;
+    [SerializeField] CommandPanel commandPanel;
+    [SerializeField] ItemPanel itemPanel;
     [SerializeField] Image dialogBackground;
+    BattleAction battleAction;
 
-    BattleDialogType battleDialogType;
+    public void Init()
+    {
+        battleAction = 0;
+    }
 
     public void changeDialogType(BattleAction action)
     {
+        battleAction = action;
         switch (action)
         {
             case BattleAction.Talk:
@@ -37,19 +42,37 @@ public class MessageDialog : MonoBehaviour
         }
     }
 
+    public void TargetSelection(bool targetDirection)
+    {
+        switch (battleAction)
+        {
+            case BattleAction.Talk:
+                break;
+            case BattleAction.Attack:
+                break;
+            case BattleAction.Command:
+                commandPanel.SelectCommand(targetDirection);
+                break;
+            case BattleAction.Item:
+                break;
+            case BattleAction.Run:
+                break;
+        }
+    }
+
     private void SetTalkPanel()
     {
         Debug.Log("SetTalkPanel");
-        itemPanel.SetActive(false);
-        commandPanel.SetActive(false);
+        itemPanel.gameObject.SetActive(false);
+        commandPanel.gameObject.SetActive(false);
         messagePanel.SetActive(true);
     }
 
     private void SetAttackPanel()
     {
         Debug.Log("SetAttackPanel");
-        commandPanel.SetActive(false);
-        itemPanel.SetActive(false);
+        commandPanel.gameObject.SetActive(false);
+        itemPanel.gameObject.SetActive(false);
         messagePanel.SetActive(true);
     }
 
@@ -57,23 +80,23 @@ public class MessageDialog : MonoBehaviour
     {
         Debug.Log("SetCommandPanel");
         messagePanel.SetActive(false);
-        itemPanel.SetActive(false);
-        commandPanel.SetActive(true);
+        itemPanel.gameObject.SetActive(false);
+        commandPanel.gameObject.SetActive(true);
     }
 
     private void SetItemPanel()
     {
         Debug.Log("SetItemPanel");
         messagePanel.SetActive(false);
-        commandPanel.SetActive(false);
-        itemPanel.SetActive(true);
+        commandPanel.gameObject.SetActive(false);
+        itemPanel.gameObject.SetActive(true);
     }
 
     private void SetRunDialog()
     {
         Debug.Log("SetRunDialog");
-        commandPanel.SetActive(false);
-        itemPanel.SetActive(false);
+        commandPanel.gameObject.SetActive(false);
+        itemPanel.gameObject.SetActive(false);
         messagePanel.SetActive(true);
     }
 

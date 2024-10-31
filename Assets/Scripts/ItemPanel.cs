@@ -12,12 +12,20 @@ public class ItemPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        SetItemDialog(); // itemPanelがアクティブ化されるたびに実行
+        if (playerUnit != null && playerUnit.Battler != null)
+        {
+            SetItemDialog();
+        }
+        else
+        {
+            Debug.LogWarning("playerUnit or its properties are not initialized.");
+        }
     }
 
     private void SetItemDialog()
     {
         Debug.Log("SetItemDialog");
+
         foreach (Transform child in itemList.transform)
         {
             Destroy(child.gameObject);

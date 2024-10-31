@@ -33,16 +33,20 @@ public class BattleSystem : MonoBehaviour
             {
                 actionDialog.SetAction(false);
             }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                messageDialog.TargetSelection(true);
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                messageDialog.TargetSelection(false);
+            }
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 actionDialog.SetActionValidity(0.2f);
                 StartCoroutine(SetBattleState(BattleState.ActionExecution));
             }
-        }
-        if (state == BattleState.ActionExecution)
-        {
-
         }
     }
 
