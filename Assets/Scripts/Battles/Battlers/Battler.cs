@@ -10,7 +10,9 @@ public class Battler
     [SerializeField] int soul;
 
     [SerializeField] private List<Item> inventory = new List<Item>();
+    [SerializeField] private List<Command> deck = new List<Command>();
     public List<Item> Inventory { get => inventory; }
+    public List<Command> Deck { get => deck; }
 
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
@@ -37,18 +39,25 @@ public class Battler
         Speed = _base.Speed;
 
         inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
+        deck = _base.Commands ?? new List<Command>(); // Items が null の場合、新しいリストを初期化
     }
 
-public int TakeDamage(Battler attacker)
-{
-    int damage = attacker.Attack;
-    Life = Mathf.Clamp(Life - damage, 0, MaxLife);
-    return damage;
-}
+    public int TakeDamage(Battler attacker)
+    {
+        int damage = attacker.Attack;
+        Life = Mathf.Clamp(Life - damage, 0, MaxLife);
+        return damage;
+    }
 
     public void AddItemToInventory(Item item)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
         inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+    }
+
+    public void AddCommandToDeck(Command command)
+    {
+        // プレイヤーのインベントリにアイテムを追加する処理
+        deck.Add(command); // inventory はプレイヤーのインベントリリスト
     }
 }
