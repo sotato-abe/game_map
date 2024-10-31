@@ -8,7 +8,7 @@ public class MessageDialog : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [SerializeField] GameObject messagePanel;
+    [SerializeField] MessagePanel messagePanel;
     [SerializeField] CommandPanel commandPanel;
     [SerializeField] ItemPanel itemPanel;
     [SerializeField] Image dialogBackground;
@@ -66,7 +66,7 @@ public class MessageDialog : MonoBehaviour
         Debug.Log("SetTalkPanel");
         itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
-        messagePanel.SetActive(true);
+        messagePanel.gameObject.SetActive(true);
     }
 
     private void SetAttackPanel()
@@ -74,13 +74,13 @@ public class MessageDialog : MonoBehaviour
         Debug.Log("SetAttackPanel");
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
-        messagePanel.SetActive(true);
+        messagePanel.gameObject.SetActive(true);
     }
 
     private void SetCommandPanel()
     {
         Debug.Log("SetCommandPanel");
-        messagePanel.SetActive(false);
+        messagePanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(true);
     }
@@ -88,7 +88,7 @@ public class MessageDialog : MonoBehaviour
     private void SetItemPanel()
     {
         Debug.Log("SetItemPanel");
-        messagePanel.SetActive(false);
+        messagePanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(true);
     }
@@ -98,7 +98,7 @@ public class MessageDialog : MonoBehaviour
         Debug.Log("SetRunDialog");
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
-        messagePanel.SetActive(true);
+        messagePanel.gameObject.SetActive(true);
     }
 
     // 現在使用していない
