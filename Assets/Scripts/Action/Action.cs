@@ -1,6 +1,6 @@
 public enum Action
 {
-    Message,
+    Talk,
     Attack,
     Command,
     Item,
