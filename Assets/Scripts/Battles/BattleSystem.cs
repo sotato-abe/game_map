@@ -9,9 +9,7 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     public UnityAction OnBattleEnd;
     [SerializeField] BattleCanvas battleCanvas;
-    // [SerializeField] MessageDialog messageDialog;
     [SerializeField] ActionBoard actionBoard;
-    // [SerializeField] BattleActionDialog actionDialog;
     [SerializeField] ActionPanel actionPanel;
     [SerializeField] EnemyDialog enemyDialog;
     [SerializeField] BattleUnit playerUnit;
@@ -68,7 +66,7 @@ public class BattleSystem : MonoBehaviour
     public void SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
-        actionBoard.changeDialogType(Action.Message);
+        actionBoard.changeDialogType(Action.Talk);
         StartCoroutine(actionBoard.SetMessageText($"{enemy.Base.Name} is coming!!"));
     }
 
@@ -102,24 +100,24 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator HandleActionExecution()
     {
-        BattleAction action = (BattleAction)actionPanel.selectedIndex;
+        Action action = (Action)actionPanel.selectedIndex;
 
         switch (action)
         {
-            case BattleAction.Talk:
+            case Action.Talk:
                 yield return StartCoroutine(TalkTurn());
                 break;
-            case BattleAction.Attack:
+            case Action.Attack:
                 yield return StartCoroutine(AttackTurn());
                 break;
-            case BattleAction.Command:
+            case Action.Command:
                 yield return StartCoroutine(CommandTurn());
                 break;
-            case BattleAction.Item:
+            case Action.Item:
                 yield return StartCoroutine(ItemTurn());
                 break;
-            case BattleAction.Run:
-                yield return StartCoroutine(RunTurn());
+            case Action.Escape:
+                yield return StartCoroutine(EscapeTurn());
                 break;
         }
         actionPanel.SetActionValidity(1f);
@@ -159,7 +157,7 @@ public class BattleSystem : MonoBehaviour
         yield return StartCoroutine(actionBoard.SetMessageText("The player fished through his backpack but found nothing"));
     }
 
-    public IEnumerator RunTurn()
+    public IEnumerator EscapeTurn()
     {
         state = BattleState.ActionExecution;
         StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。

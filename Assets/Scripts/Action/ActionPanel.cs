@@ -13,7 +13,7 @@ public class ActionPanel : MonoBehaviour
     // [SerializeField] MessageDialog messageDialog;
     [SerializeField] ActionBoard actionBoard;
     private List<SelectableText> actionTexts; // ActionList内のテキストリスト
-    BattleAction selectedAction;
+    Action selectedAction;
     private int previousAction;
     public int selectedIndex;
 

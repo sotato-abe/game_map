@@ -26,8 +26,8 @@ public class ActionBoard : MonoBehaviour
         action = targetAction;
         switch (action)
         {
-            case Action.Message:
-                SetMessagePanel();
+            case Action.Talk:
+                SetTalkPanel();
                 break;
             case Action.Attack:
                 SetAttackPanel();
@@ -48,7 +48,7 @@ public class ActionBoard : MonoBehaviour
     {
         switch (action)
         {
-            case Action.Message:
+            case Action.Talk:
                 break;
             case Action.Attack:
                 break;
@@ -63,9 +63,9 @@ public class ActionBoard : MonoBehaviour
         }
     }
 
-    private void SetMessagePanel()
+    private void SetTalkPanel()
     {
-        Debug.Log("SetMessagePanel");
+        Debug.Log("SetTalkPanel");
         itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         messagePanel.gameObject.SetActive(true);
