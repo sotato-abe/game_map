@@ -8,11 +8,7 @@ public class MessagePanel : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] float letterPerSecond;
-
-    private void SetMessageDialog()
-    {
-        Debug.Log("SetMessageDialog");
-    }
+    [SerializeField] Image dialogBackground;
 
     public IEnumerator TypeDialog(string line)
     {
@@ -24,5 +20,18 @@ public class MessagePanel : MonoBehaviour
             yield return new WaitForSeconds(letterPerSecond);
         }
         yield return new WaitForSeconds(2f);
+    }
+
+    // 現在使用していない
+    public IEnumerator SetTransparency(float alpha)
+    {
+        // 背景のImageコンポーネントの透明度を変更
+        if (dialogBackground != null)
+        {
+            Color bgColor = dialogBackground.color;
+            bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
+            dialogBackground.color = bgColor;
+        }
+        yield return null;
     }
 }
