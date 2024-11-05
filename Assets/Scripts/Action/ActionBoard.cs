@@ -46,6 +46,7 @@ public class ActionBoard : MonoBehaviour
 
     public void TargetSelection(bool targetDirection)
     {
+        Debug.Log($"TargetSelection:{targetDirection}");
         switch (action)
         {
             case Action.Talk:

@@ -53,7 +53,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleStart(Battler player, Battler enemy)
     {
         state = BattleState.Start;
-        SetupBattle(player, enemy);
+        StartCoroutine(SetupBattle(player, enemy));
         battleCanvas.gameObject.SetActive(true);
         actionPanel.SetActionValidity(1f);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
@@ -63,11 +63,11 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetBattleState(BattleState.ActionSelection));
     }
 
-    public void SetupBattle(Battler player, Battler enemy)
+    public IEnumerator SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
         actionBoard.changeDialogType(Action.Talk);
-        StartCoroutine(actionBoard.SetMessageText($"{enemy.Base.Name} is coming!!"));
+        yield return StartCoroutine(actionBoard.SetMessageText($"{enemy.Base.Name} is coming!!"));
     }
 
     public IEnumerator SetBattleState(BattleState newState)
@@ -163,16 +163,17 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(actionBoard.SetMessageText("Player is trying to escape"));
+        yield return new WaitForSeconds(1f);
         StartCoroutine(SetBattleState(BattleState.BattleOver));
     }
 
     //AtackManagerに切り離す
     private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
-        StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
         int damage = targetUnit.Battler.TakeDamage(sourceUnit.Battler);
         targetUnit.UpdateUI();
         targetUnit.SetMotion(BattleUnit.Motion.Jump);
+        StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(actionBoard.SetMessageText($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
 
