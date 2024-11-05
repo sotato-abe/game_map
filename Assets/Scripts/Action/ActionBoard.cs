@@ -4,60 +4,62 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class MessageDialog : MonoBehaviour
+public class ActionBoard : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    [SerializeField] ActionPanel actionPanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] CommandPanel commandPanel;
     [SerializeField] ItemPanel itemPanel;
-    [SerializeField] Image dialogBackground;
-    BattleAction battleAction;
+    Action action;
+
     public ItemPanel ItemPanel => itemPanel;
 
     public void Init()
     {
-        battleAction = 0;
+        action = 0;
     }
 
-    public void changeDialogType(BattleAction action)
+    public void changeDialogType(Action targetAction)
     {
-        battleAction = action;
+        action = targetAction;
         switch (action)
         {
-            case BattleAction.Talk:
+            case Action.Talk:
                 SetTalkPanel();
                 break;
-            case BattleAction.Attack:
+            case Action.Attack:
                 SetAttackPanel();
                 break;
-            case BattleAction.Command:
+            case Action.Command:
                 SetCommandPanel();
                 break;
-            case BattleAction.Item:
+            case Action.Item:
                 SetItemPanel();
                 break;
-            case BattleAction.Run:
-                SetRunDialog();
+            case Action.Escape:
+                SetEscapeDialog();
                 break;
         }
     }
 
     public void TargetSelection(bool targetDirection)
     {
-        switch (battleAction)
+        Debug.Log($"TargetSelection:{targetDirection}");
+        switch (action)
         {
-            case BattleAction.Talk:
+            case Action.Talk:
                 break;
-            case BattleAction.Attack:
+            case Action.Attack:
                 break;
-            case BattleAction.Command:
+            case Action.Command:
                 commandPanel.SelectCommand(targetDirection);
                 break;
-            case BattleAction.Item:
+            case Action.Item:
                 itemPanel.SelectItem(targetDirection);
                 break;
-            case BattleAction.Run:
+            case Action.Escape:
                 break;
         }
     }
@@ -75,13 +77,11 @@ public class MessageDialog : MonoBehaviour
         Debug.Log("SetAttackPanel");
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
-        messagePanel.gameObject.SetActive(true);
     }
 
     private void SetCommandPanel()
     {
         Debug.Log("SetCommandPanel");
-        messagePanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(true);
     }
@@ -89,30 +89,15 @@ public class MessageDialog : MonoBehaviour
     private void SetItemPanel()
     {
         Debug.Log("SetItemPanel");
-        messagePanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(true);
     }
 
-    private void SetRunDialog()
+    private void SetEscapeDialog()
     {
-        Debug.Log("SetRunDialog");
+        Debug.Log("SetEscapeDialog");
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
-        messagePanel.gameObject.SetActive(true);
-    }
-
-    // 現在使用していない
-    public IEnumerator SetTransparency(float alpha)
-    {
-        // 背景のImageコンポーネントの透明度を変更
-        if (dialogBackground != null)
-        {
-            Color bgColor = dialogBackground.color;
-            bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
-            dialogBackground.color = bgColor;
-        }
-        yield return null;
     }
 
     public IEnumerator SetMessageText(string message)

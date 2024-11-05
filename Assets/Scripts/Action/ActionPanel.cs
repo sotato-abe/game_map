@@ -4,17 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BattleActionDialog : MonoBehaviour
+public class ActionPanel : MonoBehaviour
 {
     bool selectable;
     SelectableText[] selectableTexts;
-    [SerializeField] SelectableText command;
-    [SerializeField] GameObject actionList; // ActionListのGameObjectをアサインします
+    // [SerializeField] GameObject transform; // ActionListのGameObjectをアサインします
     [SerializeField] Image dialogBackground;
-    [SerializeField] BattleSystem battleSystem;
-    [SerializeField] MessageDialog messageDialog;
+    // [SerializeField] MessageDialog messageDialog;
+    [SerializeField] ActionBoard actionBoard;
     private List<SelectableText> actionTexts; // ActionList内のテキストリスト
-    BattleAction selectedAction;
+    Action selectedAction;
     private int previousAction;
     public int selectedIndex;
 
@@ -31,7 +30,7 @@ public class BattleActionDialog : MonoBehaviour
         selectableTexts[0].SetSelectedColor(true);
 
         // ActionList内のSelectableTextコンポーネントのみを取得
-        actionTexts = new List<SelectableText>(actionList.GetComponentsInChildren<SelectableText>());
+        actionTexts = new List<SelectableText>(transform.GetComponentsInChildren<SelectableText>());
 
         if (actionTexts == null || actionTexts.Count == 0)
         {
@@ -56,7 +55,8 @@ public class BattleActionDialog : MonoBehaviour
             {
                 selectableTexts[i].SetSelectedColor(selectedIndex == i);
             }
-            messageDialog.changeDialogType((BattleAction)selectedIndex);
+            // messageDialog.changeDialogType((BattleAction)selectedIndex);
+            actionBoard.changeDialogType((Action)selectedIndex);
             previousAction = selectedIndex;
         }
     }

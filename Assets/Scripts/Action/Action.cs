@@ -1,8 +1,8 @@
-public enum BattleAction
+public enum Action
 {
     Talk,
     Attack,
     Command,
     Item,
-    Run
+    Escape,
 }
