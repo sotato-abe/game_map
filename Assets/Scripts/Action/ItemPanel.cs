@@ -86,8 +86,6 @@ public class ItemPanel : MonoBehaviour
 
         if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
         {
-            Debug.Log($"Using item: {targetItemUnit.Item.Base}");
-
             // アイテムを使用する処理をここに追加
             // 例: playerUnit.Battler.UseItem(targetItemUnit.Item);
             int MaxBattery = playerUnit.Battler.MaxBattery;

@@ -16,7 +16,6 @@ public class FieldInfoPanel : MonoBehaviour
 
     public void SetInfo(MapBase mapBase)
     {
-        Debug.Log($"mapBase:{mapBase.Name}");
         StartCoroutine(title.TypeTitle(mapBase.Name));
         StartCoroutine(description.TypeDescription(mapBase.Description));
     }

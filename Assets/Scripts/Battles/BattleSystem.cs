@@ -224,7 +224,6 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleEnd()
     {
-        Debug.Log("BattleEnd");
         OnBattleEnd?.Invoke();
     }
 }

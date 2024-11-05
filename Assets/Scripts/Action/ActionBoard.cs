@@ -46,7 +46,6 @@ public class ActionBoard : MonoBehaviour
 
     public void TargetSelection(bool targetDirection)
     {
-        Debug.Log($"TargetSelection:{targetDirection}");
         switch (action)
         {
             case Action.Talk:
@@ -66,7 +65,6 @@ public class ActionBoard : MonoBehaviour
 
     private void SetTalkPanel()
     {
-        Debug.Log("SetTalkPanel");
         itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         messagePanel.gameObject.SetActive(true);
@@ -74,28 +72,24 @@ public class ActionBoard : MonoBehaviour
 
     private void SetAttackPanel()
     {
-        Debug.Log("SetAttackPanel");
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
     }
 
     private void SetCommandPanel()
     {
-        Debug.Log("SetCommandPanel");
         itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(true);
     }
 
     private void SetItemPanel()
     {
-        Debug.Log("SetItemPanel");
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(true);
     }
 
     private void SetEscapeDialog()
     {
-        Debug.Log("SetEscapeDialog");
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
     }
