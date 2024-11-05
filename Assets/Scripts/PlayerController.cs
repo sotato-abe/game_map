@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private GenerateSeedMap generateSeedMap;
 
     public UnityAction OnEncount;
+    public UnityAction OnReserve;
 
     public Battler Battler { get => battler; }
 
@@ -96,6 +97,12 @@ public class PlayerController : MonoBehaviour
             {
                 animator.SetBool("isMoving", false);
             }
+        }
+
+        if (canMove && Input.GetKeyDown(KeyCode.Return))
+        {
+            Debug.Log("[playerController]KeyCode.Return");
+            OnReserve?.Invoke();
         }
     }
 

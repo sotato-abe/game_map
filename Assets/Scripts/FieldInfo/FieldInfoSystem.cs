@@ -23,13 +23,13 @@ public class FieldInfoSystem : MonoBehaviour
 
     public void FieldDialogOpen()
     {
-        worldMapDialog.gameObject.SetActive(true);
+        // worldMapDialog.gameObject.SetActive(true);
         fieldInfoDialog.gameObject.SetActive(true);
     }
 
     public void FieldDialogClose()
     {
-        worldMapDialog.gameObject.SetActive(false);
+        // worldMapDialog.gameObject.SetActive(false);
         fieldInfoDialog.gameObject.SetActive(false);
     }
 
