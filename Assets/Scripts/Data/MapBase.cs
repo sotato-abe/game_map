@@ -16,6 +16,7 @@ public class MapBase : ScriptableObject
     [SerializeField] int mapTileSet;
     [SerializeField] int mapHeight;
     [SerializeField] int mapWidth;
+    [SerializeField] string description;
 
     public string Name { get => name; }
     public int Level { get => level; }
@@ -28,4 +29,5 @@ public class MapBase : ScriptableObject
     public int MapTileSet { get => mapTileSet; }
     public int MapHeight { get => mapHeight; }
     public int MapWidth { get => mapWidth; }
+    public string Description { get => description; }
 }
