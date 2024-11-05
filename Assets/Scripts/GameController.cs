@@ -13,7 +13,6 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("[Game_Controller]:Start!!");
         playerController.OnReserve += ReserveStart;
         playerController.OnEncount += BattleStart;
         reserveSystem.OnReserveEnd += ReserveEnd;
@@ -23,7 +22,6 @@ public class GameController : MonoBehaviour
 
     public void ReserveStart()
     {
-        Debug.Log("[Game_Controller]:ReserveStart!!");
         playerController.SetMoveFlg(false);
         battleSystem.gameObject.SetActive(false);
         reserveSystem.gameObject.SetActive(true);
@@ -32,7 +30,6 @@ public class GameController : MonoBehaviour
 
     public void ReserveEnd()
     {
-        Debug.Log("[Game_Controller]:ReserveEnd");
         playerController.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
         fieldInfoSystem.FieldDialogOpen();
@@ -40,7 +37,6 @@ public class GameController : MonoBehaviour
 
     public void BattleStart()
     {
-        Debug.Log("[Game_Controller]:BattleStart!!");
         playerController.SetMoveFlg(false);
         fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
@@ -52,7 +48,6 @@ public class GameController : MonoBehaviour
 
     public void BattleEnd()
     {
-        Debug.Log("[Game_Controller]:BattleEnd");
         battleSystem.gameObject.SetActive(false);
         fieldInfoSystem.FieldDialogOpen();
         playerController.SetMoveFlg(true);

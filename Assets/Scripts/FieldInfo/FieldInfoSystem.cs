@@ -13,7 +13,6 @@ public class FieldInfoSystem : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("FieldInfoSystem start");
         transform.gameObject.SetActive(true);
         SetupFieldInfo();
     }

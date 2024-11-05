@@ -51,7 +51,6 @@ public class ReserveSystem : MonoBehaviour
 
     public void ReserveStart(Battler player)
     {
-        Debug.Log("testtttttttttttttttttttttttttttttttttttttttttt");
         state = ReserveState.Start;
         actionBoard.changeDialogType(Action.Talk);
         // StartCoroutine(actionBoard.SetMessageText("Sola fished through the bag."));
@@ -144,7 +143,6 @@ public class ReserveSystem : MonoBehaviour
         StartCoroutine(playerUnit.SetTalkMessage("all right")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(actionBoard.SetMessageText("Sola closed the back"));
         yield return new WaitForSeconds(1.0f);
-        Debug.Log("ReserveEnd");
         OnReserveEnd?.Invoke();
     }
 }

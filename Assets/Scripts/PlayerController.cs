@@ -101,7 +101,6 @@ public class PlayerController : MonoBehaviour
 
         if (canMove && Input.GetKeyDown(KeyCode.Return))
         {
-            Debug.Log("[playerController]KeyCode.Return");
             OnReserve?.Invoke();
         }
     }

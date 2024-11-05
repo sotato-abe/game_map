@@ -77,7 +77,5 @@ public class CommandPanel : MonoBehaviour
             currentCommandUnit.Targetfoucs(true);
             previousCommand = selectedCommand;
         }
-
-        Debug.Log($"selectCommand:{selectedCommand}");
     }
 }
