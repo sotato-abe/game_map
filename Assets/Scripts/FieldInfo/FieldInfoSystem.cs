@@ -7,30 +7,33 @@ using UnityEngine.Events;
 public class FieldInfoSystem : MonoBehaviour
 {
     [SerializeField] WorldMapDialog worldMapDialog;
-    [SerializeField] FieldInfoDialog fieldInfoDialog;
-
+    [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] List<Battler> enemies;
+    [SerializeField] MapBase mapBase;
 
     void Start()
     {
+        Debug.Log("FieldInfoSystem start");
         transform.gameObject.SetActive(true);
+        SetupFieldInfo();
     }
 
     public void SetupFieldInfo()
     {
         FieldDialogOpen();
+        fieldInfoPanel.SetInfo(mapBase);
     }
 
     public void FieldDialogOpen()
     {
         // worldMapDialog.gameObject.SetActive(true);
-        fieldInfoDialog.gameObject.SetActive(true);
+        fieldInfoPanel.gameObject.SetActive(true);
     }
 
     public void FieldDialogClose()
     {
         // worldMapDialog.gameObject.SetActive(false);
-        fieldInfoDialog.gameObject.SetActive(false);
+        fieldInfoPanel.gameObject.SetActive(false);
     }
 
     public Battler GetRandomEnemy()
