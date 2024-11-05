@@ -20,7 +20,7 @@ public class MessagePanel : MonoBehaviour
             yield return new WaitForSeconds(letterPerSecond);
         }
         yield return new WaitForSeconds(2f);
-        SetPanelTransparency(0.6f);
+        SetPanelTransparency(0.7f);
     }
 
     // 現在使用していない
