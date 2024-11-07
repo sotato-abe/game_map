@@ -9,6 +9,7 @@ public class ActionBoard : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] ActionPanel actionPanel;
+    [SerializeField] AttackPanel attackPanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] CommandPanel commandPanel;
     [SerializeField] ItemPanel itemPanel;
@@ -65,8 +66,9 @@ public class ActionBoard : MonoBehaviour
 
     private void SetTalkPanel()
     {
-        itemPanel.gameObject.SetActive(false);
+        attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
+        itemPanel.gameObject.SetActive(false);
         messagePanel.gameObject.SetActive(true);
     }
 
@@ -74,22 +76,26 @@ public class ActionBoard : MonoBehaviour
     {
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
+        attackPanel.gameObject.SetActive(true);
     }
 
     private void SetCommandPanel()
     {
+        attackPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(true);
     }
 
     private void SetItemPanel()
     {
+        attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(true);
     }
 
     private void SetEscapeDialog()
     {
+        attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
     }

@@ -15,6 +15,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int speed;
     [SerializeField] Sprite sprite;
 
+    [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Item> items;
     [SerializeField] List<Command> comands;
 
@@ -26,6 +27,7 @@ public class BattlerBase : ScriptableObject
     public int Defense { get => defense; }
     public int Speed { get => speed; }
     public Sprite Sprite { get => sprite; }
+    public List<Equipment> Equipments { get => equipments; }
     public List<Item> Items { get => items; }
     public List<Command> Commands { get => comands; }
 }
