@@ -9,11 +9,12 @@ public class Battler
     [SerializeField] int level;
     [SerializeField] int soul;
 
+    [SerializeField] private List<Equipment> equipments = new List<Equipment>();
     [SerializeField] private List<Item> inventory = new List<Item>();
     [SerializeField] private List<Command> deck = new List<Command>();
+    public List<Equipment> Equipments { get => equipments; }
     public List<Item> Inventory { get => inventory; }
     public List<Command> Deck { get => deck; }
-
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
     public int Soul { get => soul; }
@@ -38,6 +39,7 @@ public class Battler
         Defense = _base.Defense;
         Speed = _base.Speed;
 
+        equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
         inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
         deck = _base.Commands ?? new List<Command>(); // Items が null の場合、新しいリストを初期化
     }
