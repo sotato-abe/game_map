@@ -9,6 +9,7 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     public UnityAction OnBattleEnd;
     [SerializeField] BattleCanvas battleCanvas;
+    [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
     [SerializeField] EnemyDialog enemyDialog;
@@ -55,12 +56,14 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
         battleCanvas.gameObject.SetActive(true);
-        actionPanel.SetActionValidity(1f);
+        actionPanel.SetActionValidity(0.2f);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
-        state = BattleState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
-        StartCoroutine(SetBattleState(BattleState.ActionSelection));
+        state = BattleState.TurnWait;
+        List<Battler> battlers = new List<Battler> { player, enemy };
+        turnOrderSystem.SetUpBattlerTurns(battlers);
+        // StartCoroutine(SetBattleState(BattleState.ActionSelection));
     }
 
     public IEnumerator SetupBattle(Battler player, Battler enemy)
@@ -78,6 +81,7 @@ public class BattleSystem : MonoBehaviour
             case BattleState.Start:
                 break;
             case BattleState.TurnWait:
+                HandleTurnWait();
                 break;
             case BattleState.ActionSelection:
                 HandleActionSelection();
@@ -94,8 +98,15 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    void HandleTurnWait()
+    {
+        turnOrderSystem.SetActive(true);
+        actionPanel.SetActionValidity(0.2f);
+    }
+
     void HandleActionSelection()
     {
+        actionPanel.SetActionValidity(1.0f);
     }
 
     public IEnumerator HandleActionExecution()
@@ -121,7 +132,7 @@ public class BattleSystem : MonoBehaviour
                 break;
         }
         actionPanel.SetActionValidity(1f);
-        StartCoroutine(SetBattleState(BattleState.ActionSelection));
+        StartCoroutine(SetBattleState(BattleState.TurnWait));
     }
 
     public IEnumerator TalkTurn()
@@ -136,10 +147,6 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.ActionExecution;
         yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
-        if (state != BattleState.BattleResult)
-        {
-            yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
-        }
     }
 
     public IEnumerator CommandTurn()
