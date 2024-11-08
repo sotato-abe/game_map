@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TurnBattlerUnit : MonoBehaviour
 {
     // キャラクターの画像
+    public Battler Battler { get; set; }
     [SerializeField] Image image;
 
     // コンストラクタ、または初期設定メソッドで必要な情報を設定
@@ -13,6 +14,7 @@ public class TurnBattlerUnit : MonoBehaviour
     {
         if (battler.Base != null)
         {
+            Battler = battler;
             image.sprite = battler.Base.Sprite;
         }
         else
@@ -24,6 +26,6 @@ public class TurnBattlerUnit : MonoBehaviour
     private void Start()
     {
         // 必要に応じて初期化や設定の確認
-        Debug.Log($"Initialized TurnBattlerUnit");
+        // Debug.Log($"Initialized TurnBattlerUnit");
     }
 }

@@ -60,20 +60,22 @@ public class TurnOrderSystem : MonoBehaviour
 
     private IEnumerator MoveBattlerToLeft(RectTransform rectTransform)
     {
-        // 左端の位置（ターン実行位置）を設定
         float targetPositionX = 25f;
 
-        while (rectTransform.anchoredPosition.x > targetPositionX && isActive)
+        while (rectTransform != null && rectTransform.anchoredPosition.x > targetPositionX && isActive)
         {
-            // 少しずつ左に移動
             rectTransform.anchoredPosition += Vector2.left * moveSpeed * Time.deltaTime;
             yield return null;
         }
 
-        if (isActive)
+        if (rectTransform != null && isActive)
         {
             isActive = false;
             ExecuteTurn(rectTransform);
+        }
+        else if (rectTransform == null)
+        {
+            yield break;  // オブジェクトが破棄された場合はコルーチンを終了
         }
     }
 
@@ -82,7 +84,7 @@ public class TurnOrderSystem : MonoBehaviour
         StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
         // rectTransform.gameObject.SetActive(false);
         Destroy(rectTransform.gameObject);
-        Debug.Log($"ターンを実行: {rectTransform.gameObject.name}");
+        Debug.Log($"ターンを実行");
         // ターン実行時の処理をここに記述
     }
 
