@@ -5,16 +5,20 @@ using UnityEngine.UI;
 
 public class TurnBattlerUnit : MonoBehaviour
 {
-    // キャラクターの画像
     public Battler Battler { get; set; }
-    [SerializeField] Image image;
+    public bool IsActive { get; private set; } = false;
 
-    // コンストラクタ、または初期設定メソッドで必要な情報を設定
-    public void Initialize(Battler battler)
+    [SerializeField] Image image;
+    private TurnOrderSystem turnOrderSystem;
+    private float moveSpeed = 100f;
+    private float targetPositionX = 25f;
+
+    public void Initialize(Battler battler, TurnOrderSystem system)
     {
         if (battler.Base != null)
         {
             Battler = battler;
+            turnOrderSystem = system;
             image.sprite = battler.Base.Sprite;
         }
         else
@@ -23,9 +27,41 @@ public class TurnBattlerUnit : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void StartMoving()
     {
-        // 必要に応じて初期化や設定の確認
-        // Debug.Log($"Initialized TurnBattlerUnit");
+        if (!IsActive)
+        {
+            IsActive = true;
+            StartCoroutine(MoveToLeft());
+        }
+    }
+
+    public void StopMoving()
+    {
+        if (IsActive)
+        {
+            IsActive = false;
+        }
+    }
+
+    private IEnumerator MoveToLeft()
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+
+        while (rectTransform.anchoredPosition.x > targetPositionX)
+        {
+            if (IsActive)
+            {
+                rectTransform.anchoredPosition += Vector2.left * moveSpeed * Time.deltaTime;
+            }
+            yield return null;
+        }
+
+        if (turnOrderSystem != null)
+        {
+            turnOrderSystem.ExecuteTurn(this);
+        }
+
+        Destroy(gameObject);
     }
 }
