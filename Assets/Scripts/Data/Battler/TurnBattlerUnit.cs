@@ -12,6 +12,7 @@ public class TurnBattlerUnit : MonoBehaviour
     private TurnOrderSystem turnOrderSystem;
     private float moveSpeed = 100f;
     private float targetPositionX = 25f;
+    private bool hasTurnExecuted = false; // ターンが完了したかどうかを示すフラグ
 
     public void Initialize(Battler battler, TurnOrderSystem system)
     {
@@ -57,8 +58,10 @@ public class TurnBattlerUnit : MonoBehaviour
             yield return null;
         }
 
-        if (turnOrderSystem != null)
+        // ターン完了時の処理が複数回実行されないようにする
+        if (turnOrderSystem != null && !hasTurnExecuted)
         {
+            hasTurnExecuted = true; // ターン完了フラグを立てる
             turnOrderSystem.ExecuteTurn(this);
         }
 

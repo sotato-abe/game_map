@@ -46,9 +46,16 @@ public class TurnOrderSystem : MonoBehaviour
 
     public void ExecuteTurn(TurnBattlerUnit battlerUnit)
     {
-        Debug.Log($"ターンを実行: {battlerUnit.Battler.Base.Name}");
-        StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
         isActive = false;
+        Debug.Log($"ターンを実行: {battlerUnit.Battler.Base.Name}");
+        if (battlerUnit.Battler.Base.Name == "Sola") //　TODO 仮で分岐させているので後でちゃんと分ける。
+        {
+            StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
+        }
+        else
+        {
+            StartCoroutine(battleSystem.EnemyAttack());
+        }
 
         // ターンが完了したバトラーオブジェクトを再配置
         if (turnBattlerList.transform.childCount > 1)
@@ -68,8 +75,8 @@ public class TurnOrderSystem : MonoBehaviour
     public void SetActive(bool flg)
     {
         isActive = flg;
-        Debug.Log(isActive);
-        if (isActive && turnBattlerList.transform.childCount > 1)
+        Debug.Log($"SetActive:{isActive}");
+        if (isActive && turnBattlerList.transform.childCount > 0)
         {
             foreach (Transform child in turnBattlerList.transform)
             {
