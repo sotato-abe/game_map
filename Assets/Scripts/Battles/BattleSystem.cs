@@ -229,6 +229,13 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetBattleState(BattleState.BattleOver));
     }
 
+    public IEnumerator EnemyAttack()
+    {
+        Debug.Log("EnemyAttack");
+        yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
+        turnOrderSystem.SetActive(true);
+    }
+
     public void BattleEnd()
     {
         OnBattleEnd?.Invoke();
