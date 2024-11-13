@@ -16,7 +16,7 @@ public class TurnBattler : MonoBehaviour
     public Battler Battler { get; set; }
     public bool IsActive { get; private set; } = true;
     private TurnOrderSystem turnOrderSystem;
-    private float moveSpeed = 100f;
+    private float moveSpeed = 300f;
     private float targetPositionX = -600f;
 
     public void Initialize(Battler battler, TurnOrderSystem system)
