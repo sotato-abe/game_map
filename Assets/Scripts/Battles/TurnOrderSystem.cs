@@ -2,90 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 機能
+// バトルが開始されるとシステムが開始される
+// バトルに参加しているキャラクター（Battler）のGenerationTurnBattlerを作成する。
+// ターンバーのアクティブを制御する。
+// TurnBattlerのターン実行を受け取りbattleSystemにターン実行を通知する。
+// キャラクターのスピードが変更されたときにBattlerのスピードに応じてGenerationTurnBattlerとTurnBattlerを生成し直す。
+
 public class TurnOrderSystem : MonoBehaviour
 {
-    [SerializeField] TurnBattlerUnit turnBattlerUnitPrefab;
-    [SerializeField] GameObject turnBattlerList;
+    [SerializeField] GenerationTurnBattler generationTurnBattlerPrefab;
     [SerializeField] BattleSystem battleSystem;
-    int intervalBetweenBattlers = 10;
 
-    private bool isActive = true;
+    private List<GenerationTurnBattler> generationTurnBattlers = new List<GenerationTurnBattler>();
 
     public void SetUpBattlerTurns(List<Battler> battlers)
     {
-        battlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
-
-        foreach (Transform child in turnBattlerList.transform)
+        // 既存の子オブジェクトをすべて削除
+        foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
+        generationTurnBattlers.Clear();
 
+        // スピード順にソート
+        battlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
+
+        // 各バトラーに対してGenerationTurnBattlerを生成し設定
         foreach (Battler battler in battlers)
         {
-            int interval = (int)(100 / battler.Speed) * intervalBetweenBattlers;
-            int currentPosition = 50;
-
-            for (int i = interval; i < 700; i += interval)
-            {
-                TurnBattlerUnit battlerUnit = Instantiate(turnBattlerUnitPrefab, turnBattlerList.transform);
-                battlerUnit.gameObject.SetActive(true);
-                battlerUnit.Initialize(battler, this);
-
-                RectTransform rectTransform = battlerUnit.GetComponent<RectTransform>();
-                rectTransform.anchorMin = new Vector2(0f, 0.5f);
-                rectTransform.anchorMax = new Vector2(0f, 0.5f);
-                rectTransform.pivot = new Vector2(0f, 0.5f);
-
-                rectTransform.anchoredPosition = new Vector2(currentPosition + i, 0f);
-
-                battlerUnit.StartMoving();
-            }
+            GenerationTurnBattler generationTurnBattler = Instantiate(generationTurnBattlerPrefab, transform);
+            generationTurnBattler.Initialize(battler, this);
+            generationTurnBattlers.Add(generationTurnBattler);
         }
-        isActive = true;
     }
 
-    public void ExecuteTurn(TurnBattlerUnit battlerUnit)
+    public void SetActive(bool isActiveFlg)
     {
-        isActive = false;
-        Debug.Log($"ターンを実行: {battlerUnit.Battler.Base.Name}");
-        if (battlerUnit.Battler.Base.Name == "Sola") //　TODO 仮で分岐させているので後でちゃんと分ける。
+        // GenerationTurnBattlerとTurnBattlerのアクティブ状態を制御
+        foreach (GenerationTurnBattler generationTurnBattler in generationTurnBattlers)
         {
-            StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
+            generationTurnBattler.SetActive(isActiveFlg);
+        }
+    }
+
+    public IEnumerator ExecuteTurn(TurnBattler turnBattler)
+    {
+        Debug.Log($"ターンを実行: {turnBattler.Battler.Base.Name}");
+        SetActive(false); // ターン実行中は他のバトラーを非アクティブ化
+
+        if (turnBattler.Battler.Base.Name == "Sola") // TODO: 仮の分岐
+        {
+            yield return StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
         }
         else
         {
-            StartCoroutine(battleSystem.EnemyAttack());
+            yield return StartCoroutine(battleSystem.EnemyAttack());
         }
-
-        // ターンが完了したバトラーオブジェクトを再配置
-        if (turnBattlerList.transform.childCount > 1)
-        {
-            foreach (Transform child in turnBattlerList.transform)
-            {
-                TurnBattlerUnit otherBattlerUnit = child.GetComponent<TurnBattlerUnit>();
-
-                if (otherBattlerUnit != null)
-                {
-                    otherBattlerUnit.StopMoving();
-                }
-            }
-        }
-    }
-
-    public void SetActive(bool flg)
-    {
-        isActive = flg;
-        Debug.Log($"SetActive:{isActive}");
-        if (isActive && turnBattlerList.transform.childCount > 0)
-        {
-            foreach (Transform child in turnBattlerList.transform)
-            {
-                TurnBattlerUnit battlerUnit = child.GetComponent<TurnBattlerUnit>();
-                if (battlerUnit != null && !battlerUnit.IsActive)
-                {
-                    battlerUnit.StartMoving();
-                }
-            }
-        }
+        Debug.Log("ExecuteTurnEnd");
+        // SetActive(true); // TODO ターン終了後に再びアクティブ化
+        Destroy(turnBattler.gameObject); // ターン終了したTurnBattlerを削除
     }
 }
