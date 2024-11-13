@@ -204,21 +204,32 @@ public class BattleSystem : MonoBehaviour
             int itemsToAward = Mathf.Min(2, targetItems.Count); // 最大2個
             List<Item> awardedItems = new List<Item>();
 
+            // アイテムリストをシャッフル
+            List<Item> shuffledItems = new List<Item>(targetItems);
+            for (int i = 0; i < shuffledItems.Count; i++)
+            {
+                Item temp = shuffledItems[i];
+                int randomIndex = Random.Range(i, shuffledItems.Count);
+                shuffledItems[i] = shuffledItems[randomIndex];
+                shuffledItems[randomIndex] = temp;
+            }
+
+            // シャッフルされたリストから最大2つを選択
             for (int i = 0; i < itemsToAward; i++)
             {
-                Item randomItem = targetItems[Random.Range(0, targetItems.Count)];
+                Item randomItem = shuffledItems[i];
                 awardedItems.Add(randomItem);
                 sourceUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
             }
 
-            string resultitemessage = $"{sourceUnit.Battler.Base.Name} obtained ";
+            string resultItemMessage = $"{sourceUnit.Battler.Base.Name} obtained ";
 
             // 獲得したアイテムを表示
             foreach (Item item in awardedItems)
             {
-                resultitemessage += $"{item.Base.Name},";
+                resultItemMessage += $"{item.Base.Name},";
             }
-            yield return StartCoroutine(actionBoard.SetMessageText(resultitemessage));
+            yield return StartCoroutine(actionBoard.SetMessageText(resultItemMessage));
         }
         else
         {
