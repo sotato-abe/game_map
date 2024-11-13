@@ -12,13 +12,13 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
-    [SerializeField] EnemyDialog enemyDialog;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
 
     void Start()
     {
         transform.gameObject.SetActive(false);
+        enemyUnit.gameObject.SetActive(false);
         actionPanel.Init();
     }
 
@@ -57,6 +57,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle(player, enemy));
         battleCanvas.gameObject.SetActive(true);
         actionPanel.SetActionValidity(0.2f);
+        enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
@@ -249,6 +250,7 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleEnd()
     {
+        enemyUnit.gameObject.SetActive(false);
         OnBattleEnd?.Invoke();
     }
 }

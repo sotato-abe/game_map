@@ -25,7 +25,7 @@ public class GenerationTurnBattler : MonoBehaviour
     // 速度に応じた生成間隔を計算
     private void SetGenerationInterval()
     {
-        generationInterval = Mathf.Max(1f, 30f / Battler.Speed);
+        generationInterval = Mathf.Max(1f, 10f / Battler.Speed);
     }
 
     // Activeフラグを受け取って、生成を再開または一時停止
