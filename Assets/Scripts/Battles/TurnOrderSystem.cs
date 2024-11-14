@@ -14,6 +14,8 @@ public class TurnOrderSystem : MonoBehaviour
     [SerializeField] GenerationTurnBattler generationTurnBattlerPrefab;
     [SerializeField] BattleSystem battleSystem;
 
+    private TurnBattler targetBattler;
+
     private List<GenerationTurnBattler> generationTurnBattlers = new List<GenerationTurnBattler>();
 
     public void SetUpBattlerTurns(List<Battler> battlers)
@@ -49,6 +51,7 @@ public class TurnOrderSystem : MonoBehaviour
     public IEnumerator ExecuteTurn(TurnBattler turnBattler)
     {
         Debug.Log($"ターンを実行: {turnBattler.Battler.Base.Name}");
+        targetBattler = turnBattler;
         SetActive(false); // ターン実行中は他のバトラーを非アクティブ化
 
         if (turnBattler.Battler.Base.Name == "Sola") // TODO: 仮の分岐
@@ -61,6 +64,16 @@ public class TurnOrderSystem : MonoBehaviour
         }
         Debug.Log("ExecuteTurnEnd");
         // SetActive(true); // TODO ターン終了後に再びアクティブ化
-        Destroy(turnBattler.gameObject); // ターン終了したTurnBattlerを削除
+        // Destroy(turnBattler.gameObject); // ターン終了したTurnBattlerを削除
+    }
+
+    public void EndTurn()
+    {
+        if (targetBattler)
+        {
+            Destroy(targetBattler.gameObject); // ターン終了したTurnBattlerを削除
+            targetBattler = null;
+        }
+        SetActive(true);
     }
 }

@@ -101,7 +101,7 @@ public class BattleSystem : MonoBehaviour
 
     void HandleTurnWait()
     {
-        turnOrderSystem.SetActive(true);
+        turnOrderSystem.EndTurn();
         actionPanel.SetActionValidity(0.2f);
     }
 
