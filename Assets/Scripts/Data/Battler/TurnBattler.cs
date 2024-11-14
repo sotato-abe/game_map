@@ -17,7 +17,7 @@ public class TurnBattler : MonoBehaviour
     public bool IsActive { get; private set; } = true;
     private TurnOrderSystem turnOrderSystem;
     private float moveSpeed = 300f;
-    private float targetPositionX = -600f;
+    private float targetPositionX = -630f;
 
     public void Initialize(Battler battler, TurnOrderSystem system)
     {
@@ -59,6 +59,6 @@ public class TurnBattler : MonoBehaviour
 
         // ターン開始を通知し、ターン終了後にこのオブジェクトを破棄
         yield return StartCoroutine(turnOrderSystem.ExecuteTurn(this));
-        Destroy(gameObject);
+        // Destroy(gameObject);
     }
 }
