@@ -10,8 +10,9 @@ public class GenerationTurnBattler : MonoBehaviour
     private bool isActive = true;
     private float generationInterval;
     private Coroutine generationCoroutine;
-    private float startTime; // 生成を開始した時点の時間
-    private float elapsedTime = 0f; // 中断した時点の経過時間
+    private float generatStartTime; // 生成を開始した時点の時間
+    private float interruptionStartTime; // ターンなどで生成を中断開始した時点の時間
+    private float interruptionTime = 0f; // 中断にかけた経過時間
 
     // 初期化時にBattlerとTurnOrderSystemをセット
     public void Initialize(Battler battler, TurnOrderSystem system)
@@ -41,6 +42,11 @@ public class GenerationTurnBattler : MonoBehaviour
             // 再開時に中断していた経過時間を引き継ぎコルーチンを再開
             if (generationCoroutine == null)
             {
+                if (interruptionStartTime > 0)
+                {
+                    interruptionTime += Time.time - interruptionStartTime; // 中断開始時点からの経過時間を計算
+                    interruptionStartTime = 0f;
+                }
                 generationCoroutine = StartCoroutine(GenerationUnit());
             }
         }
@@ -49,7 +55,7 @@ public class GenerationTurnBattler : MonoBehaviour
             // 一時停止時にコルーチンを停止し、現在の経過時間を保持
             if (generationCoroutine != null)
             {
-                elapsedTime =  Time.time - startTime;
+                interruptionStartTime = Time.time; // 中断開始時点の時間を記録
                 StopCoroutine(generationCoroutine);
                 generationCoroutine = null;
             }
@@ -64,8 +70,13 @@ public class GenerationTurnBattler : MonoBehaviour
             if (isActive)
             {
                 // 残りの生成間隔を計算
-                startTime = Time.time;
-                float remainingTime = generationInterval - elapsedTime;
+                if (generatStartTime == 0)
+                {
+                    generatStartTime = Time.time;
+                }
+
+                float generatTime = (Time.time - generatStartTime) - interruptionTime;
+                float remainingTime = Mathf.Max(0, generationInterval - generatTime);
                 if (remainingTime > 0)
                 {
                     yield return new WaitForSeconds(remainingTime);
@@ -77,7 +88,8 @@ public class GenerationTurnBattler : MonoBehaviour
                 newTurnBattler.gameObject.SetActive(true);
 
                 // 生成が完了したら経過時間をリセット
-                elapsedTime = 0f;
+                generatStartTime = 0f;
+                interruptionTime = 0f;
             }
             else
             {
@@ -90,7 +102,6 @@ public class GenerationTurnBattler : MonoBehaviour
     // TurnBattlerのアクティブ状態を更新
     public void SetTurnBattlerActive()
     {
-        Debug.Log($"[{Battler.Base.Name}] SetTurnBattlerActive:{isActive}");
         foreach (Transform child in transform)
         {
             TurnBattler turnBattlerUnit = child.GetComponent<TurnBattler>();

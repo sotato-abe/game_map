@@ -36,7 +36,6 @@ public class TurnBattler : MonoBehaviour
 
     public void SetActive(bool activeFlg)
     {
-        Debug.Log($"{Battler.Base.Name}:SetActive:{activeFlg}");
         IsActive = activeFlg;
     }
 
@@ -54,10 +53,6 @@ public class TurnBattler : MonoBehaviour
             if (IsActive)
             {
                 rectTransform.anchoredPosition += Vector2.left * moveSpeed * Time.deltaTime;
-            }
-            else
-            {
-                Debug.Log("MoveToLeft:Stop");
             }
             yield return null;
         }
