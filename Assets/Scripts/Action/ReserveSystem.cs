@@ -10,6 +10,7 @@ public class ReserveSystem : MonoBehaviour
     public UnityAction OnReserveEnd;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
+    [SerializeField] MessagePanel messagePanel;
     [SerializeField] BattleUnit playerUnit;
 
     public ActionPanel ActionPanel => actionPanel;
@@ -51,13 +52,14 @@ public class ReserveSystem : MonoBehaviour
 
     public void ReserveStart(Battler player)
     {
+        Debug.Log("ReserveStart");
         state = ReserveState.Start;
-        actionBoard.changeDialogType(Action.Talk);
-        // StartCoroutine(actionBoard.SetMessageText("Sola fished through the bag."));
         actionBoard.changeDialogType(Action.Talk);
         actionPanel.SetActionValidity(1f);
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
+        messagePanel.gameObject.SetActive(true);
+        StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
     }
 
     public void SetupReserve(Battler player)
@@ -141,7 +143,7 @@ public class ReserveSystem : MonoBehaviour
     {
         state = ReserveState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("all right")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText("Sola closed the back"));
+        yield return StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} closed the back"));
         yield return new WaitForSeconds(1.0f);
         OnReserveEnd?.Invoke();
     }
