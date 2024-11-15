@@ -52,6 +52,6 @@ public class AgeTimePanel : MonoBehaviour
     // ageTimeFieldに時間を表示
     private void UpdateAgeTimeField()
     {
-        ageTimeField.text = ageTime.ToString("yyyy/MM");
+        ageTimeField.text = ageTime.ToString("yyyy/MM/dd");
     }
 }
