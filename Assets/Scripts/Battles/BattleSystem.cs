@@ -231,6 +231,7 @@ public class BattleSystem : MonoBehaviour
                 resultItemMessage += $"{item.Base.Name},";
             }
             yield return StartCoroutine(actionBoard.SetMessageText(resultItemMessage));
+            StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} won the battle.."));
         }
         else
         {
@@ -245,7 +246,7 @@ public class BattleSystem : MonoBehaviour
     {
         Debug.Log("EnemyAttack");
         yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
-        turnOrderSystem.SetActive(true);
+        turnOrderSystem.EndTurn();
     }
 
     public void BattleEnd()
