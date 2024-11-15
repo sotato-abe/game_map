@@ -59,6 +59,7 @@ public class ReserveSystem : MonoBehaviour
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
         messagePanel.gameObject.SetActive(true);
+        StartCoroutine(playerUnit.SetTalkMessage("let's see"));
         StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
     }
 
