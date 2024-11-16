@@ -19,7 +19,6 @@ public class BattleSystem : MonoBehaviour
     {
         transform.gameObject.SetActive(false);
         enemyUnit.gameObject.SetActive(false);
-        actionPanel.Init();
     }
 
     public void Update()

@@ -22,8 +22,6 @@ public class MessagePanel : MonoBehaviour
         yield return new WaitForSeconds(2f);
         SetPanelTransparency(0.7f);
     }
-
-    // 現在使用していない
     public void SetPanelTransparency(float alpha)
     {
         // 背景のImageコンポーネントの透明度を変更

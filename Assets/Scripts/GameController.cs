@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
         playerController.OnEncount += BattleStart;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        reserveSystem.ActionPanel.SetActionValidity(0.2f);
+        reserveSystem.ActionPanel.SetActionValidity(0.5f);
     }
 
     public void ReserveStart()
