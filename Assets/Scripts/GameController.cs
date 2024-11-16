@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
+    [SerializeField] MessagePanel messagePanel;
 
     Battler enemy;
 
@@ -18,7 +19,8 @@ public class GameController : MonoBehaviour
         playerController.OnEncount += BattleStart;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        reserveSystem.ActionPanel.SetActionValidity(0.5f);
+        reserveSystem.ActionPanel.SetPanelValidity(0.2f);
+        StartCoroutine(messagePanel.TypeDialog("game start"));
     }
 
     public void ReserveStart()

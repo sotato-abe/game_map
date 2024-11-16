@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                actionPanel.SetActionValidity(0.2f);
+                actionPanel.SetPanelValidity(0.2f);
                 StartCoroutine(SetBattleState(BattleState.ActionExecution));
             }
         }
@@ -55,7 +55,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
         battleCanvas.gameObject.SetActive(true);
-        actionPanel.SetActionValidity(0.2f);
+        actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
@@ -101,12 +101,12 @@ public class BattleSystem : MonoBehaviour
     void HandleTurnWait()
     {
         turnOrderSystem.EndTurn();
-        actionPanel.SetActionValidity(0.2f);
+        actionPanel.SetPanelValidity(0.2f);
     }
 
     void HandleActionSelection()
     {
-        actionPanel.SetActionValidity(1.0f);
+        actionPanel.SetPanelValidity(1.0f);
     }
 
     public IEnumerator HandleActionExecution()
@@ -131,7 +131,7 @@ public class BattleSystem : MonoBehaviour
                 yield return StartCoroutine(EscapeTurn());
                 break;
         }
-        actionPanel.SetActionValidity(1f);
+        actionPanel.SetPanelValidity(1f);
         StartCoroutine(SetBattleState(BattleState.TurnWait));
     }
 
