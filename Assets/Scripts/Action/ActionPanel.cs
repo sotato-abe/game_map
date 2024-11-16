@@ -8,12 +8,11 @@ public class ActionPanel : MonoBehaviour
 {
     bool selectable;
     SelectableText[] selectableTexts;
-    // [SerializeField] GameObject transform; // ActionListのGameObjectをアサインします
     [SerializeField] Image dialogBackground;
     // [SerializeField] MessageDialog messageDialog;
     [SerializeField] ActionBoard actionBoard;
     private List<SelectableText> actionTexts; // ActionList内のテキストリスト
-    Action selectedAction;
+    ActionType selectedAction;
     private int previousAction;
     public int selectedIndex;
 
@@ -56,7 +55,7 @@ public class ActionPanel : MonoBehaviour
                 selectableTexts[i].SetSelectedColor(selectedIndex == i);
             }
             // messageDialog.changeDialogType((BattleAction)selectedIndex);
-            actionBoard.changeDialogType((Action)selectedIndex);
+            actionBoard.changeDialogType((ActionType)selectedIndex);
             previousAction = selectedIndex;
         }
     }

@@ -54,7 +54,7 @@ public class ReserveSystem : MonoBehaviour
     {
         Debug.Log("ReserveStart");
         state = ReserveState.Start;
-        actionBoard.changeDialogType(Action.Talk);
+        actionBoard.changeDialogType(ActionType.Talk);
         actionPanel.SetActionValidity(1f);
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
@@ -65,7 +65,7 @@ public class ReserveSystem : MonoBehaviour
 
     public void SetupReserve(Battler player)
     {
-        actionBoard.changeDialogType(Action.Talk);
+        actionBoard.changeDialogType(ActionType.Talk);
     }
 
     public IEnumerator SetReserveState(ReserveState newState)
@@ -90,23 +90,23 @@ public class ReserveSystem : MonoBehaviour
 
     public IEnumerator HandleActionExecution()
     {
-        Action action = (Action)actionPanel.selectedIndex;
+        ActionType action = (ActionType)actionPanel.selectedIndex;
 
         switch (action)
         {
-            case Action.Talk:
+            case ActionType.Talk:
                 yield return StartCoroutine(TalkTurn());
                 break;
-            case Action.Attack:
+            case ActionType.Attack:
                 yield return StartCoroutine(AttackTurn());
                 break;
-            case Action.Command:
+            case ActionType.Command:
                 yield return StartCoroutine(CommandTurn());
                 break;
-            case Action.Item:
+            case ActionType.Item:
                 yield return StartCoroutine(ItemTurn());
                 break;
-            case Action.Escape:
+            case ActionType.Escape:
                 yield return StartCoroutine(ResorveEnd());
                 break;
         }
