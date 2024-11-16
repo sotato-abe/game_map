@@ -70,7 +70,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
-        actionBoard.changeDialogType(Action.Talk);
+        actionBoard.changeDialogType(ActionType.Talk);
         yield return StartCoroutine(actionBoard.SetMessageText($"{enemy.Base.Name} is coming!!"));
     }
 
@@ -112,23 +112,23 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator HandleActionExecution()
     {
-        Action action = (Action)actionPanel.selectedIndex;
+        ActionType action = (ActionType)actionPanel.selectedIndex;
 
         switch (action)
         {
-            case Action.Talk:
+            case ActionType.Talk:
                 yield return StartCoroutine(TalkTurn());
                 break;
-            case Action.Attack:
+            case ActionType.Attack:
                 yield return StartCoroutine(AttackTurn());
                 break;
-            case Action.Command:
+            case ActionType.Command:
                 yield return StartCoroutine(CommandTurn());
                 break;
-            case Action.Item:
+            case ActionType.Item:
                 yield return StartCoroutine(ItemTurn());
                 break;
-            case Action.Escape:
+            case ActionType.Escape:
                 yield return StartCoroutine(EscapeTurn());
                 break;
         }
