@@ -36,7 +36,12 @@ public class TalkPanel : MonoBehaviour
             text.text += letter;
             yield return new WaitForSeconds(letterPerSecond);
         }
-        yield return new WaitForSeconds(2.0f);
+        StartCoroutine(CloseTypeDialog());
+    }
+
+    public IEnumerator CloseTypeDialog()
+    {
+        yield return new WaitForSeconds(3f);
         transform.gameObject.SetActive(false);
     }
 
