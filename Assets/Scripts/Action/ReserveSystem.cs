@@ -18,7 +18,6 @@ public class ReserveSystem : MonoBehaviour
     void Start()
     {
         transform.gameObject.SetActive(false);
-        actionPanel.Init();
     }
 
     public void Update()
@@ -61,11 +60,6 @@ public class ReserveSystem : MonoBehaviour
         messagePanel.gameObject.SetActive(true);
         StartCoroutine(playerUnit.SetTalkMessage("let's see"));
         StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
-    }
-
-    public void SetupReserve(Battler player)
-    {
-        actionBoard.changeDialogType(ActionType.Talk);
     }
 
     public IEnumerator SetReserveState(ReserveState newState)
