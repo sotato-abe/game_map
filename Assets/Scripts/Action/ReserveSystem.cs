@@ -43,7 +43,7 @@ public class ReserveSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                actionPanel.SetActionValidity(0.2f);
+                actionPanel.SetPanelValidity(0.2f);
                 StartCoroutine(SetReserveState(ReserveState.ActionExecution));
             }
         }
@@ -54,12 +54,12 @@ public class ReserveSystem : MonoBehaviour
         Debug.Log("ReserveStart");
         state = ReserveState.Start;
         actionBoard.changeDialogType(ActionType.Talk);
-        actionPanel.SetActionValidity(1f);
+        actionPanel.SetPanelValidity(1f);
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
-        messagePanel.gameObject.SetActive(true);
         StartCoroutine(playerUnit.SetTalkMessage("let's see"));
         StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
+        messagePanel.gameObject.SetActive(true);
     }
 
     public IEnumerator SetReserveState(ReserveState newState)
@@ -104,7 +104,7 @@ public class ReserveSystem : MonoBehaviour
                 yield return StartCoroutine(ResorveEnd());
                 break;
         }
-        actionPanel.SetActionValidity(1f);
+        actionPanel.SetPanelValidity(1f);
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
     }
 

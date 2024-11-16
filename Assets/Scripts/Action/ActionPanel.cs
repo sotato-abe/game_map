@@ -12,6 +12,7 @@ public class ActionPanel : MonoBehaviour
     [SerializeField] ActionBoard actionBoard;
     private List<SelectableText> actionTexts; // ActionList内のテキストリスト
     ActionType selectedAction;
+    private Coroutine fadeCoroutine;
 
     private int actionCount = System.Enum.GetValues(typeof(ActionType)).Length;
     public int selectedIndex;
@@ -103,10 +104,41 @@ public class ActionPanel : MonoBehaviour
     }
 
     // フォントの透明度制御
-    public void SetActionValidity(float alpha)
+    public void SetPanelValidity(float targetAlpha, float duration = 0.5f)
     {
-        Color bgColor = dialogBackground.color;
-        bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
-        dialogBackground.color = bgColor;
+        // 既存のフェードコルーチンが動いている場合は停止
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+        }
+
+        // 新しいフェードコルーチンを開始
+        fadeCoroutine = StartCoroutine(FadeToAlpha(targetAlpha, duration));
+    }
+
+    private IEnumerator FadeToAlpha(float targetAlpha, float duration)
+    {
+        float startAlpha = dialogBackground.color.a; // 現在のアルファ値
+        float time = 0f;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration); // 線形補間でアルファ値を更新
+
+            Color bgColor = dialogBackground.color;
+            bgColor.a = alpha;
+            dialogBackground.color = bgColor;
+
+            yield return null; // 次のフレームまで待機
+        }
+
+        // 最後に目標のアルファ値に確定
+        Color finalColor = dialogBackground.color;
+        finalColor.a = targetAlpha;
+        dialogBackground.color = finalColor;
+
+        // コルーチンの参照をクリア
+        fadeCoroutine = null;
     }
 }
