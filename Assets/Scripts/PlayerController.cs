@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         battler.Init();
         playerUnit.Setup(battler);
+        StartCoroutine(playerUnit.SetTalkMessage("start.."));
         // 仮でここで定義（後でマップ更新時に更新されるようにする）
         width = mapBase.MapWidth;
         height = mapBase.MapHeight;
