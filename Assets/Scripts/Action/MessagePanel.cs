@@ -64,6 +64,6 @@ public class MessagePanel : MonoBehaviour
     private IEnumerator FadeOutAlpha()
     {
         yield return new WaitForSeconds(5f);
-        SetPanelValidity(0.5f);
+        SetPanelValidity(0.2f);
     }
 }
