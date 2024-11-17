@@ -8,10 +8,10 @@ public class Battler
     [SerializeField] BattlerBase _base;
     [SerializeField] int level;
     [SerializeField] int soul;
-
     [SerializeField] private List<Equipment> equipments = new List<Equipment>();
     [SerializeField] private List<Item> inventory = new List<Item>();
     [SerializeField] private List<Command> deck = new List<Command>();
+
     public List<Equipment> Equipments { get => equipments; }
     public List<Item> Inventory { get => inventory; }
     public List<Command> Deck { get => deck; }
@@ -27,8 +27,10 @@ public class Battler
     public int Technique { get; set; }
     public int Defense { get; set; }
     public int Speed { get; set; }
+    public int Money { get; set; }
+    public int Disk { get; set; }
 
-    public void Init()
+    public virtual void Init()
     {
         MaxLife = _base.MaxLife;
         Life = MaxLife;
@@ -38,6 +40,8 @@ public class Battler
         Technique = _base.Technique;
         Defense = _base.Defense;
         Speed = _base.Speed;
+        Money = _base.Money;
+        Disk = _base.Disk;
 
         equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
         inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
