@@ -40,4 +40,13 @@ public class SelectableText : MonoBehaviour
     {
         textAlpha = alpha;
     }
+
+    public void SetText(string line)
+    {
+        if (text == null)
+        {
+            text = GetComponent<TextMeshProUGUI>();
+        }
+        text.text = line;
+    }
 }

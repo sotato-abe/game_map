@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
+    [SerializeField] AgeTimePanel ageTimePanel;
+    [SerializeField] MessagePanel messagePanel;
 
     Battler enemy;
 
@@ -17,7 +19,8 @@ public class GameController : MonoBehaviour
         playerController.OnEncount += BattleStart;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        reserveSystem.ActionPanel.SetActionValidity(0.2f);
+        reserveSystem.ActionPanel.SetPanelValidity(0.2f);
+        StartCoroutine(messagePanel.TypeDialog("game start"));
     }
 
     public void ReserveStart()
@@ -26,6 +29,7 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(false);
         reserveSystem.gameObject.SetActive(true);
         reserveSystem.ReserveStart(playerController.Battler);
+        ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 
     public void ReserveEnd()
@@ -33,6 +37,7 @@ public class GameController : MonoBehaviour
         playerController.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
         fieldInfoSystem.FieldDialogOpen();
+        ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
     public void BattleStart()
@@ -44,6 +49,7 @@ public class GameController : MonoBehaviour
         enemy = fieldInfoSystem.GetRandomEnemy();
         enemy.Init();
         battleSystem.BattleStart(playerController.Battler, enemy);
+        ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 
     public void BattleEnd()
@@ -51,6 +57,7 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(false);
         fieldInfoSystem.FieldDialogOpen();
         playerController.SetMoveFlg(true);
+        ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
     void Update()

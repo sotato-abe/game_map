@@ -7,13 +7,12 @@ using TMPro;
 public class ActionBoard : MonoBehaviour
 {
     // Start is called before the first frame update
-
     [SerializeField] ActionPanel actionPanel;
     [SerializeField] AttackPanel attackPanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] CommandPanel commandPanel;
     [SerializeField] ItemPanel itemPanel;
-    Action action;
+    ActionType action;
 
     public ItemPanel ItemPanel => itemPanel;
 
@@ -22,24 +21,24 @@ public class ActionBoard : MonoBehaviour
         action = 0;
     }
 
-    public void changeDialogType(Action targetAction)
+    public void changeDialogType(ActionType targetAction)
     {
         action = targetAction;
         switch (action)
         {
-            case Action.Talk:
+            case ActionType.Talk:
                 SetTalkPanel();
                 break;
-            case Action.Attack:
+            case ActionType.Attack:
                 SetAttackPanel();
                 break;
-            case Action.Command:
+            case ActionType.Command:
                 SetCommandPanel();
                 break;
-            case Action.Item:
+            case ActionType.Item:
                 SetItemPanel();
                 break;
-            case Action.Escape:
+            case ActionType.Escape:
                 SetEscapeDialog();
                 break;
         }
@@ -49,17 +48,17 @@ public class ActionBoard : MonoBehaviour
     {
         switch (action)
         {
-            case Action.Talk:
+            case ActionType.Talk:
                 break;
-            case Action.Attack:
+            case ActionType.Attack:
                 break;
-            case Action.Command:
+            case ActionType.Command:
                 commandPanel.SelectCommand(targetDirection);
                 break;
-            case Action.Item:
+            case ActionType.Item:
                 itemPanel.SelectItem(targetDirection);
                 break;
-            case Action.Escape:
+            case ActionType.Escape:
                 break;
         }
     }
