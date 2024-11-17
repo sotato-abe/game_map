@@ -229,6 +229,14 @@ public class BattleSystem : MonoBehaviour
             {
                 resultItemMessage += $"{item.Base.Name},";
             }
+            sourceUnit.Battler.Money += targetUnit.Battler.Money;
+            sourceUnit.Battler.Disk += targetUnit.Battler.Disk;
+            // playerUnit.Battler.UpdatePropertyPanel();
+            if (playerUnit.Battler is PlayerBattler playerBattler)
+            {
+                playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
+            }
+
             yield return StartCoroutine(actionBoard.SetMessageText(resultItemMessage));
             StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} won the battle.."));
         }
