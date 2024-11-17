@@ -10,6 +10,7 @@ public class ReserveSystem : MonoBehaviour
     public UnityAction OnReserveEnd;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
+    [SerializeField] MessagePanel messagePanel;
     [SerializeField] BattleUnit playerUnit;
 
     public ActionPanel ActionPanel => actionPanel;
@@ -17,7 +18,6 @@ public class ReserveSystem : MonoBehaviour
     void Start()
     {
         transform.gameObject.SetActive(false);
-        actionPanel.Init();
     }
 
     public void Update()
@@ -43,7 +43,7 @@ public class ReserveSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                actionPanel.SetActionValidity(0.2f);
+                actionPanel.SetPanelValidity(0.2f);
                 StartCoroutine(SetReserveState(ReserveState.ActionExecution));
             }
         }
@@ -51,18 +51,15 @@ public class ReserveSystem : MonoBehaviour
 
     public void ReserveStart(Battler player)
     {
+        Debug.Log("ReserveStart");
         state = ReserveState.Start;
-        actionBoard.changeDialogType(Action.Talk);
-        // StartCoroutine(actionBoard.SetMessageText("Sola fished through the bag."));
-        actionBoard.changeDialogType(Action.Talk);
-        actionPanel.SetActionValidity(1f);
+        actionBoard.changeDialogType(ActionType.Talk);
+        actionPanel.SetPanelValidity(1f);
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
-    }
-
-    public void SetupReserve(Battler player)
-    {
-        actionBoard.changeDialogType(Action.Talk);
+        StartCoroutine(playerUnit.SetTalkMessage("let's see"));
+        StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
+        messagePanel.gameObject.SetActive(true);
     }
 
     public IEnumerator SetReserveState(ReserveState newState)
@@ -87,27 +84,27 @@ public class ReserveSystem : MonoBehaviour
 
     public IEnumerator HandleActionExecution()
     {
-        Action action = (Action)actionPanel.selectedIndex;
+        ActionType action = (ActionType)actionPanel.selectedIndex;
 
         switch (action)
         {
-            case Action.Talk:
+            case ActionType.Talk:
                 yield return StartCoroutine(TalkTurn());
                 break;
-            case Action.Attack:
+            case ActionType.Attack:
                 yield return StartCoroutine(AttackTurn());
                 break;
-            case Action.Command:
+            case ActionType.Command:
                 yield return StartCoroutine(CommandTurn());
                 break;
-            case Action.Item:
+            case ActionType.Item:
                 yield return StartCoroutine(ItemTurn());
                 break;
-            case Action.Escape:
+            case ActionType.Escape:
                 yield return StartCoroutine(ResorveEnd());
                 break;
         }
-        actionPanel.SetActionValidity(1f);
+        actionPanel.SetPanelValidity(1f);
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
     }
 
@@ -141,7 +138,7 @@ public class ReserveSystem : MonoBehaviour
     {
         state = ReserveState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("all right")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText("Sola closed the back"));
+        yield return StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} closed the back"));
         yield return new WaitForSeconds(1.0f);
         OnReserveEnd?.Invoke();
     }

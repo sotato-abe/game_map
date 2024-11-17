@@ -9,16 +9,16 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     public UnityAction OnBattleEnd;
     [SerializeField] BattleCanvas battleCanvas;
+    [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
-    [SerializeField] EnemyDialog enemyDialog;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
 
     void Start()
     {
         transform.gameObject.SetActive(false);
-        actionPanel.Init();
+        enemyUnit.gameObject.SetActive(false);
     }
 
     public void Update()
@@ -44,7 +44,7 @@ public class BattleSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                actionPanel.SetActionValidity(0.2f);
+                actionPanel.SetPanelValidity(0.2f);
                 StartCoroutine(SetBattleState(BattleState.ActionExecution));
             }
         }
@@ -55,18 +55,21 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
         battleCanvas.gameObject.SetActive(true);
-        actionPanel.SetActionValidity(1f);
+        actionPanel.SetPanelValidity(0.2f);
+        enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
-        state = BattleState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
-        StartCoroutine(SetBattleState(BattleState.ActionSelection));
+        state = BattleState.TurnWait;
+        List<Battler> battlers = new List<Battler> { player, enemy };
+        turnOrderSystem.SetUpBattlerTurns(battlers);
+        turnOrderSystem.SetActive(true);
     }
 
     public IEnumerator SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
-        actionBoard.changeDialogType(Action.Talk);
+        actionBoard.changeDialogType(ActionType.Talk);
         yield return StartCoroutine(actionBoard.SetMessageText($"{enemy.Base.Name} is coming!!"));
     }
 
@@ -78,6 +81,7 @@ public class BattleSystem : MonoBehaviour
             case BattleState.Start:
                 break;
             case BattleState.TurnWait:
+                HandleTurnWait();
                 break;
             case BattleState.ActionSelection:
                 HandleActionSelection();
@@ -94,34 +98,41 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    void HandleTurnWait()
+    {
+        turnOrderSystem.EndTurn();
+        actionPanel.SetPanelValidity(0.2f);
+    }
+
     void HandleActionSelection()
     {
+        actionPanel.SetPanelValidity(1.0f);
     }
 
     public IEnumerator HandleActionExecution()
     {
-        Action action = (Action)actionPanel.selectedIndex;
+        ActionType action = (ActionType)actionPanel.selectedIndex;
 
         switch (action)
         {
-            case Action.Talk:
+            case ActionType.Talk:
                 yield return StartCoroutine(TalkTurn());
                 break;
-            case Action.Attack:
+            case ActionType.Attack:
                 yield return StartCoroutine(AttackTurn());
                 break;
-            case Action.Command:
+            case ActionType.Command:
                 yield return StartCoroutine(CommandTurn());
                 break;
-            case Action.Item:
+            case ActionType.Item:
                 yield return StartCoroutine(ItemTurn());
                 break;
-            case Action.Escape:
+            case ActionType.Escape:
                 yield return StartCoroutine(EscapeTurn());
                 break;
         }
-        actionPanel.SetActionValidity(1f);
-        StartCoroutine(SetBattleState(BattleState.ActionSelection));
+        actionPanel.SetPanelValidity(1f);
+        StartCoroutine(SetBattleState(BattleState.TurnWait));
     }
 
     public IEnumerator TalkTurn()
@@ -136,10 +147,6 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.ActionExecution;
         yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
-        if (state != BattleState.BattleResult)
-        {
-            yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
-        }
     }
 
     public IEnumerator CommandTurn()
@@ -197,21 +204,33 @@ public class BattleSystem : MonoBehaviour
             int itemsToAward = Mathf.Min(2, targetItems.Count); // 最大2個
             List<Item> awardedItems = new List<Item>();
 
+            // アイテムリストをシャッフル
+            List<Item> shuffledItems = new List<Item>(targetItems);
+            for (int i = 0; i < shuffledItems.Count; i++)
+            {
+                Item temp = shuffledItems[i];
+                int randomIndex = Random.Range(i, shuffledItems.Count);
+                shuffledItems[i] = shuffledItems[randomIndex];
+                shuffledItems[randomIndex] = temp;
+            }
+
+            // シャッフルされたリストから最大2つを選択
             for (int i = 0; i < itemsToAward; i++)
             {
-                Item randomItem = targetItems[Random.Range(0, targetItems.Count)];
+                Item randomItem = shuffledItems[i];
                 awardedItems.Add(randomItem);
                 sourceUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
             }
 
-            string resultitemessage = $"{sourceUnit.Battler.Base.Name} obtained ";
+            string resultItemMessage = $"{sourceUnit.Battler.Base.Name} obtained ";
 
             // 獲得したアイテムを表示
             foreach (Item item in awardedItems)
             {
-                resultitemessage += $"{item.Base.Name},";
+                resultItemMessage += $"{item.Base.Name},";
             }
-            yield return StartCoroutine(actionBoard.SetMessageText(resultitemessage));
+            yield return StartCoroutine(actionBoard.SetMessageText(resultItemMessage));
+            StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} won the battle.."));
         }
         else
         {
@@ -222,8 +241,16 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetBattleState(BattleState.BattleOver));
     }
 
+    public IEnumerator EnemyAttack()
+    {
+        Debug.Log("EnemyAttack");
+        yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
+        turnOrderSystem.EndTurn();
+    }
+
     public void BattleEnd()
     {
+        enemyUnit.gameObject.SetActive(false);
         OnBattleEnd?.Invoke();
     }
 }
