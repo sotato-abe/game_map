@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
-    [SerializeField] Battler battler;
+    [SerializeField] PlayerBattler battler;
     [SerializeField] BattleUnit playerUnit;
 
     private GenerateSeedMap generateSeedMap;
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public UnityAction OnEncount;
     public UnityAction OnReserve;
 
-    public Battler Battler { get => battler; }
+    public PlayerBattler Battler { get => battler; }
 
     private void Awake()
     {
