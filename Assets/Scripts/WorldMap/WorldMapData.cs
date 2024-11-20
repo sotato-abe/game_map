@@ -11,7 +11,7 @@ public class WorldMapData
     [Serializable]
     public class LayerData
     {
-        public LayerType layerType;  // レイヤータイプ
-        public int[,] tiles;         // タイルマップ（例: タイルIDなど）
+        public MapType mapType;  // マップタイプ
+        public int[,] tiles;  // タイルマップ（例: タイルIDなど）
     }
 }
