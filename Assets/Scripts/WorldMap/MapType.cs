@@ -1,4 +1,4 @@
-public enum LayerType
+public enum MapType
 {
         Base,
         Ground,
