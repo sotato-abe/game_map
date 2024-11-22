@@ -8,4 +8,7 @@ public enum FloorTileType
         Snow, // 雪
         Ice, // 氷床
         Pollution, // 汚染
+        // -75,-75,0
+        //  75,49,0
+        // 150,124,0
 }
