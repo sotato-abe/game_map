@@ -7,6 +7,7 @@ using Newtonsoft.Json; // Newtonsoft.Jsonをインポート
 public class WorldMapSystem : MonoBehaviour
 {
     [SerializeField] private Tilemap groundTilemap; // 対象のTilemap
+    [SerializeField] private Tilemap baseTilemap; // 対象のTilemap
 
     private void Start()
     {
@@ -39,8 +40,30 @@ public class WorldMapSystem : MonoBehaviour
             for (int x = bounds.xMin; x < bounds.xMax; x++)
             {
                 Vector3Int position = new Vector3Int(x, y, 0);
-                bool hasTile = groundTilemap.HasTile(position); // タイルの有無をチェック
-                row[x - bounds.xMin] = hasTile ? 1 : 0;  // タイルがあれば1、なければ0を追加
+                bool hasGroundTile = groundTilemap.HasTile(position); // 地面タイルの有無をチェック
+                bool hasBaseTile = baseTilemap.HasTile(position); // ベースタイルの有無をチェック
+                int tileType = 1;
+                if (hasGroundTile)
+                {
+                    TileBase tile = groundTilemap.GetTile(position); //
+                    if (tile.name == "The_Roguelike_1-13-10_Alpha_488")
+                    {
+                        tileType = 3;
+                    }
+                }
+                else if (hasBaseTile)
+                {
+                    TileBase tile = baseTilemap.GetTile(position); //
+                    if (tile.name == "The_Roguelike_1-13-10_Alpha_621")
+                    {
+                        tileType = 1;
+                    }
+                    else if (tile.name == "The_Roguelike_1-13-10_Alpha_622")
+                    {
+                        tileType = 2;
+                    }
+                }
+                row[x - bounds.xMin] = tileType;  // タイルがあれば1、なければ0を追加
             }
             tileData.Add(row);  // 1行分を追加
         }
