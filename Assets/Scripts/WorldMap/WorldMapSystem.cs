@@ -8,7 +8,8 @@ public class WorldMapSystem : MonoBehaviour
 {
     [SerializeField] private Tilemap targetTilemap;   // ベースレイヤーのTilemap
     [SerializeField] private Tilemap renderTilemap; // 描画用Tilemap
-    [SerializeField] private TileManager tileManager;
+    [SerializeField] private GroundTileManager groundTileManager;
+    [SerializeField] private FieldTileManager fieldTileManager;
     // [SerializeField] private TileBase defaultTile;
     [SerializeField] private string fileName = "TileMapData.json";
     [SerializeField] private bool loadSwitch = true;
@@ -102,8 +103,8 @@ public class WorldMapSystem : MonoBehaviour
             {
                 int tileID = mapData.data[y][x];
 
-                // tileManager または GetTile が null の場合に備えたチェック
-                GroundTileBase groundTile = tileManager != null ? tileManager.GetTile((GroundTileType)tileID) : null;
+                // GroundTileManager または GetTile が null の場合に備えたチェック
+                GroundTileBase groundTile = groundTileManager != null ? groundTileManager.GetTile((GroundType)tileID) : null;
 
                 if (groundTile != null)
                 {
@@ -111,10 +112,6 @@ public class WorldMapSystem : MonoBehaviour
                     tile.sprite = groundTile.Sprite;
                     renderTilemap.SetTile(new Vector3Int(x, y, 0), tile);
                     Debug.Log($"Tile at ({x}, {y}): {mapData.data[y][x]}");
-                }
-                else
-                {
-                    // renderTilemap.SetTile(new Vector3Int(x, -y, 0), defaultTile);
                 }
             }
         }
@@ -158,8 +155,14 @@ public class WorldMapSystem : MonoBehaviour
             TileBase tile = targetTilemap.GetTile(position);
             return tile?.name switch
             {
-                "The_Roguelike_1-13-10_Alpha_621" => 0,
-                "The_Roguelike_1-13-10_Alpha_622" => 1,
+                "The_Roguelike_1-13-10_Alpha_447" => 1,
+                "The_Roguelike_1-13-10_Alpha_451" => 2,
+                "The_Roguelike_1-13-10_Alpha_443" => 3,
+                "The_Roguelike_1-13-10_Alpha_441" => 4,
+                "The_Roguelike_1-13-10_Alpha_631" => 5,
+                "The_Roguelike_1-13-10_Alpha_629" => 6,
+                "The_Roguelike_1-13-10_Alpha_603" => 7,
+                "The_Roguelike_1-13-10_Alpha_437" => 8,
                 _ => 0
             };
         }

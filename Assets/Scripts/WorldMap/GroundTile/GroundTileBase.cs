@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class GroundTileBase : ScriptableObject
 {
-    [SerializeField] GroundTileType id;
+    [SerializeField] GroundType id;
     [SerializeField] Sprite sprite;
 
-    public GroundTileType ID { get => id; }
+    public GroundType ID { get => id; }
     public Sprite Sprite { get => sprite; }
 }

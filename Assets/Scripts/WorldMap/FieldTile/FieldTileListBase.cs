@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu]
 public class FieldTileListBase : ScriptableObject
 {
-    [SerializeField] FloorTileType type;
+    [SerializeField] FieldType type;
     [SerializeField] Sprite floor;
     [SerializeField] Sprite tree;
     [SerializeField] Sprite grass;
     [SerializeField] Sprite rock;
 
-    public FloorTileType Type { get => type; }
+    public FieldType Type { get => type; }
     public Sprite Floor { get => floor; }
     public Sprite Tree { get => tree; }
     public Sprite Grass { get => grass; }
