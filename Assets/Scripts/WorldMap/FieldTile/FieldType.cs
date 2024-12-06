@@ -1,4 +1,4 @@
-public enum FloorTileType
+public enum FieldType
 {
         Desert,         // 砂漠 447
         Wilderness,     // 荒野 451
