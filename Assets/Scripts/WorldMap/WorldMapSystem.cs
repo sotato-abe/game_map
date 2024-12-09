@@ -155,14 +155,30 @@ public class WorldMapSystem : MonoBehaviour
             TileBase tile = targetTilemap.GetTile(position);
             return tile?.name switch
             {
-                "The_Roguelike_1-13-10_Alpha_447" => 1,
-                "The_Roguelike_1-13-10_Alpha_451" => 2,
-                "The_Roguelike_1-13-10_Alpha_443" => 3,
-                "The_Roguelike_1-13-10_Alpha_441" => 4,
-                "The_Roguelike_1-13-10_Alpha_631" => 5,
-                "The_Roguelike_1-13-10_Alpha_629" => 6,
-                "The_Roguelike_1-13-10_Alpha_603" => 7,
-                "The_Roguelike_1-13-10_Alpha_437" => 8,
+                "The_Roguelike_1-13-10_Alpha_234" => 1,
+                "The_Roguelike_1-13-10_Alpha_236" => 1,
+                "The_Roguelike_1-13-10_Alpha_230" => 1,
+                "The_Roguelike_1-13-10_Alpha_237" => 1,
+                "The_Roguelike_1-13-10_Alpha_255" => 1,
+                "The_Roguelike_1-13-10_Alpha_235" => 1,
+                "The_Roguelike_1-13-10_Alpha_267" => 1,
+                "The_Roguelike_1-13-10_Alpha_247" => 1,
+                "The_Roguelike_1-13-10_Alpha_288" => 2,
+                "The_Roguelike_1-13-10_Alpha_342" => 2,
+                "The_Roguelike_1-13-10_Alpha_272" => 2,
+                "The_Roguelike_1-13-10_Alpha_297" => 2,
+                "The_Roguelike_1-13-10_Alpha_277" => 2,
+                "The_Roguelike_1-13-10_Alpha_354" => 2,
+                "The_Roguelike_1-13-10_Alpha_273" => 2,
+                "The_Roguelike_1-13-10_Alpha_358" => 2,
+                "The_Roguelike_1-13-10_Alpha_406" => 3,
+                "The_Roguelike_1-13-10_Alpha_409" => 3,
+                "The_Roguelike_1-13-10_Alpha_397" => 3,
+                "The_Roguelike_1-13-10_Alpha_404" => 3,
+                "The_Roguelike_1-13-10_Alpha_400" => 3,
+                "The_Roguelike_1-13-10_Alpha_388" => 3,
+                "The_Roguelike_1-13-10_Alpha_398" => 3,
+                "The_Roguelike_1-13-10_Alpha_396" => 3,
                 _ => 0
             };
         }
