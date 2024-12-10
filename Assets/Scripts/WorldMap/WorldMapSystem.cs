@@ -155,7 +155,17 @@ public class WorldMapSystem : MonoBehaviour
             TileBase tile = targetTilemap.GetTile(position);
             return tile?.name switch
             {
-                "The_Roguelike_1-13-10_Alpha_1872" => 1,
+                "The_Roguelike_1-13-10_Alpha_557" => 5,
+                "The_Roguelike_1-13-10_Alpha_558" => 6,
+                "The_Roguelike_1-13-10_Alpha_554" => 7,
+                "The_Roguelike_1-13-10_Alpha_555" => 8,
+                "The_Roguelike_1-13-10_Alpha_553" => 9,
+                "The_Roguelike_1-13-10_Alpha_556" => 10,
+                "The_Roguelike_1-13-10_Alpha_562" => 11,
+                "The_Roguelike_1-13-10_Alpha_560" => 12,
+                "The_Roguelike_1-13-10_Alpha_561" => 13,
+                "The_Roguelike_1-13-10_Alpha_559" => 14,
+                "The_Roguelike_1-13-10_Alpha_563" => 15,
                 _ => 0
             };
         }
