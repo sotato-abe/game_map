@@ -119,7 +119,7 @@ public class WorldMapSystem : MonoBehaviour
                 int fieldID = floorData.data[y][x];
                 int tileID = fieldData.data[y][x];
                 // デフォルトフィールドタイプのフロアは無視する
-                if (fieldID != 0 && tileID != 0)
+                if (tileID != 0)
                 {
                     // FieldTileManager または GetTile が null の場合に備えたチェック
                     Sprite fieldSprite = fieldTileManager != null ? fieldTileManager.GetTile((FieldType)fieldID, tileID) : null;
