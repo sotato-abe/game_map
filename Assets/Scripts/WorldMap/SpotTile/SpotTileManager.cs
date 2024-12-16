@@ -22,7 +22,6 @@ public class SpotTileManager : MonoBehaviour
 
     public Sprite GetTile(SpotType tileType)
     {
-        Debug.Log($"tileType:{tileType}/{tileDict[tileType].ID}");
         return tileDict != null && tileDict.ContainsKey(tileType)
             ? tileDict[tileType].Sprite
             : null;

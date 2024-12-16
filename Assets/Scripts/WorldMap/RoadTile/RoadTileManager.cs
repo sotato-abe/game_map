@@ -22,7 +22,6 @@ public class RoadTileManager : MonoBehaviour
 
     public Sprite GetTile(RoadType tileType)
     {
-        Debug.Log($"tileType:{tileType}/{tileDict[tileType].ID}");
         return tileDict != null && tileDict.ContainsKey(tileType)
             ? tileDict[tileType].Sprite
             : null;
