@@ -1,6 +1,6 @@
-public enum SpotTileType
+public enum SpotType
 {
         // とりあえず一つだけ
         // 後々スポット毎に増やしていく
-        Base,     // 新情報 1842
+        Default,        // デフォルト なし
 }
