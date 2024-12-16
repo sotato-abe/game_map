@@ -20,7 +20,6 @@ public class FieldTileManager : MonoBehaviour
     public Sprite GetTile(FieldType fieldType, int tileType)
     {
         // fieldType に一致する FieldTileListBase を取得
-        Debug.Log($"tileType:{fieldType}");
         var fieldTileList = tileLists[(int)fieldType];
 
         if (fieldTileList == null)
@@ -38,5 +37,21 @@ public class FieldTileManager : MonoBehaviour
             3 => fieldTileList.Rock,
             _ => throw new System.ArgumentOutOfRangeException($"Invalid tileType: {tileType}. Must be between 0 and 3.")
         };
+    }
+
+    public Sprite GetFloorTile(FieldType fieldType)
+    {
+        if (fieldType == 0)
+        {
+            return null;
+        }
+
+        var fieldTileList = tileLists[(int)fieldType];
+        if (fieldTileList == null)
+        {
+            Debug.LogError($"FieldTileList not found for FieldType: {fieldType}");
+            return null;
+        }
+        return fieldTileList.Floor;
     }
 }

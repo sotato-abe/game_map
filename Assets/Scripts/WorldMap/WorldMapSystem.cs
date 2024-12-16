@@ -7,11 +7,11 @@ using Newtonsoft.Json; // Newtonsoft.Jsonを使用
 public class WorldMapSystem : MonoBehaviour
 {
     [SerializeField] private Tilemap targetTilemap;   // ベースレイヤーのTilemap
-    [SerializeField] private Tilemap groundTilemap; // 描画用Tilemap
-    [SerializeField] private Tilemap floorTilemap; // 描画用Tilemap
-    [SerializeField] private Tilemap fieldTilemap; // 描画用Tilemap
-    [SerializeField] private Tilemap roadTilemap; // 描画用Tilemap
-    [SerializeField] private Tilemap spotTilemap; // 描画用Tilemap
+    [SerializeField] private Tilemap groundTilemap; // グラウンド描画用Tilemap
+    [SerializeField] private Tilemap floorTilemap; // フロア描画用Tilemap
+    [SerializeField] private Tilemap fieldTilemap; // フィールド描画用Tilemap
+    [SerializeField] private Tilemap roadTilemap; // ロード描画用Tilemap
+    [SerializeField] private Tilemap spotTilemap; // スポット描画用Tilemap
     [SerializeField] private GroundTileManager groundTileManager;
     [SerializeField] private FieldTileManager fieldTileManager;
     [SerializeField] private RoadTileManager roadTileManager;
@@ -26,6 +26,7 @@ public class WorldMapSystem : MonoBehaviour
     {
         // マップデータを読み込んで描画
         RenderGroundMap();
+        RenderFloorMap();
         RenderFieldMap();
         RenderRoadMap();
         RenderSpotMap();
@@ -80,10 +81,36 @@ public class WorldMapSystem : MonoBehaviour
         }
     }
 
-    public void RenderFieldMap()
+    public void RenderFloorMap()
     {
         TileMapData floorData = LoadJsonMapData(floorJsonData);
+
+        for (int y = 0; y < floorData.rows; y++)
+        {
+            for (int x = 0; x < floorData.cols; x++)
+            {
+                int floorID = floorData.data[y][x];
+                // デフォルトフィールドタイプのフロアは無視する
+                if (floorID != 0)
+                {
+                    // FieldTileManager または GetTile が null の場合に備えたチェック
+                    Sprite floorSprite = fieldTileManager != null ? fieldTileManager.GetFloorTile((FieldType)floorID) : null;
+
+                    if (floorSprite != null)
+                    {
+                        Tile floorTile = ScriptableObject.CreateInstance<Tile>();
+                        floorTile.sprite = floorSprite;
+                        floorTilemap.SetTile(new Vector3Int(x, y, 0), floorTile);
+                    }
+                }
+            }
+        }
+    }
+
+    public void RenderFieldMap()
+    {
         TileMapData fieldData = LoadJsonMapData(fieldJsonData);
+        TileMapData floorData = LoadJsonMapData(floorJsonData);
 
         for (int y = 0; y < fieldData.rows; y++)
         {
@@ -95,13 +122,13 @@ public class WorldMapSystem : MonoBehaviour
                 if (fieldID != 0 && tileID != 0)
                 {
                     // FieldTileManager または GetTile が null の場合に備えたチェック
-                    Sprite fieldTile = fieldTileManager != null ? fieldTileManager.GetTile((FieldType)fieldID, tileID) : null;
+                    Sprite fieldSprite = fieldTileManager != null ? fieldTileManager.GetTile((FieldType)fieldID, tileID) : null;
 
-                    if (fieldTile != null)
+                    if (fieldSprite != null)
                     {
-                        Tile tile = ScriptableObject.CreateInstance<Tile>();
-                        tile.sprite = fieldTile;
-                        fieldTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                        Tile fieldTile = ScriptableObject.CreateInstance<Tile>();
+                        fieldTile.sprite = fieldSprite;
+                        fieldTilemap.SetTile(new Vector3Int(x, y, 0), fieldTile);
                     }
                 }
             }
