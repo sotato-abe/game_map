@@ -12,6 +12,11 @@ public class WorldMapSystem : MonoBehaviour
     [SerializeField] private FieldTileManager fieldTileManager;
     // [SerializeField] private TileBase defaultTile;
     [SerializeField] private string fileName = "TileMapData.json";
+    [SerializeField] private string groundData = "TileMapData.json";
+    [SerializeField] private string floorData = "TileMapData.json";
+    [SerializeField] private string fieldData = "TileMapData.json";
+    [SerializeField] private string spotData = "TileMapData.json";
+    [SerializeField] private string loadData = "TileMapData.json";
     [SerializeField] private bool loadSwitch = true;
 
     private void Start()
@@ -97,6 +102,7 @@ public class WorldMapSystem : MonoBehaviour
     /// </summary>
     public void RenderMap(TileMapData mapData)
     {
+        Debug.Log("RenderMap");
         for (int y = 0; y < mapData.rows; y++)
         {
             for (int x = 0; x < mapData.cols; x++)
