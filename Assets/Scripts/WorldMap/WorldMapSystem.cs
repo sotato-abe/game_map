@@ -7,10 +7,15 @@ using Newtonsoft.Json; // Newtonsoft.Jsonを使用
 public class WorldMapSystem : MonoBehaviour
 {
     [SerializeField] private Tilemap targetTilemap;   // ベースレイヤーのTilemap
-    [SerializeField] private Tilemap renderTilemap; // 描画用Tilemap
+    [SerializeField] private Tilemap groundTilemap; // 描画用Tilemap
+    [SerializeField] private Tilemap floorTilemap; // 描画用Tilemap
+    [SerializeField] private Tilemap fieldTilemap; // 描画用Tilemap
+    [SerializeField] private Tilemap roadTilemap; // 描画用Tilemap
+    [SerializeField] private Tilemap spotTilemap; // 描画用Tilemap
     [SerializeField] private GroundTileManager groundTileManager;
     [SerializeField] private FieldTileManager fieldTileManager;
     [SerializeField] private RoadTileManager roadTileManager;
+    [SerializeField] private SpotTileManager spotTileManager;
     private string groundJsonData = "GroundTileMapData";
     private string floorJsonData = "FloorTileMapData";
     private string fieldJsonData = "FieldTileMapData";
@@ -20,9 +25,10 @@ public class WorldMapSystem : MonoBehaviour
     private void Start()
     {
         // マップデータを読み込んで描画
-        // RenderGroundMap();
-        // RenderFieldMap();
+        RenderGroundMap();
+        RenderFieldMap();
         RenderRoadMap();
+        RenderSpotMap();
     }
 
     public TileMapData LoadJsonMapData(string fileName)
@@ -51,7 +57,7 @@ public class WorldMapSystem : MonoBehaviour
 
     public void RenderGroundMap()
     {
-        TileMapData mapData = LoadJsonMapData(fieldJsonData);
+        TileMapData mapData = LoadJsonMapData(groundJsonData);
 
         Debug.Log($"RenderMap:{mapData.rows}/{mapData.cols}");
         for (int y = 0; y < mapData.rows; y++)
@@ -67,7 +73,7 @@ public class WorldMapSystem : MonoBehaviour
                 {
                     Tile tile = ScriptableObject.CreateInstance<Tile>();
                     tile.sprite = groundTile.Sprite;
-                    renderTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                    groundTilemap.SetTile(new Vector3Int(x, y, 0), tile);
                     Debug.Log($"Tile at ({x}, {y}): {mapData.data[y][x]}");
                 }
             }
@@ -95,14 +101,14 @@ public class WorldMapSystem : MonoBehaviour
                     {
                         Tile tile = ScriptableObject.CreateInstance<Tile>();
                         tile.sprite = fieldTile;
-                        renderTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                        fieldTilemap.SetTile(new Vector3Int(x, y, 0), tile);
                     }
                 }
             }
         }
     }
 
-        public void RenderRoadMap()
+    public void RenderRoadMap()
     {
         TileMapData roadData = LoadJsonMapData(roadJsonData);
 
@@ -121,7 +127,33 @@ public class WorldMapSystem : MonoBehaviour
                     {
                         Tile tile = ScriptableObject.CreateInstance<Tile>();
                         tile.sprite = roadTile;
-                        renderTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                        roadTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                    }
+                }
+            }
+        }
+    }
+
+    public void RenderSpotMap()
+    {
+        TileMapData spotData = LoadJsonMapData(spotJsonData);
+
+        for (int y = 0; y < spotData.rows; y++)
+        {
+            for (int x = 0; x < spotData.cols; x++)
+            {
+                int spotID = spotData.data[y][x];
+                // スポットが敷かれていない場所は無視する
+                if (spotID != 0)
+                {
+                    // FieldTileManager または GetTile が null の場合に備えたチェック
+                    Sprite spotTile = spotTileManager != null ? spotTileManager.GetDefaultTile() : null;
+
+                    if (spotTile != null)
+                    {
+                        Tile tile = ScriptableObject.CreateInstance<Tile>();
+                        tile.sprite = spotTile;
+                        spotTilemap.SetTile(new Vector3Int(x, y, 0), tile);
                     }
                 }
             }
