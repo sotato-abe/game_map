@@ -10,73 +10,25 @@ public class WorldMapSystem : MonoBehaviour
     [SerializeField] private Tilemap renderTilemap; // 描画用Tilemap
     [SerializeField] private GroundTileManager groundTileManager;
     [SerializeField] private FieldTileManager fieldTileManager;
-    // [SerializeField] private TileBase defaultTile;
-    [SerializeField] private string fileName = "TileMapData.json";
-    [SerializeField] private string groundData = "TileMapData.json";
-    [SerializeField] private string floorData = "TileMapData.json";
-    [SerializeField] private string fieldData = "TileMapData.json";
-    [SerializeField] private string spotData = "TileMapData.json";
-    [SerializeField] private string loadData = "TileMapData.json";
-    [SerializeField] private bool loadSwitch = true;
+    [SerializeField] private RoadTileManager roadTileManager;
+    private string groundJsonData = "GroundTileMapData";
+    private string floorJsonData = "FloorTileMapData";
+    private string fieldJsonData = "FieldTileMapData";
+    private string roadJsonData = "RoadTileMapData";
+    private string spotJsonData = "SpotTileMapData";
 
     private void Start()
     {
-        if (loadSwitch)
-        {
-            // マップデータ読込
-            OutputTileMapData();
-        }
-        else
-        {
-            // マップデータを読み込んで描画
-            TileMapData mapData = LoadMapData();
-            if (mapData != null)
-            {
-                Debug.Log(mapData);
-                RenderMap(mapData);
-            }
-        }
+        // マップデータを読み込んで描画
+        // RenderGroundMap();
+        // RenderFieldMap();
+        RenderRoadMap();
     }
 
-    /// <summary>
-    /// TilemapのデータをJSON形式で出力
-    /// </summary>
-    public void OutputTileMapData()
+    public TileMapData LoadJsonMapData(string fileName)
     {
-        if (targetTilemap == null)
-        {
-            Debug.LogError("Tilemapが設定されていません。");
-            return;
-        }
-
-        // Tilemapの範囲とデータ取得
-        BoundsInt bounds = GetTilemapBounds(targetTilemap);
-        List<int[]> tileData = GetTileData(bounds);
-
-        // JSONデータ作成
-        TileMapData mapData = new TileMapData(tileData);
-        string jsonData = JsonConvert.SerializeObject(mapData, Formatting.Indented);
-
-        // JSONを保存
-        string filePath = Path.Combine(Application.persistentDataPath, "TileMapData.json");
-        try
-        {
-            File.WriteAllText(filePath, jsonData);
-            Debug.Log($"TileMapデータをJSON形式で保存しました: {filePath}");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"JSONファイルの保存に失敗しました: {e.Message}");
-        }
-    }
-
-    /// <summary>
-    /// マップデータを読込
-    /// </summary>
-    /// <returns></returns>
-    public TileMapData LoadMapData()
-    {
-        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
+        Debug.Log(filePath);
 
         if (!File.Exists(filePath))
         {
@@ -97,12 +49,11 @@ public class WorldMapSystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// マップを描画する
-    /// </summary>
-    public void RenderMap(TileMapData mapData)
+    public void RenderGroundMap()
     {
-        Debug.Log("RenderMap");
+        TileMapData mapData = LoadJsonMapData(fieldJsonData);
+
+        Debug.Log($"RenderMap:{mapData.rows}/{mapData.cols}");
         for (int y = 0; y < mapData.rows; y++)
         {
             for (int x = 0; x < mapData.cols; x++)
@@ -123,59 +74,57 @@ public class WorldMapSystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Tilemapの境界範囲を取得
-    /// </summary>
-    private BoundsInt GetTilemapBounds(Tilemap tilemap)
+    public void RenderFieldMap()
     {
-        tilemap.CompressBounds();
-        return tilemap.cellBounds;
-    }
+        TileMapData floorData = LoadJsonMapData(floorJsonData);
+        TileMapData fieldData = LoadJsonMapData(fieldJsonData);
 
-    /// <summary>
-    /// Tilemapのデータを取得
-    /// </summary>
-    private List<int[]> GetTileData(BoundsInt bounds)
-    {
-        List<int[]> tileData = new List<int[]>();
-        for (int y = bounds.yMin; y < bounds.yMax; y++)
+        for (int y = 0; y < fieldData.rows; y++)
         {
-            int[] row = new int[bounds.size.x];
-            for (int x = bounds.xMin; x < bounds.xMax; x++)
+            for (int x = 0; x < fieldData.cols; x++)
             {
-                Vector3Int position = new Vector3Int(x, y, 0);
-                row[x - bounds.xMin] = DetermineTileType(position);
+                int fieldID = floorData.data[y][x];
+                int tileID = fieldData.data[y][x];
+                // デフォルトフィールドタイプのフロアは無視する
+                if (fieldID != 0 && tileID != 0)
+                {
+                    // FieldTileManager または GetTile が null の場合に備えたチェック
+                    Sprite fieldTile = fieldTileManager != null ? fieldTileManager.GetTile((FieldType)fieldID, tileID) : null;
+
+                    if (fieldTile != null)
+                    {
+                        Tile tile = ScriptableObject.CreateInstance<Tile>();
+                        tile.sprite = fieldTile;
+                        renderTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                    }
+                }
             }
-            tileData.Add(row);
         }
-        return tileData;
     }
 
-    /// <summary>
-    /// タイルタイプを判定
-    /// </summary>
-    private int DetermineTileType(Vector3Int position)
+        public void RenderRoadMap()
     {
-        if (targetTilemap.HasTile(position))
-        {
-            TileBase tile = targetTilemap.GetTile(position);
-            return tile?.name switch
-            {
-                "The_Roguelike_1-13-10_Alpha_557" => 5,
-                "The_Roguelike_1-13-10_Alpha_558" => 6,
-                "The_Roguelike_1-13-10_Alpha_554" => 7,
-                "The_Roguelike_1-13-10_Alpha_555" => 8,
-                "The_Roguelike_1-13-10_Alpha_553" => 9,
-                "The_Roguelike_1-13-10_Alpha_556" => 10,
-                "The_Roguelike_1-13-10_Alpha_562" => 11,
-                "The_Roguelike_1-13-10_Alpha_560" => 12,
-                "The_Roguelike_1-13-10_Alpha_561" => 13,
-                "The_Roguelike_1-13-10_Alpha_559" => 14,
-                "The_Roguelike_1-13-10_Alpha_563" => 15,
-                _ => 0
-            };
-        }
+        TileMapData roadData = LoadJsonMapData(roadJsonData);
 
-        return 0;
+        for (int y = 0; y < roadData.rows; y++)
+        {
+            for (int x = 0; x < roadData.cols; x++)
+            {
+                int roadID = roadData.data[y][x];
+                // 道が敷かれていない場所は無視する
+                if (roadID != 0)
+                {
+                    // FieldTileManager または GetTile が null の場合に備えたチェック
+                    Sprite roadTile = roadTileManager != null ? roadTileManager.GetTile((RoadType)roadID) : null;
+
+                    if (roadTile != null)
+                    {
+                        Tile tile = ScriptableObject.CreateInstance<Tile>();
+                        tile.sprite = roadTile;
+                        renderTilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                    }
+                }
+            }
+        }
     }
 }

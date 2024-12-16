@@ -1,4 +1,4 @@
-public enum LoadTileType
+public enum RoadType
 {
         None,           //　０：なし
         Top,            //　１：上

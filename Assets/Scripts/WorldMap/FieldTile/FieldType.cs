@@ -1,5 +1,6 @@
 public enum FieldType
 {
+        Default,        // デフォルト なし
         Desert,         // 砂漠 447
         Wilderness,     // 荒野 451
         Grasslands,     // 草原 443
