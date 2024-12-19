@@ -33,6 +33,23 @@ public class WorldMapSystem : MonoBehaviour
         // RenderSpotMap();
     }
 
+    // 現在のフィールドデータを取得する
+    public FieldData getFieldData()
+    {
+        // 仮のFieldTypeを設定
+        FieldType fieldType = (FieldType)1;
+
+        // FieldDataを生成して値を設定
+        FieldData fieldData = new FieldData
+        {
+            type = fieldType,
+            row = 20,
+            col = 20
+        };
+
+        return fieldData;
+    }
+
     public TileMapData LoadJsonMapData(string fileName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
