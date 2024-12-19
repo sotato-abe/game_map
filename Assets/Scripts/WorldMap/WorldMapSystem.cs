@@ -25,11 +25,12 @@ public class WorldMapSystem : MonoBehaviour
     private void Start()
     {
         // マップデータを読み込んで描画
-        RenderGroundMap();
-        RenderFloorMap();
-        RenderFieldMap();
-        RenderRoadMap();
-        RenderSpotMap();
+        // TODO：ひとまず描画の必要はないのでコメントアウト
+        // RenderGroundMap();
+        // RenderFloorMap();
+        // RenderFieldMap();
+        // RenderRoadMap();
+        // RenderSpotMap();
     }
 
     public TileMapData LoadJsonMapData(string fileName)
