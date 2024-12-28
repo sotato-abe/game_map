@@ -16,6 +16,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] Sprite sprite;
     [SerializeField] int money;
     [SerializeField] int disk;
+    [SerializeField] MapBase birthplace;
 
     [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Item> items;
