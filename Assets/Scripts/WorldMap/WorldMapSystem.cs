@@ -39,12 +39,18 @@ public class WorldMapSystem : MonoBehaviour
         // 仮のFieldTypeを設定
         FieldType fieldType = (FieldType)1;
 
+        // 仮のCoordinateを生成
+        Coordinate tempCoordinate = new Coordinate
+        {
+            row = 20,
+            col = 20
+        };
+
         // FieldDataを生成して値を設定
         FieldData fieldData = new FieldData
         {
             type = fieldType,
-            row = 20,
-            col = 20
+            coordinate = tempCoordinate // 仮の座標を設定
         };
 
         return fieldData;
