@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public UnityAction OnEncount;
     public UnityAction OnReserve;
 
-    public WorldPosition currentField;
+    public Coordinate currentField;
 
     public PlayerBattler Battler { get => battler; }
 
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         battler.Init();
         playerUnit.Setup(battler);
 
-        currentField = new WorldPosition();
+        currentField = new Coordinate();
         currentField.row = 12;
         currentField.col = 4;
         Debug.Log($"Row: {currentField.row}, Col: {currentField.col}");
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public WorldPosition GetCurrentField()
+    public Coordinate GetCurrentField()
     {
         return currentField;
     }
