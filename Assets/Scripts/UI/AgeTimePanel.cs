@@ -8,6 +8,11 @@ using System;
 public class AgeTimePanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI ageTimeField;  // 表示用のTextMeshProUGUIフィールド
+    [SerializeField] Image stopPanel;
+    [SerializeField] Image playPanel;
+    [SerializeField] Image fastPanel;
+
+
     private DateTime ageTime;        // 現在の時間
     public TimeState timeSpeed = TimeState.Fast;
 
@@ -27,6 +32,19 @@ public class AgeTimePanel : MonoBehaviour
     public void SetTimeSpeed(TimeState state)
     {
         timeSpeed = state;
+        if(state == TimeState.Stop){
+            stopPanel.gameObject.SetActive(true);
+            playPanel.gameObject.SetActive(false);
+            fastPanel.gameObject.SetActive(false);
+        }else if(state == TimeState.Live){
+            stopPanel.gameObject.SetActive(false);
+            playPanel.gameObject.SetActive(true);
+            fastPanel.gameObject.SetActive(false);
+        }else{
+            stopPanel.gameObject.SetActive(false);
+            playPanel.gameObject.SetActive(false);
+            fastPanel.gameObject.SetActive(true);
+        }
     }
 
     // 時間経過を管理し、timeSpeedに応じて進行速度を変更する
