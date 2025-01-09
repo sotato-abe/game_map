@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
         battleSystem.OnBattleEnd += BattleEnd;
         reserveSystem.ActionPanel.SetPanelValidity(0.2f);
         StartCoroutine(messagePanel.TypeDialog("game start"));
+        ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
     public void ReserveStart()
