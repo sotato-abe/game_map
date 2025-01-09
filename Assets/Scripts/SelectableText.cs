@@ -26,6 +26,7 @@ public class SelectableText : MonoBehaviour
             Color textColor = text.color;
             textColor.a = Mathf.Clamp(textAlpha, 0f, 1f);
             text.color = textColor;
+            text.fontSize = 27f;
         }
         else
         {
