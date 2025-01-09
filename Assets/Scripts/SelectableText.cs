@@ -12,6 +12,7 @@ public class SelectableText : MonoBehaviour
     private void Awake()
     {
         text = GetComponent<TextMeshProUGUI>();
+        text.alignment = TextAlignmentOptions.Center;
     }
 
     public void SetSelectedColor(bool selected)
