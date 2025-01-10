@@ -10,7 +10,6 @@ public class ActionPanel : MonoBehaviour
     [SerializeField] SelectableText selectableTextPrefab;
     [SerializeField] Image dialogBackground;
     [SerializeField] ActionBoard actionBoard;
-    [SerializeField] AutoPanel autoPanel;
     private List<SelectableText> actionTexts; // ActionList内のテキストリスト
     ActionType selectedAction;
     private Coroutine fadeCoroutine;
@@ -112,7 +111,6 @@ public class ActionPanel : MonoBehaviour
         {
             StopCoroutine(fadeCoroutine);
         }
-        autoPanel.SetPanelValidity(targetAlpha);
 
         // 新しいフェードコルーチンを開始
         fadeCoroutine = StartCoroutine(FadeToAlpha(targetAlpha, duration));
