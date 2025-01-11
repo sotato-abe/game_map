@@ -20,7 +20,7 @@ public class MessagePanel : MonoBehaviour
             text.text += letter;
             yield return new WaitForSeconds(letterPerSecond);
         }
-        StartCoroutine(FadeOutAlpha());
+        // StartCoroutine(FadeOutAlpha());
     }
 
     public void SetPanelValidity(float targetAlpha, float duration = 0.5f)
