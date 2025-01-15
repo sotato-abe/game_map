@@ -1,4 +1,4 @@
-public enum RoadType
+public enum DirectionType
 {
         None,           //　０：なし
         Top,            //　１：上

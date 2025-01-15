@@ -33,18 +33,12 @@ public class WorldMapSystem : MonoBehaviour
         // RenderSpotMap();
     }
 
-    // 現在のフィールドデータを取得する
-    public FieldData getFieldData()
+    // 指定座標からのフィールドデータを取得する
+    // 指定座標が海のとき、周りグランドがあるかを確認する。周りにグラウンドがあるときはその方向を返す。
+    public FieldData getFieldData(Coordinate tempCoordinate) //tempCoordinate : {row = 20,col = 20};
     {
-        // 仮のFieldTypeを設定
-        FieldType fieldType = (FieldType)1;
-
-        // 仮のCoordinateを生成
-        Coordinate tempCoordinate = new Coordinate
-        {
-            row = 20,
-            col = 20
-        };
+        TileMapData floorData = LoadJsonMapData(floorJsonData);
+        FieldType fieldType = (FieldType)floorData.data[tempCoordinate.row][tempCoordinate.col];
 
         // FieldDataを生成して値を設定
         FieldData fieldData = new FieldData
@@ -172,7 +166,7 @@ public class WorldMapSystem : MonoBehaviour
                 if (roadID != 0)
                 {
                     // FieldTileManager または GetTile が null の場合に備えたチェック
-                    Sprite roadTile = roadTileManager != null ? roadTileManager.GetTile((RoadType)roadID) : null;
+                    Sprite roadTile = roadTileManager != null ? roadTileManager.GetTile((DirectionType)roadID) : null;
 
                     if (roadTile != null)
                     {
