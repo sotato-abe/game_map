@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class RoadTileBase : ScriptableObject
 {
-    [SerializeField] RoadType id;
+    [SerializeField] DirectionType id;
     [SerializeField] Sprite sprite;
 
-    public RoadType ID { get => id; }
+    public DirectionType ID { get => id; }
     public Sprite Sprite { get => sprite; }
 }
