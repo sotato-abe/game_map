@@ -8,6 +8,7 @@ public class BattleSystem : MonoBehaviour
 {
     public BattleState state;
     public UnityAction OnBattleEnd;
+    [SerializeField] bool isAuto; // オート状態　TODO：全体のオート状態を受け取る
     [SerializeField] BattleCanvas battleCanvas;
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
@@ -52,9 +53,9 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleStart(Battler player, Battler enemy)
     {
+        battleCanvas.gameObject.SetActive(true);
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
-        battleCanvas.gameObject.SetActive(true);
         actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(BattleUnit.Motion.Jump);
