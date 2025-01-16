@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+// バトルエンカウント処理はこっちに入れる
+// バトルエンカウントは時間とフィールドの危険度を元にランダムで決まる。
+
 public class BattleSystem : MonoBehaviour
 {
     public BattleState state;
