@@ -856,7 +856,7 @@ GameObject:
   - component: {fileID: 69587515}
   - component: {fileID: 69587517}
   m_Layer: 0
-  m_Name: FlorMap
+  m_Name: FloorMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10249,6 +10249,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &121813744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 121813745}
+  m_Layer: 6
+  m_Name: FieldCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &121813745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121813744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1987937761}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &122990646
 GameObject:
@@ -146951,6 +146982,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 654975266}
+  - {fileID: 121813745}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -146975,6 +147007,7 @@ MonoBehaviour:
   entryPrefab: {fileID: 3720347694098594850, guid: ecd91c52008073047b5b656fcbc0e8ee, type: 3}
   buildingPrefab: {fileID: 8220017151595101127, guid: 436231af8a6975e4ba90c918d1390891, type: 3}
   objectItemPrefab: {fileID: 3594579730698062162, guid: 8ab476e689cb4e541969e427c21d6ce4, type: 3}
+  fieldCanvas: {fileID: 121813744}
   floorTiles:
   - {fileID: 11400000, guid: f4c345e76f4cb5247aba1fac062dbe75, type: 2}
   - {fileID: 11400000, guid: 89ea5114bf0567f40b5fb2d28986a0bc, type: 2}
