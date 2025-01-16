@@ -37,4 +37,5 @@ public class BattlerBase : ScriptableObject
     public List<Equipment> Equipments { get => equipments; }
     public List<Item> Items { get => items; }
     public List<Command> Commands { get => comands; }
+    public MapBase Birthplace { get => birthplace; }
 }
