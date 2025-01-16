@@ -17,7 +17,8 @@ public class MapBase : ScriptableObject
     [SerializeField] int mapHeight;
     [SerializeField] int mapWidth;
     [SerializeField] string description;
-
+    [SerializeField] int coordinateX;
+    [SerializeField] int coordinateY;
     public string Name { get => name; }
     public int Level { get => level; }
     public int Building { get => building; }
@@ -30,4 +31,9 @@ public class MapBase : ScriptableObject
     public int MapHeight { get => mapHeight; }
     public int MapWidth { get => mapWidth; }
     public string Description { get => description; }
+
+    public Coordinate Coordinate
+    {
+        get => new Coordinate { row = coordinateX, col = coordinateY };
+    }
 }

@@ -8,6 +8,8 @@ using System;
 public class AgeTimePanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI ageTimeField;  // 表示用のTextMeshProUGUIフィールド
+    [SerializeField] StatePanelController statePanel;
+
     private DateTime ageTime;        // 現在の時間
     public TimeState timeSpeed = TimeState.Fast;
 
@@ -27,6 +29,7 @@ public class AgeTimePanel : MonoBehaviour
     public void SetTimeSpeed(TimeState state)
     {
         timeSpeed = state;
+        statePanel.ChangeState(state);
     }
 
     // 時間経過を管理し、timeSpeedに応じて進行速度を変更する
