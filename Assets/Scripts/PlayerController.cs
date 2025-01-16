@@ -41,11 +41,8 @@ public class PlayerController : MonoBehaviour
     {
         battler.Init();
         playerUnit.Setup(battler);
-
-        currentField = new Coordinate();
-        currentField.row = 12;
-        currentField.col = 4;
-        Debug.Log($"Row: {currentField.row}, Col: {currentField.col}");
+        currentField = battler.GetBirthCoordinate(); // 修正箇所
+        Debug.Log($"StartPoint:Row: {currentField.row}, Col: {currentField.col}");
 
         StartCoroutine(playerUnit.SetTalkMessage("start.."));
         // 仮でここで定義（後でマップ更新時に更新されるようにする）
@@ -55,12 +52,6 @@ public class PlayerController : MonoBehaviour
         lastPosition = transform.position;
         generateSeedMap = FindObjectOfType<GenerateSeedMap>();
     }
-
-    public void SetUpPlayer()
-    {
-
-    }
-
     public Coordinate GetCurrentField()
     {
         return currentField;
