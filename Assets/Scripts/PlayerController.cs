@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerBattler battler;
     [SerializeField] BattleUnit playerUnit;
 
-    private GenerateSeedMap generateSeedMap;
+    private GenerateFieldMap generateFieldMap;
 
     public UnityAction OnEncount;
     public UnityAction OnReserve;
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         height = mapBase.MapHeight;
 
         lastPosition = transform.position;
-        generateSeedMap = FindObjectOfType<GenerateSeedMap>();
+        generateFieldMap = FindObjectOfType<GenerateFieldMap>();
     }
     public Coordinate GetCurrentField()
     {
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
                 int entryNum = IsEntry(targetPosition);
                 if (entryNum != 0)
                 {
-                    generateSeedMap.ReloadMap(entryNum);
+                    generateFieldMap.ReloadMap(entryNum);
                 }
                 else
                 {
