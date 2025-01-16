@@ -50,7 +50,6 @@ public class TurnOrderSystem : MonoBehaviour
 
     public IEnumerator ExecuteTurn(TurnBattler turnBattler)
     {
-        Debug.Log($"ターンを実行: {turnBattler.Battler.Base.Name}");
         targetBattler = turnBattler;
         SetActive(false); // ターン実行中は他のバトラーを非アクティブ化
 
