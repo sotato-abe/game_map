@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class FieldTileListBase : ScriptableObject
+public class FloorTileListBase : ScriptableObject
 {
-    [SerializeField] FieldType type;
+    [SerializeField] FloorType type;
     [SerializeField] Sprite floor;
     [SerializeField] Sprite tree;
     [SerializeField] Sprite grass;
     [SerializeField] Sprite rock;
 
-    public FieldType Type { get => type; }
+    public FloorType Type { get => type; }
     public Sprite Floor { get => floor; }
     public Sprite Tree { get => tree; }
     public Sprite Grass { get => grass; }

@@ -1,4 +1,4 @@
-public enum FieldType
+public enum FloorType
 {
         Default,        // デフォルト なし
         Desert,         // 砂漠 447

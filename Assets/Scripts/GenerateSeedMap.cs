@@ -10,14 +10,14 @@ using UnityEngine;
 
 public class GenerateSeedMap : MonoBehaviour
 {
-    public FieldType fieldType;
+    public FloorType floorType;
     public int width;        // マップの幅
     public int height;       // マップの高さ
     public string seed;      // シード値
     public bool useRandamSeed; // ランダムシードを使うかどうか
     public int randomFillPercent; // 壁の埋め込み率
     [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // 地面と壁のプレファブ
-    [SerializeField] List<FieldTileListBase> fieldTiles;
+    [SerializeField] List<FloorTileListBase> floorTiles;
     [SerializeField] MapBase mapBase; //マップデータ
     [SerializeField] GameObject character; //キャラクター
     Vector2 characterPosition;
@@ -27,7 +27,7 @@ public class GenerateSeedMap : MonoBehaviour
     int[,] area;             // フロアデータ
     Vector2 mapCenterPos;    // マップの中心座標
     float tileSize;          // プレファブのサイズ
-    FieldTileListBase tileSet;
+    FloorTileListBase tileSet;
 
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
     List<Vector2> entryPositions = new List<Vector2>(); // エントリーポイントのリスト
@@ -306,7 +306,7 @@ public class GenerateSeedMap : MonoBehaviour
     // フィールド用のタイルを描画
     void renderingTileMap()
     {
-        tileSet = fieldTiles[(int)fieldType];
+        tileSet = floorTiles[(int)floorType];
         tileSize = tileSet.Floor.bounds.size.x; // タイルサイズを取得
         Debug.Log($"TileType:{tileSet.Type}");
         mapCenterPos = new Vector2(width * tileSize / 2, height * tileSize / 2); // マップの中心座標を計算
