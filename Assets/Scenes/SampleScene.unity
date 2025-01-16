@@ -38231,16 +38231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6659ae7990a8054bb2c07a4f0480080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTilemap: {fileID: 1894292059}
-  groundTilemap: {fileID: 295742103}
-  floorTilemap: {fileID: 1316147305}
-  fieldTilemap: {fileID: 296485171}
-  roadTilemap: {fileID: 850046604}
-  spotTilemap: {fileID: 1684957585}
-  groundTileManager: {fileID: 1256800410}
-  fieldTileManager: {fileID: 248729721}
-  roadTileManager: {fileID: 1588454356}
-  spotTileManager: {fileID: 954788495}
 --- !u!1 &810564993
 GameObject:
   m_ObjectHideFlags: 0
@@ -147574,7 +147564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d07e215114f43b846a725d34647f45ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldType: 1
+  floorType: 1
   width: 50
   height: 50
   seed: test
@@ -147583,7 +147573,7 @@ MonoBehaviour:
   entryPrefab: {fileID: 3720347694098594850, guid: ecd91c52008073047b5b656fcbc0e8ee, type: 3}
   buildingPrefab: {fileID: 8220017151595101127, guid: 436231af8a6975e4ba90c918d1390891, type: 3}
   objectItemPrefab: {fileID: 3594579730698062162, guid: 8ab476e689cb4e541969e427c21d6ce4, type: 3}
-  fieldTiles:
+  floorTiles:
   - {fileID: 11400000, guid: f4c345e76f4cb5247aba1fac062dbe75, type: 2}
   - {fileID: 11400000, guid: 89ea5114bf0567f40b5fb2d28986a0bc, type: 2}
   - {fileID: 11400000, guid: 5c13912e8d0c56e4eaa0562633af5662, type: 2}
