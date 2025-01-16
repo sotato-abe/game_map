@@ -41,18 +41,20 @@ public class GameController : MonoBehaviour
 
     public void BattleStart()
     {
+        Debug.Log("BattleStart");
         playerController.SetMoveFlg(false);
         fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
-        battleSystem.gameObject.SetActive(true);
         enemy = fieldInfoSystem.GetRandomEnemy();
         enemy.Init();
+        battleSystem.gameObject.SetActive(true);
         battleSystem.BattleStart(playerController.Battler, enemy);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 
     public void BattleEnd()
     {
+        Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
         playerController.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
