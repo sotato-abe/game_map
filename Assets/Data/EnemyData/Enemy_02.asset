@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d1d3cd9722d6d44b87fa8c25099155f, type: 3}
+  m_Name: Enemy_02
+  m_EditorClassIdentifier: 
+  name: Samurai
+  maxLife: 20
+  maxBattery: 50
+  attack: 4
+  technique: 5
+  defense: 6
+  speed: 4
+  sprite: {fileID: 21300000, guid: 00e64d2d6e2088a4e846c73dfd3fd704, type: 3}
+  money: 8
+  disk: 0
+  equipments: []
+  items:
+  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
+  - _base: {fileID: 11400000, guid: 811460af88770c34299fa7f39dba81d2, type: 2}
+  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
+  comands: []
