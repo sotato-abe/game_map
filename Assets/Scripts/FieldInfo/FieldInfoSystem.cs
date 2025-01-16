@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+// TODO : キャラクターが保有するクエストを受けとり、カードを表示する。
+// TODO : Coordinate（座標）と座標を取得しアラートを該当するときカードを表示する。
+
 public class FieldInfoSystem : MonoBehaviour
 {
     [SerializeField] WorldMapDialog worldMapDialog;
