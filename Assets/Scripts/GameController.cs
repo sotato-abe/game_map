@@ -36,7 +36,6 @@ public class GameController : MonoBehaviour
     {
         playerController.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
-        fieldInfoSystem.FieldDialogOpen();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
@@ -55,7 +54,6 @@ public class GameController : MonoBehaviour
     public void BattleEnd()
     {
         battleSystem.gameObject.SetActive(false);
-        fieldInfoSystem.FieldDialogOpen();
         playerController.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
