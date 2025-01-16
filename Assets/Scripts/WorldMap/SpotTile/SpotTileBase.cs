@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SpotTileBase : ScriptableObject
 {
-    [SerializeField] SpotTileType id;
+    [SerializeField] SpotType id;
     [SerializeField] Sprite sprite;
 
-    public SpotTileType ID { get => id; }
+    public SpotType ID { get => id; }
     public Sprite Sprite { get => sprite; }
 }

@@ -1,9 +1,9 @@
 public enum MapType
 {
-        Base,
-        Ground,
-        Floor,
-        Field,
-        Road,
-        Rand,
+    Base,
+    Ground,
+    Floor,
+    Field,
+    Road,
+    Spot,
 }
