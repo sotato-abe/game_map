@@ -8,7 +8,7 @@ using UnityEngine;
 //　仕組み：マップ生成：座標を受け取ると、ワールドマップデータからフィールドタイプを取得、フィールドタイプごとのタイルセットを使用しマップ生成を行う
 //　仕組み：ルート生成：座標を受け取ると、ロードマップデータから出入り口のデータを取得、出入り口の方角に応じてルートを敷く
 
-public class GenerateSeedMap : MonoBehaviour
+public class GenerateFieldMap : MonoBehaviour
 {
     public FloorType floorType;
     public int width;        // マップの幅
