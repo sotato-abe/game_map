@@ -25,6 +25,7 @@ public class BattleUnit : MonoBehaviour
     {
         if (talkPanel != null) // Nullチェックを追加
         {
+            talkPanel.gameObject.SetActive(true);
             yield return talkPanel.TypeDialog(message);
         }
         else
