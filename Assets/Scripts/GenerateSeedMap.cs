@@ -94,13 +94,9 @@ public class GenerateSeedMap : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
-                {
                     field[x, y] = (int)TileType.Base;
-                }
                 else
-                {
                     field[x, y] = (seedPercent.Next(0, 100) < randomFillPercent) ? (int)TileType.Base : (int)TileType.Ground; // ランダムな値で壁か地面を決定
-                }
             }
         }
 
@@ -117,14 +113,9 @@ public class GenerateSeedMap : MonoBehaviour
                 int neighbourGroundTiles = GetSurroundingGroundCount(x, y, field);
 
                 if (4 < neighbourGroundTiles)
-                {
                     field[x, y] = (int)TileType.Ground;
-                }
                 else if (neighbourGroundTiles < 4)
-                {
                     field[x, y] = (int)TileType.Base;
-                }
-
             }
         }
 
@@ -144,9 +135,7 @@ public class GenerateSeedMap : MonoBehaviour
                     if (neighbourX != gridX || neighbourY != gridY)
                     {
                         if (field[neighbourX, neighbourY] == (int)TileType.Ground || field[neighbourX, neighbourY] == (int)TileType.Floor || field[neighbourX, neighbourY] == (int)TileType.Object)
-                        {
                             groundCount++; // 隣接する1が見つかった場合
-                        }
                     }
                 }
             }
@@ -163,9 +152,7 @@ public class GenerateSeedMap : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 if (map[x, y] == (int)TileType.Ground && area[x, y] != (int)TileType.Ground)
-                {
                     map[x, y] = (int)TileType.Floor;
-                }
             }
         }
     }
@@ -248,13 +235,9 @@ public class GenerateSeedMap : MonoBehaviour
         if (characterDirection == direction)
         {
             if (isVertical)
-            {
                 character.transform.position = GetWorldPositionFromTile(entryPoint, start + step);
-            }
             else
-            {
                 character.transform.position = GetWorldPositionFromTile(start + step, entryPoint);
-            }
         }
 
         if (isVertical)
@@ -291,13 +274,9 @@ public class GenerateSeedMap : MonoBehaviour
                 if (map[x, y] == (int)TileType.Base && 0 < GetSurroundingGroundCount(x, y, map))
                 {
                     if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
-                    {
                         map[x, y] = (int)TileType.Edge;
-                    }
                     else
-                    {
                         map[x, y] = (int)TileType.Wall;
-                    }
                 }
             }
         }
@@ -325,38 +304,22 @@ public class GenerateSeedMap : MonoBehaviour
 
                 // タイルタイプごとの処理
                 if (tileType != (int)TileType.Base && tileType != (int)TileType.Wall && tileType != (int)TileType.Edge)
-                {
                     obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Floor, "MapGround", "Ground");
-                }
                 if (tileType == (int)TileType.Floor)
-                {
                     obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Grass, "MapFloor", "Floor");
-                }
                 else if (tileType == (int)TileType.Edge)
-                {
                     obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Rock, "MapEdge", "Wall");
-                }
                 else if (tileType == (int)TileType.Wall)
-                {
                     obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Tree, "MapWall", "Wall");
-                }
                 else if (tileType == (int)TileType.Entry) // TODO：エントリーポイントは空白にして、枠から出ようとした時にフィールド移動のイベントを発火させる
-                {
                     obj = InstantiatePrefab(entryPrefab, pos, "MapEntry", "Entry");
-                }
                 else if (tileType == (int)TileType.Building)
-                {
                     obj = InstantiatePrefab(buildingPrefab, pos, "MapBuilding", "Building");
-                }
                 else if (tileType == (int)TileType.Object)
-                {
                     obj = InstantiatePrefab(objectItemPrefab, pos, "ObjectItem", "Object");
-                }
 
                 if (obj != null)
-                {
                     spawnedObjects.Add(obj);
-                }
             }
         }
     }
