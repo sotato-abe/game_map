@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] GenerateFieldMap generateFieldMap;
-    public Coordinate currentField;
+    public Coordinate playerCoordinate;
 
     Battler enemy;
 
@@ -35,8 +35,8 @@ public class GameController : MonoBehaviour
     {
         generateFieldMap.ReloadMap(outDirection);
         Debug.Log($"GameController:ChangeField:{outDirection}");
-        currentField = playerController.Battler.currentField;
-        Debug.Log($"StartPoint:Row: {currentField.row}, Col: {currentField.col}");
+        playerCoordinate = playerController.Battler.coordinate;
+        Debug.Log($"StartPoint:Row: {playerCoordinate.row}, Col: {playerCoordinate.col}");
     }
 
     public void ReserveStart()
