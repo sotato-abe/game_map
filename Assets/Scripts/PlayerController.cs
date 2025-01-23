@@ -80,11 +80,11 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("inputX", x);
                 animator.SetFloat("inputY", y);
                 Vector3 targetPosition = transform.position + (new Vector3(x, y, 0));
-                DirectionType entryNum = IsEntry(targetPosition);
-                if (entryNum != 0)
+                DirectionType outDirection = IsEntry(targetPosition);
+                if (outDirection != 0)
                 {
                     // フィールドを移動
-                    ChangeField?.Invoke(entryNum);
+                    ChangeField?.Invoke(outDirection);
                 }
                 else
                 {
