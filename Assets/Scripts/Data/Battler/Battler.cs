@@ -30,7 +30,7 @@ public class Battler
     public int Money { get; set; }
     public int Disk { get; set; }
     public int Key { get; set; }
-    public Coordinate currentField;
+    public Coordinate coordinate;
 
     public virtual void Init()
     {
@@ -49,7 +49,7 @@ public class Battler
         equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
         inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
         deck = _base.Commands ?? new List<Command>(); // Items が null の場合、新しいリストを初期化
-        currentField = _base.Birthplace.Coordinate;
+        coordinate = _base.Birthplace.Coordinate;
     }
 
     public int TakeDamage(Battler attacker)
