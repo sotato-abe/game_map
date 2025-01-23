@@ -226,13 +226,13 @@ public class GenerateFieldMap : MonoBehaviour
         }
         // 各方向の入口を生成
         if (mapBase.OpenLeft)
-            CreateRouteForEntry(0, 1, minY, maxY, false, pseudoRandom, DirectionType.Right); // Left
+            CreateRouteForEntry(0, 1, minY, maxY, false, pseudoRandom, DirectionType.Left); // Left
         if (mapBase.OpenRight)
-            CreateRouteForEntry(width - 1, -1, minY, maxY, false, pseudoRandom, DirectionType.Left); // Right
+            CreateRouteForEntry(width - 1, -1, minY, maxY, false, pseudoRandom, DirectionType.Right); // Right
         if (mapBase.OpenBottom)
-            CreateRouteForEntry(height - 1, -1, minX, maxX, true, pseudoRandom, DirectionType.Top); // Top
+            CreateRouteForEntry(height - 1, -1, minX, maxX, true, pseudoRandom, DirectionType.Bottom); // Top
         if (mapBase.OpenTop)
-            CreateRouteForEntry(0, 1, minX, maxX, true, pseudoRandom, DirectionType.Bottom); // Bottom
+            CreateRouteForEntry(0, 1, minX, maxX, true, pseudoRandom, DirectionType.Top); // Bottom
     }
 
     // フィールドマップに道路を追加
