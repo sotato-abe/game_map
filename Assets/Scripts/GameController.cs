@@ -33,10 +33,11 @@ public class GameController : MonoBehaviour
     // フィールドを生成する処理（generateFieldMap）に受け渡す
     public void ChangeField(DirectionType outDirection)
     {
-        generateFieldMap.ReloadMap(outDirection);
-        Debug.Log($"GameController:ChangeField:{outDirection}");
+        DirectionType entryDirection = outDirection.GetOppositeDirection();
+        Debug.Log($"GameController:ChangeField:{outDirection}>>>{entryDirection}");
         playerCoordinate = playerController.Battler.coordinate;
         Debug.Log($"StartPoint:Row: {playerCoordinate.row}, Col: {playerCoordinate.col}");
+        generateFieldMap.ReloadMap(entryDirection);
     }
 
     public void ReserveStart()

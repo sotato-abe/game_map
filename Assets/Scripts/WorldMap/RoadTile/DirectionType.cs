@@ -17,3 +17,30 @@ public enum DirectionType
         RightBottomLeft,//　14：右下左 559
         Cross,          //　15：十字 563
 }
+
+// 拡張メソッドの定義
+public static class DirectionTypeExtensions
+{
+    public static DirectionType GetOppositeDirection(this DirectionType targetDirection)
+    {
+        return targetDirection switch
+        {
+            DirectionType.Top => DirectionType.Bottom,
+            DirectionType.Right => DirectionType.Left,
+            DirectionType.Bottom => DirectionType.Top,
+            DirectionType.Left => DirectionType.Right,
+            DirectionType.TopRight => DirectionType.BottomLeft,
+            DirectionType.TopBottom => DirectionType.None, // 対応なし
+            DirectionType.TopLeft => DirectionType.RightBottom,
+            DirectionType.RightBottom => DirectionType.TopLeft,
+            DirectionType.RightLeft => DirectionType.None, // 対応なし
+            DirectionType.BottomLeft => DirectionType.TopRight,
+            DirectionType.TopRightBottom => DirectionType.RightBottomLeft,
+            DirectionType.TopRightLeft => DirectionType.TopBottomLeft,
+            DirectionType.TopBottomLeft => DirectionType.TopRightLeft,
+            DirectionType.RightBottomLeft => DirectionType.TopRightBottom,
+            DirectionType.Cross => DirectionType.Cross,
+            _ => DirectionType.None, // デフォルト
+        };
+    }
+}
