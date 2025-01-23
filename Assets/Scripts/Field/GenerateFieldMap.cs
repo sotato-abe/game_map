@@ -56,9 +56,9 @@ public class GenerateFieldMap : MonoBehaviour
         Debug.Log("SetFieldData");
     }
 
-    public void ReloadMap(DirectionType entryNum)
+    public void ReloadMap(DirectionType entryDirection)
     {
-        characterDirection = entryNum;
+        characterDirection = entryDirection;
         ClearMap(); // 現在のマップをクリア
         GenarateMap();
     }

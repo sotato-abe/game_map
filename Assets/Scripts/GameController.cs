@@ -27,12 +27,15 @@ public class GameController : MonoBehaviour
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
-    public void ChangeField(DirectionType entryNum)
+    // フィールド移動時の方向を受け取る
+    // カレント座標を更新する
+    // 新しいフィールドのフィールドデータを取得する
+    // フィールドを生成する処理（generateFieldMap）に受け渡す
+    public void ChangeField(DirectionType outDirection)
     {
-        generateFieldMap.ReloadMap(entryNum);
-        
-        Debug.Log($"GameController:ChangeField:{entryNum}");
-        currentField = playerController.Battler.GetBirthCoordinate();
+        generateFieldMap.ReloadMap(outDirection);
+        Debug.Log($"GameController:ChangeField:{outDirection}");
+        currentField = playerController.Battler.currentField;
         Debug.Log($"StartPoint:Row: {currentField.row}, Col: {currentField.col}");
     }
 
