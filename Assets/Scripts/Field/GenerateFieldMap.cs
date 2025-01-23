@@ -59,16 +59,15 @@ public class GenerateFieldMap : MonoBehaviour
     public void ReloadMap(DirectionType entryNum)
     {
         characterDirection = entryNum;
-        ClearMap();   // 現在のマップをクリア
+        ClearMap(); // 現在のマップをクリア
         GenarateMap();
     }
 
     // フィールドマップ生成
+    // ゲームコントローラーから座標を受け取る
+    // WorldMapSystemからFieldDataを受け取る
     void GenarateMap()
     {
-        // ゲームコントローラーから座標を受け取る
-        // WorldMapSystemからFieldDataを受け取る
-
         if (useRandamSeed)
         {
             seed = Time.time.ToString(); // ランダムシードを現在の時間から生成
@@ -308,11 +307,15 @@ public class GenerateFieldMap : MonoBehaviour
                 if (tileType == (int)TileType.Base)
                     continue;
 
+                GameObject groundObj = null;
                 GameObject obj = null;
 
                 // タイルタイプごとの処理
                 if (tileType != (int)TileType.Base && tileType != (int)TileType.Wall && tileType != (int)TileType.Edge)
-                    obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Floor, "MapGround", "Ground");
+                {
+                    groundObj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Floor, "MapGround", "Ground");
+                    spawnedObjects.Add(groundObj);
+                }
                 if (tileType == (int)TileType.Floor)
                     obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Grass, "MapFloor", "Floor");
                 else if (tileType == (int)TileType.Edge)

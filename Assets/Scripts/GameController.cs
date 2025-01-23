@@ -29,12 +29,8 @@ public class GameController : MonoBehaviour
 
     public void ChangeField(DirectionType entryNum)
     {
-        // 1 left
-        // 2 right
-        // 3 bottom
-        // 4 top
         generateFieldMap.ReloadMap(entryNum);
-
+        
         Debug.Log($"GameController:ChangeField:{entryNum}");
         currentField = playerController.Battler.GetBirthCoordinate();
         Debug.Log($"StartPoint:Row: {currentField.row}, Col: {currentField.col}");
