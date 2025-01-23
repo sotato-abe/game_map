@@ -22,7 +22,7 @@ public class GenerateFieldMap : MonoBehaviour
     [SerializeField] MapBase mapBase; //マップデータ
     [SerializeField] GameObject character; //キャラクター
     Vector2 characterPosition;
-    int characterDirection;
+    DirectionType characterDirection;
 
     int[,] map;             // マップデータ
     int[,] area;             // フロアデータ
@@ -35,7 +35,7 @@ public class GenerateFieldMap : MonoBehaviour
 
     void Start()
     {
-        characterDirection = 0;
+        characterDirection = DirectionType.Top;
         width = mapBase.MapWidth;
         height = mapBase.MapHeight;
         GenarateMap(); // ゲーム開始時にマップ生成
@@ -46,12 +46,17 @@ public class GenerateFieldMap : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            characterDirection = 1;
+            characterDirection = DirectionType.Top;
             ReloadMap(characterDirection);
         }
     }
 
-    public void ReloadMap(int entryNum)
+    public void SetFieldData(FieldData fieldData)
+    {
+        Debug.Log("SetFieldData");
+    }
+
+    public void ReloadMap(DirectionType entryNum)
     {
         characterDirection = entryNum;
         ClearMap();   // 現在のマップをクリア
@@ -61,6 +66,9 @@ public class GenerateFieldMap : MonoBehaviour
     // フィールドマップ生成
     void GenarateMap()
     {
+        // ゲームコントローラーから座標を受け取る
+        // WorldMapSystemからFieldDataを受け取る
+
         if (useRandamSeed)
         {
             seed = Time.time.ToString(); // ランダムシードを現在の時間から生成
@@ -219,17 +227,17 @@ public class GenerateFieldMap : MonoBehaviour
         }
         // 各方向の入口を生成
         if (mapBase.OpenLeft)
-            CreateRouteForEntry(0, 1, minY, maxY, false, pseudoRandom, 2); // Left
+            CreateRouteForEntry(0, 1, minY, maxY, false, pseudoRandom, DirectionType.Right); // Left
         if (mapBase.OpenRight)
-            CreateRouteForEntry(width - 1, -1, minY, maxY, false, pseudoRandom, 1); // Right
+            CreateRouteForEntry(width - 1, -1, minY, maxY, false, pseudoRandom, DirectionType.Left); // Right
         if (mapBase.OpenBottom)
-            CreateRouteForEntry(height - 1, -1, minX, maxX, true, pseudoRandom, 4); // Top
+            CreateRouteForEntry(height - 1, -1, minX, maxX, true, pseudoRandom, DirectionType.Top); // Top
         if (mapBase.OpenTop)
-            CreateRouteForEntry(0, 1, minX, maxX, true, pseudoRandom, 3); // Bottom
+            CreateRouteForEntry(0, 1, minX, maxX, true, pseudoRandom, DirectionType.Bottom); // Bottom
     }
 
     // フィールドマップに道路を追加
-    void CreateRouteForEntry(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom, int direction)
+    void CreateRouteForEntry(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom, DirectionType direction)
     {
         int entryPoint = pseudoRandom.Next(min, max + 1);
         if (characterDirection == direction)

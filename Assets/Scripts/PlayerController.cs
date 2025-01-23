@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+// マップ上のプレイヤーの動きを制御する
+// フィールド移動を検知しゲームコントローラーに移動をリクエストする
 public class PlayerController : MonoBehaviour
 {
     Animator animator;
@@ -14,7 +16,6 @@ public class PlayerController : MonoBehaviour
     public int encounterThreshold = 1;
     public float distanceTraveled = 0.0f;
     private Vector3 lastPosition;
-
     [SerializeField] MapBase mapBase; //マップデータ(ここもゲームコントローラーから受け取るようにする)
     [SerializeField] LayerMask blockLayer;
     [SerializeField] LayerMask entryLayer;
@@ -23,10 +24,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerBattler battler;
     [SerializeField] BattleUnit playerUnit;
 
-    private GenerateFieldMap generateFieldMap;
-
     public UnityAction OnEncount;
     public UnityAction OnReserve;
+    public delegate void ChangeFieldDelegate(DirectionType fieldId);
+    public event ChangeFieldDelegate ChangeField;
 
     public Coordinate currentField;
 
@@ -41,8 +42,6 @@ public class PlayerController : MonoBehaviour
     {
         battler.Init();
         playerUnit.Setup(battler);
-        currentField = battler.GetBirthCoordinate(); // 修正箇所
-        Debug.Log($"StartPoint:Row: {currentField.row}, Col: {currentField.col}");
 
         StartCoroutine(playerUnit.SetTalkMessage("start.."));
         // 仮でここで定義（後でマップ更新時に更新されるようにする）
@@ -50,14 +49,9 @@ public class PlayerController : MonoBehaviour
         height = mapBase.MapHeight;
 
         lastPosition = transform.position;
-        generateFieldMap = FindObjectOfType<GenerateFieldMap>();
-    }
-    public Coordinate GetCurrentField()
-    {
-        return currentField;
     }
 
-    // Update is called once per frame
+    // フィールド上のキャラクターのモーションを制御
     void Update()
     {
         if (isMoving == false && canMove)
@@ -86,10 +80,11 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("inputX", x);
                 animator.SetFloat("inputY", y);
                 Vector3 targetPosition = transform.position + (new Vector3(x, y, 0));
-                int entryNum = IsEntry(targetPosition);
+                DirectionType entryNum = IsEntry(targetPosition);
                 if (entryNum != 0)
                 {
-                    generateFieldMap.ReloadMap(entryNum);
+                    // フィールドを移動
+                    ChangeField?.Invoke(entryNum);
                 }
                 else
                 {
@@ -109,6 +104,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // フィールド上のキャラクターの移動を制御
     IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
@@ -147,15 +143,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    int IsEntry(Vector3 targetPos)
+    DirectionType IsEntry(Vector3 targetPos)
     {
         // 移動先にエントリーレイヤーがあったときはその方角の位置を返す
         if (Physics2D.OverlapCircle(targetPos, 0.2f, entryLayer))
         {
-            if (targetPos.x < 1) return 1;  // left
-            if (targetPos.x > width - 1) return 2;  // right
-            if (targetPos.y < 1) return 3;  // bottom
-            if (targetPos.y > height - 1) return 4;  // top
+            if (targetPos.x < 1) return DirectionType.Left;  // left
+            if (targetPos.x > width - 1) return DirectionType.Right;  // right
+            if (targetPos.y < 1) return DirectionType.Bottom;  // bottom
+            if (targetPos.y > height - 1) return DirectionType.Top;  // top
         }
         return 0;
     }
