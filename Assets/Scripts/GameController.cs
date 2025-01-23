@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
     [SerializeField] FieldInfoSystem fieldInfoSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
+    [SerializeField] GenerateFieldMap generateFieldMap;
+    public Coordinate currentField;
 
     Battler enemy;
 
@@ -17,11 +19,25 @@ public class GameController : MonoBehaviour
     {
         playerController.OnReserve += ReserveStart;
         playerController.OnEncount += BattleStart;
+        playerController.ChangeField += ChangeField;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
         reserveSystem.ActionPanel.SetPanelValidity(0.2f);
         StartCoroutine(messagePanel.TypeDialog("game start"));
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+    }
+
+    public void ChangeField(DirectionType entryNum)
+    {
+        // 1 left
+        // 2 right
+        // 3 bottom
+        // 4 top
+        generateFieldMap.ReloadMap(entryNum);
+
+        Debug.Log($"GameController:ChangeField:{entryNum}");
+        currentField = playerController.Battler.GetBirthCoordinate();
+        Debug.Log($"StartPoint:Row: {currentField.row}, Col: {currentField.col}");
     }
 
     public void ReserveStart()
