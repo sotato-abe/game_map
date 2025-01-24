@@ -5,22 +5,23 @@ using UnityEngine;
 
 
 //　役割：フィールドの生成を行う
-//　仕組み：マップ生成：座標を受け取ると、ワールドマップデータからフィールドタイプを取得、フィールドタイプごとのタイルセットを使用しマップ生成を行う
-//　仕組み：ルート生成：座標を受け取ると、ロードマップデータから出入り口のデータを取得、出入り口の方角に応じてルートを敷く
+//　マップ生成：座標を受け取ると、WorldMapSystemからフィールドデータを取得
+//　フィールドデータからタイルセットを選択しフィールドの描画を行う
+//　TODO：ルート生成：フィールドデータ（roadDirection）から出入り口の方角に応じてルートを敷く
 
 public class GenerateFieldMap : MonoBehaviour
 {
-    public int width;        // マップの幅
-    public int height;       // マップの高さ
-    public string seed;      // シード値
-    public bool useRandamSeed; // ランダムシードを使うかどうか
-    public int randomFillPercent; // 壁の埋め込み率
     [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // 地面と壁のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
     [SerializeField] MapBase mapBase; //マップデータ
     [SerializeField] PlayerController character; //キャラクター
     [SerializeField] WorldMapSystem worldMapSystem;
+    public int width;        // マップの幅
+    public int height;       // マップの高さ
+    public string seed;      // シード値
+    public bool useRandamSeed; // ランダムシードを使うかどうか
+    public int randomFillPercent; // 壁の埋め込み率
     DirectionType characterDirection;
 
     int[,] map;             // マップデータ
