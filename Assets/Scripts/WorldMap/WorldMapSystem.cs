@@ -16,6 +16,8 @@ public class WorldMapSystem : MonoBehaviour
     // 指定座標が海のとき、周りグランドがあるかを確認する。周りにグラウンドがあるときはその方向を返す。
     public FieldData getFieldDataByCoordinate(Coordinate targetCoordinate) //targetCoordinate : {row = 20,col = 20};
     {
+        // Debug.Log($"getFieldDataByCoordinate col:{targetCoordinate.col} row:{targetCoordinate.row}");
+        // Coordinate targetCoordinate = new Coordinate { row = 36, col = 20 }; // TEST用に追加している
         TileMapData groundData = LoadJsonMapData(groundJsonData);
         TileMapData floorData = LoadJsonMapData(floorJsonData);
         TileMapData roadData = LoadJsonMapData(roadJsonData);
@@ -41,7 +43,7 @@ public class WorldMapSystem : MonoBehaviour
     private TileMapData LoadJsonMapData(string fileName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
-        Debug.Log(filePath);
+        // Debug.Log(filePath);
 
         if (!File.Exists(filePath))
         {

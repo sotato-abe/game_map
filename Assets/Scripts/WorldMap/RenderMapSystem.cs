@@ -34,7 +34,6 @@ public class RenderMapSystem : MonoBehaviour
     private TileMapData LoadJsonMapData(string fileName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
-        Debug.Log(filePath);
 
         if (!File.Exists(filePath))
         {

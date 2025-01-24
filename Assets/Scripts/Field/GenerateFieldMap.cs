@@ -10,7 +10,6 @@ using UnityEngine;
 
 public class GenerateFieldMap : MonoBehaviour
 {
-    public FloorType floorType;
     public int width;        // マップの幅
     public int height;       // マップの高さ
     public string seed;      // シード値
@@ -20,8 +19,8 @@ public class GenerateFieldMap : MonoBehaviour
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
     [SerializeField] MapBase mapBase; //マップデータ
-    [SerializeField] GameObject character; //キャラクター
-    Vector2 characterPosition;
+    [SerializeField] PlayerController character; //キャラクター
+    [SerializeField] WorldMapSystem worldMapSystem;
     DirectionType characterDirection;
 
     int[,] map;             // マップデータ
@@ -29,17 +28,19 @@ public class GenerateFieldMap : MonoBehaviour
     Vector2 mapCenterPos;    // マップの中心座標
     float tileSize;          // プレファブのサイズ
     FloorTileListBase tileSet;
-
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
     List<Vector2> entryPositions = new List<Vector2>(); // エントリーポイントのリスト
+
+    private FieldData fieldData;
 
     void Start()
     {
         characterDirection = DirectionType.Top;
         width = mapBase.MapWidth;
         height = mapBase.MapHeight;
+        fieldData = worldMapSystem.getFieldDataByCoordinate(character.Battler.coordinate);
         GenarateMap(); // ゲーム開始時にマップ生成
-        character.transform.position = mapCenterPos;
+        character.gameObject.transform.position = mapCenterPos;
     }
 
     void Update()
@@ -47,25 +48,22 @@ public class GenerateFieldMap : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             characterDirection = DirectionType.Top;
-            ReloadMap(characterDirection);
+            ReloadMap(characterDirection, character.Battler.coordinate);
         }
     }
 
-    public void SetFieldData(FieldData fieldData)
-    {
-        Debug.Log("SetFieldData");
-    }
-
-    public void ReloadMap(DirectionType entryDirection)
+    public void ReloadMap(DirectionType entryDirection, Coordinate playerCoordinate)
     {
         characterDirection = entryDirection;
+        fieldData = worldMapSystem.getFieldDataByCoordinate(playerCoordinate);
+        Debug.Log($"Coordinate:Row: {playerCoordinate.row}, Col: {playerCoordinate.col}");
+        Debug.Log($"ReloadMap floorType:{fieldData.floorType}");
         ClearMap(); // 現在のマップをクリア
         GenarateMap();
     }
 
     // フィールドマップ生成
     // ゲームコントローラーから座標を受け取る
-    // WorldMapSystemからFieldDataを受け取る
     void GenarateMap()
     {
         if (useRandamSeed)
@@ -242,9 +240,9 @@ public class GenerateFieldMap : MonoBehaviour
         if (characterDirection == direction)
         {
             if (isVertical)
-                character.transform.position = GetWorldPositionFromTile(entryPoint, start + step);
+                character.gameObject.transform.position = GetWorldPositionFromTile(entryPoint, start + step);
             else
-                character.transform.position = GetWorldPositionFromTile(start + step, entryPoint);
+                character.gameObject.transform.position = GetWorldPositionFromTile(start + step, entryPoint);
         }
 
         if (isVertical)
@@ -292,7 +290,7 @@ public class GenerateFieldMap : MonoBehaviour
     // フィールド用のタイルを描画
     void renderingTileMap()
     {
-        tileSet = floorTiles[(int)floorType];
+        tileSet = floorTiles[(int)fieldData.floorType];
         tileSize = tileSet.Floor.bounds.size.x; // タイルサイズを取得
         Debug.Log($"TileType:{tileSet.Type}");
         mapCenterPos = new Vector2(width * tileSize / 2, height * tileSize / 2); // マップの中心座標を計算
