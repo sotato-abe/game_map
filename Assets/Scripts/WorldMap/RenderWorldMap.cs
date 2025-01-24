@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Newtonsoft.Json; // Newtonsoft.Jsonを使用
 
-public class RenderMapSystem : MonoBehaviour
+public class RenderWorldMap : MonoBehaviour
 {
     [SerializeField] private Tilemap groundTilemap; // グラウンド描画用Tilemap
     [SerializeField] private Tilemap floorTilemap; // フロア描画用Tilemap
