@@ -34,6 +34,6 @@ public class MapBase : ScriptableObject
 
     public Coordinate Coordinate
     {
-        get => new Coordinate { row = coordinateX, col = coordinateY };
+        get => new Coordinate { col = coordinateX, row = coordinateY };
     }
 }

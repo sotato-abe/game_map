@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] GenerateFieldMap generateFieldMap;
+
+    //　プレイヤーの現在座標を保持する変数
+    //　後々１つのクラスとして独立させる
     public Coordinate playerCoordinate;
 
     Battler enemy;
@@ -25,6 +28,7 @@ public class GameController : MonoBehaviour
         reserveSystem.ActionPanel.SetPanelValidity(0.2f);
         StartCoroutine(messagePanel.TypeDialog("game start"));
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        playerCoordinate = playerController.Battler.coordinate;
     }
 
     // フィールド移動時の方向を受け取る
@@ -35,9 +39,15 @@ public class GameController : MonoBehaviour
     {
         DirectionType entryDirection = outDirection.GetOppositeDirection();
         Debug.Log($"GameController:ChangeField:{outDirection}>>>{entryDirection}");
-        playerCoordinate = playerController.Battler.coordinate;
-        Debug.Log($"StartPoint:Row: {playerCoordinate.row}, Col: {playerCoordinate.col}");
-        generateFieldMap.ReloadMap(entryDirection);
+        if (outDirection == DirectionType.Top)
+            playerCoordinate.row = playerCoordinate.row - 1;
+        if (outDirection == DirectionType.Bottom)
+            playerCoordinate.row = playerCoordinate.row + 1;
+        if (outDirection == DirectionType.Right)
+            playerCoordinate.col = playerCoordinate.col + 1;
+        if (outDirection == DirectionType.Left)
+            playerCoordinate.col = playerCoordinate.col - 1;
+        generateFieldMap.ReloadMap(entryDirection, playerCoordinate);
     }
 
     public void ReserveStart()
