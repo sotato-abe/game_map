@@ -7,7 +7,7 @@ using TMPro;
 public class ActionPanel : MonoBehaviour
 {
     bool selectable;
-    [SerializeField] SelectableText selectableTextPrefab;
+    [SerializeField] private SelectableText selectableTextPrefab;
     [SerializeField] Image dialogBackground;
     [SerializeField] ActionBoard actionBoard;
     private List<SelectableText> actionTexts; // ActionList内のテキストリスト
