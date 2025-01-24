@@ -12,13 +12,13 @@ public class PlayerBattler : Battler
     public override void Init()
     {
         propertyPanel = GameObject.FindObjectOfType<PropertyPanel>();
-        
+
         base.Init();
         UpdatePropertyPanel();
     }
 
     public void UpdatePropertyPanel()
     {
-        propertyPanel.Init(Money, Disk);
+        propertyPanel.Init(Money, Disk, Key);
     }
 }

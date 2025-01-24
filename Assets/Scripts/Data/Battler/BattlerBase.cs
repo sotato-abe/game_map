@@ -16,6 +16,8 @@ public class BattlerBase : ScriptableObject
     [SerializeField] Sprite sprite;
     [SerializeField] int money;
     [SerializeField] int disk;
+    [SerializeField] int key;
+    [SerializeField] MapBase birthplace;
 
     [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Item> items;
@@ -30,8 +32,10 @@ public class BattlerBase : ScriptableObject
     public int Speed { get => speed; }
     public int Money { get => money; }
     public int Disk { get => disk; }
+    public int Key { get => key; }
     public Sprite Sprite { get => sprite; }
     public List<Equipment> Equipments { get => equipments; }
     public List<Item> Items { get => items; }
     public List<Command> Commands { get => comands; }
+    public MapBase Birthplace { get => birthplace; }
 }

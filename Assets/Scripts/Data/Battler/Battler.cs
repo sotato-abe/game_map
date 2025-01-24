@@ -29,6 +29,8 @@ public class Battler
     public int Speed { get; set; }
     public int Money { get; set; }
     public int Disk { get; set; }
+    public int Key { get; set; }
+    public Coordinate coordinate;
 
     public virtual void Init()
     {
@@ -42,10 +44,12 @@ public class Battler
         Speed = _base.Speed;
         Money = _base.Money;
         Disk = _base.Disk;
+        Key = _base.Key;
 
         equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
         inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
         deck = _base.Commands ?? new List<Command>(); // Items が null の場合、新しいリストを初期化
+        coordinate = _base.Birthplace.Coordinate;
     }
 
     public int TakeDamage(Battler attacker)
