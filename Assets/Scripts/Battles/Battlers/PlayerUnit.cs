@@ -6,8 +6,7 @@ using TMPro;
 
 public class PlayerUnit : BattleUnit
 {
-    [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] CharacterCard characterCard;
     [SerializeField] TextMeshProUGUI lifeText;
     [SerializeField] TextMeshProUGUI batteryText;
     [SerializeField] TextMeshProUGUI soulText;
@@ -19,9 +18,7 @@ public class PlayerUnit : BattleUnit
     public override void Setup(Battler battler)
     {
         base.Setup(battler);
-
-        image.sprite = battler.Base.Sprite;
-        nameText.SetText(battler.Base.Name);
+        characterCard.SetCharacter(battler);
         lifeText.SetText($"{battler.Life}");
         batteryText.SetText($"{battler.Battery}");
         soulText.SetText($"{battler.Soul}");
