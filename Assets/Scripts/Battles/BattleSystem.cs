@@ -163,6 +163,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ItemTurn()
     {
         state = BattleState.ActionExecution;
+        playerUnit.SetMotion(BattleUnit.Motion.Jump);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
         actionBoard.ItemPanel.UseItem();
         yield return StartCoroutine(actionBoard.SetMessageText("The player fished through his backpack but found nothing"));
