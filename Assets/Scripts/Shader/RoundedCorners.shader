@@ -7,7 +7,7 @@ Shader "UI/RoundedCorners"
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
+        Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
         LOD 100
 
         Blend SrcAlpha OneMinusSrcAlpha
@@ -64,7 +64,7 @@ Shader "UI/RoundedCorners"
                 // 角丸のマスク処理（座標補正のみ）
                 float2 maskUV = (uv - 0.5) * i.aspectRatio + 0.5;
                 float2 dist = abs(maskUV - 0.5) - 0.5 + radius;
-                
+
                 if (dist.x > 0 && dist.y > 0 && dist.x * dist.x + dist.y * dist.y > radius * radius)
                 {
                     col.a = 0; // 透明にする
