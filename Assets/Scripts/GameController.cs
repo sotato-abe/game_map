@@ -73,7 +73,6 @@ public class GameController : MonoBehaviour
         fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
         enemy = fieldInfoSystem.GetRandomEnemy();
-        enemy.Init();
         battleSystem.gameObject.SetActive(true);
         battleSystem.BattleStart(playerController.Battler, enemy);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
