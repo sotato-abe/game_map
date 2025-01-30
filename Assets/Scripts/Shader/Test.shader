@@ -1,4 +1,4 @@
-Shader "UI/RoundedCorners"
+Shader "UI/Test"
 {
     Properties
     {
