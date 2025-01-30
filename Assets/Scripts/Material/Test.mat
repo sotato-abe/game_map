@@ -7,12 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RoundedCornersMaterial
-  m_Shader: {fileID: 4800000, guid: 775d26b13be3d824bbd01efefea4c995, type: 3}
+  m_Name: Test
+  m_Shader: {fileID: 4800000, guid: b1162838936dc364c976a8fb92346c44, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _ROUND_SHAPE_ROUND
-  - _TYPE_DEFAULT
+  - _TYPE_OUTLINE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -60,8 +60,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AspectRatio: 0.5
-    - _BorderWidth: 1
+    - _AspectRatio: 1
     - _BumpScale: 1
     - _ColorMask: 15
     - _Cutoff: 0.5
@@ -84,12 +83,11 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _TYPE: 0
+    - _TYPE: 1
     - _UVSec: 0
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
     m_Colors:
-    - _BorderColor: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
