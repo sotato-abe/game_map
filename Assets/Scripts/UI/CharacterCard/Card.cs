@@ -7,7 +7,7 @@ using TMPro;
 public class Card : MonoBehaviour
 {
      private Image cardImage;  // 表示用のTextMeshProUGUIフィールド
-     private float radius = 5f; // 角の半径
+    //  private float radius = 5f; // 角の半径
      private Vector2 size = new Vector2(200f, 300f); // カードのサイズ
      private Color cardColor = Color.white; // カードの色
 
