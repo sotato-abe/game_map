@@ -7,8 +7,7 @@ using TMPro;
 public class EnemyUnit : BattleUnit
 {
     // TODO : エナジーUIを追加
-    [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] CharacterCard characterCard;
     [SerializeField] TextMeshProUGUI lifeText;
     [SerializeField] TextMeshProUGUI batteryText;
     [SerializeField] TextMeshProUGUI soulText;
@@ -20,8 +19,7 @@ public class EnemyUnit : BattleUnit
     {
         base.Setup(battler);
 
-        image.sprite = battler.Base.Sprite;
-        nameText.SetText(battler.Base.Name);
+        characterCard.SetCharacter(battler);
         lifeText.SetText($"{battler.Life}");
         batteryText.SetText($"{battler.Battery}");
         soulText.SetText($"{battler.Soul}");
