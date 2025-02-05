@@ -130,7 +130,7 @@ public class ReserveSystem : MonoBehaviour
     public IEnumerator ItemTurn()
     {
         state = ReserveState.ActionExecution;
-        playerUnit.SetMotion(MotionType.Jump);
+        playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
         actionBoard.ItemPanel.UseItem();
         yield return StartCoroutine(actionBoard.SetMessageText("The player fished through his backpack but found nothing"));

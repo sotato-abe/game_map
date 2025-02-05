@@ -62,6 +62,7 @@ public class BattleSystem : MonoBehaviour
         actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(MotionType.Jump);
+        playerUnit.SetMotion(MotionType.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
         state = BattleState.TurnWait;
@@ -163,7 +164,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ItemTurn()
     {
         state = BattleState.ActionExecution;
-        playerUnit.SetMotion(MotionType.Jump);
+        playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
         actionBoard.ItemPanel.UseItem();
         yield return StartCoroutine(actionBoard.SetMessageText("The player fished through his backpack but found nothing"));
@@ -184,7 +185,7 @@ public class BattleSystem : MonoBehaviour
     {
         int damage = targetUnit.Battler.TakeDamage(sourceUnit.Battler);
         targetUnit.UpdateUI();
-        targetUnit.SetMotion(MotionType.Jump);
+        targetUnit.SetMotion(MotionType.Shake);
         StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(actionBoard.SetMessageText($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
@@ -264,6 +265,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleEnd()
     {
         enemyUnit.gameObject.SetActive(false);
+        playerUnit.SetMotion(MotionType.Move);
         OnBattleEnd?.Invoke();
     }
 }
