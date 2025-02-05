@@ -61,7 +61,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle(player, enemy));
         actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
-        enemyUnit.SetMotion(BattleUnit.Motion.Jump);
+        enemyUnit.SetMotion(MotionType.Jump);
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
         state = BattleState.TurnWait;
@@ -163,7 +163,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ItemTurn()
     {
         state = BattleState.ActionExecution;
-        playerUnit.SetMotion(BattleUnit.Motion.Jump);
+        playerUnit.SetMotion(MotionType.Jump);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
         actionBoard.ItemPanel.UseItem();
         yield return StartCoroutine(actionBoard.SetMessageText("The player fished through his backpack but found nothing"));
@@ -184,7 +184,7 @@ public class BattleSystem : MonoBehaviour
     {
         int damage = targetUnit.Battler.TakeDamage(sourceUnit.Battler);
         targetUnit.UpdateUI();
-        targetUnit.SetMotion(BattleUnit.Motion.Jump);
+        targetUnit.SetMotion(MotionType.Jump);
         StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(actionBoard.SetMessageText($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
@@ -199,7 +199,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator BattleResult(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
-        targetUnit.SetMotion(BattleUnit.Motion.Jump);
+        targetUnit.SetMotion(MotionType.Jump);
         yield return StartCoroutine(actionBoard.SetMessageText($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
 
         List<Item> targetItems = targetUnit.Battler.Base.Items;
