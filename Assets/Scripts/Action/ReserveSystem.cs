@@ -51,7 +51,6 @@ public class ReserveSystem : MonoBehaviour
 
     public void ReserveStart(Battler player)
     {
-        Debug.Log("ReserveStart");
         state = ReserveState.Start;
         actionBoard.changeDialogType(ActionType.Talk);
         actionPanel.SetPanelValidity(1f);

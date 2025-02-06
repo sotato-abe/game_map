@@ -6,8 +6,6 @@ using TMPro;
 
 public class EnemyUnit : BattleUnit
 {
-    // TODO : エナジーUIを追加
-
     public override void Setup(Battler battler)
     {
         base.Setup(battler);

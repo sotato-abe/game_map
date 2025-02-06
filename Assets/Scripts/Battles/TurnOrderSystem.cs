@@ -4,19 +4,17 @@ using UnityEngine;
 
 // 機能
 // バトルが開始されるとシステムが開始される
-// バトルに参加しているキャラクター（Battler）のGenerationTurnBattlerを作成する。
+// バトルに参加しているキャラクター（Battler）のturnBattlerを作成する。
 // ターンバーのアクティブを制御する。
 // TurnBattlerのターン実行を受け取りbattleSystemにターン実行を通知する。
-// キャラクターのスピードが変更されたときにBattlerのスピードに応じてGenerationTurnBattlerとTurnBattlerを生成し直す。
+// キャラクターのスピードが変更されたときにBattlerのスピードに応じてturnBattlerとTurnBattlerを生成し直す。
 
 public class TurnOrderSystem : MonoBehaviour
 {
-    [SerializeField] GenerationTurnBattler generationTurnBattlerPrefab;
+    [SerializeField] GenerationTurnBattler turnBattlerPrefab;
     [SerializeField] BattleSystem battleSystem;
-
     private TurnBattler targetBattler;
-
-    private List<GenerationTurnBattler> generationTurnBattlers = new List<GenerationTurnBattler>();
+    private List<GenerationTurnBattler> turnBattlerList = new List<GenerationTurnBattler>();
 
     public void SetUpBattlerTurns(List<Battler> battlers)
     {
@@ -25,7 +23,7 @@ public class TurnOrderSystem : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        generationTurnBattlers.Clear();
+        turnBattlerList.Clear();
 
         // スピード順にソート
         battlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
@@ -33,18 +31,18 @@ public class TurnOrderSystem : MonoBehaviour
         // 各バトラーに対してGenerationTurnBattlerを生成し設定
         foreach (Battler battler in battlers)
         {
-            GenerationTurnBattler generationTurnBattler = Instantiate(generationTurnBattlerPrefab, transform);
+            GenerationTurnBattler generationTurnBattler = Instantiate(turnBattlerPrefab, transform);
             generationTurnBattler.Initialize(battler, this);
-            generationTurnBattlers.Add(generationTurnBattler);
+            turnBattlerList.Add(generationTurnBattler);
         }
     }
 
     public void SetActive(bool isActiveFlg)
     {
         // GenerationTurnBattlerとTurnBattlerのアクティブ状態を制御
-        foreach (GenerationTurnBattler generationTurnBattler in generationTurnBattlers)
+        foreach (GenerationTurnBattler turnBattler in turnBattlerList)
         {
-            generationTurnBattler.SetActive(isActiveFlg);
+            turnBattler.SetActive(isActiveFlg);
         }
     }
 
