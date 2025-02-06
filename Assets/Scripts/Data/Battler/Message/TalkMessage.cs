@@ -6,7 +6,7 @@ using TMPro;
 [CreateAssetMenu]
 public class TalkMessage : ScriptableObject
 {
-    [SerializeField] new string message;
+    [SerializeField] string message;
     [SerializeField] MessageType messageType;
     [SerializeField] PanelType panelType;
 }
