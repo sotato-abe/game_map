@@ -6,15 +6,18 @@ using UnityEngine;
 // バトルが開始されるとシステムが開始される
 // バトルに参加しているキャラクター（Battler）のturnBattlerを作成する。
 // ターンバーのアクティブを制御する。
-// TurnBattlerのターン実行を受け取りbattleSystemにターン実行を通知する。
-// キャラクターのスピードが変更されたときにBattlerのスピードに応じてturnBattlerとTurnBattlerを生成し直す。
+// キャラクターのスピードが変更されたときにBattlerのスピードに応じてTurnBattlerIconを生成し直す。
 
 public class TurnOrderSystem : MonoBehaviour
 {
     [SerializeField] TurnBattlerIcon turnBattlerPrefab;
-    [SerializeField] BattleSystem battleSystem;
-    private TurnBattler targetBattler;
+    private TurnBattlerIcon targetBattlerIcon;
     private List<TurnBattlerIcon> turnBattlerList = new List<TurnBattlerIcon>();
+
+    private void Start()
+    {
+        turnBattlerPrefab.ExecuteTurn += ExecuteTurn;
+    }
 
     public void SetUpBattlerTurns(List<Battler> battlers)
     {
@@ -28,49 +31,39 @@ public class TurnOrderSystem : MonoBehaviour
         // スピード順にソート
         battlers.Sort((a, b) => b.Speed.CompareTo(a.Speed));
 
-        // 各バトラーに対してGenerationTurnBattlerを生成し設定
+        // 各バトラー毎にurnBattlerIconを生成し設定
         foreach (Battler battler in battlers)
         {
             TurnBattlerIcon turnBattlerIcon = Instantiate(turnBattlerPrefab, transform);
             turnBattlerIcon.SetCharacter(battler.Base.Sprite);
             turnBattlerList.Add(turnBattlerIcon);
+            Debug.Log($"battlerName{battler.Base.Name}");
         }
     }
 
     public void SetActive(bool isActiveFlg)
     {
-        // GenerationTurnBattlerとTurnBattlerのアクティブ状態を制御
+        Debug.Log("TurnOrderSystem:SetActive");
+        // TurnBattlerIconのアクティブ状態を制御
         foreach (TurnBattlerIcon turnBattler in turnBattlerList)
         {
             turnBattler.SetActive(isActiveFlg);
         }
     }
 
-    public IEnumerator ExecuteTurn(TurnBattler turnBattler)
+    public void ExecuteTurn(TurnBattlerIcon turnBattler)
     {
-        targetBattler = turnBattler;
-        SetActive(false); // ターン実行中は他のバトラーを非アクティブ化
-
-        if (turnBattler.Battler.Base.Name == "Sola") // TODO: 仮の分岐
-        {
-            yield return StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
-        }
-        else
-        {
-            yield return StartCoroutine(battleSystem.EnemyAttack());
-        }
-        Debug.Log("ExecuteTurnEnd");
-        // SetActive(true); // TODO ターン終了後に再びアクティブ化
-        // Destroy(turnBattler.gameObject); // ターン終了したTurnBattlerを削除
+        Debug.Log($"{turnBattler.name} のターン開始");
+        targetBattlerIcon = turnBattler;
+        EndTurn();
     }
 
     public void EndTurn()
     {
-        if (targetBattler)
+        if (targetBattlerIcon)
         {
-            Destroy(targetBattler.gameObject); // ターン終了したTurnBattlerを削除
-            targetBattler = null;
+            Destroy(targetBattlerIcon.gameObject); // ターン終了したTurnBattlerIconを削除
+            targetBattlerIcon = null;
         }
-        SetActive(true);
     }
 }

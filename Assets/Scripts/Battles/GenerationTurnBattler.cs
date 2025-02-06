@@ -5,7 +5,7 @@ using UnityEngine;
 public class GenerationTurnBattler : MonoBehaviour
 {
     public Battler Battler { get; set; }
-    [SerializeField] TurnBattler turnBattlerPrefab;
+    [SerializeField] TurnBattlerIcon turnBattlerIcon;
     private TurnOrderSystem turnOrderSystem;
     private bool isActive = true;
     private float generationInterval;
@@ -62,7 +62,7 @@ public class GenerationTurnBattler : MonoBehaviour
         }
     }
 
-    // TurnBattlerを生成するコルーチン
+    // TurnBattlerIconを生成するコルーチン
     private IEnumerator GenerationUnit()
     {
         while (true)
@@ -82,9 +82,9 @@ public class GenerationTurnBattler : MonoBehaviour
                     yield return new WaitForSeconds(remainingTime);
                 }
 
-                // TurnBattlerを生成
-                TurnBattler newTurnBattler = Instantiate(turnBattlerPrefab, transform);
-                newTurnBattler.Initialize(Battler, turnOrderSystem);
+                // TurnBattlerIconを生成
+                TurnBattlerIcon newTurnBattler = Instantiate(turnBattlerIcon, transform);
+                newTurnBattler.SetCharacter(Battler.Base.Sprite);
                 newTurnBattler.gameObject.SetActive(true);
 
                 // 生成が完了したら経過時間をリセット
@@ -99,12 +99,12 @@ public class GenerationTurnBattler : MonoBehaviour
         }
     }
 
-    // TurnBattlerのアクティブ状態を更新
+    // TurnBattlerIconのアクティブ状態を更新
     public void SetTurnBattlerActive()
     {
         foreach (Transform child in transform)
         {
-            TurnBattler turnBattlerUnit = child.GetComponent<TurnBattler>();
+            TurnBattlerIcon turnBattlerUnit = child.GetComponent<TurnBattlerIcon>();
             if (turnBattlerUnit != null)
             {
                 turnBattlerUnit.SetActive(isActive);
