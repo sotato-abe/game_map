@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class TurnOrderSystem : MonoBehaviour
 {
-    [SerializeField] TurnCharacterIcon characterIcon;
+    [SerializeField] TurnBattlerIcon turnBattlerIcon;
     [SerializeField] GenerationTurnBattler turnBattlerPrefab;
     [SerializeField] BattleSystem battleSystem;
     private TurnBattler targetBattler;

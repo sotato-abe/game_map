@@ -5,7 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class TurnCharacterIcon : MonoBehaviour
+public class TurnBattlerIcon : MonoBehaviour
 {
     [SerializeField] private Image iconImage;  // 表示用のTextMeshProUGUIフィールド
+    public void SetCharacter(Sprite characterSprite)
+    {
+        iconImage.sprite = characterSprite;
+    }
 }
+
