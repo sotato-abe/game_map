@@ -22,6 +22,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Item> items;
     [SerializeField] List<Command> comands;
+    [SerializeField] List<TalkMessage> messages;
 
     public string Name { get => name; }
     public int MaxLife { get => maxLife; }
