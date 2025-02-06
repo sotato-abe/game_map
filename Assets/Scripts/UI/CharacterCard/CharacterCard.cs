@@ -49,8 +49,8 @@ public class CharacterCard : MonoBehaviour
     private IEnumerator MoveMotion()
     {
         Vector3 originalPosition = transform.position;
-        float moveRange = 10f;  // 移動範囲
-        float moveSpeed = 2f;  // 移動スピード
+        float moveRange = 20f;  // 移動範囲
+        float moveSpeed = 3f;  // 移動スピード
 
         Vector3 targetPosition = originalPosition;
 
