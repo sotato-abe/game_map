@@ -11,11 +11,10 @@ using UnityEngine;
 
 public class TurnOrderSystem : MonoBehaviour
 {
-    [SerializeField] TurnBattlerIcon turnBattlerIcon;
-    [SerializeField] GenerationTurnBattler turnBattlerPrefab;
+    [SerializeField] TurnBattlerIcon turnBattlerPrefab;
     [SerializeField] BattleSystem battleSystem;
     private TurnBattler targetBattler;
-    private List<GenerationTurnBattler> turnBattlerList = new List<GenerationTurnBattler>();
+    private List<TurnBattlerIcon> turnBattlerList = new List<TurnBattlerIcon>();
 
     public void SetUpBattlerTurns(List<Battler> battlers)
     {
@@ -32,16 +31,16 @@ public class TurnOrderSystem : MonoBehaviour
         // 各バトラーに対してGenerationTurnBattlerを生成し設定
         foreach (Battler battler in battlers)
         {
-            GenerationTurnBattler generationTurnBattler = Instantiate(turnBattlerPrefab, transform);
-            generationTurnBattler.Initialize(battler, this);
-            turnBattlerList.Add(generationTurnBattler);
+            TurnBattlerIcon turnBattlerIcon = Instantiate(turnBattlerPrefab, transform);
+            turnBattlerIcon.SetCharacter(battler.Base.Sprite);
+            turnBattlerList.Add(turnBattlerIcon);
         }
     }
 
     public void SetActive(bool isActiveFlg)
     {
         // GenerationTurnBattlerとTurnBattlerのアクティブ状態を制御
-        foreach (GenerationTurnBattler turnBattler in turnBattlerList)
+        foreach (TurnBattlerIcon turnBattler in turnBattlerList)
         {
             turnBattler.SetActive(isActiveFlg);
         }
