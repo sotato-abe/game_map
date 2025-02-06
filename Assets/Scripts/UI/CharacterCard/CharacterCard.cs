@@ -51,7 +51,6 @@ public class CharacterCard : MonoBehaviour
         Vector3 originalPosition = transform.position;
         float moveRange = 10f;  // 移動範囲
         float moveSpeed = 2f;  // 移動スピード
-        float changeTargetInterval = 0.5f; // 次のターゲットを決める間隔
 
         Vector3 targetPosition = originalPosition;
 
