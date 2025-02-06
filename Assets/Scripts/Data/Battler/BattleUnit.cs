@@ -55,6 +55,23 @@ public class BattleUnit : MonoBehaviour
         speedText.SetText($"{Battler.Base.Speed}");
     }
 
+    public void SetMessage(MessageType messageType)
+    {
+        List<TalkMessage> messagesList = Battler.Base.Messages;
+
+        // messagesListが空なら処理を中断
+        if (messagesList == null || messagesList.Count == 0)
+        {
+            Debug.LogWarning("SetMessage: メッセージリストが空です");
+            return;
+        }
+
+        // Indexが範囲外にならないように修正
+        int index = Mathf.Min(2, messagesList.Count - 1);
+        StartCoroutine(SetTalkMessage(messagesList[index].message)); // ← message をプロパティに修正
+    }
+
+
     public void SetMotion(MotionType motion)
     {
         characterCard.SetCardMotion(motion);

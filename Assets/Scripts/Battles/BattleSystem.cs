@@ -61,8 +61,9 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(MotionType.Jump);
         playerUnit.SetMotion(MotionType.Jump);
-        StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(playerUnit.SetTalkMessage("Damn,,")); // TODO : キャラクターメッセージリストから取得する。
+        enemyUnit.SetMotion(MotionType.Jump);
+        enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
+        playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
         state = BattleState.TurnWait;
         List<Battler> battlers = new List<Battler> { player, enemy };
         turnOrderSystem.SetUpBattlerTurns(battlers);
