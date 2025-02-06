@@ -11,7 +11,7 @@ public class CharacterCard : MonoBehaviour
     [SerializeField] private TextMeshProUGUI nameText;  // 表示用のTextMeshProUGUIフィールド
     [SerializeField] private Image cardImage;  // 表示用のTextMeshProUGUIフィールド
 
-    private void Awake()
+    private void OnEnable()
     {
         StartCoroutine(MoveMotion());
     }

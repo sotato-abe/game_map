@@ -12,7 +12,6 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     public UnityAction OnBattleEnd;
     [SerializeField] bool isAuto; // オート状態　TODO：全体のオート状態を受け取る
-    [SerializeField] BattleCanvas battleCanvas;
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
@@ -56,7 +55,6 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleStart(Battler player, Battler enemy)
     {
-        battleCanvas.gameObject.SetActive(true);
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
         actionPanel.SetPanelValidity(0.2f);
@@ -237,7 +235,6 @@ public class BattleSystem : MonoBehaviour
             }
             sourceUnit.Battler.Money += targetUnit.Battler.Money;
             sourceUnit.Battler.Disk += targetUnit.Battler.Disk;
-            // playerUnit.Battler.UpdatePropertyPanel();
             if (playerUnit.Battler is PlayerBattler playerBattler)
             {
                 playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
