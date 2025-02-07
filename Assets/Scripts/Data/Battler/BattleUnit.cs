@@ -25,10 +25,10 @@ public class BattleUnit : MonoBehaviour
         lifeText.SetText($"{battler.Life}");
         batteryText.SetText($"{battler.Battery}");
         soulText.SetText($"{battler.Soul}");
-        attackText.SetText($"{battler.Base.Attack}");
-        techniqueText.SetText($"{battler.Base.Technique}");
-        defenseText.SetText($"{battler.Base.Defense}");
-        speedText.SetText($"{battler.Base.Speed}");
+        attackText.SetText($"{battler.Attack}");
+        techniqueText.SetText($"{battler.Technique}");
+        defenseText.SetText($"{battler.Defense}");
+        speedText.SetText($"{battler.Speed}");
     }
 
     public IEnumerator SetTalkMessage(string message)

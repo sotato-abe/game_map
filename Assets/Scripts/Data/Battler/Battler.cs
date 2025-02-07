@@ -34,6 +34,12 @@ public class Battler
 
     public virtual void Init()
     {
+        if (_base == null)
+        {
+            Debug.LogError("Init() failed: _base is null");
+            return;
+        }
+
         MaxLife = _base.MaxLife;
         Life = MaxLife;
         MaxBattery = _base.MaxBattery;
@@ -49,7 +55,13 @@ public class Battler
         equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
         inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
         deck = _base.Commands ?? new List<Command>(); // Items が null の場合、新しいリストを初期化
-        coordinate = _base.Birthplace.Coordinate;
+                                                      // _base.Birthplace または Coordinate が null でないかチェック
+        if (_base.Birthplace == null)
+            Debug.LogWarning($"Warning: {_base.Name} の Birthplace が null です。");
+        else if (_base.Birthplace.Coordinate == null)
+            Debug.LogWarning($"Warning: {_base.Name} の Coordinate が null です。");
+        else
+            coordinate = _base.Birthplace.Coordinate;
     }
 
     public int TakeDamage(Battler attacker)
