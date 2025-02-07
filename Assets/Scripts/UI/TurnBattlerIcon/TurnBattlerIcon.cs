@@ -6,17 +6,32 @@ using UnityEngine.Events;
 
 public class TurnBattlerIcon : MonoBehaviour
 {
-    [SerializeField] private Image iconImage;  // 表示用のTextMeshProUGUIフィールド
+    [SerializeField] private Image iconImage;
+    [SerializeField] private float moveSpeed = 300f;
+    [SerializeField] private float targetOffsetX = -700f; // 相対的な移動距離
+    private RectTransform rectTransform;
     private bool isActive = true;
-    private float moveSpeed = 300f;
-    private float targetPositionX = -700f;
-    public delegate void ExecuteTurnDelegate(TurnBattlerIcon turnBattlerIcon);
-    public event ExecuteTurnDelegate ExecuteTurn;
+    private bool isMoving = false; // 停止/再開の制御用
 
-    public void SetCharacter(Sprite characterSprite)
+    public UnityAction OnExecute;
+
+    private void Awake()
     {
-        iconImage.sprite = characterSprite;
-        StartCoroutine(MoveToLeft());
+        rectTransform = GetComponent<RectTransform>(); // RectTransform をキャッシュ
+    }
+
+    public void SetTurnBattlerIcon(Sprite battlerImage)
+    {
+        iconImage.sprite = battlerImage;
+    }
+
+    public void StartMoving()
+    {
+        if (!isMoving)
+        {
+            isMoving = true;
+            StartCoroutine(MoveToLeft());
+        }
     }
 
     public void SetActive(bool activeFlg)
@@ -26,9 +41,8 @@ public class TurnBattlerIcon : MonoBehaviour
 
     private IEnumerator MoveToLeft()
     {
-        RectTransform rectTransform = GetComponent<RectTransform>();
-
-        while (rectTransform.anchoredPosition.x > targetPositionX)
+        float targetX = rectTransform.anchoredPosition.x + targetOffsetX; // 相対移動
+        while (isMoving && rectTransform.anchoredPosition.x > targetX)
         {
             if (isActive)
             {
@@ -37,8 +51,15 @@ public class TurnBattlerIcon : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("ターン開始: " + gameObject.name);
-        ExecuteTurn?.Invoke(this);
+        if (isMoving) // 停止が指示されていない場合のみ実行
+        {
+            Debug.Log("ターン開始: " + gameObject.name);
+            OnExecute?.Invoke();
+        }
+    }
+
+    public void StopMoving()
+    {
+        isMoving = false; // 強制停止
     }
 }
-
