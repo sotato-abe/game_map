@@ -10,7 +10,7 @@ public class TurnOrderSystem : MonoBehaviour
     private List<TurnBattler> turnBattlerList = new List<TurnBattler>();
     private List<Battler> battlers = new List<Battler>(); // 保存用
     private Coroutine generateCoroutine;
-    private bool isGenerating = false;
+    private bool isGenerating = true;
     private bool isActive = false;
 
     public void SetUpBattlerTurns(List<Battler> newBattlers)
@@ -25,11 +25,12 @@ public class TurnOrderSystem : MonoBehaviour
         // バトラー情報を保存
         battlers = new List<Battler>(newBattlers);
         // 生成を開始
-        GenerateTurnBattler();
+        StartCoroutine(GenerateTurnBattler());
     }
 
     private IEnumerator GenerateTurnBattler()
     {
+        Debug.Log($"TurnOrderSystem:GenerateTurnBattler:{battlers.Count}");
         foreach (Battler battler in battlers)
         {
             if (!isGenerating) yield break;
@@ -38,7 +39,6 @@ public class TurnOrderSystem : MonoBehaviour
             turnBattler.OnExecuteTurn += ExecuteTurn;
             turnBattler.SetBattler(battler);
             turnBattlerList.Add(turnBattler);
-            Debug.Log($"battlerName: {battler.Base.Name}");
 
             // Speed に応じた間隔で次のアイコンを生成
             float interval = Mathf.Clamp(10.0f / battler.Speed, 1.0f, 10.0f);
