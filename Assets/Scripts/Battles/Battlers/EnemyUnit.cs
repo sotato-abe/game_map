@@ -8,6 +8,7 @@ public class EnemyUnit : BattleUnit
 {
     public override void Setup(Battler battler)
     {
+        battler.Init();
         base.Setup(battler);
     }
 
