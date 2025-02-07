@@ -68,6 +68,7 @@ public class BattleSystem : MonoBehaviour
         
         state = BattleState.TurnWait;
         
+        // List<Battler> battlers = new List<Battler> { player };
         List<Battler> battlers = new List<Battler> { player, enemy };
         turnOrderSystem.SetActive(true);
         turnOrderSystem.SetUpBattlerTurns(battlers);

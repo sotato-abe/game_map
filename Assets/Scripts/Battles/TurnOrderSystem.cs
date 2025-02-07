@@ -11,18 +11,14 @@ using UnityEngine;
 public class TurnOrderSystem : MonoBehaviour
 {
     [SerializeField] TurnBattlerIcon turnBattlerPrefab;
+    [SerializeField] GameObject turnLane;
     private TurnBattlerIcon targetBattlerIcon;
     private List<TurnBattlerIcon> turnBattlerList = new List<TurnBattlerIcon>();
-
-    private void Start()
-    {
-        turnBattlerPrefab.ExecuteTurn += ExecuteTurn;
-    }
 
     public void SetUpBattlerTurns(List<Battler> battlers)
     {
         // 既存の子オブジェクトをすべて削除
-        foreach (Transform child in transform)
+        foreach (Transform child in turnLane.transform)
         {
             Destroy(child.gameObject);
         }
@@ -34,7 +30,8 @@ public class TurnOrderSystem : MonoBehaviour
         // 各バトラー毎にurnBattlerIconを生成し設定
         foreach (Battler battler in battlers)
         {
-            TurnBattlerIcon turnBattlerIcon = Instantiate(turnBattlerPrefab, transform);
+            TurnBattlerIcon turnBattlerIcon = Instantiate(turnBattlerPrefab, turnLane.transform);
+            turnBattlerIcon.ExecuteTurn += ExecuteTurn;
             turnBattlerIcon.SetCharacter(battler.Base.Sprite);
             turnBattlerList.Add(turnBattlerIcon);
             Debug.Log($"battlerName{battler.Base.Name}");
@@ -44,7 +41,6 @@ public class TurnOrderSystem : MonoBehaviour
     public void SetActive(bool isActiveFlg)
     {
         Debug.Log("TurnOrderSystem:SetActive");
-        // TurnBattlerIconのアクティブ状態を制御
         foreach (TurnBattlerIcon turnBattler in turnBattlerList)
         {
             turnBattler.SetActive(isActiveFlg);
@@ -55,6 +51,7 @@ public class TurnOrderSystem : MonoBehaviour
     {
         Debug.Log($"{turnBattler.name} のターン開始");
         targetBattlerIcon = turnBattler;
+        // BattleSystemにBattlerを受け渡しターンを開始
         EndTurn();
     }
 
@@ -62,8 +59,19 @@ public class TurnOrderSystem : MonoBehaviour
     {
         if (targetBattlerIcon)
         {
-            Destroy(targetBattlerIcon.gameObject); // ターン終了したTurnBattlerIconを削除
+            targetBattlerIcon.ExecuteTurn -= ExecuteTurn;
+            Destroy(targetBattlerIcon.gameObject);
             targetBattlerIcon = null;
         }
+    }
+
+    public void BattlerEnd()
+    {
+        // 既存の子オブジェクトをすべて削除
+        foreach (Transform child in turnLane.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        turnBattlerList.Clear();
     }
 }
