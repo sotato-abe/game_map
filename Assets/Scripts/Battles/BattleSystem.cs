@@ -70,7 +70,6 @@ public class BattleSystem : MonoBehaviour
         
         List<Battler> battlers = new List<Battler> { player, enemy };
         turnOrderSystem.SetUpBattlerTurns(battlers);
-        Debug.Log($"battlers{battlers.Count}");
     }
 
     public IEnumerator SetupBattle(Battler player, Battler enemy)

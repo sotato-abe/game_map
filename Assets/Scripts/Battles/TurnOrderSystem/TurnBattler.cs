@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class TurnBattler : MonoBehaviour
 {
-    private TurnBattlerIcon turnBattlerIcon;
+    [SerializeField] TurnBattlerIcon turnBattlerIcon;
     public Battler battler;
     private List<TurnBattlerIcon> turnBattlerIconList = new List<TurnBattlerIcon>();
 
@@ -17,16 +17,18 @@ public class TurnBattler : MonoBehaviour
 
     public void SetBattler(Battler targetBattler)
     {
+        Debug.Log($"TurnBattler:SetBattler:{targetBattler.Base.Name}");
         battler = targetBattler;
         GenerateTurnBattlerIcon();
     }
 
     public void SetActive(bool activeFlg)
     {
-        Debug.Log($"TurnBattler:SetActive:{activeFlg}");
         if (isActive == activeFlg) return;  // 状態が変わらない場合、処理をスキップ
 
         isActive = activeFlg;
+
+        Debug.Log($"TurnBattler:SetActive:{turnBattlerIconList.Count}");
 
         // 一度だけ状態変更を行う
         foreach (TurnBattlerIcon icon in turnBattlerIconList)
@@ -39,13 +41,21 @@ public class TurnBattler : MonoBehaviour
     {
         if (turnBattlerIcon == null)
         {
-            // TurnBattlerIconの生成と親の設定
             turnBattlerIcon = TurnBattlerIconPool.Instance.GetIcon();
-            turnBattlerIcon.transform.SetParent(transform, false); // 親オブジェクトの設定は1回だけ
+
+            if (turnBattlerIcon == null) // 取得に失敗した場合の対策
+            {
+                Debug.LogError("TurnBattlerIconがnullです。アイコンの取得に失敗しました。");
+                return;
+            }
+
+            turnBattlerIcon.transform.SetParent(transform, false);
+            turnBattlerIcon.gameObject.SetActive(true); // オブジェクトをアクティブにする
         }
         turnBattlerIcon.SetTurnBattlerIcon(battler.Base.Sprite);
         turnBattlerIconList.Add(turnBattlerIcon);
     }
+
 
     public void RemoveTurnBattler()
     {

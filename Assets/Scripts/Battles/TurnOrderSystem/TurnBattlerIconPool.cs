@@ -18,23 +18,23 @@ public class TurnBattlerIconPool : MonoBehaviour
 
     public TurnBattlerIcon GetIcon()
     {
-        foreach (var icon in pool)
+        if (pool.Count > 0) // ここを修正
         {
-            if (!icon.gameObject.activeInHierarchy)
-            {
-                icon.gameObject.SetActive(true);
-                return icon;
-            }
+            var icon = pool[0]; // 先頭のアイコンを取得
+            pool.RemoveAt(0); // リストから削除
+            icon.gameObject.SetActive(true);
+            return icon;
         }
 
-        // プールに空きがない場合、新しく生成
+        // プールが空なら新しく生成する
         TurnBattlerIcon newIcon = Instantiate(iconPrefab);
-        pool.Add(newIcon);
+        newIcon.gameObject.SetActive(true);
         return newIcon;
     }
 
     public void ReleaseIcon(TurnBattlerIcon icon)
     {
         icon.gameObject.SetActive(false);
+        pool.Add(icon); // プールに戻す
     }
 }
