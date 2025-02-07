@@ -22,7 +22,7 @@ public class AttackPanel : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("playerUnit or its properties are not initialized.");
+            // Debug.LogWarning("playerUnit or its properties are not initialized.");
         }
     }
 
