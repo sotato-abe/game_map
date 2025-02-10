@@ -6,6 +6,7 @@ public class TurnOrderSystem : MonoBehaviour
 {
     [SerializeField] TurnBattler turnBattlerPrefab;
     [SerializeField] GameObject battlerList;
+    [SerializeField] BattleSystem battleSystem;
     private TurnBattler targetTurnBattler;
     private List<TurnBattler> turnBattlerList = new List<TurnBattler>();
     private List<Battler> battlers = new List<Battler>(); // 保存用
@@ -60,19 +61,25 @@ public class TurnOrderSystem : MonoBehaviour
 
     public void ExecuteTurn(TurnBattler turnBattler)
     {
+        StartCoroutine(ExecuteTurnCoroutine(turnBattler));
+    }
+
+    private IEnumerator ExecuteTurnCoroutine(TurnBattler turnBattler)
+    {
         targetTurnBattler = turnBattler;
         SetActive(false);
+
         if (targetTurnBattler.battler.Base.Name == "Sola") // TODO: 仮の分岐ちゃんとプレイヤーと他を分ける
         {
             Debug.Log($"プレイヤーのターン開始");
-            // yield return StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
+            yield return StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
         }
         else
         {
             Debug.Log($"敵のターン開始");
-            // yield return StartCoroutine(battleSystem.EnemyAttack());
+            yield return StartCoroutine(battleSystem.EnemyAttack());
         }
-        StartCoroutine(TestTurn());
+        // StartCoroutine(TestTurn());
     }
 
     private IEnumerator TestTurn()
