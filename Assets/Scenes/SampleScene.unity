@@ -98659,7 +98659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 513887582}
   reserveSystem: {fileID: 1893151781}
-  battleSystem: {fileID: 1571004520}
+  battleSystem: {fileID: 1571004521}
   fieldInfoSystem: {fileID: 1860617597}
   ageTimePanel: {fileID: 59322135}
   messagePanel: {fileID: 1223032939}
@@ -100273,6 +100273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1571004519}
   - component: {fileID: 1571004520}
+  - component: {fileID: 1571004521}
   m_Layer: 5
   m_Name: BattleSystem
   m_TagString: Untagged
@@ -100311,6 +100312,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4233f453aae43744bca21a19393fa4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  isAuto: 0
+  turnOrderSystem: {fileID: 2086057356}
+  actionBoard: {fileID: 1987657846}
+  actionPanel: {fileID: 111714172}
+  playerUnit: {fileID: 329474217}
+  enemyUnit: {fileID: 242925696}
+--- !u!114 &1571004521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571004518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31fb52fe4d9b1424195c37d920025c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
