@@ -22,7 +22,6 @@ public class TurnBattler : MonoBehaviour
 
     public void SetBattler(Battler targetBattler)
     {
-        Debug.Log($"TurnBattler:SetBattler:{targetBattler.Base.Name}");
         battler = targetBattler;
         interval = Mathf.Max(0.5f, 10f / battler.Base.Speed); // 最小0.5秒の待機時間を確保
 
@@ -38,7 +37,6 @@ public class TurnBattler : MonoBehaviour
 
     public void SetActive(bool isActiveFlg)
     {
-        Debug.Log($"TurnBattler:SetActive:{battler.Base.Name}:{isActiveFlg}");
         if (isActive == isActiveFlg) return;  // 状態が変わらない場合、処理をスキップ
 
         isActive = isActiveFlg;
@@ -85,7 +83,6 @@ public class TurnBattler : MonoBehaviour
 
     private void GenerateTurnBattlerIcon()
     {
-        Debug.Log($"TurnBattler:GenerateTurnBattlerIcon:{isActive}");
         TurnBattlerIcon turnBattlerIcon = Instantiate(turnBattlerIconPrefab, turnLane.transform);
         turnBattlerIcon.SetTurnBattlerIcon(battler.Base.Sprite);
         turnBattlerIcon.OnExecute += ExecuteTurnBattler;

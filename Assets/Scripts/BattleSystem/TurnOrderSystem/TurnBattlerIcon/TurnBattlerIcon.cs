@@ -32,7 +32,6 @@ public class TurnBattlerIcon : MonoBehaviour
 
     public void SetActive(bool isActiveFlg)
     {
-        Debug.Log($"TurnBattlerIcon:SetActive{isActiveFlg}");
         if (isActive == isActiveFlg) return;  // 状態が変わらない場合は処理をスキップ
 
         isActive = isActiveFlg;
@@ -57,7 +56,6 @@ public class TurnBattlerIcon : MonoBehaviour
 
     private IEnumerator MoveToLeft()
     {
-        Debug.Log($"TurnBattlerIcon:MoveToLeft");
         while (isActive && rectTransform.anchoredPosition.x > targetX)
         {
             rectTransform.anchoredPosition += Vector2.left * moveSpeed * Time.deltaTime;
@@ -66,14 +64,12 @@ public class TurnBattlerIcon : MonoBehaviour
 
         if (isActive)
         {
-            Debug.Log("ターン開始: " + gameObject.name);
             ExecuteTurn();
         }
     }
 
     private void ExecuteTurn()
     {
-        Debug.Log($"TurnBattlerIcon:ExecuteTurn");
         OnExecute?.Invoke();
     }
 }

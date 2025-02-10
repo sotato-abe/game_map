@@ -54,13 +54,8 @@ public class Battler
 
         equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
         inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
-        deck = _base.Commands ?? new List<Command>(); // Items が null の場合、新しいリストを初期化
-                                                      // _base.Birthplace または Coordinate が null でないかチェック
-        if (_base.Birthplace == null)
-            Debug.LogWarning($"Warning: {_base.Name} の Birthplace が null です。");
-        else if (_base.Birthplace.Coordinate == null)
-            Debug.LogWarning($"Warning: {_base.Name} の Coordinate が null です。");
-        else
+        deck = _base.Commands ?? new List<Command>();
+        if (_base.Birthplace != null)
             coordinate = _base.Birthplace.Coordinate;
     }
 
