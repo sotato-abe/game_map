@@ -57,6 +57,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
+
         actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(MotionType.Jump);
@@ -64,10 +65,11 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.SetMotion(MotionType.Jump);
         enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
         playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
+        
         state = BattleState.TurnWait;
+        
         List<Battler> battlers = new List<Battler> { player, enemy };
         turnOrderSystem.SetUpBattlerTurns(battlers);
-        turnOrderSystem.SetActive(true);
     }
 
     public IEnumerator SetupBattle(Battler player, Battler enemy)

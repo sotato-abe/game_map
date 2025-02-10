@@ -17,6 +17,10 @@ public class FieldInfoSystem : MonoBehaviour
     void Start()
     {
         transform.gameObject.SetActive(true);
+        if (enemies == null || enemies.Count == 0)
+        {
+            Debug.LogError("Start: enemiesリストが未設定または空です");
+        }
         SetupFieldInfo();
     }
 
@@ -40,7 +44,20 @@ public class FieldInfoSystem : MonoBehaviour
 
     public Battler GetRandomEnemy()
     {
+        if (enemies == null || enemies.Count == 0)
+        {
+            Debug.LogError("GetRandomEnemy: enemiesリストが空です");
+            return null;
+        }
+
         int r = Random.Range(0, enemies.Count);
+        if (enemies[r] == null)
+        {
+            Debug.LogError($"GetRandomEnemy: enemies[{r}] が null です");
+            return null;
+        }
+
         return enemies[r];
     }
+
 }

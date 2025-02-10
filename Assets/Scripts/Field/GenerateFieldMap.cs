@@ -293,7 +293,7 @@ public class GenerateFieldMap : MonoBehaviour
     {
         tileSet = floorTiles[(int)fieldData.floorType];
         tileSize = tileSet.Floor.bounds.size.x; // タイルサイズを取得
-        Debug.Log($"TileType:{tileSet.Type}");
+        // Debug.Log($"TileType:{tileSet.Type}");
         mapCenterPos = new Vector2(width * tileSize / 2, height * tileSize / 2); // マップの中心座標を計算
 
         for (int x = 0; x < width; x++)
