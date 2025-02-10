@@ -5,18 +5,16 @@ using UnityEngine;
 public class TurnOrderSystem : MonoBehaviour
 {
     [SerializeField] TurnBattler turnBattlerPrefab;
-    [SerializeField] GameObject turnLane;
+    [SerializeField] GameObject battlerList;
     private TurnBattler targetTurnBattler;
     private List<TurnBattler> turnBattlerList = new List<TurnBattler>();
     private List<Battler> battlers = new List<Battler>(); // 保存用
-    private Coroutine generateCoroutine;
-    private bool isGenerating = true;
     private bool isActive = false;
 
     public void SetUpBattlerTurns(List<Battler> newBattlers)
     {
         // 既存の子オブジェクトをすべて削除
-        foreach (Transform child in turnLane.transform)
+        foreach (Transform child in battlerList.transform)
         {
             Destroy(child.gameObject);
         }
@@ -25,41 +23,36 @@ public class TurnOrderSystem : MonoBehaviour
         // バトラー情報を保存
         battlers = new List<Battler>(newBattlers);
         // 生成を開始
-        StartCoroutine(GenerateTurnBattler());
+        GenerateTurnBattler();
     }
 
-    private IEnumerator GenerateTurnBattler()
+    private void GenerateTurnBattler()
     {
-        Debug.Log($"TurnOrderSystem:GenerateTurnBattler:{battlers.Count}");
         foreach (Battler battler in battlers)
         {
-            if (!isGenerating) yield break;
-
-            TurnBattler turnBattler = Instantiate(turnBattlerPrefab, turnLane.transform);
+            TurnBattler turnBattler = Instantiate(turnBattlerPrefab, battlerList.transform);
             turnBattler.OnExecuteTurn += ExecuteTurn;
             turnBattler.SetBattler(battler);
             turnBattlerList.Add(turnBattler);
-
-            // Speed に応じた間隔で次のアイコンを生成
-            float interval = Mathf.Clamp(10.0f / battler.Speed, 1.0f, 10.0f);
-            yield return new WaitForSeconds(interval);
         }
-        isGenerating = false; // 生成完了後フラグをリセット
+        SetActive(true);
+        Debug.Log($"GenerateTurnBattler:{isActive}");
     }
 
     public void SetActive(bool isActiveFlg)
     {
+        Debug.Log($"TurnOrderSystem:SetActive:{isActiveFlg}");
         if (isActive == isActiveFlg) return;  // 状態が変わらない場合は処理をスキップ
 
-        Debug.Log($"TurnOrderSystem:SetActive:{isActive}");
+        isActive = isActiveFlg;
 
-        if(turnBattlerList.Count == 0){
+        if (turnBattlerList.Count == 0)
+        {
             Debug.Log("No TurnBattlerList");
         }
 
         foreach (TurnBattler turnBattler in turnBattlerList)
         {
-            Debug.Log($"TurnOrderSystem:turnBattler{turnBattler.battler.Base.Name}");
             if (turnBattler != null)
             {
                 turnBattler.SetActive(isActive);  // TurnBattlerのSetActiveを呼び出し
@@ -67,9 +60,10 @@ public class TurnOrderSystem : MonoBehaviour
         }
     }
 
-    public void ExecuteTurn(Battler battler)
+    public void ExecuteTurn(TurnBattler turnBattler)
     {
-        Debug.Log($"{battler.Base.name} のターン開始");
+        Debug.Log($"{turnBattler.battler.Base.name} のターン開始");
+        targetTurnBattler = turnBattler;
         SetActive(false);
         StartCoroutine(TestTurn());
     }
@@ -84,9 +78,9 @@ public class TurnOrderSystem : MonoBehaviour
     {
         if (targetTurnBattler)
         {
-            targetTurnBattler.OnExecuteTurn -= ExecuteTurn;
-            Destroy(targetTurnBattler.gameObject);
-            targetTurnBattler = null;
+            targetTurnBattler.EndTurn();
+            Debug.Log($"{targetTurnBattler.battler.Base.name} のターン終了");
+            // targetTurnBattler = null;
         }
 
         SetActive(true);
@@ -94,9 +88,11 @@ public class TurnOrderSystem : MonoBehaviour
 
     public void BattlerEnd()
     {
-        foreach (Transform child in turnLane.transform)
+        foreach (TurnBattler turnBattler in turnBattlerList)
         {
-            Destroy(child.gameObject);
+            turnBattler.OnExecuteTurn -= ExecuteTurn;
+            turnBattler.EndBattle();
+            Destroy(turnBattler.gameObject);
         }
         turnBattlerList.Clear();
     }

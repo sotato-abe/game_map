@@ -11,44 +11,53 @@ public class TurnBattlerIcon : MonoBehaviour
     [SerializeField] private float targetOffsetX = -700f; // 相対的な移動距離
     private RectTransform rectTransform;
     private bool isActive = true;
+    float targetX;
     public UnityAction OnExecute;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>(); // RectTransform をキャッシュ
+        targetX = rectTransform.anchoredPosition.x + targetOffsetX; // 相対移動
     }
 
     public void SetTurnBattlerIcon(Sprite battlerImage)
     {
-        gameObject.SetActive(true); // アクティブ化
+        gameObject.SetActive(true); // オブジェクトをアクティブにする
         if (rectTransform == null)
             rectTransform = GetComponent<RectTransform>(); // 確実に取得する
 
         iconImage.sprite = battlerImage;
-        SetActive(true);
+        StartCoroutine(WaitAndMoveToLeft(0.1f)); // **0.1秒待ってから移動開始**
     }
 
-    public void SetActive(bool activeFlg)
+    public void SetActive(bool isActiveFlg)
     {
-        Debug.Log($"TurnBattlerIcon:SetActive:{activeFlg}");
-        isActive = activeFlg;
+        Debug.Log($"TurnBattlerIcon:SetActive{isActiveFlg}");
+        if (isActive == isActiveFlg) return;  // 状態が変わらない場合は処理をスキップ
+
+        isActive = isActiveFlg;
 
         if (isActive)
         {
-            gameObject.SetActive(true); // オブジェクトをアクティブにする
             StartCoroutine(MoveToLeft());
         }
         else
         {
-            StopAllCoroutines(); // コルーチンを停止する
-            gameObject.SetActive(false); // 非アクティブ化
+            StopAllCoroutines(); // コルーチンを停止
         }
     }
+    private IEnumerator WaitAndMoveToLeft(float delay)
+    {
+        yield return new WaitForSeconds(delay);
 
+        if (!gameObject.activeInHierarchy) yield break; // **オブジェクトが非アクティブなら中断**
+
+        StartCoroutine(MoveToLeft());
+    }
 
     private IEnumerator MoveToLeft()
     {
-        float targetX = rectTransform.anchoredPosition.x + targetOffsetX; // 相対移動
+        Debug.Log($"TurnBattlerIcon:MoveToLeft");
         while (isActive && rectTransform.anchoredPosition.x > targetX)
         {
             rectTransform.anchoredPosition += Vector2.left * moveSpeed * Time.deltaTime;
@@ -58,7 +67,13 @@ public class TurnBattlerIcon : MonoBehaviour
         if (isActive)
         {
             Debug.Log("ターン開始: " + gameObject.name);
-            OnExecute?.Invoke();
+            ExecuteTurn();
         }
+    }
+
+    private void ExecuteTurn()
+    {
+        Debug.Log($"TurnBattlerIcon:ExecuteTurn");
+        OnExecute?.Invoke();
     }
 }
