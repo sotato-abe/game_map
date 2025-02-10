@@ -20,7 +20,7 @@ public class BattleSystem : MonoBehaviour
 
     void Start()
     {
-        transform.gameObject.SetActive(false);
+        transform.gameObject.SetActive(true);
         enemyUnit.gameObject.SetActive(false);
     }
 
