@@ -36,12 +36,10 @@ public class TurnOrderSystem : MonoBehaviour
             turnBattlerList.Add(turnBattler);
         }
         SetActive(true);
-        Debug.Log($"GenerateTurnBattler:{isActive}");
     }
 
     public void SetActive(bool isActiveFlg)
     {
-        Debug.Log($"TurnOrderSystem:SetActive:{isActiveFlg}");
         if (isActive == isActiveFlg) return;  // 状態が変わらない場合は処理をスキップ
 
         isActive = isActiveFlg;
@@ -62,9 +60,18 @@ public class TurnOrderSystem : MonoBehaviour
 
     public void ExecuteTurn(TurnBattler turnBattler)
     {
-        Debug.Log($"{turnBattler.battler.Base.name} のターン開始");
         targetTurnBattler = turnBattler;
         SetActive(false);
+        if (targetTurnBattler.battler.Base.Name == "Sola") // TODO: 仮の分岐ちゃんとプレイヤーと他を分ける
+        {
+            Debug.Log($"プレイヤーのターン開始");
+            // yield return StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
+        }
+        else
+        {
+            Debug.Log($"敵のターン開始");
+            // yield return StartCoroutine(battleSystem.EnemyAttack());
+        }
         StartCoroutine(TestTurn());
     }
 
@@ -79,8 +86,6 @@ public class TurnOrderSystem : MonoBehaviour
         if (targetTurnBattler)
         {
             targetTurnBattler.EndTurn();
-            Debug.Log($"{targetTurnBattler.battler.Base.name} のターン終了");
-            // targetTurnBattler = null;
         }
 
         SetActive(true);
