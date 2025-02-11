@@ -20,9 +20,11 @@ public class ActionIcon : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
     }
 
-    private void Start()
+    public void SetAction(ActionType actionType)
     {
-        SetActive(false);
+        text.SetText("");
+        string actionText = System.Enum.GetName(typeof(ActionType), actionType);
+        text.text = actionText;
     }
 
     private void Update()

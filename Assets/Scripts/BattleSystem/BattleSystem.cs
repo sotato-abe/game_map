@@ -15,6 +15,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
+    [SerializeField] ActionController actionController;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
 
@@ -57,6 +58,8 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
+
+        actionController.SetActionList();
 
         actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
