@@ -10,6 +10,7 @@ public class ReserveSystem : MonoBehaviour
     public UnityAction OnReserveEnd;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionPanel actionPanel;
+    [SerializeField] ActionController actionController;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] BattleUnit playerUnit;
 
@@ -54,6 +55,7 @@ public class ReserveSystem : MonoBehaviour
         state = ReserveState.Start;
         actionBoard.changeDialogType(ActionType.Talk);
         actionPanel.SetPanelValidity(1f);
+        actionController.SetActionList();
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
         StartCoroutine(playerUnit.SetTalkMessage("let's see"));
