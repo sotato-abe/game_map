@@ -28,10 +28,12 @@ public class ReserveSystem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 actionPanel.SetAction(true);
+                actionController.SelectAction(true);
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 actionPanel.SetAction(false);
+                actionController.SelectAction(false);
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -55,7 +57,7 @@ public class ReserveSystem : MonoBehaviour
         state = ReserveState.Start;
         actionBoard.changeDialogType(ActionType.Talk);
         actionPanel.SetPanelValidity(1f);
-        actionController.SetActionList();
+        actionController.ResetActionList();
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
         StartCoroutine(playerUnit.SetTalkMessage("let's see"));

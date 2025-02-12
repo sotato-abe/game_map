@@ -8,10 +8,10 @@ public class ActionIcon : MonoBehaviour
 {
     [SerializeField] private Image actionImage;
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private bool isActive = true;
-    [SerializeField] private float activeScale = 1.2f;
-    [SerializeField] private float inactiveScale = 1.0f;
-    [SerializeField] private float scaleDuration = 0.2f; // スケール変更の時間
+    private bool isActive = false;
+    private float activeScale = 1.2f;
+    private float inactiveScale = 1.0f;
+    private float scaleDuration = 0.05f; // スケール変更の時間
 
     private RectTransform rectTransform;
 
@@ -25,14 +25,6 @@ public class ActionIcon : MonoBehaviour
         text.SetText("");
         string actionText = System.Enum.GetName(typeof(ActionType), actionType);
         text.text = actionText;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            SetActive(!isActive);
-        }
     }
 
     public void SetActive(bool activeFlg)

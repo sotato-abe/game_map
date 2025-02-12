@@ -32,10 +32,12 @@ public class BattleSystem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 actionPanel.SetAction(true);
+                actionController.SelectAction(true);
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 actionPanel.SetAction(false);
+                actionController.SelectAction(false);
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -59,7 +61,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
 
-        actionController.SetActionList();
+        actionController.ResetActionList();
 
         actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
