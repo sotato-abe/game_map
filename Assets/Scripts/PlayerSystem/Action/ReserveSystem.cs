@@ -9,12 +9,9 @@ public class ReserveSystem : MonoBehaviour
     public ReserveState state;
     public UnityAction OnReserveEnd;
     [SerializeField] ActionBoard actionBoard;
-    [SerializeField] ActionPanel actionPanel;
     [SerializeField] ActionController actionController;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] BattleUnit playerUnit;
-
-    public ActionPanel ActionPanel => actionPanel;
 
     void Start()
     {
@@ -27,12 +24,10 @@ public class ReserveSystem : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                actionPanel.SetAction(true);
                 actionController.SelectAction(true);
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                actionPanel.SetAction(false);
                 actionController.SelectAction(false);
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -46,7 +41,6 @@ public class ReserveSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                actionPanel.SetPanelValidity(0.2f);
                 StartCoroutine(SetReserveState(ReserveState.ActionExecution));
             }
         }
@@ -56,7 +50,6 @@ public class ReserveSystem : MonoBehaviour
     {
         state = ReserveState.Start;
         actionBoard.changeDialogType(ActionType.Talk);
-        actionPanel.SetPanelValidity(1f);
         actionController.ResetActionList();
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
@@ -87,7 +80,7 @@ public class ReserveSystem : MonoBehaviour
 
     public IEnumerator HandleActionExecution()
     {
-        ActionType action = (ActionType)actionPanel.selectedIndex;
+        ActionType action = (ActionType)actionController.selectedIndex;
 
         switch (action)
         {
@@ -107,7 +100,6 @@ public class ReserveSystem : MonoBehaviour
                 yield return StartCoroutine(ResorveEnd());
                 break;
         }
-        actionPanel.SetPanelValidity(1f);
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
     }
 
