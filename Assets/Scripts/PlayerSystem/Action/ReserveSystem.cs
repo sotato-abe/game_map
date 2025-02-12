@@ -137,6 +137,7 @@ public class ReserveSystem : MonoBehaviour
         StartCoroutine(playerUnit.SetTalkMessage("all right")); // TODO : キャラクターメッセージリストから取得する。
         yield return StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} closed the back"));
         yield return new WaitForSeconds(1.0f);
+        actionController.RemoveActionList();
         OnReserveEnd?.Invoke();
     }
 }
