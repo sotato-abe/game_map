@@ -9,6 +9,7 @@ using UnityEngine.Events;
 public class ActionController : MonoBehaviour
 {
     [SerializeField] ActionIcon actionIconPrefab;
+    [SerializeField] ActionBoard actionDialog;
     [SerializeField] GameObject actionList;
 
     // 選択中のアクション
@@ -80,5 +81,6 @@ public class ActionController : MonoBehaviour
         // 新しい選択を設定
         selectedAction = actionIconList[selectedIndex];
         selectedAction?.SetActive(true);
+        actionDialog.changeDialogType((ActionType)selectedIndex);
     }
 }
