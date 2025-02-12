@@ -59,12 +59,11 @@ public class BattleSystem : MonoBehaviour
 
         actionController.ResetActionList();
 
+        playerUnit.SetMotion(MotionType.Jump);
+        playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(MotionType.Jump);
-        playerUnit.SetMotion(MotionType.Jump);
-        enemyUnit.SetMotion(MotionType.Jump);
         enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
-        playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
         
         state = BattleState.TurnWait;
         
@@ -263,6 +262,7 @@ public class BattleSystem : MonoBehaviour
     {
         enemyUnit.gameObject.SetActive(false);
         playerUnit.SetMotion(MotionType.Move);
+        actionController.RemoveActionList();
         OnBattleEnd?.Invoke();
     }
 }

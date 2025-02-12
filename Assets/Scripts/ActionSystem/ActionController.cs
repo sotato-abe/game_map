@@ -23,7 +23,6 @@ public class ActionController : MonoBehaviour
     private void Awake()
     {
         // 一度初期化
-        SetActionList();
     }
 
     public void ResetActionList()
@@ -55,6 +54,17 @@ public class ActionController : MonoBehaviour
         {
             selectedAction.SetActive(true);
         }
+    }
+
+    public void RemoveActionList()
+    {
+        actoinNum = 0;
+        selectedIndex = 0;
+        foreach (ActionIcon icon in actionIconList)
+        {
+            Destroy(icon.gameObject);
+        }
+        actionIconList.Clear();
     }
 
     public void SelectAction(bool prev)
