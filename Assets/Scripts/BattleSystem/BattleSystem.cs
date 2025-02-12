@@ -14,7 +14,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] bool isAuto; // オート状態　TODO：全体のオート状態を受け取る
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
-    [SerializeField] ActionPanel actionPanel;
     [SerializeField] ActionController actionController;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
@@ -31,12 +30,10 @@ public class BattleSystem : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                actionPanel.SetAction(true);
                 actionController.SelectAction(true);
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                actionPanel.SetAction(false);
                 actionController.SelectAction(false);
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -50,7 +47,6 @@ public class BattleSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                actionPanel.SetPanelValidity(0.2f);
                 StartCoroutine(SetBattleState(BattleState.ActionExecution));
             }
         }
@@ -63,7 +59,6 @@ public class BattleSystem : MonoBehaviour
 
         actionController.ResetActionList();
 
-        actionPanel.SetPanelValidity(0.2f);
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(MotionType.Jump);
         playerUnit.SetMotion(MotionType.Jump);
@@ -112,17 +107,15 @@ public class BattleSystem : MonoBehaviour
     void HandleTurnWait()
     {
         turnOrderSystem.EndTurn();
-        actionPanel.SetPanelValidity(0.2f);
     }
 
     void HandleActionSelection()
     {
-        actionPanel.SetPanelValidity(1.0f);
     }
 
     public IEnumerator HandleActionExecution()
     {
-        ActionType action = (ActionType)actionPanel.selectedIndex;
+        ActionType action = (ActionType)actionController.selectedIndex;
 
         switch (action)
         {
@@ -142,7 +135,6 @@ public class BattleSystem : MonoBehaviour
                 yield return StartCoroutine(EscapeTurn());
                 break;
         }
-        actionPanel.SetPanelValidity(1f);
         StartCoroutine(SetBattleState(BattleState.TurnWait));
     }
 

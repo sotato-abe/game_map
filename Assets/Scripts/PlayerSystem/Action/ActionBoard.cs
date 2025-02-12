@@ -7,7 +7,6 @@ using TMPro;
 public class ActionBoard : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] ActionPanel actionPanel;
     [SerializeField] AttackPanel attackPanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] CommandPanel commandPanel;

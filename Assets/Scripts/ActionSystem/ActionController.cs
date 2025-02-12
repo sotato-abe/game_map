@@ -16,7 +16,7 @@ public class ActionController : MonoBehaviour
 
     // アクションの個数
     int actoinNum = 0;
-    int selectedIndex = 0;
+    public int selectedIndex = 0;
 
     private List<ActionIcon> actionIconList = new List<ActionIcon>();
 
@@ -59,36 +59,16 @@ public class ActionController : MonoBehaviour
 
     public void SelectAction(bool prev)
     {
-        int targetIndex = selectedIndex;
+        // インデックスをループ処理
+        selectedIndex = prev ? (selectedIndex + 1) % actoinNum : (selectedIndex - 1 + actoinNum) % actoinNum;
 
-        if (prev)
-        {
-            targetIndex++; // 右（次の要素）に進む
-            if (targetIndex >= actoinNum) targetIndex = 0; // 最後を超えたら最初に戻る
-        }
-        else
-        {
-            targetIndex--; // 左（前の要素）に進む
-            if (targetIndex < 0) targetIndex = actoinNum - 1; // 最初より前なら最後に戻る
-        }
+        Debug.Log($"SelectAction {prev}");
 
-        if (targetIndex != selectedIndex)
-        {
-            Debug.Log($"SelectAction{prev}");
-            // ★削除されていたらスキップ
-            if (selectedAction != null)
-            {
-                selectedAction.SetActive(false);
-            }
+        // 現在の選択を解除
+        selectedAction?.SetActive(false);
 
-            selectedIndex = targetIndex; // 選択されたインデックスを更新
-            selectedAction = actionIconList[selectedIndex]; // 新しい選択アイテムを取得
-
-            if (selectedAction != null)
-            {
-                selectedAction.SetActive(true);
-            }
-        }
+        // 新しい選択を設定
+        selectedAction = actionIconList[selectedIndex];
+        selectedAction?.SetActive(true);
     }
-
 }
