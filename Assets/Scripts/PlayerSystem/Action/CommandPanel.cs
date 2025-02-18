@@ -47,6 +47,7 @@ public class CommandPanel : MonoBehaviour
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
             commandUnitObject.gameObject.SetActive(true);
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
+            commandUnit.Setup(command);
 
             if (commandNum == selectedCommand)
             {
