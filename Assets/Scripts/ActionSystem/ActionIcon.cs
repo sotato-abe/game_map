@@ -9,8 +9,11 @@ public class ActionIcon : MonoBehaviour
     [SerializeField] private Image actionImage;
     [SerializeField] private TextMeshProUGUI text;
     private bool isActive = false;
+
+    private float defaultWidth = 70f;
+    private float defaultHeight = 80f;
+    private float defaultFontSize = 12f; // デフォルトのフォントサイズ
     private float activeScale = 1.5f;
-    private float inactiveScale = 1.0f;
     private float scaleDuration = 0.05f; // スケール変更の時間
 
     private RectTransform rectTransform;
@@ -31,26 +34,38 @@ public class ActionIcon : MonoBehaviour
     {
         if (isActive == activeFlg) return;
         isActive = activeFlg;
-        Debug.Log($"ActionIcon is now {isActive}");
 
-        // コルーチンを開始してスムーズにスケール変更
+        // コルーチンを開始してスムーズにサイズとフォントサイズを変更
         StopAllCoroutines();
-        StartCoroutine(ScaleOverTime(isActive ? activeScale : inactiveScale));
+
+        float targetWidth = isActive ? defaultWidth * activeScale : defaultWidth;
+        float targetHeight = isActive ? defaultHeight * activeScale : defaultHeight;
+        float targetFontSize = isActive ? defaultFontSize * activeScale : defaultFontSize;
+
+        StartCoroutine(ResizeOverTime(targetWidth, targetHeight, targetFontSize));
     }
 
-    private IEnumerator ScaleOverTime(float targetScale)
+    private IEnumerator ResizeOverTime(float targetWidth, float targetHeight, float targetFontSize)
     {
         float elapsedTime = 0f;
-        Vector3 startScale = rectTransform.localScale;
-        Vector3 endScale = new Vector3(targetScale, targetScale, 1f);
+        Vector2 startSize = rectTransform.sizeDelta;
+        Vector2 endSize = new Vector2(targetWidth, targetHeight);
+
+        float startFontSize = text.fontSize;
+        float endFontSize = targetFontSize;
 
         while (elapsedTime < scaleDuration)
         {
             elapsedTime += Time.deltaTime;
-            rectTransform.localScale = Vector3.Lerp(startScale, endScale, elapsedTime / scaleDuration);
+            float t = elapsedTime / scaleDuration;
+
+            rectTransform.sizeDelta = Vector2.Lerp(startSize, endSize, t);
+            text.fontSize = Mathf.Lerp(startFontSize, endFontSize, t);
+
             yield return null;
         }
 
-        rectTransform.localScale = endScale;
+        rectTransform.sizeDelta = endSize;
+        text.fontSize = endFontSize;
     }
 }
