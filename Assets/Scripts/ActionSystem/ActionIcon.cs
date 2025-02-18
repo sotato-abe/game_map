@@ -9,7 +9,7 @@ public class ActionIcon : MonoBehaviour
     [SerializeField] private Image actionImage;
     [SerializeField] private TextMeshProUGUI text;
     private bool isActive = false;
-    private float activeScale = 1.2f;
+    private float activeScale = 1.5f;
     private float inactiveScale = 1.0f;
     private float scaleDuration = 0.05f; // スケール変更の時間
 
