@@ -49,12 +49,12 @@ public class ReserveSystem : MonoBehaviour
     public void ReserveStart(Battler player)
     {
         state = ReserveState.Start;
-        actionBoard.changeDialogType(ActionType.Talk);
+        actionBoard.changeActionPanel(ActionType.Talk);
         actionController.ResetActionList();
         state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
         StartCoroutine(SetReserveState(ReserveState.ActionSelection));
         StartCoroutine(playerUnit.SetTalkMessage("let's see"));
-        StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
+        StartCoroutine(messagePanel.TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
         messagePanel.gameObject.SetActive(true);
     }
 
@@ -107,7 +107,7 @@ public class ReserveSystem : MonoBehaviour
     {
         state = ReserveState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText("The player tried talking to him, but he didn't respond."));
+        yield return StartCoroutine(messagePanel.TypeDialog("The player tried talking to him, but he didn't respond."));
     }
 
     public IEnumerator AttackTurn()
@@ -119,7 +119,7 @@ public class ReserveSystem : MonoBehaviour
     public IEnumerator CommandTurn()
     {
         state = ReserveState.ActionExecution;
-        yield return StartCoroutine(actionBoard.SetMessageText("Implant activation start... Activation"));
+        yield return StartCoroutine(messagePanel.TypeDialog("Implant activation start... Activation"));
     }
 
     public IEnumerator ItemTurn()
@@ -127,17 +127,17 @@ public class ReserveSystem : MonoBehaviour
         state = ReserveState.ActionExecution;
         playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        actionBoard.ItemPanel.UseItem();
-        yield return StartCoroutine(actionBoard.SetMessageText("The player fished through his backpack but found nothing"));
+        actionBoard.itemPanel.UseItem();
+        yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
     }
 
     public IEnumerator ResorveEnd()
     {
         state = ReserveState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("all right")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} closed the back"));
+        yield return StartCoroutine(messagePanel.TypeDialog($"{playerUnit.Battler.Base.Name} closed the back"));
         yield return new WaitForSeconds(1.0f);
-        actionController.RemoveActionList();
+        actionController.CloseAction();
         OnReserveEnd?.Invoke();
     }
 }
