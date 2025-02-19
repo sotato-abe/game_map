@@ -14,6 +14,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] bool isAuto; // オート状態　TODO：全体のオート状態を受け取る
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
+    [SerializeField] MessagePanel messagePanel;
     [SerializeField] ActionController actionController;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
@@ -74,8 +75,8 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
-        actionBoard.changeDialogType(ActionType.Talk);
-        yield return StartCoroutine(actionBoard.SetMessageText($"{enemy.Base.Name} is coming!!"));
+        actionBoard.changeActionPanel(ActionType.Talk);
+        yield return StartCoroutine(messagePanel.TypeDialog($"{enemy.Base.Name} is coming!!"));
     }
 
     public IEnumerator SetBattleState(BattleState newState)
@@ -142,7 +143,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText("The player tried talking to him, but he didn't respond."));
+        yield return StartCoroutine(messagePanel.TypeDialog("The player tried talking to him, but he didn't respond."));
     }
 
     public IEnumerator AttackTurn()
@@ -155,7 +156,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.ActionExecution;
         StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText("Implant activation start... Activation"));
+        yield return StartCoroutine(messagePanel.TypeDialog("Implant activation start... Activation"));
     }
 
     public IEnumerator ItemTurn()
@@ -163,8 +164,8 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ActionExecution;
         playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        actionBoard.ItemPanel.UseItem();
-        yield return StartCoroutine(actionBoard.SetMessageText("The player fished through his backpack but found nothing"));
+        actionBoard.itemPanel.UseItem();
+        yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
     }
 
     public IEnumerator EscapeTurn()
@@ -172,7 +173,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ActionExecution;
         StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText("Player is trying to escape"));
+        yield return StartCoroutine(messagePanel.TypeDialog("Player is trying to escape"));
         yield return new WaitForSeconds(1f);
         StartCoroutine(SetBattleState(BattleState.BattleOver));
     }
@@ -185,7 +186,7 @@ public class BattleSystem : MonoBehaviour
         targetUnit.SetMotion(MotionType.Shake);
         StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
         StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(actionBoard.SetMessageText($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
+        yield return StartCoroutine(messagePanel.TypeDialog($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
 
         if (targetUnit.Battler.Life <= 0)
         {
@@ -198,7 +199,7 @@ public class BattleSystem : MonoBehaviour
     {
         StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
         targetUnit.SetMotion(MotionType.Jump);
-        yield return StartCoroutine(actionBoard.SetMessageText($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
+        yield return StartCoroutine(messagePanel.TypeDialog($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
 
         List<Item> targetItems = targetUnit.Battler.Base.Items;
         if (targetItems != null && targetItems.Count > 0)
@@ -239,12 +240,12 @@ public class BattleSystem : MonoBehaviour
                 playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
             }
 
-            yield return StartCoroutine(actionBoard.SetMessageText(resultItemMessage));
-            StartCoroutine(actionBoard.SetMessageText($"{playerUnit.Battler.Base.Name} won the battle.."));
+            yield return StartCoroutine(messagePanel.TypeDialog(resultItemMessage));
+            StartCoroutine(messagePanel.TypeDialog($"{playerUnit.Battler.Base.Name} won the battle.."));
         }
         else
         {
-            yield return StartCoroutine(actionBoard.SetMessageText("No items were found on the enemy."));
+            yield return StartCoroutine(messagePanel.TypeDialog("No items were found on the enemy."));
         }
 
         yield return new WaitForSeconds(1f);
@@ -262,7 +263,7 @@ public class BattleSystem : MonoBehaviour
     {
         enemyUnit.gameObject.SetActive(false);
         playerUnit.SetMotion(MotionType.Move);
-        actionController.RemoveActionList();
+        actionController.CloseAction();
         OnBattleEnd?.Invoke();
     }
 }

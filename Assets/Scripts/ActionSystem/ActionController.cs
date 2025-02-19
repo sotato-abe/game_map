@@ -81,6 +81,12 @@ public class ActionController : MonoBehaviour
         // 新しい選択を設定
         selectedAction = actionIconList[selectedIndex];
         selectedAction?.SetActive(true);
-        actionDialog.changeDialogType((ActionType)selectedIndex);
+        actionDialog.changeActionPanel((ActionType)selectedIndex);
+    }
+
+    public void CloseAction()
+    {  
+        actionDialog.CloseActionPanel();
+        RemoveActionList();
     }
 }
