@@ -6,6 +6,7 @@ public class TurnOrderSystem : MonoBehaviour
 {
     [SerializeField] TurnBattler turnBattlerPrefab;
     [SerializeField] GameObject battlerList;
+    [SerializeField] GameObject turnBar;
     [SerializeField] BattleSystem battleSystem;
     private TurnBattler targetTurnBattler;
     private List<TurnBattler> turnBattlerList = new List<TurnBattler>();
@@ -23,6 +24,7 @@ public class TurnOrderSystem : MonoBehaviour
 
         // バトラー情報を保存
         battlers = new List<Battler>(newBattlers);
+        turnBar.gameObject.SetActive(true);
         // 生成を開始
         GenerateTurnBattler();
     }
@@ -106,6 +108,7 @@ public class TurnOrderSystem : MonoBehaviour
             turnBattler.EndBattle();
             Destroy(turnBattler.gameObject);
         }
+        turnBar.gameObject.SetActive(false);
         turnBattlerList.Clear();
     }
 }

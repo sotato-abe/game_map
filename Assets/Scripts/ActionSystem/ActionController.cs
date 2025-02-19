@@ -85,7 +85,7 @@ public class ActionController : MonoBehaviour
     }
 
     public void CloseAction()
-    {  
+    {
         actionDialog.CloseActionPanel();
         RemoveActionList();
     }
