@@ -17,7 +17,7 @@ public class Equipment
     public Cost LifeCost { get; set; }
     public Cost BatteryCost { get; set; }
     public Cost SoulCost { get; set; }
-    public int Probability { get; set; }
+    public Probability Probability { get; set; }
     private List<Skill> SkillList { get; set; }
 
     public void Init()
