@@ -59,11 +59,14 @@ public class Battler
             coordinate = _base.Birthplace.Coordinate;
     }
 
-    public int TakeDamage(Battler attacker)
+    public void TakeDamage(List<Damage> damageList)
     {
-        int damage = attacker.Attack;
-        Life = Mathf.Clamp(Life - damage, 0, MaxLife);
-        return damage;
+        Debug.Log($"TakeDamage:{damageList.Count}");
+
+        foreach (Damage damage in damageList)
+        {
+            Debug.Log($"damage:{damage.Type} /{damage.Val}");
+        }
     }
 
     public void AddItemToInventory(Item item)
