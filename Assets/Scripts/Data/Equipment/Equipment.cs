@@ -18,7 +18,8 @@ public class Equipment
     public Cost BatteryCost { get; set; }
     public Cost SoulCost { get; set; }
     public Probability Probability { get; set; }
-    private List<Skill> SkillList { get; set; }
+    public List<Skill> SkillList { get; set; }
+    public List<Cost> CostList { get; set; }
 
     public void Init()
     {
@@ -33,5 +34,6 @@ public class Equipment
         SoulCost = SoulCost;
         Probability = Probability;
         SkillList = SkillList;
+        CostList = CostList;
     }
 }
