@@ -51,7 +51,7 @@ public class CharacterCard : MonoBehaviour
         Vector3 originalPosition = transform.position;
         float moveRange = 20f;  // 移動範囲
         float moveSpeed = 3f;  // 移動スピード
-        float updateInterval = 3.0f; // ターゲット更新の時間間隔
+        float updateInterval = 5.0f; // ターゲット更新の時間間隔
         float elapsedTime = 0f;
 
         Vector3 targetPosition = originalPosition + new Vector3(
@@ -76,7 +76,7 @@ public class CharacterCard : MonoBehaviour
                 elapsedTime = 0f;
             }
             // 徐々に回転を変化させる
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime);
             // ターゲットに向かってスムーズに移動
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
