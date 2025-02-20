@@ -17,7 +17,7 @@ public class Battler
     public List<Command> Deck { get => deck; }
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
-    public int Soul { get => soul; }
+    public int Soul { get => soul; set => soul = value; }
 
     public int MaxLife { get; set; }
     public int Life { get; set; }
@@ -61,12 +61,25 @@ public class Battler
 
     public void TakeDamage(List<Damage> damageList)
     {
-        Debug.Log($"TakeDamage:{damageList.Count}");
-
         foreach (Damage damage in damageList)
         {
             Debug.Log($"damage:{damage.Type} /{damage.Val}");
+            if (damage.Type == SkillType.Life)
+            {
+                Life = Life - damage.Val;
+            }
+            if (damage.Type == SkillType.Battery)
+            {
+                Battery = Battery - damage.Val;
+            }
+            if (damage.Type == SkillType.Soul)
+            {
+                Soul = Soul - damage.Val;
+            }
         }
+        Debug.Log($"Life/{Life}");
+        Debug.Log($"Battery/{Battery}");
+        Debug.Log($"Soul/{Soul}");
     }
 
     public void AddItemToInventory(Item item)
