@@ -6,7 +6,6 @@ using UnityEngine;
 public class Equipment
 {
     [SerializeField] EquipmentBase _base;
-
     public EquipmentBase Base { get => _base; }
 
     public int Life { get; set; }
@@ -15,6 +14,11 @@ public class Equipment
     public int Technique { get; set; }
     public int Defense { get; set; }
     public int Speed { get; set; }
+    public Cost LifeCost { get; set; }
+    public Cost BatteryCost { get; set; }
+    public Cost SoulCost { get; set; }
+    public int Probability { get; set; }
+    private List<Skill> SkillList { get; set; }
 
     public void Init()
     {
@@ -24,5 +28,10 @@ public class Equipment
         Technique = Technique;
         Defense = Defense;
         Speed = Speed;
+        LifeCost = LifeCost;
+        BatteryCost = BatteryCost;
+        SoulCost = SoulCost;
+        Probability = Probability;
+        SkillList = SkillList;
     }
 }

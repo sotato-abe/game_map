@@ -7,7 +7,10 @@ public class EquipmentUnit : MonoBehaviour
 {
     public Equipment Equipment { get; set; }
     [SerializeField] Image image;
-    [SerializeField] Image dialogBackground;
+    [SerializeField] GameObject skillList;
+    [SerializeField] GameObject costList;
+    [SerializeField] SkillIcon skillPrefab;
+    [SerializeField] CostIcon costPrefab;
 
     public virtual void Setup(Equipment equipment)
     {
@@ -15,11 +18,9 @@ public class EquipmentUnit : MonoBehaviour
         image.sprite = Equipment.Base.Sprite;
     }
 
-    public virtual void Targetfoucs(bool focusFlg)
-    {
-        float alpha = focusFlg ? 1.0f : 0.0f;
-        Color bgColor = dialogBackground.color;
-        bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
-        dialogBackground.color = bgColor;
-    }
+    private void SetSkill()
+    {}
+
+    private void SetCost()
+    {}
 }
