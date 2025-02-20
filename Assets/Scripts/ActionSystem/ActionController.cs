@@ -73,8 +73,6 @@ public class ActionController : MonoBehaviour
         // インデックスをループ処理
         selectedIndex = prev ? (selectedIndex + 1) % actoinNum : (selectedIndex - 1 + actoinNum) % actoinNum;
 
-        Debug.Log($"SelectAction {prev}");
-
         // 現在の選択を解除
         selectedAction?.SetActive(false);
 

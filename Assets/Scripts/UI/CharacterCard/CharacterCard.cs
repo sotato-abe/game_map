@@ -24,7 +24,6 @@ public class CharacterCard : MonoBehaviour
 
     public void SetCardMotion(MotionType targetMotion)
     {
-        Debug.Log($"SetCardMotion{targetMotion}");
         switch (targetMotion)
         {
             case MotionType.Move:
