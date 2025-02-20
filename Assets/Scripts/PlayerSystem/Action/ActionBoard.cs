@@ -6,22 +6,17 @@ using TMPro;
 
 public class ActionBoard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] ActionPanel actionPanel;
     [SerializeField] AttackPanel attackPanel;
-    [SerializeField] MessagePanel messagePanel;
     [SerializeField] CommandPanel commandPanel;
-    [SerializeField] ItemPanel itemPanel;
+    [SerializeField] public ItemPanel itemPanel;
     ActionType action;
-
-    public ItemPanel ItemPanel => itemPanel;
 
     public void Init()
     {
         action = 0;
     }
 
-    public void changeDialogType(ActionType targetAction)
+    public void changeActionPanel(ActionType targetAction)
     {
         action = targetAction;
         switch (action)
@@ -68,7 +63,6 @@ public class ActionBoard : MonoBehaviour
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         itemPanel.gameObject.SetActive(false);
-        messagePanel.gameObject.SetActive(true);
     }
 
     private void SetAttackPanel()
@@ -99,8 +93,10 @@ public class ActionBoard : MonoBehaviour
         itemPanel.gameObject.SetActive(false);
     }
 
-    public IEnumerator SetMessageText(string message)
+    public void CloseActionPanel()
     {
-        yield return StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog(message));
+        attackPanel.gameObject.SetActive(false);
+        commandPanel.gameObject.SetActive(false);
+        itemPanel.gameObject.SetActive(false);
     }
 }

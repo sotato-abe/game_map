@@ -59,15 +59,16 @@ public class ItemPanel : MonoBehaviour
     {
         if (itemList.transform.childCount > 0)
         {
+            // 選択方向に応じてインデックスを変更し、範囲内に収める
             int newSelectedItem = selectedItem + (selectDirection ? 1 : -1);
             if (selectedItem != newSelectedItem)
             {
                 itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().Targetfoucs(false);
-                // 選択方向に応じてインデックスを変更し、範囲内に収める
-                selectedItem = newSelectedItem;
                 // 新しいアイテムを選択状態にする
-                itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().Targetfoucs(true);
+                itemList.transform.GetChild(newSelectedItem).GetComponent<ItemUnit>().Targetfoucs(true);
+                selectedItem = newSelectedItem;
             }
+
         }
         else
         {

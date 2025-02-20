@@ -13,7 +13,7 @@ public class CharacterCard : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(MoveMotion());
+        SetCardMotion(MotionType.Move);
     }
 
     public void SetCharacter(Battler battler)
@@ -24,6 +24,7 @@ public class CharacterCard : MonoBehaviour
 
     public void SetCardMotion(MotionType targetMotion)
     {
+        Debug.Log($"SetCardMotion{targetMotion}");
         switch (targetMotion)
         {
             case MotionType.Move:
@@ -51,19 +52,27 @@ public class CharacterCard : MonoBehaviour
         Vector3 originalPosition = transform.position;
         float moveRange = 20f;  // 移動範囲
         float moveSpeed = 3f;  // 移動スピード
+        float updateInterval = 3.0f; // ターゲット更新の時間間隔
+        float elapsedTime = 0f;
 
-        Vector3 targetPosition = originalPosition;
+        Vector3 targetPosition = originalPosition + new Vector3(
+            Random.Range(-moveRange, moveRange),
+            Random.Range(-moveRange, moveRange),
+            0
+        );
 
         while (true)
         {
-            // 一定間隔でターゲットを更新
-            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+            // 一定時間経過したらターゲット更新
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime >= updateInterval || Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 targetPosition = originalPosition + new Vector3(
                     Random.Range(-moveRange, moveRange),
                     Random.Range(-moveRange, moveRange),
                     0
                 );
+                elapsedTime = 0f;
             }
 
             // ターゲットに向かってスムーズに移動

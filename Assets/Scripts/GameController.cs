@@ -25,7 +25,6 @@ public class GameController : MonoBehaviour
         playerController.ChangeField += ChangeField;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        reserveSystem.ActionPanel.SetPanelValidity(0.2f);
         StartCoroutine(messagePanel.TypeDialog("game start"));
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
         playerCoordinate = playerController.Battler.coordinate;
@@ -72,7 +71,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("BattleStart");
         playerController.SetMoveFlg(false);
-        fieldInfoSystem.FieldDialogClose();
+        // fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
         enemy = fieldInfoSystem.GetRandomEnemy();
         battleSystem.gameObject.SetActive(true);
@@ -85,6 +84,7 @@ public class GameController : MonoBehaviour
         Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
         playerController.SetMoveFlg(true);
+        // fieldInfoSystem.FieldDialogOpen();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 }

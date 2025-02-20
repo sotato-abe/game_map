@@ -16,7 +16,7 @@ public class FieldInfoSystem : MonoBehaviour
 
     void Start()
     {
-        transform.gameObject.SetActive(true);
+        // transform.gameObject.SetActive(true);
         if (enemies == null || enemies.Count == 0)
         {
             Debug.LogError("Start: enemiesリストが未設定または空です");
@@ -26,8 +26,8 @@ public class FieldInfoSystem : MonoBehaviour
 
     public void SetupFieldInfo()
     {
-        FieldDialogOpen();
-        fieldInfoPanel.SetInfo(mapBase);
+        // FieldDialogOpen();
+        // fieldInfoPanel.SetInfo(mapBase);
     }
 
     public void FieldDialogOpen()
