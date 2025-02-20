@@ -59,6 +59,7 @@ public class CharacterCard : MonoBehaviour
             Random.Range(-moveRange, moveRange),
             0
         );
+        Quaternion targetRotation = transform.rotation; // 目標の回転
 
         while (true)
         {
@@ -71,9 +72,11 @@ public class CharacterCard : MonoBehaviour
                     Random.Range(-moveRange, moveRange),
                     0
                 );
+                targetRotation  = Quaternion.Euler(0, 0, Random.Range(0, 3));
                 elapsedTime = 0f;
             }
-
+            // 徐々に回転を変化させる
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * moveSpeed);
             // ターゲットに向かってスムーズに移動
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
