@@ -15,6 +15,11 @@ public class AttackSystem : MonoBehaviour
         List<Damage> damageList = CalculateDamage();
         Debug.Log(damageList.Count);
         TakeDamage(damageList);
+        if(0 < damageList.Count)
+        {
+            this.targetUnit.UpdateUI();
+            this.targetUnit.SetMotion(MotionType.Shake);
+        }
         AttackResult();
     }
 
