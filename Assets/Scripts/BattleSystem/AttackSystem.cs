@@ -7,41 +7,47 @@ public class AttackSystem : MonoBehaviour
     private BattleUnit sourceUnit;
     private BattleUnit targetUnit;
 
-    public void ExecuteAttack(BattleUnit sourceUnit, BattleUnit targetUnit, List<Skill> skills)
+    public void ExecuteAttack(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         this.sourceUnit = sourceUnit;
         this.targetUnit = targetUnit;
 
-        List<Damage> damageList = CalculateDamage(skills);
+        List<Damage> damageList = CalculateDamage();
+        Debug.Log(damageList.Count);
         TakeDamage(damageList);
         AttackResult();
     }
 
     // ダメージを計算
-    private List<Damage> CalculateDamage(List<Skill> skills)
+    private List<Damage> CalculateDamage()
     {
-        Dictionary<SkillType, int> damageDict = new Dictionary<SkillType, int>();
+        List<Skill> skills = new List<Skill>();
+        Dictionary<SkillType, Damage> damageDict = new Dictionary<SkillType, Damage>();
 
+        // 各装備のスキルをリストに追加
+        foreach (Equipment equipment in sourceUnit.Battler.Base.Equipments)
+        {
+            // Error skillを追加できていない。
+            skills.AddRange(equipment.Base.SkillList);
+        }
+
+        // スキルごとのダメージを計算
         foreach (Skill skill in skills)
         {
             if (damageDict.ContainsKey(skill.Type))
             {
-                damageDict[skill.Type] += skill.Val;
+                damageDict[skill.Type].Val += skill.Val; // 既存のダメージに加算
             }
             else
             {
-                damageDict[skill.Type] = skill.Val;
+                damageDict[skill.Type] = new Damage(skill.Type, skill.Val); // 新規追加
             }
         }
 
-        List<Damage> damageList = new List<Damage>();
-        foreach (var pair in damageDict)
-        {
-            damageList.Add(new Damage { type = pair.Key, val = pair.Value });
-        }
-
-        return damageList;
+        // Dictionary から List に変換して返す
+        return new List<Damage>(damageDict.Values);
     }
+
 
     // ダメージを適用
     private void TakeDamage(List<Damage> damageList)

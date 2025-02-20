@@ -202,7 +202,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         // 攻撃処理
-        attackSystem.ExecuteAttack(sourceUnit, targetUnit, skillList);
+        attackSystem.ExecuteAttack(sourceUnit, targetUnit);
 
         // ダメージ適用後の待機
         yield return new WaitForSeconds(0.5f);
