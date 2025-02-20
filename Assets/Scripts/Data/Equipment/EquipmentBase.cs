@@ -27,9 +27,15 @@ public class EquipmentBase : ScriptableObject
     public int Defense { get => defense; }
     public int Speed { get => speed; }
     public Cost LifeCost => new Cost(CostType.Life, lifeCost);
-    public Cost BatteryCost => new Cost(CostType.Battery, lifeCost);
-    public Cost SoulCost => new Cost(CostType.Soul, lifeCost);
+    public Cost BatteryCost => new Cost(CostType.Battery, batteryCost);
+    public Cost SoulCost => new Cost(CostType.Soul, soulCost);
     public Probability Probability { get => probability; }
     public Sprite Sprite { get => sprite; }
     public List<Skill> SkillList { get => skillList; }
+    public List<Cost> CostList => new List<Cost>
+    {
+        LifeCost,
+        BatteryCost,
+        SoulCost,
+    };
 }
