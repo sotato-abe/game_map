@@ -24,7 +24,6 @@ public class CharacterCard : MonoBehaviour
 
     public void SetCardMotion(MotionType targetMotion)
     {
-        Debug.Log($"SetCardMotion{targetMotion}");
         switch (targetMotion)
         {
             case MotionType.Move:
@@ -52,7 +51,7 @@ public class CharacterCard : MonoBehaviour
         Vector3 originalPosition = transform.position;
         float moveRange = 20f;  // 移動範囲
         float moveSpeed = 3f;  // 移動スピード
-        float updateInterval = 3.0f; // ターゲット更新の時間間隔
+        float updateInterval = 5.0f; // ターゲット更新の時間間隔
         float elapsedTime = 0f;
 
         Vector3 targetPosition = originalPosition + new Vector3(
@@ -60,6 +59,7 @@ public class CharacterCard : MonoBehaviour
             Random.Range(-moveRange, moveRange),
             0
         );
+        Quaternion targetRotation = transform.rotation; // 目標の回転
 
         while (true)
         {
@@ -72,9 +72,11 @@ public class CharacterCard : MonoBehaviour
                     Random.Range(-moveRange, moveRange),
                     0
                 );
+                targetRotation  = Quaternion.Euler(0, 0, Random.Range(0, 3));
                 elapsedTime = 0f;
             }
-
+            // 徐々に回転を変化させる
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime);
             // ターゲットに向かってスムーズに移動
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
