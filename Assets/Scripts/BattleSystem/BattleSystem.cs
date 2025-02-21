@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
+
 // バトルエンカウント処理はこっちに入れる
 // バトルエンカウントは時間とフィールドの危険度を元にランダムで決まる。
 
@@ -18,6 +19,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] ActionController actionController;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
+    [SerializeField] AttackSystem attackSystem;
 
     void Start()
     {
@@ -65,9 +67,9 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(MotionType.Jump);
         enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
-        
+
         state = BattleState.TurnWait;
-        
+
         List<Battler> battlers = new List<Battler> { player, enemy };
         turnOrderSystem.SetUpBattlerTurns(battlers);
     }
@@ -181,16 +183,33 @@ public class BattleSystem : MonoBehaviour
     //AtackManagerに切り離す
     private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
-        int damage = targetUnit.Battler.TakeDamage(sourceUnit.Battler);
-        targetUnit.UpdateUI();
-        targetUnit.SetMotion(MotionType.Shake);
-        StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(targetUnit.SetTalkMessage("Auch!!")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(messagePanel.TypeDialog($"{targetUnit.Battler.Base.Name} take {damage} dameged by {sourceUnit.Battler.Base.Name}"));
+        // 攻撃前のアニメーションやメッセージ
+        StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you"));
+        StartCoroutine(targetUnit.SetTalkMessage("Auch!!"));
+        yield return StartCoroutine(messagePanel.TypeDialog($"{sourceUnit.Battler.Base.Name} attacks {targetUnit.Battler.Base.Name}!"));
 
+        List<Skill> skillList = new List<Skill>(); // 空のリストで初期化
+                                                   // もしくは sourceUnit からスキルリストを取得
+        if (sourceUnit.Battler.Equipments != null)
+        {
+            foreach (Equipment equipment in sourceUnit.Battler.Equipments)
+            {
+                foreach (Skill skill in equipment.SkillList)
+                {
+                    skillList.Add(skill);
+                }
+            }
+        }
+
+        // 攻撃処理
+        attackSystem.ExecuteAttack(sourceUnit, targetUnit);
+
+        // ダメージ適用後の待機
+        yield return new WaitForSeconds(0.5f);
+
+        // HPが0以下ならバトル結果処理
         if (targetUnit.Battler.Life <= 0)
         {
-            StartCoroutine(SetBattleState(BattleState.BattleResult));
             yield return StartCoroutine(BattleResult(sourceUnit, targetUnit));
         }
     }

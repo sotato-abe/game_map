@@ -37,7 +37,6 @@ public class GameController : MonoBehaviour
     public void ChangeField(DirectionType outDirection)
     {
         DirectionType entryDirection = outDirection.GetOppositeDirection();
-        Debug.Log($"GameController:ChangeField:{outDirection}>>>{entryDirection}");
         if (outDirection == DirectionType.Top)
             playerCoordinate.row = playerCoordinate.row - 1;
         if (outDirection == DirectionType.Bottom)
