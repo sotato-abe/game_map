@@ -64,8 +64,13 @@ public class AttackPanel : MonoBehaviour
 
         foreach (EquipmentUnit equipment in equipmentUnitList)
         {
+            if (CheckEnegy(equipment) == false)
+            {
+                continue;
+            }
             if (Random.Range(0, 100) < equipment.Equipment.Base.Probability)
             {
+                UseEnegy(equipment);
                 equipment.SetEquipmentMotion(EquipmentUnitMotionType.Jump);
                 skills.AddRange(equipment.Equipment.Base.SkillList);
             }
@@ -74,5 +79,29 @@ public class AttackPanel : MonoBehaviour
         Debug.Log($"ActivateEquipments:skills:{skills.Count}");
 
         return skills;
+    }
+
+    public bool CheckEnegy(EquipmentUnit equipment)
+    {
+        if (
+            equipment.Equipment.Base.LifeCost.val <= playerUnit.Battler.Life &&
+            equipment.Equipment.Base.BatteryCost.val <= playerUnit.Battler.Battery &&
+            equipment.Equipment.Base.SoulCost.val <= playerUnit.Battler.Soul
+        )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void UseEnegy(EquipmentUnit equipment)
+    {
+        playerUnit.Battler.Life -= equipment.Equipment.Base.LifeCost.val;
+        playerUnit.Battler.Battery -= equipment.Equipment.Base.BatteryCost.val;
+        playerUnit.Battler.Soul -= equipment.Equipment.Base.SoulCost.val;
+        playerUnit.UpdateUI();
     }
 }
