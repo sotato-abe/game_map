@@ -14,6 +14,14 @@ public class AttackPanel : MonoBehaviour
 
     private void Init()
     {
+        if (playerUnit != null && playerUnit.Battler != null)
+        {
+            SetEquipmentDialog();
+        }
+        else
+        {
+            // Debug.LogWarning("playerUnit or its properties are not initialized.");
+        }
     }
 
     private void OnEnable()
@@ -30,6 +38,8 @@ public class AttackPanel : MonoBehaviour
 
     private void SetEquipmentDialog()
     {
+        equipmentUnitList.Clear();
+
         foreach (Transform child in equipmentList.transform)
         {
             Destroy(child.gameObject);
@@ -49,8 +59,8 @@ public class AttackPanel : MonoBehaviour
 
     public List<Skill> ActivateEquipments()
     {
+        Debug.Log("equipmentUnitList.Count:" + equipmentUnitList.Count);
         List<Skill> skills = new List<Skill>();
-
 
         foreach (EquipmentUnit equipment in equipmentUnitList)
         {
