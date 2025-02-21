@@ -7,16 +7,17 @@ public class AttackSystem : MonoBehaviour
     private BattleUnit sourceUnit;
     private BattleUnit targetUnit;
 
+    [SerializeField] private AttackPanel attackPanel;
+
     public void ExecuteAttack(BattleUnit sourceUnit, BattleUnit targetUnit)
     {
         this.sourceUnit = sourceUnit;
         this.targetUnit = targetUnit;
 
         List<Damage> damageList = CalculateDamage();
-        Debug.Log(damageList.Count);
-        TakeDamage(damageList);
-        if(0 < damageList.Count)
+        if (0 < damageList.Count)
         {
+            TakeDamage(damageList);
             this.targetUnit.UpdateUI();
             this.targetUnit.SetMotion(MotionType.Shake);
         }
@@ -29,11 +30,20 @@ public class AttackSystem : MonoBehaviour
         List<Skill> skills = new List<Skill>();
         Dictionary<SkillType, Damage> damageDict = new Dictionary<SkillType, Damage>();
 
-        // 各装備のスキルをリストに追加
-        foreach (Equipment equipment in sourceUnit.Battler.Base.Equipments)
+        // TODO : ちゃんとPlayer判定をする
+        if (sourceUnit.Battler.Base.Name == "Sola")
         {
-            // Error skillを追加できていない。
-            skills.AddRange(equipment.Base.SkillList);
+            skills.AddRange(attackPanel.ActivateEquipments());
+            Debug.Log($"CalculateDamage:skills:{skills.Count}");
+        }
+        else
+        {
+            // 各装備のスキルをリストに追加
+            foreach (Equipment equipment in sourceUnit.Battler.Base.Equipments)
+            {
+                // Error skillを追加できていない。
+                skills.AddRange(equipment.Base.SkillList);
+            }
         }
 
         // スキルごとのダメージを計算
