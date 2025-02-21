@@ -42,7 +42,10 @@ public class AttackSystem : MonoBehaviour
             foreach (Equipment equipment in sourceUnit.Battler.Base.Equipments)
             {
                 // Error skillを追加できていない。
-                skills.AddRange(equipment.Base.SkillList);
+                if (Random.Range(0, 100) < equipment.Base.Probability)
+                {
+                    skills.AddRange(equipment.Base.SkillList);
+                }
             }
         }
 
