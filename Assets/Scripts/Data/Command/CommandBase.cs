@@ -14,10 +14,9 @@ public class CommandBase : ScriptableObject
     [SerializeField] int lifeCost;
     [SerializeField] int batteryCost;
     [SerializeField] Sprite sprite;
-
+    [SerializeField] string description;
 
     public string Name { get => name; }
-
     public CommandType CommandType { get => commandType; }
     public EnchantType EnchantType { get => enchantType; }
     public int Value { get => value; }
@@ -25,4 +24,5 @@ public class CommandBase : ScriptableObject
     public int LifeCost { get => lifeCost; }
     public int BatteryCost { get => batteryCost; }
     public Sprite Sprite { get => sprite; }
+    public string Description { get => description; }
 }

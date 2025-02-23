@@ -8,11 +8,13 @@ public class CommandUnit : MonoBehaviour
     public Command Command { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image dialogBackground;
+    [SerializeField] DescriptionPanel descriptionPanel;
 
     public virtual void Setup(Command command)
     {
         Command = command;
         image.sprite = Command.Base.Sprite;
+        descriptionPanel.Setup(Command);
     }
 
     public void OnPointerEnter()
@@ -42,6 +44,7 @@ public class CommandUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
+            descriptionPanel.ShowDescriptionPanel(true);
         }
         else
         {
@@ -54,6 +57,7 @@ public class CommandUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
+            descriptionPanel.ShowDescriptionPanel(false);
         }
     }
 }
