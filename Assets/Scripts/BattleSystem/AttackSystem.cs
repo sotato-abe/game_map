@@ -28,34 +28,41 @@ public class AttackSystem : MonoBehaviour
     // ダメージを計算
     private List<Damage> CalculateDamage()
     {
-        Dictionary<(AttackType, int), int> damageDict = new Dictionary<(AttackType, int), int>();
-
         // TODO : ちゃんとPlayer判定をする
-        IEnumerable<Skill> skills = sourceUnit.Battler.Base.Name == "Sola"
-            ? attackPanel.ActivateEquipments()
-            : sourceUnit.Battler.Base.Equipments
-                .Where(e => Random.Range(0, 100) < e.Base.Probability)
-                .SelectMany(e => e.Base.SkillList);
-
-        // スキルごとのダメージを計算
-        foreach (Skill skill in skills)
+        if (sourceUnit.Battler.Base.Name == "Sola")
         {
-            // EnegyとEnchantを共通処理
-            foreach (var enegy in skill.Enegys)
-            {
-                // DamageのAttackTypeはEnegyで固定
-                var key = (AttackType.Enegy, (int)enegy.type);
-
-                // Dictionaryにエネジーのダメージを追加
-                if (damageDict.ContainsKey(key))
-                    damageDict[key] += enegy.val;
-                else
-                    damageDict[key] = enegy.val;
-            }
+            return CalculateDamageSola();
         }
+        else
+        {
+            return CalculateDamageEnemy();
 
-        // Dictionary を List に変換して返す
-        return damageDict.Select(kvp => new Damage(AttackType.Enegy, kvp.Key.Item2, kvp.Value)).ToList();
+        }
+    }
+
+    private List<Damage> CalculateDamageSola()
+    {
+        attackPanel.gameObject.SetActive(true);
+        return attackPanel.ActivateEquipments();
+    }
+
+    private List<Damage> CalculateDamageEnemy()
+    {
+        List<Damage> damageList = new List<Damage>();
+
+        sourceUnit.Battler.Equipments.ForEach(equipment =>
+        {
+            if (Random.Range(0, 100) < equipment.Base.Probability)
+            {
+                equipment.Base.AttackList.ForEach(attack =>
+                {
+                    Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
+                    damageList.Add(damage);
+                });
+            }
+        });
+
+        return damageList;
     }
 
     // ダメージを適用

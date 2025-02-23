@@ -17,7 +17,10 @@ public class EquipmentBase : ScriptableObject
     [SerializeField] int soulCost;
     [SerializeField] Probability probability; // TODO:１～１００のクラスにする
     [SerializeField] Sprite sprite;
-    [SerializeField] private List<Skill> skillList = new List<Skill>();
+    [SerializeField] string description;
+    // [SerializeField] private List<Skill> skillList = new List<Skill>();
+    [SerializeField] private List<Enegy> attackList = new List<Enegy>();
+    [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
     public string Name { get => name; }
     public int Life { get => life; }
@@ -31,7 +34,10 @@ public class EquipmentBase : ScriptableObject
     public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
     public Probability Probability { get => probability; }
     public Sprite Sprite { get => sprite; }
-    public List<Skill> SkillList { get => skillList; }
+    public string Description { get => description; }
+    // public List<Skill> SkillList { get => skillList; }
+    public List<Enegy> AttackList { get => attackList; }
+    public List<Enchant> EnchantList { get => enchantList; }
     public List<Enegy> CostList => new List<Enegy>
     {
         LifeCost,

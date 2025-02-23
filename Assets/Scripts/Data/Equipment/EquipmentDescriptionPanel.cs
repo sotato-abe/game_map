@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class DescriptionPanel : MonoBehaviour
+public class EquipmentDescriptionPanel : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI commandName;
+    [SerializeField] private TextMeshProUGUI equipmentName;
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
+    [SerializeField] CostIcon attackPrefab;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] CostIcon costPrefab;
 
@@ -19,12 +20,14 @@ public class DescriptionPanel : MonoBehaviour
         transform.gameObject.SetActive(false);
     }
 
-    public virtual void Setup(Command command)
+    public virtual void Setup(Equipment equipment)
     {
-        commandName.text = command.Base.Name;
-        description.text = command.Base.Description;
-        SetEnchant(command.Base.EnchantList);
-        SetCost(command.Base.CostList);
+        equipmentName.text = equipment.Base.Name;
+        description.text = equipment.Base.Description;
+        ResetSkillList();
+        SetAttack(equipment.Base.AttackList);
+        SetEnchant(equipment.Base.EnchantList);
+        SetCost(equipment.Base.CostList);
     }
 
     public void ShowDescriptionPanel(bool showFlg)
@@ -32,14 +35,29 @@ public class DescriptionPanel : MonoBehaviour
         transform.gameObject.SetActive(showFlg);
     }
 
-    private void SetEnchant(List<Enchant> enchants)
+    private void ResetSkillList()
     {
-        // enchantList内のオブジェクトを削除
+        // skillList内のオブジェクトを削除
         foreach (Transform child in enchantList.transform)
         {
             Destroy(child.gameObject);
         }
+    }
 
+    private void SetAttack(List<Enegy> attacks)
+    {
+        // attackList内に攻撃力を追加
+        foreach (var attack in attacks)
+        {
+            CostIcon attackObject = Instantiate(attackPrefab, enchantList.transform);
+            attackObject.gameObject.SetActive(true);
+            CostIcon attackUnit = attackObject.GetComponent<CostIcon>();
+            attackUnit.SetCostIcon(attack);
+        }
+    }
+
+    private void SetEnchant(List<Enchant> enchants)
+    {
         // enchantList内にスキルを追加
         foreach (var enchant in enchants)
         {

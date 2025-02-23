@@ -188,19 +188,6 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(targetUnit.SetTalkMessage("Auch!!"));
         yield return StartCoroutine(messagePanel.TypeDialog($"{sourceUnit.Battler.Base.Name} attacks {targetUnit.Battler.Base.Name}!"));
 
-        List<Skill> skillList = new List<Skill>(); // 空のリストで初期化
-                                                   // もしくは sourceUnit からスキルリストを取得
-        if (sourceUnit.Battler.Equipments != null)
-        {
-            foreach (Equipment equipment in sourceUnit.Battler.Equipments)
-            {
-                foreach (Skill skill in equipment.SkillList)
-                {
-                    skillList.Add(skill);
-                }
-            }
-        }
-
         // 攻撃処理
         attackSystem.ExecuteAttack(sourceUnit, targetUnit);
 

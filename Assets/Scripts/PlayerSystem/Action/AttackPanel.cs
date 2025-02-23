@@ -57,10 +57,10 @@ public class AttackPanel : MonoBehaviour
         }
     }
 
-    public List<Skill> ActivateEquipments()
+    public List<Damage> ActivateEquipments()
     {
         Debug.Log("equipmentUnitList.Count:" + equipmentUnitList.Count);
-        List<Skill> skills = new List<Skill>();
+        List<Damage> damages = new List<Damage>();
 
         foreach (EquipmentUnit equipment in equipmentUnitList)
         {
@@ -71,14 +71,18 @@ public class AttackPanel : MonoBehaviour
             if (Random.Range(0, 100) < equipment.Equipment.Base.Probability)
             {
                 UseEnegy(equipment);
+                foreach (var attack in equipment.Equipment.Base.AttackList)
+                {
+                    Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
+                    damages.Add(damage);
+                }
                 equipment.SetEquipmentMotion(EquipmentUnitMotionType.Jump);
-                skills.AddRange(equipment.Equipment.Base.SkillList);
             }
         }
 
-        Debug.Log($"ActivateEquipments:skills:{skills.Count}");
+        Debug.Log($"ActivateEquipments:skills:{damages.Count}");
 
-        return skills;
+        return damages;
     }
 
     public bool CheckEnegy(EquipmentUnit equipment)
