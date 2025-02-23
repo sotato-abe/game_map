@@ -18,7 +18,6 @@ public class Equipment
     public Enegy BatteryCost { get; set; }
     public Enegy SoulCost { get; set; }
     public Probability Probability { get; set; }
-    public List<Skill> SkillList { get; set; }
     public List<Enegy> CostList { get; set; }
 
     public void Init()
@@ -33,7 +32,6 @@ public class Equipment
         BatteryCost = BatteryCost;
         SoulCost = SoulCost;
         Probability = Probability;
-        SkillList = SkillList;
         CostList = CostList;
     }
 }
