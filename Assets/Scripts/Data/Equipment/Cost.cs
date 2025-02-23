@@ -7,10 +7,10 @@ using TMPro;
 [System.Serializable]
 public class Cost
 {
-    public CostType type;
+    public EnegyType type;
     public int val;
 
-    public Cost(CostType type, int val)
+    public Cost(EnegyType type, int val)
     {
         this.type = type;
         this.val = val;

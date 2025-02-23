@@ -37,7 +37,7 @@ public class CommandUnit : MonoBehaviour
             enchantObject.gameObject.SetActive(true);
             EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
 
-            enchantUnit.SetEnchantIcon(enchant);
+            enchantUnit.SetEnchant(enchant);
         }
     }
 
