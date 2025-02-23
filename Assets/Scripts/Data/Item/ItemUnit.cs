@@ -22,4 +22,47 @@ public class ItemUnit : MonoBehaviour
         bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
         dialogBackground.color = bgColor;
     }
+
+    public void OnPointerEnter()
+    {
+        Debug.Log("OnPointerEnter");
+        StartCoroutine(TargetfoucsMotion(true));
+    }
+
+    public void OnPointerExit()
+    {
+        Debug.Log("OnPointerExit");
+        StartCoroutine(TargetfoucsMotion(false));
+    }
+
+    public IEnumerator TargetfoucsMotion(bool focusFlg)
+    {
+        float time = 0.05f;
+        float currentTime = 0f;
+
+        if (focusFlg)
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
+        }
+        else
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1, 1, 1);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
+        }
+    }
 }
