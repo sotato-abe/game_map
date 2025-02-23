@@ -9,7 +9,7 @@ public class EquipmentUnit : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] GameObject skillList;
     [SerializeField] GameObject costList;
-    [SerializeField] SkillIcon skillPrefab;
+    [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] CostIcon costPrefab;
 
     public virtual void Setup(Equipment equipment)
@@ -24,11 +24,21 @@ public class EquipmentUnit : MonoBehaviour
     {
         foreach (var skill in Equipment.Base.SkillList)
         {
-            SkillIcon skillObject = Instantiate(skillPrefab, skillList.transform);
-            skillObject.gameObject.SetActive(true);
-            SkillIcon skillUnit = skillObject.GetComponent<SkillIcon>();
+            foreach(Enegy enegy in skill.Enegys)
+            {
+                CostIcon costObject = Instantiate(costPrefab, skillList.transform);
+                costObject.gameObject.SetActive(true);
+                CostIcon costUnit = costObject.GetComponent<CostIcon>();
+                costUnit.SetCostIcon(enegy);
+            }
+            foreach(Enchant enchant in skill.Enchants)
+            {
+                EnchantIcon enchantObject = Instantiate(enchantPrefab, skillList.transform);
+                enchantObject.gameObject.SetActive(true);
+                EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
+                enchantUnit.SetEnchant(enchant);
+            }
 
-            skillUnit.SetSkillIcon(skill);
         }
     }
 

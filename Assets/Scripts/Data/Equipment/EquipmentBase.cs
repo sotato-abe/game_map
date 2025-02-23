@@ -26,13 +26,13 @@ public class EquipmentBase : ScriptableObject
     public int Technique { get => technique; }
     public int Defense { get => defense; }
     public int Speed { get => speed; }
-    public Cost LifeCost => new Cost(EnegyType.Life, lifeCost);
-    public Cost BatteryCost => new Cost(EnegyType.Battery, batteryCost);
-    public Cost SoulCost => new Cost(EnegyType.Soul, soulCost);
+    public Enegy LifeCost => new Enegy(EnegyType.Life, lifeCost);
+    public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
+    public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
     public Probability Probability { get => probability; }
     public Sprite Sprite { get => sprite; }
     public List<Skill> SkillList { get => skillList; }
-    public List<Cost> CostList => new List<Cost>
+    public List<Enegy> CostList => new List<Enegy>
     {
         LifeCost,
         BatteryCost,
