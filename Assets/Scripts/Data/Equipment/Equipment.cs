@@ -14,12 +14,12 @@ public class Equipment
     public int Technique { get; set; }
     public int Defense { get; set; }
     public int Speed { get; set; }
-    public Cost LifeCost { get; set; }
-    public Cost BatteryCost { get; set; }
-    public Cost SoulCost { get; set; }
+    public Enegy LifeCost { get; set; }
+    public Enegy BatteryCost { get; set; }
+    public Enegy SoulCost { get; set; }
     public Probability Probability { get; set; }
     public List<Skill> SkillList { get; set; }
-    public List<Cost> CostList { get; set; }
+    public List<Enegy> CostList { get; set; }
 
     public void Init()
     {

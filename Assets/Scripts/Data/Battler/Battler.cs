@@ -63,18 +63,21 @@ public class Battler
     {
         foreach (Damage damage in damageList)
         {
-            Debug.Log($"damage:{damage.Type} /{damage.Val}");
-            if (damage.Type == SkillType.Life)
+            Debug.Log($"damage:{damage.AttackType} /{damage.Val}");
+            if (damage.AttackType == AttackType.Enegy)
             {
-                Life = Life - damage.Val;
-            }
-            if (damage.Type == SkillType.Battery)
-            {
-                Battery = Battery - damage.Val;
-            }
-            if (damage.Type == SkillType.Soul)
-            {
-                Soul = Soul - damage.Val;
+                if (damage.SubType == (int)EnegyType.Life)
+                {
+                    Life = Life - damage.Val;
+                }
+                if (damage.SubType == (int)EnegyType.Battery)
+                {
+                    Battery = Battery - damage.Val;
+                }
+                if (damage.SubType == (int)EnegyType.Soul)
+                {
+                    Soul = Soul - damage.Val;
+                }
             }
         }
         Debug.Log($"Life/{Life}");

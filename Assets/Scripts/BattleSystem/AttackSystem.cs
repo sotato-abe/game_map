@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class AttackSystem : MonoBehaviour
 {
@@ -27,45 +28,35 @@ public class AttackSystem : MonoBehaviour
     // ダメージを計算
     private List<Damage> CalculateDamage()
     {
-        List<Skill> skills = new List<Skill>();
-        Dictionary<SkillType, Damage> damageDict = new Dictionary<SkillType, Damage>();
+        Dictionary<(AttackType, int), int> damageDict = new Dictionary<(AttackType, int), int>();
 
         // TODO : ちゃんとPlayer判定をする
-        if (sourceUnit.Battler.Base.Name == "Sola")
-        {
-            skills.AddRange(attackPanel.ActivateEquipments());
-            Debug.Log($"CalculateDamage:skills:{skills.Count}");
-        }
-        else
-        {
-            // 各装備のスキルをリストに追加
-            foreach (Equipment equipment in sourceUnit.Battler.Base.Equipments)
-            {
-                // Error skillを追加できていない。
-                if (Random.Range(0, 100) < equipment.Base.Probability)
-                {
-                    skills.AddRange(equipment.Base.SkillList);
-                }
-            }
-        }
+        IEnumerable<Skill> skills = sourceUnit.Battler.Base.Name == "Sola"
+            ? attackPanel.ActivateEquipments()
+            : sourceUnit.Battler.Base.Equipments
+                .Where(e => Random.Range(0, 100) < e.Base.Probability)
+                .SelectMany(e => e.Base.SkillList);
 
         // スキルごとのダメージを計算
         foreach (Skill skill in skills)
         {
-            if (damageDict.ContainsKey(skill.Type))
+            // EnegyとEnchantを共通処理
+            foreach (var enegy in skill.Enegys)
             {
-                damageDict[skill.Type].Val += skill.Val; // 既存のダメージに加算
-            }
-            else
-            {
-                damageDict[skill.Type] = new Damage(skill.Type, skill.Val); // 新規追加
+                // DamageのAttackTypeはEnegyで固定
+                var key = (AttackType.Enegy, (int)enegy.type);
+
+                // Dictionaryにエネジーのダメージを追加
+                if (damageDict.ContainsKey(key))
+                    damageDict[key] += enegy.val;
+                else
+                    damageDict[key] = enegy.val;
             }
         }
 
-        // Dictionary から List に変換して返す
-        return new List<Damage>(damageDict.Values);
+        // Dictionary を List に変換して返す
+        return damageDict.Select(kvp => new Damage(AttackType.Enegy, kvp.Key.Item2, kvp.Value)).ToList();
     }
-
 
     // ダメージを適用
     private void TakeDamage(List<Damage> damageList)

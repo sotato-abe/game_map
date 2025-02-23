@@ -10,7 +10,7 @@ public class CostIcon : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] EnegyIconList enegyIconList;
 
-    public void SetCostIcon(Cost cost)
+    public void SetCostIcon(Enegy cost)
     {
         text.text = cost.val.ToString();
         SetCostIcon(cost.type);

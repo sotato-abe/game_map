@@ -8,11 +8,11 @@ using TMPro;
 public class Skill : ScriptableObject
 {
     [SerializeField] new string name;
-    [SerializeField] SkillType type;
-    [SerializeField] int val;
+    [SerializeField] private List<Enegy> enegys;
+    [SerializeField] private List<Enchant> enchants;
+
 
     public string Name { get => name; }
-    public SkillType Type { get => type; }
-    public int Val { get => val; }
-
+    public List<Enegy> Enegys { get => enegys; }
+    public List<Enchant> Enchants { get => enchants; }
 }
