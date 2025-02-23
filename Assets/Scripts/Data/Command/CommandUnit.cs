@@ -11,7 +11,7 @@ public class CommandUnit : MonoBehaviour
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] CostIcon costPrefab;
-    [SerializeField] DescriptionPanel descriptionPanel;
+    [SerializeField] CommandDescriptionPanel descriptionPanel;
 
     public virtual void Setup(Command command)
     {
