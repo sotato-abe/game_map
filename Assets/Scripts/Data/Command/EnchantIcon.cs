@@ -8,9 +8,17 @@ public class EnchantIcon : MonoBehaviour
 {
     [SerializeField] Image image;
     [SerializeField] private TextMeshProUGUI text;
-    public void SetEnchantIcon(Enchant enchant)
+    [SerializeField] EnchantIconList enchantIconList;
+
+    public void SetEnchant(Enchant enchant)
     {
         text.text = enchant.Val.ToString();
+        SetEnchantIcon(enchant.Type);
+    }
+
+    public void SetEnchantIcon(EnchantType type)
+    {
+        image.sprite = enchantIconList.GetIcon(type);
     }
 }
 

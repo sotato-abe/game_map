@@ -26,9 +26,9 @@ public class EquipmentBase : ScriptableObject
     public int Technique { get => technique; }
     public int Defense { get => defense; }
     public int Speed { get => speed; }
-    public Cost LifeCost => new Cost(CostType.Life, lifeCost);
-    public Cost BatteryCost => new Cost(CostType.Battery, batteryCost);
-    public Cost SoulCost => new Cost(CostType.Soul, soulCost);
+    public Cost LifeCost => new Cost(EnegyType.Life, lifeCost);
+    public Cost BatteryCost => new Cost(EnegyType.Battery, batteryCost);
+    public Cost SoulCost => new Cost(EnegyType.Soul, soulCost);
     public Probability Probability { get => probability; }
     public Sprite Sprite { get => sprite; }
     public List<Skill> SkillList { get => skillList; }

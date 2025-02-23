@@ -23,9 +23,9 @@ public class CommandBase : ScriptableObject
     public EnchantType EnchantType { get => enchantType; }
     public int Value { get => value; }
     public int Count { get => count; }
-    public Cost LifeCost => new Cost(CostType.Life, lifeCost);
-    public Cost BatteryCost => new Cost(CostType.Battery, batteryCost);
-    public Cost SoulCost => new Cost(CostType.Soul, soulCost);
+    public Cost LifeCost => new Cost(EnegyType.Life, lifeCost);
+    public Cost BatteryCost => new Cost(EnegyType.Battery, batteryCost);
+    public Cost SoulCost => new Cost(EnegyType.Soul, soulCost);
     public List<Cost> CostList => new List<Cost>
     {
         LifeCost,
