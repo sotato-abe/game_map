@@ -7,14 +7,59 @@ public class CommandUnit : MonoBehaviour
 {
     public Command Command { get; set; }
     [SerializeField] Image image;
-    [SerializeField] Image dialogBackground;
+    [SerializeField] GameObject enchantList;
+    [SerializeField] GameObject costList;
+    [SerializeField] EnchantIcon enchantPrefab;
+    [SerializeField] CostIcon costPrefab;
     [SerializeField] DescriptionPanel descriptionPanel;
 
     public virtual void Setup(Command command)
     {
         Command = command;
         image.sprite = Command.Base.Sprite;
+        SetEnchant();
+        SetCost();
         descriptionPanel.Setup(Command);
+    }
+
+    private void SetEnchant()
+    {
+        // enchantList内のオブジェクトを削除
+        foreach (Transform child in enchantList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // enchantList内にスキルを追加
+        foreach (var enchant in Command.Base.EnchantList)
+        {
+            EnchantIcon enchantObject = Instantiate(enchantPrefab, enchantList.transform);
+            enchantObject.gameObject.SetActive(true);
+            EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
+
+            enchantUnit.SetEnchantIcon(enchant);
+        }
+    }
+
+    private void SetCost()
+    {
+        // costList内のオブジェクトを削除
+        foreach (Transform child in costList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // costList内にコストを追加
+        foreach (var cost in Command.Base.CostList)
+        {
+            if (0 < cost.val)
+            {
+                CostIcon costObject = Instantiate(costPrefab, costList.transform);
+                costObject.gameObject.SetActive(true);
+                CostIcon costUnit = costObject.GetComponent<CostIcon>();
+                costUnit.SetCostIcon(cost);
+            }
+        }
     }
 
     public void OnPointerEnter()

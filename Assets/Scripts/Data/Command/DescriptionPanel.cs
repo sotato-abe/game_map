@@ -6,7 +6,7 @@ using TMPro;
 
 public class DescriptionPanel : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI name;
+    [SerializeField] private TextMeshProUGUI commandName;
     [SerializeField] private TextMeshProUGUI description;
 
     void Start()
@@ -16,7 +16,7 @@ public class DescriptionPanel : MonoBehaviour
 
     public virtual void Setup(Command command)
     {
-        name.text = command.Base.Name;
+        commandName.text = command.Base.Name;
         description.text = command.Base.Description;
     }
 
