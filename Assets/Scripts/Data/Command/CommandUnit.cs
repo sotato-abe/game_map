@@ -15,11 +15,45 @@ public class CommandUnit : MonoBehaviour
         image.sprite = Command.Base.Sprite;
     }
 
-    public virtual void Targetfoucs(bool focusFlg)
+    public void OnPointerEnter()
     {
-        float alpha = focusFlg ? 1.0f : 0.0f;
-        Color bgColor = dialogBackground.color;
-        bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
-        dialogBackground.color = bgColor;
+        Debug.Log("OnPointerEnter");
+        StartCoroutine(Targetfoucs(true));
+    }
+
+    public void OnPointerExit()
+    {
+        Debug.Log("OnPointerExit");
+        StartCoroutine(Targetfoucs(false));
+    }
+
+    public IEnumerator Targetfoucs(bool focusFlg)
+    {
+        float time = 0.05f;
+        float currentTime = 0f;
+        if (focusFlg)
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
+        }
+        else
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1, 1, 1);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
+        }
     }
 }
