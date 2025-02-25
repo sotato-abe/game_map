@@ -6,6 +6,7 @@ using UnityEngine;
 public class EquipmentBase : ScriptableObject
 {
     [SerializeField] new string name;
+    [SerializeField] EquipmentPart part;
     [SerializeField] int life;
     [SerializeField] int battery;
     [SerializeField] int attack;

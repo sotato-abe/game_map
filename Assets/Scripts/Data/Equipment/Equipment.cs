@@ -6,8 +6,8 @@ using UnityEngine;
 public class Equipment
 {
     [SerializeField] EquipmentBase _base;
+    
     public EquipmentBase Base { get => _base; }
-
     public int Life { get; set; }
     public int Battery { get; set; }
     public int Attack { get; set; }
