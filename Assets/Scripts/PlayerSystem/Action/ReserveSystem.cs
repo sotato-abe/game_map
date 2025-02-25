@@ -127,7 +127,7 @@ public class ReserveSystem : MonoBehaviour
         state = ReserveState.ActionExecution;
         playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        actionBoard.itemPanel.UseItem();
+        actionBoard.pouchPanel.UseItem();
         yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
     }
 

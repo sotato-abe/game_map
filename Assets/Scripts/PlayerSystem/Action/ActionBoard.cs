@@ -8,7 +8,7 @@ public class ActionBoard : MonoBehaviour
 {
     [SerializeField] AttackPanel attackPanel;
     [SerializeField] CommandPanel commandPanel;
-    [SerializeField] public ItemPanel itemPanel;
+    [SerializeField] public PouchPanel pouchPanel;
     ActionType action;
 
     public void Init()
@@ -31,7 +31,7 @@ public class ActionBoard : MonoBehaviour
                 SetCommandPanel();
                 break;
             case ActionType.Item:
-                SetItemPanel();
+                SetPouchPanel();
                 break;
             case ActionType.Escape:
                 SetEscapeDialog();
@@ -51,7 +51,7 @@ public class ActionBoard : MonoBehaviour
                 commandPanel.SelectCommand(targetDirection);
                 break;
             case ActionType.Item:
-                itemPanel.SelectItem(targetDirection);
+                pouchPanel.SelectItem(targetDirection);
                 break;
             case ActionType.Escape:
                 break;
@@ -62,41 +62,41 @@ public class ActionBoard : MonoBehaviour
     {
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
+        pouchPanel.gameObject.SetActive(false);
     }
 
     private void SetAttackPanel()
     {
         commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
+        pouchPanel.gameObject.SetActive(false);
         attackPanel.gameObject.SetActive(true);
     }
 
     private void SetCommandPanel()
     {
         attackPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
+        pouchPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(true);
     }
 
-    private void SetItemPanel()
+    private void SetPouchPanel()
     {
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(true);
+        pouchPanel.gameObject.SetActive(true);
     }
 
     private void SetEscapeDialog()
     {
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
+        pouchPanel.gameObject.SetActive(false);
     }
 
     public void CloseActionPanel()
     {
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
+        pouchPanel.gameObject.SetActive(false);
     }
 }
