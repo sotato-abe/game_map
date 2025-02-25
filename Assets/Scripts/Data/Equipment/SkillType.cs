@@ -1,6 +1,6 @@
 public enum SkillType
 {
-        Life,
-        Battery,
-        Soul,
+    Life,
+    Battery,
+    Soul,
 }
