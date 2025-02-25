@@ -202,7 +202,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.3
+  m_PixelsPerUnitMultiplier: 3
 --- !u!114 &2943150437295960305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +342,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 40, y: 0}
-  m_SizeDelta: {x: 120, y: 45}
+  m_SizeDelta: {x: 160, y: 45}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &6939920270628747471
 CanvasRenderer:
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.5
+  m_PixelsPerUnitMultiplier: 2
 --- !u!1 &6939920270731194773
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.3
+  m_PixelsPerUnitMultiplier: 3
 --- !u!114 &8679118485769894481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,9 +568,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -375, y: 0}
-  m_SizeDelta: {x: 730, y: -20}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -10, y: 0}
+  m_SizeDelta: {x: 710, y: -20}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!1 &6939920270830915087
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +716,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: poach
+  m_text: pouch
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}
   m_sharedMaterial: {fileID: -8396312827205554169, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}
@@ -823,7 +823,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 980, y: 485}
+  m_SizeDelta: {x: 960, y: 445}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6939920271580676681
 CanvasRenderer:
@@ -862,7 +862,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!1 &6939920271594436678
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,7 +1026,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.3
+  m_PixelsPerUnitMultiplier: 3
 --- !u!1 &6939920271699319724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,7 +1198,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.3
+  m_PixelsPerUnitMultiplier: 3
 --- !u!114 &8552895740501737098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1260,8 +1260,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: -20, y: -0.0000009536743}
+  m_AnchoredPosition: {x: 0, y: -5}
+  m_SizeDelta: {x: -20, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6939920272049976288
 CanvasRenderer:
@@ -1291,7 +1291,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BAG
+  m_text: Pouch
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}
   m_sharedMaterial: {fileID: -8396312827205554169, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}
@@ -1369,6 +1369,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6939920272112268052}
+  - component: {fileID: 6952894481804621920}
   m_Layer: 5
   m_Name: BagPanel
   m_TagString: Untagged
@@ -1397,8 +1398,20 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 980, y: 485}
+  m_SizeDelta: {x: 960, y: 445}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6952894481804621920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6939920272112268053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0234092ed629842a447d504e00dd11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6939920272493980510
 GameObject:
   m_ObjectHideFlags: 0
