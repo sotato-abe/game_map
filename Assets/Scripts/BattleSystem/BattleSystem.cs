@@ -130,7 +130,7 @@ public class BattleSystem : MonoBehaviour
             case ActionType.Command:
                 yield return StartCoroutine(CommandTurn());
                 break;
-            case ActionType.Item:
+            case ActionType.Pouch:
                 yield return StartCoroutine(ItemTurn());
                 break;
             case ActionType.Escape:

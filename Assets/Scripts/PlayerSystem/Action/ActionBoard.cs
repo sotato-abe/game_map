@@ -34,9 +34,6 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Command:
                 SetCommandPanel();
                 break;
-            case ActionType.Item:
-                SetPouchPanel();
-                break;
             case ActionType.Pouch:
                 SetPouchPanel();
                 break;
@@ -66,7 +63,7 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Command:
                 commandPanel.SelectCommand(targetDirection);
                 break;
-            case ActionType.Item:
+            case ActionType.Pouch:
                 pouchPanel.SelectItem(targetDirection);
                 break;
             case ActionType.Escape:
