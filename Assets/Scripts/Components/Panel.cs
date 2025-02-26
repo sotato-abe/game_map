@@ -5,6 +5,13 @@ public class Panel : MonoBehaviour
 {
     private bool isAnimating = false; // アニメーション中かどうかのフラグ
     private Coroutine openMotionCoroutine = null; // コルーチンの参照
+    private float groundY; // 初期位置を保存
+
+    private void Awake()
+    {
+        // 初期位置を保存
+        groundY = transform.position.y;
+    }
 
     public void PanelOpen()
     {
@@ -22,7 +29,6 @@ public class Panel : MonoBehaviour
         float bounceHeight = 40f;
         float damping = 0.5f;
         float gravity = 5000f;
-        float groundY = transform.position.y;
 
         while (bounceHeight >= 0.1f)
         {
@@ -60,6 +66,7 @@ public class Panel : MonoBehaviour
         // もしコルーチンが動いていたら停止する
         if (openMotionCoroutine != null)
         {
+            transform.position = new Vector3(transform.position.x, groundY, transform.position.z);
             StopCoroutine(openMotionCoroutine);
             openMotionCoroutine = null;
         }
