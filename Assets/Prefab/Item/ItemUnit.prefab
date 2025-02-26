@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4637680606036561527}
   - component: {fileID: 5718443240379532934}
   - component: {fileID: 8736710384832174632}
+  - component: {fileID: 4399335924043075598}
   m_Layer: 5
   m_Name: DescriptionPanel
   m_TagString: Untagged
@@ -98,6 +99,20 @@ MonoBehaviour:
   attackPrefab: {fileID: 8681941864015157636, guid: 029abe508f2cb384789b4e045c85d73d, type: 3}
   enchantPrefab: {fileID: 1197513031629182013, guid: a8469d3189a84614e94b8c6724fcaa6a, type: 3}
   costPrefab: {fileID: 7188505094819521489, guid: 3fe19f87b0a33f94687a6bf9baeacb24, type: 3}
+--- !u!114 &4399335924043075598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423775956586304728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f40f14d8d86eb441bcb0cf0c4b480d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: {fileID: 8901933536722230599}
+  description: {fileID: 138896514372757261}
 --- !u!1 &1334624774676522664
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +396,7 @@ GameObject:
   - component: {fileID: 2712631691246194131}
   - component: {fileID: 5175214863138366851}
   m_Layer: 5
-  m_Name: ItemImage
+  m_Name: ItemCardImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -616,6 +631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 4469936652105266635}
   dialogBackground: {fileID: 4469936651384665364}
+  descriptionPanel: {fileID: 4399335924043075598}
 --- !u!1 &4469936652105266629
 GameObject:
   m_ObjectHideFlags: 0

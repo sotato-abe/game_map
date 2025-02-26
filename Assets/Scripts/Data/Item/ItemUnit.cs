@@ -8,11 +8,13 @@ public class ItemUnit : MonoBehaviour
     public Item Item { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image dialogBackground;
+    [SerializeField] ItemDescriptionPanel descriptionPanel;
 
     public virtual void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
+        descriptionPanel.Setup(Item);
     }
 
     public virtual void Targetfoucs(bool focusFlg)
@@ -51,6 +53,7 @@ public class ItemUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
+            descriptionPanel.ShowDescriptionPanel(true);
         }
         else
         {
@@ -63,6 +66,7 @@ public class ItemUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
+            descriptionPanel.ShowDescriptionPanel(false);
         }
     }
 }
