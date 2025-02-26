@@ -93,6 +93,7 @@ public class ActionBoard : MonoBehaviour
     private void SetCommandPanel()
     {
         commandPanel.gameObject.SetActive(true);
+        commandPanel.PanelOpen();
     }
 
     private void SetPouchPanel()

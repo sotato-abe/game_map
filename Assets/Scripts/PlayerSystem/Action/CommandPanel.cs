@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CommandPanel : MonoBehaviour
+public class CommandPanel : Panel
 {
     [SerializeField] GameObject commandUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] GameObject commandList;
