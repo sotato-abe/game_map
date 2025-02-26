@@ -24,7 +24,6 @@ public class Panel : MonoBehaviour
     private IEnumerator OpenMotion()
     {
         isAnimating = true; // アニメーション開始
-        Debug.Log("OpenMotion");
 
         float bounceHeight = 40f;
         float damping = 0.5f;
