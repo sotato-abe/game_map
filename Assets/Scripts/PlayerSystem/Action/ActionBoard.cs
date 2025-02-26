@@ -88,6 +88,7 @@ public class ActionBoard : MonoBehaviour
     private void SetAttackPanel()
     {
         attackPanel.gameObject.SetActive(true);
+        attackPanel.PanelOpen();
     }
 
     private void SetCommandPanel()
@@ -99,21 +100,25 @@ public class ActionBoard : MonoBehaviour
     private void SetPouchPanel()
     {
         pouchPanel.gameObject.SetActive(true);
+        pouchPanel.PanelOpen();
     }
 
     private void SetBagPanel()
     {
         bagPanel.gameObject.SetActive(true);
+        bagPanel.PanelOpen();
     }
 
     private void SetEquipmentPanel()
     {
         equipmentPanel.gameObject.SetActive(true);
+        equipmentPanel.PanelOpen();
     }
 
     private void SetDeckPanel()
     {
         deckPanel.gameObject.SetActive(true);
+        deckPanel.PanelOpen();
     }
 
     private void SetEscapeDialog()

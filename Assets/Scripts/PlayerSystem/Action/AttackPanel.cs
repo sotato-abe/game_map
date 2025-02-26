@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class AttackPanel : MonoBehaviour
+public class AttackPanel : Panel
 {
     [SerializeField] GameObject equipmentUnitPrefab;  // EquipmentUnitのプレハブ
     [SerializeField] GameObject equipmentList;

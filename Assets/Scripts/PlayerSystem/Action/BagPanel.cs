@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BagPanel : MonoBehaviour
+public class BagPanel : Panel
 {
     
 }

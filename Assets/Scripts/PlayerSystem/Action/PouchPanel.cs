@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PouchPanel : MonoBehaviour
+public class PouchPanel : Panel
 {
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] GameObject itemList;
