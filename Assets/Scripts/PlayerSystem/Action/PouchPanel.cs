@@ -61,6 +61,9 @@ public class PouchPanel : MonoBehaviour
         {
             // 選択方向に応じてインデックスを変更し、範囲内に収める
             int newSelectedItem = selectedItem + (selectDirection ? 1 : -1);
+            // 選択がリストの範囲外に行こうとした時に、選択が一周するようにする
+            newSelectedItem = (newSelectedItem + itemList.transform.childCount) % itemList.transform.childCount;
+
             if (selectedItem != newSelectedItem)
             {
                 itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().Targetfoucs(false);
