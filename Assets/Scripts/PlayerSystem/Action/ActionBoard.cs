@@ -11,7 +11,7 @@ public class ActionBoard : MonoBehaviour
     [SerializeField] public PouchPanel pouchPanel;
     [SerializeField] public BagPanel bagPanel;
     [SerializeField] public EquipmentPanel equipmentPanel;
-    // [SerializeField] public DeckPanel deckPanel;
+    [SerializeField] public DeckPanel deckPanel;
     ActionType action;
 
     public void Init()
@@ -78,6 +78,7 @@ public class ActionBoard : MonoBehaviour
         pouchPanel.gameObject.SetActive(false);
         bagPanel.gameObject.SetActive(false);
         equipmentPanel.gameObject.SetActive(false);
+        deckPanel.gameObject.SetActive(false);
     }
 
     private void SetTalkPanel()
@@ -111,7 +112,7 @@ public class ActionBoard : MonoBehaviour
 
     private void SetDeckPanel()
     {
-        // deckPanel.gameObject.SetActive(true);
+        deckPanel.gameObject.SetActive(true);
     }
 
     private void SetEscapeDialog()
