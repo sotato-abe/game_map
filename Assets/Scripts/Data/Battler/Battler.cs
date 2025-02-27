@@ -59,6 +59,29 @@ public class Battler
             coordinate = _base.Birthplace.Coordinate;
     }
 
+    public void TakeRecovery(List<Enegy> recoveryList)
+    {
+        foreach (Enegy recovery in recoveryList)
+        {
+            if (recovery.type == EnegyType.Life)
+            {
+                Life = Mathf.Min(Life + recovery.val, MaxLife);
+            }
+            if (recovery.type == EnegyType.Battery)
+            {
+                Battery = Mathf.Min(Battery + recovery.val, MaxBattery);
+            }
+            if (recovery.type == EnegyType.Soul)
+            {
+                Soul = Soul + recovery.val;
+            }
+        }
+
+        Debug.Log($"Life/{Life}");
+        Debug.Log($"Battery/{Battery}");
+        Debug.Log($"Soul/{Soul}");
+    }
+
     public void TakeDamage(List<Damage> damageList)
     {
         foreach (Damage damage in damageList)
