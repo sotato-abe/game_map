@@ -5,7 +5,6 @@ public enum ActionType
         Command,
         Pouch,
         Bag,
-        Equipment,
         Deck,
         Escape,
 }

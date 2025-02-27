@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EquipmentPanel : Panel
+public class EquipmentDialog : MonoBehaviour
 {
     
 }

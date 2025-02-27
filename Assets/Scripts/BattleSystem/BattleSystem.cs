@@ -131,7 +131,10 @@ public class BattleSystem : MonoBehaviour
                 yield return StartCoroutine(CommandTurn());
                 break;
             case ActionType.Pouch:
-                yield return StartCoroutine(ItemTurn());
+                yield return StartCoroutine(PouchTurn());
+                break;
+            case ActionType.Bag:
+                yield return StartCoroutine(BagTurn());
                 break;
             case ActionType.Escape:
                 yield return StartCoroutine(EscapeTurn());
@@ -161,12 +164,21 @@ public class BattleSystem : MonoBehaviour
         yield return StartCoroutine(messagePanel.TypeDialog("Implant activation start... Activation"));
     }
 
-    public IEnumerator ItemTurn()
+    public IEnumerator PouchTurn()
     {
         state = BattleState.ActionExecution;
         playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
         actionBoard.pouchPanel.UseItem();
+        yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
+    }
+
+    public IEnumerator BagTurn()
+    {
+        state = BattleState.ActionExecution;
+        playerUnit.SetMotion(MotionType.Rotate);
+        StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
+        actionBoard.bagPanel.UseItem();
         yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
     }
 
