@@ -12,13 +12,10 @@ public class Battler
     [SerializeField] private List<Item> inventory = new List<Item>();
     [SerializeField] private List<Command> deck = new List<Command>();
 
-    public List<Equipment> Equipments { get => equipments; }
-    public List<Item> Inventory { get => inventory; }
     public List<Command> Deck { get => deck; }
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
     public int Soul { get => soul; set => soul = value; }
-
     public int MaxLife { get; set; }
     public int Life { get; set; }
     public int MaxBattery { get; set; }
@@ -30,6 +27,9 @@ public class Battler
     public int Money { get; set; }
     public int Disk { get; set; }
     public int Key { get; set; }
+
+    public List<Equipment> Equipments { get => equipments; }
+    public List<Item> Inventory { get => _base.Inventory; }
     public Coordinate coordinate;
 
     public virtual void Init()
@@ -53,7 +53,7 @@ public class Battler
         Key = _base.Key;
 
         equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
-        inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
+        inventory = _base.Inventory ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
         deck = _base.Commands ?? new List<Command>();
         if (_base.Birthplace != null)
             coordinate = _base.Birthplace.Coordinate;
