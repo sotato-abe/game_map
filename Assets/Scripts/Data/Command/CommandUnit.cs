@@ -64,13 +64,11 @@ public class CommandUnit : MonoBehaviour
 
     public void OnPointerEnter()
     {
-        Debug.Log("OnPointerEnter");
         StartCoroutine(Targetfoucs(true));
     }
 
     public void OnPointerExit()
     {
-        Debug.Log("OnPointerExit");
         StartCoroutine(Targetfoucs(false));
     }
 

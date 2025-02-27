@@ -27,13 +27,11 @@ public class ItemUnit : MonoBehaviour
 
     public void OnPointerEnter()
     {
-        Debug.Log("OnPointerEnter");
         StartCoroutine(TargetfoucsMotion(true));
     }
 
     public void OnPointerExit()
     {
-        Debug.Log("OnPointerExit");
         StartCoroutine(TargetfoucsMotion(false));
     }
 
