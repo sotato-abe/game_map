@@ -10,7 +10,6 @@ public class ActionBoard : MonoBehaviour
     [SerializeField] CommandPanel commandPanel;
     [SerializeField] public PouchPanel pouchPanel;
     [SerializeField] public BagPanel bagPanel;
-    [SerializeField] public EquipmentPanel equipmentPanel;
     [SerializeField] public DeckPanel deckPanel;
     ActionType action;
 
@@ -40,9 +39,6 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Bag:
                 SetBagPanel();
                 break;
-            case ActionType.Equipment:
-                SetEquipmentPanel();
-                break;
             case ActionType.Deck:
                 SetDeckPanel();
                 break;
@@ -67,9 +63,7 @@ public class ActionBoard : MonoBehaviour
                 pouchPanel.SelectItem(targetDirection);
                 break;
             case ActionType.Bag:
-                bagPanel.SelectItem(targetDirection);
-                break;
-            case ActionType.Equipment:
+                // bagPanel.SelectItem(targetDirection);
                 break;
             case ActionType.Deck:
                 break;
@@ -84,7 +78,6 @@ public class ActionBoard : MonoBehaviour
         commandPanel.gameObject.SetActive(false);
         pouchPanel.gameObject.SetActive(false);
         bagPanel.gameObject.SetActive(false);
-        equipmentPanel.gameObject.SetActive(false);
         deckPanel.gameObject.SetActive(false);
     }
 
@@ -114,12 +107,6 @@ public class ActionBoard : MonoBehaviour
     {
         bagPanel.gameObject.SetActive(true);
         bagPanel.PanelOpen();
-    }
-
-    private void SetEquipmentPanel()
-    {
-        equipmentPanel.gameObject.SetActive(true);
-        equipmentPanel.PanelOpen();
     }
 
     private void SetDeckPanel()
