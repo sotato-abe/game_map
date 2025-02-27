@@ -66,6 +66,13 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Pouch:
                 pouchPanel.SelectItem(targetDirection);
                 break;
+            case ActionType.Bag:
+                bagPanel.SelectItem(targetDirection);
+                break;
+            case ActionType.Equipment:
+                break;
+            case ActionType.Deck:
+                break;
             case ActionType.Escape:
                 break;
         }

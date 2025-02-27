@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 7259923538415845239}
   - component: {fileID: 2943150437295960305}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: PouchList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -395,7 +395,7 @@ GameObject:
   - component: {fileID: 6939920270731194771}
   - component: {fileID: 8679118485769894481}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: ItemList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -583,7 +583,7 @@ GameObject:
   - component: {fileID: 6939920270830915084}
   - component: {fileID: 6939920270830915085}
   m_Layer: 5
-  m_Name: Equipment
+  m_Name: Pouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1412,6 +1412,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da0234092ed629842a447d504e00dd11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemUnitPrefab: {fileID: 4469936651384665361, guid: 5175b07ddda056c43b8c5add731f1c33, type: 3}
+  itemList: {fileID: 6939920270731194773}
+  playerUnit: {fileID: 0}
 --- !u!1 &6939920272493980510
 GameObject:
   m_ObjectHideFlags: 0

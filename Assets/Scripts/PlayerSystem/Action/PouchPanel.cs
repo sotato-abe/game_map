@@ -21,7 +21,7 @@ public class PouchPanel : Panel
     {
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            SetItemDialog();
+            SetItemUnit();
         }
         else
         {
@@ -29,7 +29,7 @@ public class PouchPanel : Panel
         }
     }
 
-    private void SetItemDialog()
+    private void SetItemUnit()
     {
         foreach (Transform child in itemList.transform)
         {
@@ -110,7 +110,7 @@ public class PouchPanel : Panel
                     var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
                     selectedItemUnit.Targetfoucs(false);
 
-                    SetItemDialog();
+                    SetItemUnit();
                     playerUnit.UpdateUI();
                 }
                 else
