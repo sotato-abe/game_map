@@ -91,18 +91,7 @@ public class PouchPanel : Panel
 
                 if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
                 {
-                    // アイテムを使用する処理をここに追加
-                    // 例: playerUnit.Battler.UseItem(targetItemUnit.Item);
-                    int MaxBattery = playerUnit.Battler.MaxBattery;
-                    int battery = playerUnit.Battler.Battery + targetItemUnit.Item.Base.Battery;
-                    battery = Mathf.Clamp(battery, 0, MaxBattery);
-
-                    int maxLife = playerUnit.Battler.MaxLife;
-                    int life = playerUnit.Battler.Life + targetItemUnit.Item.Base.Life;
-                    life = Mathf.Clamp(life, 0, maxLife);
-
-                    playerUnit.Battler.Life = life;
-                    playerUnit.Battler.Battery = battery;
+                    playerUnit.Battler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
                     playerUnit.Battler.Inventory.Remove(targetItemUnit.Item);
 
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
