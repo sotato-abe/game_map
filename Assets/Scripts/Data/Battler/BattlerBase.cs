@@ -20,7 +20,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] MapBase birthplace;
 
     [SerializeField] List<Equipment> equipments;
-    [SerializeField] List<Item> items;
+    [SerializeField] List<Item> inventory;
     [SerializeField] List<Command> comands;
     [SerializeField] List<TalkMessage> messages;
 
@@ -36,7 +36,7 @@ public class BattlerBase : ScriptableObject
     public int Key { get => key; }
     public Sprite Sprite { get => sprite; }
     public List<Equipment> Equipments { get => equipments; }
-    public List<Item> Items { get => items; }
+    public List<Item> Inventory { get => inventory; }
     public List<Command> Commands { get => comands; }
     public List<TalkMessage> Messages { get => messages; }
     public MapBase Birthplace { get => birthplace; }

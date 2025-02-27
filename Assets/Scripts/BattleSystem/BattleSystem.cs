@@ -207,7 +207,7 @@ public class BattleSystem : MonoBehaviour
         targetUnit.SetMotion(MotionType.Jump);
         yield return StartCoroutine(messagePanel.TypeDialog($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
 
-        List<Item> targetItems = targetUnit.Battler.Base.Items;
+        List<Item> targetItems = targetUnit.Battler.Inventory;
         if (targetItems != null && targetItems.Count > 0)
         {
             // ランダムにアイテムを取得（例: 2つ取得）
