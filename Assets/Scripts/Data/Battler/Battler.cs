@@ -8,11 +8,7 @@ public class Battler
     [SerializeField] BattlerBase _base;
     [SerializeField] int level;
     [SerializeField] int soul;
-    [SerializeField] private List<Equipment> equipments = new List<Equipment>();
-    [SerializeField] private List<Item> inventory = new List<Item>();
-    [SerializeField] private List<Command> deck = new List<Command>();
 
-    public List<Command> Deck { get => deck; }
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
     public int Soul { get => soul; set => soul = value; }
@@ -28,8 +24,9 @@ public class Battler
     public int Disk { get; set; }
     public int Key { get; set; }
 
-    public List<Equipment> Equipments { get => equipments; }
-    public List<Item> Inventory { get => _base.Inventory; }
+    public List<Equipment> Equipments { get; set; }
+    public List<Item> Inventory { get; set; }
+    public List<Command> Deck { get; set; }
     public Coordinate coordinate;
 
     public virtual void Init()
@@ -52,9 +49,10 @@ public class Battler
         Disk = _base.Disk;
         Key = _base.Key;
 
-        equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
-        inventory = _base.Inventory ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
-        deck = _base.Commands ?? new List<Command>();
+        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
+        Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
+        Deck = new List<Command>(_base.Commands ?? new List<Command>());
+
         if (_base.Birthplace != null)
             coordinate = _base.Birthplace.Coordinate;
     }
@@ -88,12 +86,18 @@ public class Battler
     public void AddItemToInventory(Item item)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
-        inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+        Inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+    }
+
+    public void AddEquipmentToEquipments(Equipment equipment)
+    {
+        // プレイヤーのインベントリにアイテムを追加する処理
+        Equipments.Add(equipment); // inventory はプレイヤーのインベントリリスト
     }
 
     public void AddCommandToDeck(Command command)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
-        deck.Add(command); // inventory はプレイヤーのインベントリリスト
+        Deck.Add(command); // inventory はプレイヤーのインベントリリスト
     }
 }
