@@ -9,26 +9,34 @@ public class AttackPanel : Panel
     [SerializeField] GameObject equipmentUnitPrefab;  // EquipmentUnitのプレハブ
     [SerializeField] GameObject equipmentList;
     [SerializeField] BattleUnit playerUnit;
+    [SerializeField] TextMeshProUGUI lifeCostText;
+    [SerializeField] TextMeshProUGUI batteryCostText;
+    [SerializeField] TextMeshProUGUI soulCostText;
+
+    private int lifeCost = 0;
+    private int batteryCost = 0;
+    private int soulCost = 0;
 
     List<EquipmentUnit> equipmentUnitList = new List<EquipmentUnit>();
 
     private void Init()
     {
+        RefreshEnegyCost();
         if (playerUnit != null && playerUnit.Battler != null)
         {
             SetEquipmentDialog();
-        }
-        else
-        {
-            // Debug.LogWarning("playerUnit or its properties are not initialized.");
+            SetEnegyCost();
         }
     }
 
     private void OnEnable()
     {
+        RefreshEnegyCost();
+
         if (playerUnit != null && playerUnit.Battler != null)
         {
             SetEquipmentDialog();
+            SetEnegyCost();
         }
         else
         {
@@ -52,9 +60,45 @@ public class AttackPanel : Panel
             equipmentUnitObject.gameObject.SetActive(true);
             EquipmentUnit equipmentUnit = equipmentUnitObject.GetComponent<EquipmentUnit>();
             equipmentUnitList.Add(equipmentUnit);
-
             equipmentUnit.Setup(equipment);
+            CountEnegyCost(equipment);
         }
+    }
+
+    public void CountEnegyCost(Equipment equipment)
+    {
+        foreach (Enegy cost in equipment.Base.CostList)
+        {
+            switch (cost.type)
+            {
+                case EnegyType.Life:
+                    lifeCost += cost.val;
+                    break;
+                case EnegyType.Battery:
+                    batteryCost += cost.val;
+                    break;
+                case EnegyType.Soul:
+                    soulCost += cost.val;
+                    break;
+            }
+        }
+    }
+
+    public void SetEnegyCost()
+    {
+        lifeCostText.SetText($"{lifeCost}");
+        batteryCostText.SetText($"{batteryCost}");
+        soulCostText.SetText($"{soulCost}");
+    }
+
+    public void RefreshEnegyCost()
+    {
+        lifeCost = 0;
+        batteryCost = 0;
+        soulCost = 0;
+        lifeCostText.SetText($"{lifeCost}");
+        batteryCostText.SetText($"{batteryCost}");
+        soulCostText.SetText($"{soulCost}");
     }
 
     public List<Damage> ActivateEquipments()
