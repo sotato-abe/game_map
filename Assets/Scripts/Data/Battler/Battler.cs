@@ -25,6 +25,8 @@ public class Battler
     public int Key { get; set; }
 
     public List<Equipment> Equipments { get; set; }
+
+    public int MaxInventoryCount { get; set; }
     public List<Item> Inventory { get; set; }
     public List<Command> Deck { get; set; }
     public Coordinate coordinate;
@@ -48,8 +50,8 @@ public class Battler
         Money = _base.Money;
         Disk = _base.Disk;
         Key = _base.Key;
-
         Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
+        MaxInventoryCount = _base.MaxInventoryCount;
         Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
         Deck = new List<Command>(_base.Commands ?? new List<Command>());
 
@@ -83,10 +85,16 @@ public class Battler
         Debug.Log($"Soul/{Soul}");
     }
 
-    public void AddItemToInventory(Item item)
+    public bool AddItemToInventory(Item item)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
+        if (Inventory.Count >= MaxInventoryCount)
+        {
+            Debug.Log("Inventory is full.");
+            return false;
+        }
         Inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+        return true;
     }
 
     public void AddEquipmentToEquipments(Equipment equipment)

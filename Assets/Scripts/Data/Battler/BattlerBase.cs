@@ -18,8 +18,8 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int disk;
     [SerializeField] int key;
     [SerializeField] MapBase birthplace;
-
     [SerializeField] List<Equipment> equipments;
+    [SerializeField] int maxInventoryCount = 5;
     [SerializeField] List<Item> inventory;
     [SerializeField] List<Command> comands;
     [SerializeField] List<TalkMessage> messages;
@@ -36,6 +36,7 @@ public class BattlerBase : ScriptableObject
     public int Key { get => key; }
     public Sprite Sprite { get => sprite; }
     public List<Equipment> Equipments { get => equipments; }
+    public int MaxInventoryCount { get => maxInventoryCount; }
     public List<Item> Inventory { get => inventory; }
     public List<Command> Commands { get => comands; }
     public List<TalkMessage> Messages { get => messages; }
