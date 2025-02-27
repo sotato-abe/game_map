@@ -95,7 +95,7 @@ public class BagPanel : Panel
             case BagCategory.Pouch:
                 pouchDialog.gameObject.SetActive(true);
                 break;
-            case BagCategory.Equipment:
+            case BagCategory.Equip:
                 equipmentDialog.gameObject.SetActive(true);
                 break;
             case BagCategory.Implant:

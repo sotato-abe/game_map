@@ -2,7 +2,7 @@ public enum BagCategory
 {
     All,
     Pouch,
-    Equipment,
+    Equip,
     Implant,
     Tresure,
 }
