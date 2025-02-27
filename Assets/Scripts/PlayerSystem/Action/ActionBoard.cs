@@ -63,7 +63,7 @@ public class ActionBoard : MonoBehaviour
                 pouchPanel.SelectItem(targetDirection);
                 break;
             case ActionType.Bag:
-                // bagPanel.SelectItem(targetDirection);
+                bagPanel.SelectDialog(targetDirection);
                 break;
             case ActionType.Deck:
                 break;
