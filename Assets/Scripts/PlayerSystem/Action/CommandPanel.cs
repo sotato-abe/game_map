@@ -9,6 +9,13 @@ public class CommandPanel : Panel
     [SerializeField] GameObject commandUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] GameObject commandList;
     [SerializeField] BattleUnit playerUnit;
+    [SerializeField] TextMeshProUGUI lifeCostText;
+    [SerializeField] TextMeshProUGUI batteryCostText;
+    [SerializeField] TextMeshProUGUI soulCostText;
+
+    private int lifeCost = 0;
+    private int batteryCost = 0;
+    private int soulCost = 0;
 
     int previousCommand;
     int selectedCommand;
@@ -17,13 +24,16 @@ public class CommandPanel : Panel
     {
         selectedCommand = 0;
         previousCommand = selectedCommand;
+        RefreshEnegyCost();
     }
 
     private void OnEnable()
     {
+        RefreshEnegyCost();
         if (playerUnit != null && playerUnit.Battler != null)
         {
             SetCommandDialog();
+            SetEnegyCost();
         }
         else
         {
@@ -48,6 +58,7 @@ public class CommandPanel : Panel
             commandUnitObject.gameObject.SetActive(true);
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
             commandUnit.Setup(command);
+            CountEnegyCost(command);
 
             if (commandNum == selectedCommand)
             {
@@ -56,6 +67,42 @@ public class CommandPanel : Panel
 
             commandNum++;
         }
+    }
+
+    public void CountEnegyCost(Command command)
+    {
+        foreach (Enegy cost in command.Base.CostList)
+        {
+            switch (cost.type)
+            {
+                case EnegyType.Life:
+                    lifeCost += cost.val;
+                    break;
+                case EnegyType.Battery:
+                    batteryCost += cost.val;
+                    break;
+                case EnegyType.Soul:
+                    soulCost += cost.val;
+                    break;
+            }
+        }
+    }
+
+    public void SetEnegyCost()
+    {
+        lifeCostText.SetText($"{lifeCost}");
+        batteryCostText.SetText($"{batteryCost}");
+        soulCostText.SetText($"{soulCost}");
+    }
+
+    public void RefreshEnegyCost()
+    {
+        lifeCost = 0;
+        batteryCost = 0;
+        soulCost = 0;
+        lifeCostText.SetText($"{lifeCost}");
+        batteryCostText.SetText($"{batteryCost}");
+        soulCostText.SetText($"{soulCost}");
     }
 
     public void SelectCommand(bool selectDirection)
