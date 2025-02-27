@@ -178,7 +178,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ActionExecution;
         playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        actionBoard.bagPanel.UseItem();
+        // actionBoard.bagPanel.UseItem();
         yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
     }
 

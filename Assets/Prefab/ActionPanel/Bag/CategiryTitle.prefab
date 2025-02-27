@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6718407706248119786}
   - component: {fileID: 3685340723046145353}
-  - component: {fileID: 7900955091644891565}
+  - component: {fileID: 5485086711477087503}
+  - component: {fileID: 7774912158270985082}
   m_Layer: 5
   m_Name: CategiryTitle
   m_TagString: Untagged
@@ -47,7 +48,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198779553798549461}
   m_CullTransparentMesh: 1
---- !u!114 &7900955091644891565
+--- !u!114 &5485086711477087503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198779553798549461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0962113f6a6cba14c8b73666e771ced5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3200468831270567622}
+  backImage: {fileID: 7774912158270985082}
+--- !u!114 &7774912158270985082
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,7 +91,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 5
+  m_PixelsPerUnitMultiplier: 10
 --- !u!1 &7004604775837049058
 GameObject:
   m_ObjectHideFlags: 0

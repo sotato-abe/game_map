@@ -12,7 +12,7 @@ public class InventoryDialog : MonoBehaviour
     private List<ItemUnit> inventory;
     int selectedItem = 0;
 
-    private void SetItemUnit(List<Item> items)
+    public void SetItemUnit(List<Item> items)
     {
         ResetItemUnit();
         int itemNum = 0;
