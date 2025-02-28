@@ -11,15 +11,25 @@ public class EquipmentUnit : MonoBehaviour
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] CostIcon costPrefab;
-    [SerializeField] EquipmentDescriptionPanel descriptionPanel;
+    [SerializeField] EquipmentDialog equipmentDialog;
 
     public virtual void Setup(Equipment equipment)
     {
         Equipment = equipment;
         image.sprite = Equipment.Base.Sprite;
+        equipmentDialog.Setup(Equipment);
         SetSkill();
         SetCost();
-        descriptionPanel.Setup(Equipment);
+    }
+
+    public void OnPointerEnter()
+    {
+        equipmentDialog.ShowDialog(true);
+    }
+
+    public void OnPointerExit()
+    {
+        equipmentDialog.ShowDialog(false);
     }
 
     private void SetSkill()
@@ -122,17 +132,6 @@ public class EquipmentUnit : MonoBehaviour
         }
     }
 
-    public void OnPointerEnter()
-    {
-        StartCoroutine(Targetfoucs(true));
-    }
-
-    public void OnPointerExit()
-    {
-        StartCoroutine(Targetfoucs(false));
-    }
-
-
     public IEnumerator Targetfoucs(bool focusFlg)
     {
         float time = 0.05f;
@@ -148,7 +147,6 @@ public class EquipmentUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            descriptionPanel.ShowDescriptionPanel(true);
         }
         else
         {
@@ -161,7 +159,6 @@ public class EquipmentUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            descriptionPanel.ShowDescriptionPanel(false);
         }
     }
 }

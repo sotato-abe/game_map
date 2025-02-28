@@ -8,13 +8,23 @@ public class ItemUnit : MonoBehaviour
     public Item Item { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image dialogBackground;
-    [SerializeField] ItemDescriptionPanel descriptionPanel;
+    [SerializeField] ItemDialog itemDialog;
 
     public virtual void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
-        descriptionPanel.Setup(Item);
+        itemDialog.Setup(Item);
+    }
+
+    public void OnPointerEnter()
+    {
+        itemDialog.ShowDialog(true);
+    }
+
+    public void OnPointerExit()
+    {
+        itemDialog.ShowDialog(false);
     }
 
     public virtual void Targetfoucs(bool focusFlg)
@@ -23,16 +33,6 @@ public class ItemUnit : MonoBehaviour
         Color bgColor = dialogBackground.color;
         bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
         dialogBackground.color = bgColor;
-    }
-
-    public void OnPointerEnter()
-    {
-        StartCoroutine(TargetfoucsMotion(true));
-    }
-
-    public void OnPointerExit()
-    {
-        StartCoroutine(TargetfoucsMotion(false));
     }
 
     public IEnumerator TargetfoucsMotion(bool focusFlg)
@@ -51,7 +51,7 @@ public class ItemUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            descriptionPanel.ShowDescriptionPanel(true);
+            itemDialog.ShowDialog(true);
         }
         else
         {
@@ -64,7 +64,7 @@ public class ItemUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            descriptionPanel.ShowDescriptionPanel(false);
+            itemDialog.ShowDialog(false);
         }
     }
 }

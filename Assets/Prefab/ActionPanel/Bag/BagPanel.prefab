@@ -2605,7 +2605,7 @@ GameObject:
   - component: {fileID: 7064734586571794069}
   - component: {fileID: 2214624644528421603}
   m_Layer: 5
-  m_Name: EquipmentDialog
+  m_Name: EquipmentWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2680,7 +2680,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3278226970669956058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 115f340491fb56b49a87c89d0ed705b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 613253fb65c2d0948a306cedf2db1650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3388630877374611668
@@ -6737,7 +6737,7 @@ GameObject:
   - component: {fileID: 3818856092093919843}
   - component: {fileID: 72073805359085707}
   m_Layer: 5
-  m_Name: ImplantDialog
+  m_Name: ImplantWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7830,8 +7830,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   categoryPrefab: {fileID: 5485086711477087503, guid: e7a46644d67cbc6469dfdc10f03e593c, type: 3}
   inventoryDialog: {fileID: 8590021868802433912}
-  pouchDialog: {fileID: 5875390621455467221}
-  equipmentDialog: {fileID: 2214624644528421603}
+  pouchWindow: {fileID: 7824405213472165782}
+  equipmentWindow: {fileID: 2214624644528421603}
   implantDialog: {fileID: 72073805359085707}
   categoryList: {fileID: 6939920271761459250}
   playerUnit: {fileID: 0}
@@ -7846,9 +7846,9 @@ GameObject:
   - component: {fileID: 3088541707869318410}
   - component: {fileID: 3171588767721757425}
   - component: {fileID: 9087664440769385309}
-  - component: {fileID: 5875390621455467221}
+  - component: {fileID: 7824405213472165782}
   m_Layer: 5
-  m_Name: PouchDialog
+  m_Name: PouchWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7914,7 +7914,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2
---- !u!114 &5875390621455467221
+--- !u!114 &7824405213472165782
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7923,7 +7923,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7034843055444257373}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaa5136b799834148a8bc1ccd1cb6ec4, type: 3}
+  m_Script: {fileID: 11500000, guid: 77466995774b5714691a11f0d2189115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7056902305436062915
