@@ -71,11 +71,11 @@ public class BattleUnit : MonoBehaviour
 
     public void OnPointerEnter()
     {
-        StartCoroutine(statusDialog.ShowDialog(true));
+        statusDialog.ShowDialog(true);
     }
 
     public void OnPointerExit()
     {
-        StartCoroutine(statusDialog.ShowDialog(false));
+        statusDialog.ShowDialog(false);
     }
 }
