@@ -8,10 +8,10 @@ public class AttackPanel : Panel
 {
     [SerializeField] GameObject equipmentUnitPrefab;  // EquipmentUnitのプレハブ
     [SerializeField] GameObject equipmentList;
-    [SerializeField] BattleUnit playerUnit;
     [SerializeField] TextMeshProUGUI lifeCostText;
     [SerializeField] TextMeshProUGUI batteryCostText;
     [SerializeField] TextMeshProUGUI soulCostText;
+    [SerializeField] BattleUnit playerUnit;
 
     private int lifeCost = 0;
     private int batteryCost = 0;
@@ -24,7 +24,7 @@ public class AttackPanel : Panel
         RefreshEnegyCost();
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            SetEquipmentDialog();
+            SetEquipmentList();
             SetEnegyCost();
         }
     }
@@ -35,7 +35,7 @@ public class AttackPanel : Panel
 
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            SetEquipmentDialog();
+            SetEquipmentList();
             SetEnegyCost();
         }
         else
@@ -44,7 +44,7 @@ public class AttackPanel : Panel
         }
     }
 
-    private void SetEquipmentDialog()
+    private void SetEquipmentList()
     {
         equipmentUnitList.Clear();
 

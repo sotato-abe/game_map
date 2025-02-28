@@ -6,24 +6,20 @@ using TMPro;
 
 public class CommandPanel : Panel
 {
-    [SerializeField] GameObject commandUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject commandUnitPrefab;  // CommandUnitのプレハブ
     [SerializeField] GameObject commandList;
-    [SerializeField] BattleUnit playerUnit;
     [SerializeField] TextMeshProUGUI lifeCostText;
     [SerializeField] TextMeshProUGUI batteryCostText;
     [SerializeField] TextMeshProUGUI soulCostText;
+    [SerializeField] BattleUnit playerUnit;
 
     private int lifeCost = 0;
     private int batteryCost = 0;
     private int soulCost = 0;
-
-    int previousCommand;
-    int selectedCommand;
+    List<CommandUnit> commandUnitList = new List<CommandUnit>();
 
     private void Init()
     {
-        selectedCommand = 0;
-        previousCommand = selectedCommand;
         RefreshEnegyCost();
     }
 
@@ -59,12 +55,6 @@ public class CommandPanel : Panel
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
             commandUnit.Setup(command);
             CountEnegyCost(command);
-
-            if (commandNum == selectedCommand)
-            {
-                commandUnit.Targetfoucs(true);
-            }
-
             commandNum++;
         }
     }
@@ -103,27 +93,5 @@ public class CommandPanel : Panel
         lifeCostText.SetText($"{lifeCost}");
         batteryCostText.SetText($"{batteryCost}");
         soulCostText.SetText($"{soulCost}");
-    }
-
-    public void SelectCommand(bool selectDirection)
-    {
-        if (selectDirection)
-        {
-            selectedCommand++;
-        }
-        else
-        {
-            selectedCommand--;
-        }
-        selectedCommand = Mathf.Clamp(selectedCommand, 0, playerUnit.Battler.Deck.Count - 1);
-
-        if (commandList.transform.childCount > 0 && previousCommand != selectedCommand)
-        {
-            var previousCommandUnit = commandList.transform.GetChild(previousCommand).GetComponent<CommandUnit>();
-            previousCommandUnit.Targetfoucs(false);
-            var currentCommandUnit = commandList.transform.GetChild(selectedCommand).GetComponent<CommandUnit>();
-            currentCommandUnit.Targetfoucs(true);
-            previousCommand = selectedCommand;
-        }
     }
 }
