@@ -8,8 +8,8 @@ public class BagPanel : Panel
 {
     [SerializeField] BagCategoryIcon categoryPrefab;
     [SerializeField] InventoryDialog inventoryDialog;
-    [SerializeField] PouchDialog pouchDialog;
-    [SerializeField] EquipmentDialog equipmentDialog;
+    [SerializeField] PouchWindow pouchWindow;
+    [SerializeField] EquipmentWindow equipmentWindow;
     [SerializeField] ImplantDialog implantDialog;
     [SerializeField] GameObject categoryList;
     [SerializeField] BattleUnit playerUnit;
@@ -20,8 +20,8 @@ public class BagPanel : Panel
 
     private void Start()
     {
-        pouchDialog.gameObject.SetActive(false);
-        equipmentDialog.gameObject.SetActive(false);
+        pouchWindow.gameObject.SetActive(false);
+        equipmentWindow.gameObject.SetActive(false);
         implantDialog.gameObject.SetActive(false);
         SetCategoryList();
     }
@@ -93,10 +93,10 @@ public class BagPanel : Panel
                 // TODO：インベントリのステータスを表示する
                 break;
             case BagCategory.Pouch:
-                pouchDialog.gameObject.SetActive(true);
+                pouchWindow.gameObject.SetActive(true);
                 break;
             case BagCategory.Equip:
-                equipmentDialog.gameObject.SetActive(true);
+                equipmentWindow.gameObject.SetActive(true);
                 break;
             case BagCategory.Implant:
                 implantDialog.gameObject.SetActive(true);
@@ -109,8 +109,8 @@ public class BagPanel : Panel
 
     private void ResetDialog()
     {
-        pouchDialog.gameObject.SetActive(false);
-        equipmentDialog.gameObject.SetActive(false);
+        pouchWindow.gameObject.SetActive(false);
+        equipmentWindow.gameObject.SetActive(false);
         implantDialog.gameObject.SetActive(false);
     }
 

@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EquipmentDescriptionPanel : MonoBehaviour
+public class EquipmentDialog : Dialog
 {
     [SerializeField] private TextMeshProUGUI equipmentName;
     [SerializeField] private TextMeshProUGUI description;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
-    [SerializeField] CostIcon attackPrefab;
-    [SerializeField] EnchantIcon enchantPrefab;
+    [SerializeField] CostIcon enegyIcon;
+    [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] CostIcon costPrefab;
 
 
@@ -30,11 +30,6 @@ public class EquipmentDescriptionPanel : MonoBehaviour
         SetCost(equipment.Base.CostList);
     }
 
-    public void ShowDescriptionPanel(bool showFlg)
-    {
-        transform.gameObject.SetActive(showFlg);
-    }
-
     private void ResetSkillList()
     {
         // skillList内のオブジェクトを削除
@@ -49,7 +44,7 @@ public class EquipmentDescriptionPanel : MonoBehaviour
         // attackList内に攻撃力を追加
         foreach (var attack in attacks)
         {
-            CostIcon attackObject = Instantiate(attackPrefab, enchantList.transform);
+            CostIcon attackObject = Instantiate(enegyIcon, enchantList.transform);
             attackObject.gameObject.SetActive(true);
             CostIcon attackUnit = attackObject.GetComponent<CostIcon>();
             attackUnit.SetCostIcon(attack);
@@ -61,7 +56,7 @@ public class EquipmentDescriptionPanel : MonoBehaviour
         // enchantList内にスキルを追加
         foreach (var enchant in enchants)
         {
-            EnchantIcon enchantObject = Instantiate(enchantPrefab, enchantList.transform);
+            EnchantIcon enchantObject = Instantiate(enchantIcon, enchantList.transform);
             enchantObject.gameObject.SetActive(true);
             EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
 

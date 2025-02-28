@@ -11,7 +11,7 @@ public class CommandUnit : MonoBehaviour
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] CostIcon costPrefab;
-    [SerializeField] CommandDescriptionPanel descriptionPanel;
+    [SerializeField] CommandDialog commandDialog;
 
     public virtual void Setup(Command command)
     {
@@ -19,7 +19,7 @@ public class CommandUnit : MonoBehaviour
         image.sprite = Command.Base.Sprite;
         SetEnchant();
         SetCost();
-        descriptionPanel.Setup(Command);
+        commandDialog.Setup(Command);
     }
 
     private void SetEnchant()
@@ -87,7 +87,7 @@ public class CommandUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            descriptionPanel.ShowDescriptionPanel(true);
+            commandDialog.ShowDialog(true);
         }
         else
         {
@@ -100,7 +100,7 @@ public class CommandUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            descriptionPanel.ShowDescriptionPanel(false);
+            commandDialog.ShowDialog(false);
         }
     }
 }

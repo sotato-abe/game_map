@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EquipmentDialog : MonoBehaviour
+public class PouchWindow : MonoBehaviour
 {
     
 }

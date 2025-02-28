@@ -31,12 +31,6 @@ public class BattlerStatusDialog : Dialog
         SetEnchant(battler.Enchants);
     }
 
-    public void ShowDescriptionPanel(bool showFlg)
-    {
-        Debug.Log($"Show BattlerStatusPanel:{showFlg}");
-        transform.gameObject.SetActive(showFlg);
-    }
-
     private void ResetList()
     {
         // skillList内のオブジェクトを削除

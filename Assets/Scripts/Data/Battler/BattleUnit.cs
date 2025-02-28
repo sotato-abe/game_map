@@ -19,8 +19,18 @@ public class BattleUnit : MonoBehaviour
     {
         Battler = battler;
         characterCard.SetCharacter(battler);
-        UpdateEnegyUI();
         statusDialog.Setup(Battler);
+        UpdateEnegyUI();
+    }
+
+    public void OnPointerEnter()
+    {
+        statusDialog.ShowDialog(true);
+    }
+
+    public void OnPointerExit()
+    {
+        statusDialog.ShowDialog(false);
     }
 
     public IEnumerator SetTalkMessage(string message)
@@ -67,15 +77,5 @@ public class BattleUnit : MonoBehaviour
     public void SetMotion(MotionType motion)
     {
         characterCard.SetCardMotion(motion);
-    }
-
-    public void OnPointerEnter()
-    {
-        statusDialog.ShowDialog(true);
-    }
-
-    public void OnPointerExit()
-    {
-        statusDialog.ShowDialog(false);
     }
 }
