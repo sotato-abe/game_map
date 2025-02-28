@@ -20,26 +20,20 @@ public class ItemUnit : MonoBehaviour
     public void OnPointerEnter()
     {
         itemDialog.ShowDialog(true);
+        StartCoroutine(Targetfoucs(true));
+
     }
 
     public void OnPointerExit()
     {
         itemDialog.ShowDialog(false);
+        StartCoroutine(Targetfoucs(false));
     }
 
-    public virtual void Targetfoucs(bool focusFlg)
-    {
-        float alpha = focusFlg ? 1.0f : 0.0f;
-        Color bgColor = dialogBackground.color;
-        bgColor.a = Mathf.Clamp(alpha, 0f, 1f);
-        dialogBackground.color = bgColor;
-    }
-
-    public IEnumerator TargetfoucsMotion(bool focusFlg)
+    public IEnumerator Targetfoucs(bool focusFlg)
     {
         float time = 0.05f;
         float currentTime = 0f;
-
         if (focusFlg)
         {
             Vector3 originalScale = transform.localScale;
@@ -51,7 +45,6 @@ public class ItemUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            itemDialog.ShowDialog(true);
         }
         else
         {
@@ -64,7 +57,6 @@ public class ItemUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            itemDialog.ShowDialog(false);
         }
     }
 }
