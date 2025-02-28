@@ -52,7 +52,6 @@ public class BagPanel : Panel
         {
             icon.SetActive(false);
         }
-        Debug.Log($"{(int)selectedCategory}:{categoryIconList.Count}");
         categoryIconList[(int)selectedCategory].SetActive(true);
     }
 
