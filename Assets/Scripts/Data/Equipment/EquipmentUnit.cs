@@ -25,11 +25,13 @@ public class EquipmentUnit : MonoBehaviour
     public void OnPointerEnter()
     {
         equipmentDialog.ShowDialog(true);
+        StartCoroutine(Targetfoucs(true));
     }
 
     public void OnPointerExit()
     {
         equipmentDialog.ShowDialog(false);
+        StartCoroutine(Targetfoucs(false));
     }
 
     private void SetSkill()

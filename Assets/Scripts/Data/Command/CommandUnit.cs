@@ -24,14 +24,14 @@ public class CommandUnit : MonoBehaviour
 
     public void OnPointerEnter()
     {
-        // StartCoroutine(Targetfoucs(true));
         commandDialog.ShowDialog(true);
+        StartCoroutine(Targetfoucs(true));
     }
 
     public void OnPointerExit()
     {
-        // StartCoroutine(Targetfoucs(false));
         commandDialog.ShowDialog(false);
+        StartCoroutine(Targetfoucs(false));
     }
 
     private void SetEnchant()
@@ -71,6 +71,36 @@ public class CommandUnit : MonoBehaviour
                 CostIcon costUnit = costObject.GetComponent<CostIcon>();
                 costUnit.SetCostIcon(cost);
             }
+        }
+    }
+
+    public IEnumerator Targetfoucs(bool focusFlg)
+    {
+        float time = 0.05f;
+        float currentTime = 0f;
+        if (focusFlg)
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
+        }
+        else
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1, 1, 1);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
         }
     }
 }
