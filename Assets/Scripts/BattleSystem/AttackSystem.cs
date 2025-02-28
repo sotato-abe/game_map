@@ -19,7 +19,7 @@ public class AttackSystem : MonoBehaviour
         if (0 < damageList.Count)
         {
             TakeDamage(damageList);
-            this.targetUnit.UpdateUI();
+            this.targetUnit.UpdateEnegyUI();
             this.targetUnit.SetMotion(MotionType.Shake);
         }
         AttackResult();

@@ -150,6 +150,6 @@ public class AttackPanel : Panel
         playerUnit.Battler.Life -= equipment.Equipment.Base.LifeCost.val;
         playerUnit.Battler.Battery -= equipment.Equipment.Base.BatteryCost.val;
         playerUnit.Battler.Soul -= equipment.Equipment.Base.SoulCost.val;
-        playerUnit.UpdateUI();
+        playerUnit.UpdateEnegyUI();
     }
 }

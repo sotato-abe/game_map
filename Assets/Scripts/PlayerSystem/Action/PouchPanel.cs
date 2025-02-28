@@ -100,7 +100,7 @@ public class PouchPanel : Panel
                     selectedItemUnit.Targetfoucs(false);
 
                     SetItemUnit();
-                    playerUnit.UpdateUI();
+                    playerUnit.UpdateEnegyUI();
                 }
                 else
                 {

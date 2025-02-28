@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO BattlerのライフとかをEnegyに変換
 [System.Serializable]
 public class Battler
 {
@@ -25,7 +26,7 @@ public class Battler
     public int Key { get; set; }
 
     public List<Equipment> Equipments { get; set; }
-
+    public List<Enchant> Enchants = new List<Enchant>();
     public int MaxInventoryCount { get; set; }
     public List<Item> Inventory { get; set; }
     public List<Command> Deck { get; set; }
