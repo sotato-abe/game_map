@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BattlerStatusDialog : MonoBehaviour
+public class BattlerStatusDialog : Dialog
 {
     [SerializeField] TextMeshProUGUI battlerName;
     [SerializeField] TextMeshProUGUI attackText;
@@ -57,38 +57,5 @@ public class BattlerStatusDialog : MonoBehaviour
 
             enchantUnit.SetEnchant(enchant);
         }
-    }
-
-    public IEnumerator ShowDialog(bool showFlg)
-    {
-        float time = 0.05f;
-        float currentTime = 0f;
-        if (showFlg)
-        {
-            transform.gameObject.SetActive(true);
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
-        else
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1, 1, 1);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-            transform.gameObject.SetActive(false);
-        }
-
     }
 }
