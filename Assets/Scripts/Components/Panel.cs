@@ -25,8 +25,8 @@ public class Panel : MonoBehaviour
     {
         isAnimating = true; // アニメーション開始
 
-        float bounceHeight = 40f;
-        float damping = 0.5f;
+        float bounceHeight = 20f;
+        float damping = 0.2f;
         float gravity = 5000f;
 
         while (bounceHeight >= 0.1f)
