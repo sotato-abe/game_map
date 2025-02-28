@@ -57,7 +57,6 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Attack:
                 break;
             case ActionType.Command:
-                commandPanel.SelectCommand(targetDirection);
                 break;
             case ActionType.Pouch:
                 pouchPanel.SelectItem(targetDirection);

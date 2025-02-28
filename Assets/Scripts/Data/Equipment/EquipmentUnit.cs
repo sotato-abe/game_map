@@ -17,9 +17,9 @@ public class EquipmentUnit : MonoBehaviour
     {
         Equipment = equipment;
         image.sprite = Equipment.Base.Sprite;
-        equipmentDialog.Setup(Equipment);
         SetSkill();
         SetCost();
+        equipmentDialog.Setup(Equipment);
     }
 
     public void OnPointerEnter()

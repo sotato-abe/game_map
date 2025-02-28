@@ -10,7 +10,7 @@ public class BagPanel : Panel
     [SerializeField] InventoryDialog inventoryDialog;
     [SerializeField] PouchWindow pouchWindow;
     [SerializeField] EquipmentWindow equipmentWindow;
-    [SerializeField] ImplantDialog implantDialog;
+    [SerializeField] ImplantWindow implantWindow;
     [SerializeField] GameObject categoryList;
     [SerializeField] BattleUnit playerUnit;
 
@@ -22,7 +22,7 @@ public class BagPanel : Panel
     {
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
-        implantDialog.gameObject.SetActive(false);
+        implantWindow.gameObject.SetActive(false);
         SetCategoryList();
     }
     private void SetCategoryList()
@@ -99,7 +99,7 @@ public class BagPanel : Panel
                 equipmentWindow.gameObject.SetActive(true);
                 break;
             case BagCategory.Implant:
-                implantDialog.gameObject.SetActive(true);
+                implantWindow.gameObject.SetActive(true);
                 break;
             case BagCategory.Tresure:
                 break;
@@ -111,7 +111,7 @@ public class BagPanel : Panel
     {
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
-        implantDialog.gameObject.SetActive(false);
+        implantWindow.gameObject.SetActive(false);
     }
 
     private void SetItemUnit()
