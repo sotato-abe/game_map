@@ -27,6 +27,8 @@ public class ReserveSystem : MonoBehaviour
         actionList.Add(ActionType.Quit);
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
+        actionBoard.OnActionExecute += ExecuteAction;
+        actionBoard.OnActionExit += ExitAction;
     }
 
     public void SetState(ReserveState targetState)
@@ -63,8 +65,10 @@ public class ReserveSystem : MonoBehaviour
 
     public void ReserveStart()
     {
+        Debug.Log($"ReserveSystem:ReserveStart:{actionList.Count}/{actionList[0]}");
         state = ReserveState.ActionSelection;
         transform.gameObject.SetActive(true);
+        actionBoard.gameObject.SetActive(true);
         setActionList();
     }
 
@@ -108,8 +112,9 @@ public class ReserveSystem : MonoBehaviour
                 Debug.Log("Deck を開く処理を実行");
                 break;
 
-            case ActionType.Escape:
-                Debug.Log("Escape を実行");
+            case ActionType.Quit:
+                Debug.Log("Quit を実行");
+                StartCoroutine(ResorveEnd());
                 break;
 
             default:
@@ -154,6 +159,13 @@ public class ReserveSystem : MonoBehaviour
     public IEnumerator ResorveEnd()
     {
         state = ReserveState.Standby;
+        activeAction = actionList[0];
+        foreach (ActionIcon icon in actionIconList)
+        {
+            Destroy(icon.gameObject);
+        }
+        actionIconList.Clear();
+        actionBoard.gameObject.SetActive(false);
         yield return StartCoroutine(messagePanel.TypeDialog($"closed the back"));
         yield return new WaitForSeconds(1.0f);
         OnReserveEnd?.Invoke();
