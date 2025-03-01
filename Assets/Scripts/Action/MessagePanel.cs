@@ -20,7 +20,13 @@ public class MessagePanel : MonoBehaviour
             text.text += letter;
             yield return new WaitForSeconds(letterPerSecond);
         }
-        // StartCoroutine(FadeOutAlpha());
+        StartCoroutine(FadeOutAlpha());
+    }
+
+    private IEnumerator FadeOutAlpha()
+    {
+        yield return new WaitForSeconds(5f);
+        SetPanelValidity(0.2f);
     }
 
     public void SetPanelValidity(float targetAlpha, float duration = 0.5f)
@@ -49,6 +55,10 @@ public class MessagePanel : MonoBehaviour
             bgColor.a = alpha;
             dialogBackground.color = bgColor;
 
+            Color txColor = text.color;
+            txColor.a = Mathf.Clamp(alpha, 0.3f, 1f);
+            text.color = txColor;
+
             yield return null; // 次のフレームまで待機
         }
 
@@ -57,13 +67,11 @@ public class MessagePanel : MonoBehaviour
         finalColor.a = targetAlpha;
         dialogBackground.color = finalColor;
 
+        Color textColor = text.color;
+        textColor.a = Mathf.Clamp(targetAlpha, 0.3f, 1f);
+        text.color = textColor;
+
         // コルーチンの参照をクリア
         fadeCoroutine = null;
-    }
-
-    private IEnumerator FadeOutAlpha()
-    {
-        yield return new WaitForSeconds(5f);
-        SetPanelValidity(0.2f);
     }
 }

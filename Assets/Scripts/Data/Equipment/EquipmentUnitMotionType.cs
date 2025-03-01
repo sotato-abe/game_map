@@ -1,0 +1,4 @@
+public enum EquipmentUnitMotionType
+{
+    Jump,
+}

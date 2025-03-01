@@ -13,10 +13,21 @@ MonoBehaviour:
   m_Name: woodenStick
   m_EditorClassIdentifier: 
   name: wooden stick
+  part: 2
   life: 0
   battery: 0
   attack: 2
   technique: 0
   defense: 0
   speed: 0
+  lifeCost: 1
+  batteryCost: 0
+  soulCost: 0
+  probability:
+    value: 30
   sprite: {fileID: 1393463465, guid: dd8f2d48257b402418c9890a627ea753, type: 3}
+  description: wallop
+  attackList:
+  - type: 0
+    val: 2
+  enchantList: []

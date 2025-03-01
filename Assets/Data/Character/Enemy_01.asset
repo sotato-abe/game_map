@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Soldier2
   maxLife: 10
-  maxBattery: 0
+  maxBattery: 5
   attack: 2
   technique: 3
   defense: 2
@@ -24,10 +24,12 @@ MonoBehaviour:
   disk: 0
   key: 0
   birthplace: {fileID: 0}
-  equipments: []
-  items:
-  - _base: {fileID: 11400000, guid: bf7d181404753304982798f77c078ed8, type: 2}
-  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
+  equipments:
+  - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
+  maxInventoryCount: 5
+  inventory:
+  - _base: {fileID: 11400000, guid: 811460af88770c34299fa7f39dba81d2, type: 2}
+  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
   comands: []
   messages:
   - {fileID: 11400000, guid: f30e50f1876056e49bebec19d03e5679, type: 2}

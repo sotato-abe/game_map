@@ -6,24 +6,22 @@ using TMPro;
 
 public class ActionBoard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] ActionPanel actionPanel;
     [SerializeField] AttackPanel attackPanel;
-    [SerializeField] MessagePanel messagePanel;
     [SerializeField] CommandPanel commandPanel;
-    [SerializeField] ItemPanel itemPanel;
+    [SerializeField] public PouchPanel pouchPanel;
+    [SerializeField] public BagPanel bagPanel;
+    [SerializeField] public DeckPanel deckPanel;
     ActionType action;
-
-    public ItemPanel ItemPanel => itemPanel;
 
     public void Init()
     {
         action = 0;
     }
 
-    public void changeDialogType(ActionType targetAction)
+    public void changeActionPanel(ActionType targetAction)
     {
         action = targetAction;
+        ResetPanel();
         switch (action)
         {
             case ActionType.Talk:
@@ -35,8 +33,14 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Command:
                 SetCommandPanel();
                 break;
-            case ActionType.Item:
-                SetItemPanel();
+            case ActionType.Pouch:
+                SetPouchPanel();
+                break;
+            case ActionType.Bag:
+                SetBagPanel();
+                break;
+            case ActionType.Deck:
+                SetDeckPanel();
                 break;
             case ActionType.Escape:
                 SetEscapeDialog();
@@ -53,54 +57,69 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Attack:
                 break;
             case ActionType.Command:
-                commandPanel.SelectCommand(targetDirection);
                 break;
-            case ActionType.Item:
-                itemPanel.SelectItem(targetDirection);
+            case ActionType.Pouch:
+                pouchPanel.SelectItem(targetDirection);
+                break;
+            case ActionType.Bag:
+                bagPanel.SelectDialog(targetDirection);
+                break;
+            case ActionType.Deck:
                 break;
             case ActionType.Escape:
                 break;
         }
     }
 
-    private void SetTalkPanel()
+    private void ResetPanel()
     {
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
-        messagePanel.gameObject.SetActive(true);
+        pouchPanel.gameObject.SetActive(false);
+        bagPanel.gameObject.SetActive(false);
+        deckPanel.gameObject.SetActive(false);
+    }
+
+    private void SetTalkPanel()
+    {
     }
 
     private void SetAttackPanel()
     {
-        commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
         attackPanel.gameObject.SetActive(true);
+        attackPanel.PanelOpen();
     }
 
     private void SetCommandPanel()
     {
-        attackPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(true);
+        commandPanel.PanelOpen();
     }
 
-    private void SetItemPanel()
+    private void SetPouchPanel()
     {
-        attackPanel.gameObject.SetActive(false);
-        commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(true);
+        pouchPanel.gameObject.SetActive(true);
+        pouchPanel.PanelOpen();
+    }
+
+    private void SetBagPanel()
+    {
+        bagPanel.gameObject.SetActive(true);
+        bagPanel.PanelOpen();
+    }
+
+    private void SetDeckPanel()
+    {
+        deckPanel.gameObject.SetActive(true);
+        deckPanel.PanelOpen();
     }
 
     private void SetEscapeDialog()
     {
-        attackPanel.gameObject.SetActive(false);
-        commandPanel.gameObject.SetActive(false);
-        itemPanel.gameObject.SetActive(false);
     }
 
-    public IEnumerator SetMessageText(string message)
+    public void CloseActionPanel()
     {
-        yield return StartCoroutine(messagePanel.GetComponent<MessagePanel>().TypeDialog(message));
+        ResetPanel();
     }
 }
