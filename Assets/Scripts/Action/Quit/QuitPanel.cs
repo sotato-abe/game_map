@@ -5,13 +5,10 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 
-public class EscapePanel : Panel
+public class QuitPanel : Panel
 {
     public UnityAction OnActionExecute;
     public UnityAction OnActionExit;
-    [SerializeField] private TextMeshProUGUI text;
-
-    [SerializeField]
 
     public void Update()
     {
@@ -29,20 +26,9 @@ public class EscapePanel : Panel
         }
     }
 
-    public void SetEscapePanel()
-    {
-
-    }
-
     private void Escape()
     {
         isActive = false;
         OnActionExecute?.Invoke();
-    }
-
-    private void ClosePanel()
-    {
-        isActive = false;
-        OnActionExit?.Invoke();
     }
 }

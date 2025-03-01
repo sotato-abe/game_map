@@ -24,7 +24,7 @@ public class ReserveSystem : MonoBehaviour
     {
         actionList.Add(ActionType.Bag);
         actionList.Add(ActionType.Deck);
-        actionList.Add(ActionType.Escape);
+        actionList.Add(ActionType.Quit);
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
     }
@@ -98,12 +98,32 @@ public class ReserveSystem : MonoBehaviour
 
     public void ExecuteAction()
     {
+        switch (activeAction)
+        {
+            case ActionType.Bag:
+                Debug.Log("Bag を開く処理を実行");
+                break;
 
+            case ActionType.Deck:
+                Debug.Log("Deck を開く処理を実行");
+                break;
+
+            case ActionType.Escape:
+                Debug.Log("Escape を実行");
+                break;
+
+            default:
+                Debug.Log("未定義のアクションが選択されました");
+                break;
+        }
+
+        // アクション実行後は、State を Standby に戻す
+        state = ReserveState.ActionSelection;
     }
 
     public void ExitAction()
     {
-
+        state = ReserveState.ActionSelection;
     }
 
     private void SelectActiveActionIcon(ActionType target)
