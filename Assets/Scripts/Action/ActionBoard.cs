@@ -3,19 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class ActionBoard : MonoBehaviour
 {
+    public UnityAction OnActionExecute;
+    public UnityAction OnActionExit;
+
     [SerializeField] AttackPanel attackPanel;
     [SerializeField] CommandPanel commandPanel;
     [SerializeField] public PouchPanel pouchPanel;
     [SerializeField] public BagPanel bagPanel;
     [SerializeField] public DeckPanel deckPanel;
+    [SerializeField] EscapePanel escapePanel;
     ActionType action;
+
+    private void Start()
+    {
+        escapePanel.OnActionExecute += ActionExecute;
+        escapePanel.OnActionExit += ActionExit;
+    }
 
     public void Init()
     {
+        Debug.Log("init");
         action = 0;
+
     }
 
     public void ChangeActionPanel(ActionType targetAction)
@@ -48,29 +61,6 @@ public class ActionBoard : MonoBehaviour
         }
     }
 
-    // public void TargetSelection(bool targetDirection)
-    // {
-    //     switch (action)
-    //     {
-    //         case ActionType.Talk:
-    //             break;
-    //         case ActionType.Attack:
-    //             break;
-    //         case ActionType.Command:
-    //             break;
-    //         case ActionType.Pouch:
-    //             pouchPanel.SelectItem(targetDirection);
-    //             break;
-    //         case ActionType.Bag:
-    //             bagPanel.SelectDialog(targetDirection);
-    //             break;
-    //         case ActionType.Deck:
-    //             break;
-    //         case ActionType.Escape:
-    //             break;
-    //     }
-    // }
-
     private void ResetPanel()
     {
         attackPanel.gameObject.SetActive(false);
@@ -78,6 +68,7 @@ public class ActionBoard : MonoBehaviour
         pouchPanel.gameObject.SetActive(false);
         bagPanel.gameObject.SetActive(false);
         deckPanel.gameObject.SetActive(false);
+        escapePanel.ClosePanel();
     }
 
     private void SetTalkPanel()
@@ -116,10 +107,24 @@ public class ActionBoard : MonoBehaviour
 
     private void SetEscapeDialog()
     {
+        escapePanel.gameObject.SetActive(true);
+        escapePanel.PanelOpen();
     }
 
     public void CloseActionPanel()
     {
         ResetPanel();
+    }
+
+    public void ActionExecute()
+    {
+        Debug.Log("ActionExecute");
+        OnActionExecute?.Invoke();
+    }
+
+    public void ActionExit()
+    {
+        Debug.Log("ActionExit");
+        OnActionExit?.Invoke();
     }
 }
