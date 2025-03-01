@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Panel : MonoBehaviour
 {
+    public bool isActive = false;
     private bool isAnimating = false; // アニメーション中かどうかのフラグ
     private Coroutine openMotionCoroutine = null; // コルーチンの参照
     private float groundY; // 初期位置を保存
@@ -17,8 +18,16 @@ public class Panel : MonoBehaviour
     {
         if (!isAnimating) // 二重実行防止
         {
+            isActive = true;
+            Debug.Log($"PanelOpen:{isActive}");
             openMotionCoroutine = StartCoroutine(OpenMotion());
         }
+    }
+
+    public void ClosePanel()
+    {
+        isActive = false;
+        transform.gameObject.SetActive(false);
     }
 
     private IEnumerator OpenMotion()

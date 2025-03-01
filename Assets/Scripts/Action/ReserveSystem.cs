@@ -26,6 +26,11 @@ public class ReserveSystem : MonoBehaviour
         transform.gameObject.SetActive(false);
     }
 
+    public void SetState(ReserveState targetState)
+    {
+        state = targetState;
+    }
+
     public void Update()
     {
         if (state == ReserveState.ActionSelection)

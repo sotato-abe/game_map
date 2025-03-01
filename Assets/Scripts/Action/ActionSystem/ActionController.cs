@@ -11,7 +11,8 @@ public class ActionController : MonoBehaviour
     [SerializeField] ActionIcon actionIconPrefab;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] GameObject actionListObject;
-    
+    [SerializeField] ReserveSystem reserveSystem;
+
     // 選択中のアクション
     private ActionIcon selectedAction;
     public ActionType activeAction;
@@ -21,6 +22,8 @@ public class ActionController : MonoBehaviour
     private void Awake()
     {
         // 一度初期化
+        actionBoard.OnActionExecute += ActionExecute;
+        actionBoard.OnActionExit += ActionExit;
     }
 
     public void ResetActionList(List<ActionType> actions)
@@ -82,6 +85,42 @@ public class ActionController : MonoBehaviour
                 selectedAction.SetActive(true);
             }
         }
+    }
+
+    public void ActionExecute()
+    {
+        Debug.Log("ActionController:ActionExecute");
+        switch (activeAction)
+        {
+            case ActionType.Talk:
+                break;
+            case ActionType.Attack:
+                break;
+            case ActionType.Command:
+                break;
+            case ActionType.Pouch:
+                break;
+            case ActionType.Bag:
+                break;
+            case ActionType.Deck:
+                break;
+            case ActionType.Escape:
+                StartCoroutine(EscapeExecute());
+                break;
+        }
+    }
+
+    public void ActionExit()
+    {
+        Debug.Log("ActionController:ActionExit");
+        reserveSystem.SetState(ReserveState.ActionSelection);
+    }
+
+    public IEnumerator EscapeExecute()
+    {
+        Debug.Log("ActionController:EscapeExecute");
+        StartCoroutine(reserveSystem.ResorveEnd());
+        yield return null;
     }
 
     public void CloseAction()
