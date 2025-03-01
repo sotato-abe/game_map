@@ -25,7 +25,6 @@ public class GameController : MonoBehaviour
         playerController.ChangeField += ChangeField;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        reserveSystem.ActionPanel.SetPanelValidity(0.2f);
         StartCoroutine(messagePanel.TypeDialog("game start"));
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
         playerCoordinate = playerController.Battler.coordinate;
@@ -38,7 +37,6 @@ public class GameController : MonoBehaviour
     public void ChangeField(DirectionType outDirection)
     {
         DirectionType entryDirection = outDirection.GetOppositeDirection();
-        Debug.Log($"GameController:ChangeField:{outDirection}>>>{entryDirection}");
         if (outDirection == DirectionType.Top)
             playerCoordinate.row = playerCoordinate.row - 1;
         if (outDirection == DirectionType.Bottom)
@@ -72,7 +70,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("BattleStart");
         playerController.SetMoveFlg(false);
-        fieldInfoSystem.FieldDialogClose();
+        // fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
         enemy = fieldInfoSystem.GetRandomEnemy();
         battleSystem.gameObject.SetActive(true);
@@ -85,6 +83,7 @@ public class GameController : MonoBehaviour
         Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
         playerController.SetMoveFlg(true);
+        // fieldInfoSystem.FieldDialogOpen();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 }

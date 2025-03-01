@@ -2,23 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO BattlerのライフとかをEnegyに変換
 [System.Serializable]
 public class Battler
 {
     [SerializeField] BattlerBase _base;
     [SerializeField] int level;
     [SerializeField] int soul;
-    [SerializeField] private List<Equipment> equipments = new List<Equipment>();
-    [SerializeField] private List<Item> inventory = new List<Item>();
-    [SerializeField] private List<Command> deck = new List<Command>();
 
-    public List<Equipment> Equipments { get => equipments; }
-    public List<Item> Inventory { get => inventory; }
-    public List<Command> Deck { get => deck; }
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
-    public int Soul { get => soul; }
-
+    public int Soul { get => soul; set => soul = value; }
     public int MaxLife { get; set; }
     public int Life { get; set; }
     public int MaxBattery { get; set; }
@@ -30,10 +24,22 @@ public class Battler
     public int Money { get; set; }
     public int Disk { get; set; }
     public int Key { get; set; }
+
+    public List<Equipment> Equipments { get; set; }
+    public List<Enchant> Enchants = new List<Enchant>();
+    public int MaxInventoryCount { get; set; }
+    public List<Item> Inventory { get; set; }
+    public List<Command> Deck { get; set; }
     public Coordinate coordinate;
 
     public virtual void Init()
     {
+        if (_base == null)
+        {
+            Debug.LogError("Init() failed: _base is null");
+            return;
+        }
+
         MaxLife = _base.MaxLife;
         Life = MaxLife;
         MaxBattery = _base.MaxBattery;
@@ -45,29 +51,85 @@ public class Battler
         Money = _base.Money;
         Disk = _base.Disk;
         Key = _base.Key;
+        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
+        MaxInventoryCount = _base.MaxInventoryCount;
+        Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
+        Deck = new List<Command>(_base.Commands ?? new List<Command>());
 
-        equipments = _base.Equipments ?? new List<Equipment>(); // Items が null の場合、新しいリストを初期化
-        inventory = _base.Items ?? new List<Item>(); // Items が null の場合、新しいリストを初期化
-        deck = _base.Commands ?? new List<Command>(); // Items が null の場合、新しいリストを初期化
-        coordinate = _base.Birthplace.Coordinate;
+        if (_base.Birthplace != null)
+            coordinate = _base.Birthplace.Coordinate;
     }
 
-    public int TakeDamage(Battler attacker)
+    public void TakeRecovery(List<Enegy> recoveryList)
     {
-        int damage = attacker.Attack;
-        Life = Mathf.Clamp(Life - damage, 0, MaxLife);
-        return damage;
+        foreach (Enegy recovery in recoveryList)
+        {
+            if (recovery.type == EnegyType.Life)
+            {
+                Life = Mathf.Min(Life + recovery.val, MaxLife);
+            }
+            if (recovery.type == EnegyType.Battery)
+            {
+                Battery = Mathf.Min(Battery + recovery.val, MaxBattery);
+            }
+            if (recovery.type == EnegyType.Soul)
+            {
+                Soul = Soul + recovery.val;
+            }
+        }
+
+        Debug.Log($"Life/{Life}");
+        Debug.Log($"Battery/{Battery}");
+        Debug.Log($"Soul/{Soul}");
     }
 
-    public void AddItemToInventory(Item item)
+    public void TakeDamage(List<Damage> damageList)
+    {
+        foreach (Damage damage in damageList)
+        {
+            Debug.Log($"damage:{damage.AttackType} /{damage.Val}");
+            if (damage.AttackType == AttackType.Enegy)
+            {
+                if (damage.SubType == (int)EnegyType.Life)
+                {
+                    Life = Life - damage.Val;
+                }
+                if (damage.SubType == (int)EnegyType.Battery)
+                {
+                    Battery = Battery - damage.Val;
+                }
+                if (damage.SubType == (int)EnegyType.Soul)
+                {
+                    Soul = Soul - damage.Val;
+                }
+            }
+        }
+        Debug.Log($"Life/{Life}");
+        Debug.Log($"Battery/{Battery}");
+        Debug.Log($"Soul/{Soul}");
+    }
+
+    public bool AddItemToInventory(Item item)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
-        inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+        if (Inventory.Count >= MaxInventoryCount)
+        {
+            Debug.Log("Inventory is full.");
+            return false;
+        }
+        Inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+        return true;
+    }
+
+    public void AddEquipmentToEquipments(Equipment equipment)
+    {
+        // プレイヤーのインベントリにアイテムを追加する処理
+        Equipments.Add(equipment); // inventory はプレイヤーのインベントリリスト
     }
 
     public void AddCommandToDeck(Command command)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
-        deck.Add(command); // inventory はプレイヤーのインベントリリスト
+        Deck.Add(command); // inventory はプレイヤーのインベントリリスト
     }
 }

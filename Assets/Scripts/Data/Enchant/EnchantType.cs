@@ -7,5 +7,4 @@ public enum EnchantType
     DefenseUp,
     SpeedUp,
     Clear, // ターゲットのバフ・デバフ解除
-    Reset, // ターゲットのバフ・デバフ解除
 }

@@ -13,16 +13,26 @@ public class CommandBase : ScriptableObject
     [SerializeField] int count; // 攻撃や回復の回数、エンチャントの個数に使用する
     [SerializeField] int lifeCost;
     [SerializeField] int batteryCost;
+    [SerializeField] int soulCost;
     [SerializeField] Sprite sprite;
-
+    [SerializeField] string description;
+    [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
     public string Name { get => name; }
-
     public CommandType CommandType { get => commandType; }
     public EnchantType EnchantType { get => enchantType; }
     public int Value { get => value; }
     public int Count { get => count; }
-    public int LifeCost { get => lifeCost; }
-    public int BatteryCost { get => batteryCost; }
+    public Enegy LifeCost => new Enegy(EnegyType.Life, lifeCost);
+    public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
+    public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
+    public List<Enegy> CostList => new List<Enegy>
+    {
+        LifeCost,
+        BatteryCost,
+        SoulCost,
+    };
     public Sprite Sprite { get => sprite; }
+    public string Description { get => description; }
+    public List<Enchant> EnchantList { get => enchantList; }
 }

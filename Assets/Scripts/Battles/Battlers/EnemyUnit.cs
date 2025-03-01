@@ -8,11 +8,12 @@ public class EnemyUnit : BattleUnit
 {
     public override void Setup(Battler battler)
     {
+        battler.Init();
         base.Setup(battler);
     }
 
-    public override void UpdateUI()
+    public override void UpdateEnegyUI()
     {
-        base.UpdateUI();
+        base.UpdateEnegyUI();
     }
 }

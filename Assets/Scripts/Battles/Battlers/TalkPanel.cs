@@ -10,8 +10,9 @@ public class TalkPanel : MonoBehaviour
     [SerializeField] float letterPerSecond;
     private RectTransform talkPanelRectTransform;
 
-    private void Start()
+    private void Awake()
     {
+        gameObject.SetActive(true); // オブジェクトをアクティブにする
         if (text == null)
         {
             Debug.LogError("Text component is not assigned!");
@@ -36,7 +37,10 @@ public class TalkPanel : MonoBehaviour
             text.text += letter;
             yield return new WaitForSeconds(letterPerSecond);
         }
-        StartCoroutine(CloseTypeDialog());
+        if (gameObject.activeSelf)
+        {
+            StartCoroutine(CloseTypeDialog());
+        }
     }
 
     public IEnumerator CloseTypeDialog()
