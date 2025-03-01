@@ -6,136 +6,51 @@ using UnityEngine.Events;
 
 public class ReserveSystem : MonoBehaviour
 {
-    public ReserveState state;
-    public UnityAction OnReserveEnd;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] ActionController actionController;
     [SerializeField] MessagePanel messagePanel;
-    [SerializeField] BattleUnit playerUnit;
+
+    public UnityAction OnReserveEnd;
+
+    private ActionType targetAction = ActionType.Bag;
+
+    private List<ActionType> actionList = new List<ActionType>();
 
     void Start()
     {
+        actionList.Add(ActionType.Bag);
+        actionList.Add(ActionType.Deck);
+        actionList.Add(ActionType.Escape);
         transform.gameObject.SetActive(false);
     }
 
     public void Update()
     {
-        if (state == ReserveState.ActionSelection)
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                actionController.SelectAction(true);
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                actionController.SelectAction(false);
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                actionBoard.TargetSelection(true);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                actionBoard.TargetSelection(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                StartCoroutine(SetReserveState(ReserveState.ActionExecution));
-            }
+            int index = actionList.IndexOf(targetAction); // 現在のtargetActionのインデックスを取得
+            index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
+            targetAction = actionList[index]; // 更新
+            actionController.ChangeActionPanel(targetAction);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            int index = actionList.IndexOf(targetAction); // 現在のtargetActionのインデックスを取得
+            index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
+            targetAction = actionList[index]; // 更新
+            actionController.ChangeActionPanel(targetAction);
         }
     }
 
-    public void ReserveStart(Battler player)
+    public void ReserveStart()
     {
-        state = ReserveState.Start;
-        actionBoard.changeActionPanel(ActionType.Talk);
-        actionController.ResetActionList();
-        state = ReserveState.ActionSelection; // 仮に本来はターンコントロ－ラーに入る
-        StartCoroutine(SetReserveState(ReserveState.ActionSelection));
-        StartCoroutine(playerUnit.SetTalkMessage("let's see"));
-        StartCoroutine(messagePanel.TypeDialog($"{playerUnit.Battler.Base.Name} open the back"));
-        messagePanel.gameObject.SetActive(true);
-    }
-
-    public IEnumerator SetReserveState(ReserveState newState)
-    {
-        state = newState;
-        switch (state)
-        {
-            case ReserveState.Start:
-                break;
-            case ReserveState.ActionSelection:
-                HandleActionSelection();
-                break;
-            case ReserveState.ActionExecution:
-                yield return StartCoroutine(HandleActionExecution());
-                break;
-        }
-    }
-
-    void HandleActionSelection()
-    {
-    }
-
-    public IEnumerator HandleActionExecution()
-    {
-        ActionType action = (ActionType)actionController.selectedIndex;
-
-        switch (action)
-        {
-            case ActionType.Talk:
-                yield return StartCoroutine(TalkTurn());
-                break;
-            case ActionType.Attack:
-                yield return StartCoroutine(AttackTurn());
-                break;
-            case ActionType.Command:
-                yield return StartCoroutine(CommandTurn());
-                break;
-            case ActionType.Pouch:
-                yield return StartCoroutine(ItemTurn());
-                break;
-            case ActionType.Escape:
-                yield return StartCoroutine(ResorveEnd());
-                break;
-        }
-        StartCoroutine(SetReserveState(ReserveState.ActionSelection));
-    }
-
-    public IEnumerator TalkTurn()
-    {
-        state = ReserveState.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(messagePanel.TypeDialog("The player tried talking to him, but he didn't respond."));
-    }
-
-    public IEnumerator AttackTurn()
-    {
-        state = ReserveState.ActionExecution;
-        yield return null;
-    }
-
-    public IEnumerator CommandTurn()
-    {
-        state = ReserveState.ActionExecution;
-        yield return StartCoroutine(messagePanel.TypeDialog("Implant activation start... Activation"));
-    }
-
-    public IEnumerator ItemTurn()
-    {
-        state = ReserveState.ActionExecution;
-        playerUnit.SetMotion(MotionType.Rotate);
-        StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        actionBoard.pouchPanel.UseItem();
-        yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
+        actionController.ResetActionList(actionList);
+        transform.gameObject.SetActive(true);
     }
 
     public IEnumerator ResorveEnd()
     {
-        state = ReserveState.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("all right")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(messagePanel.TypeDialog($"{playerUnit.Battler.Base.Name} closed the back"));
+        yield return StartCoroutine(messagePanel.TypeDialog($"closed the back"));
         yield return new WaitForSeconds(1.0f);
         actionController.CloseAction();
         OnReserveEnd?.Invoke();

@@ -18,7 +18,7 @@ public class ActionBoard : MonoBehaviour
         action = 0;
     }
 
-    public void changeActionPanel(ActionType targetAction)
+    public void ChangeActionPanel(ActionType targetAction)
     {
         action = targetAction;
         ResetPanel();
@@ -48,28 +48,28 @@ public class ActionBoard : MonoBehaviour
         }
     }
 
-    public void TargetSelection(bool targetDirection)
-    {
-        switch (action)
-        {
-            case ActionType.Talk:
-                break;
-            case ActionType.Attack:
-                break;
-            case ActionType.Command:
-                break;
-            case ActionType.Pouch:
-                pouchPanel.SelectItem(targetDirection);
-                break;
-            case ActionType.Bag:
-                bagPanel.SelectDialog(targetDirection);
-                break;
-            case ActionType.Deck:
-                break;
-            case ActionType.Escape:
-                break;
-        }
-    }
+    // public void TargetSelection(bool targetDirection)
+    // {
+    //     switch (action)
+    //     {
+    //         case ActionType.Talk:
+    //             break;
+    //         case ActionType.Attack:
+    //             break;
+    //         case ActionType.Command:
+    //             break;
+    //         case ActionType.Pouch:
+    //             pouchPanel.SelectItem(targetDirection);
+    //             break;
+    //         case ActionType.Bag:
+    //             bagPanel.SelectDialog(targetDirection);
+    //             break;
+    //         case ActionType.Deck:
+    //             break;
+    //         case ActionType.Escape:
+    //             break;
+    //     }
+    // }
 
     private void ResetPanel()
     {

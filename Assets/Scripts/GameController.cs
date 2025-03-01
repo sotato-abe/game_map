@@ -53,8 +53,7 @@ public class GameController : MonoBehaviour
         Debug.Log("ReserveStart");
         playerController.SetMoveFlg(false);
         battleSystem.gameObject.SetActive(false);
-        reserveSystem.gameObject.SetActive(true);
-        reserveSystem.ReserveStart(playerController.Battler);
+        reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 

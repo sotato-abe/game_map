@@ -8,6 +8,8 @@ public class ActionIcon : MonoBehaviour
 {
     [SerializeField] private Image actionImage;
     [SerializeField] private TextMeshProUGUI text;
+
+    public ActionType type;
     private bool isActive = false;
 
     private float defaultWidth = 70f;
@@ -28,6 +30,7 @@ public class ActionIcon : MonoBehaviour
         text.SetText("");
         string actionText = System.Enum.GetName(typeof(ActionType), actionType);
         text.text = actionText;
+        type = actionType;
     }
 
     public void SetActive(bool activeFlg)

@@ -21,8 +21,17 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] AttackSystem attackSystem;
 
+    private ActionType targetAction = ActionType.Talk;
+    private List<ActionType> actionList = new List<ActionType>();
+
     void Start()
     {
+        actionList.Add(ActionType.Talk);
+        actionList.Add(ActionType.Attack);
+        actionList.Add(ActionType.Command);
+        actionList.Add(ActionType.Pouch);
+        actionList.Add(ActionType.Escape);
+
         transform.gameObject.SetActive(true);
         enemyUnit.gameObject.SetActive(false);
     }
@@ -31,21 +40,31 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleState.ActionSelection)
         {
+            // ActionPanelを変更
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                actionController.SelectAction(true);
+                int index = actionList.IndexOf(targetAction); // 現在のtargetActionのインデックスを取得
+                index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
+                targetAction = actionList[index]; // 更新
+                actionController.ChangeActionPanel(targetAction);
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                actionController.SelectAction(false);
+                int index = actionList.IndexOf(targetAction); // 現在のtargetActionのインデックスを取得
+                index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
+                targetAction = actionList[index]; // 更新
+                actionController.ChangeActionPanel(targetAction);
             }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
+
+            // TODO : パネルごとの操作はパネル自体に持たせる。
+
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                actionBoard.TargetSelection(true);
+                // actionBoard.TargetSelection(true);
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                actionBoard.TargetSelection(false);
+                // actionBoard.TargetSelection(false);
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -60,7 +79,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
         StartCoroutine(SetupBattle(player, enemy));
 
-        actionController.ResetActionList();
+        actionController.ResetActionList(actionList);
 
         playerUnit.SetMotion(MotionType.Jump);
         playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
@@ -77,7 +96,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetupBattle(Battler player, Battler enemy)
     {
         enemyUnit.Setup(enemy);
-        actionBoard.changeActionPanel(ActionType.Talk);
+        actionBoard.ChangeActionPanel(ActionType.Talk);
         yield return StartCoroutine(messagePanel.TypeDialog($"{enemy.Base.Name} is coming!!"));
     }
 
@@ -117,7 +136,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator HandleActionExecution()
     {
-        ActionType action = (ActionType)actionController.selectedIndex;
+        ActionType action = (ActionType)actionController.activeAction;
 
         switch (action)
         {
