@@ -21,6 +21,8 @@ public class ActionBoard : MonoBehaviour
 
     private void Start()
     {
+        bagPanel.OnActionExecute += ActionExecute;
+        bagPanel.OnActionExit += ActionExit;
         escapePanel.OnActionExecute += ActionExecute;
         escapePanel.OnActionExit += ActionExit;
         quitPanel.OnActionExecute += ActionExecute;
