@@ -9,27 +9,25 @@ using UnityEngine.Events;
 public class ActionController : MonoBehaviour
 {
     [SerializeField] ActionIcon actionIconPrefab;
-    [SerializeField] ActionBoard actionDialog;
-    [SerializeField] GameObject actionList;
+    [SerializeField] ActionBoard actionBoard;
+    [SerializeField] GameObject actionListObject;
 
     // 選択中のアクション
     ActionIcon selectedAction;
 
-    // アクションの個数
-    int actoinNum = 0;
-    public int selectedIndex = 0;
+    public ActionType activeAction;
 
     private List<ActionIcon> actionIconList = new List<ActionIcon>();
+    private List<ActionType> actionList = new List<ActionType>();
 
     private void Awake()
     {
         // 一度初期化
     }
 
-    public void ResetActionList()
+    public void ResetActionList(List<ActionType> actions)
     {
-        actoinNum = 0;
-        selectedIndex = 0;
+        actionList = actions;
         foreach (ActionIcon icon in actionIconList)
         {
             Destroy(icon.gameObject);
@@ -41,12 +39,11 @@ public class ActionController : MonoBehaviour
     public void SetActionList()
     {
         // TODO イベントによって選択できるアクションリストを変更する
-        foreach (ActionType actionValue in System.Enum.GetValues(typeof(ActionType)))
+        foreach (ActionType actionValue in actionList)
         {
-            ActionIcon actionIcon = Instantiate(actionIconPrefab, actionList.transform);
+            ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
             actionIconList.Add(actionIcon);
             actionIcon.SetAction(actionValue);
-            actoinNum++;
         }
 
         // ★削除済みのオブジェクトを参照しないようにリセット
@@ -57,34 +54,50 @@ public class ActionController : MonoBehaviour
         }
     }
 
+    public void ChangeActionPanel(ActionType type)
+    {
+        actionBoard.ChangeActionPanel(type);
+        SelectActiveAction(type);
+        activeAction = type;
+    }
+
+    public void SelectActiveAction(ActionType target)
+    {
+        // 現在選択中のアクションを非アクティブにする
+        if (selectedAction != null)
+        {
+            selectedAction.SetActive(false);
+        }
+
+        // 対応するアクションアイコンを探してアクティブにする
+        foreach (ActionIcon icon in actionIconList)
+        {
+            if (icon.type == activeAction) // GetActionType() はアクションタイプを取得する仮のメソッド
+            {
+                selectedAction = icon;
+                selectedAction.SetActive(false);
+            }
+
+            if (icon.type == target) // GetActionType() はアクションタイプを取得する仮のメソッド
+            {
+                selectedAction = icon;
+                selectedAction.SetActive(true);
+            }
+        }
+    }
+
+    public void CloseAction()
+    {
+        actionBoard.CloseActionPanel();
+        RemoveActionList();
+    }
+
     public void RemoveActionList()
     {
-        actoinNum = 0;
-        selectedIndex = 0;
         foreach (ActionIcon icon in actionIconList)
         {
             Destroy(icon.gameObject);
         }
         actionIconList.Clear();
-    }
-
-    public void SelectAction(bool prev)
-    {
-        // インデックスをループ処理
-        selectedIndex = prev ? (selectedIndex + 1) % actoinNum : (selectedIndex - 1 + actoinNum) % actoinNum;
-
-        // 現在の選択を解除
-        selectedAction?.SetActive(false);
-
-        // 新しい選択を設定
-        selectedAction = actionIconList[selectedIndex];
-        selectedAction?.SetActive(true);
-        actionDialog.changeActionPanel((ActionType)selectedIndex);
-    }
-
-    public void CloseAction()
-    {
-        actionDialog.CloseActionPanel();
-        RemoveActionList();
     }
 }
