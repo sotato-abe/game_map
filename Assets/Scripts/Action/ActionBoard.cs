@@ -12,10 +12,11 @@ public class ActionBoard : MonoBehaviour
 
     [SerializeField] AttackPanel attackPanel;
     [SerializeField] CommandPanel commandPanel;
-    [SerializeField] public PouchPanel pouchPanel;
-    [SerializeField] public BagPanel bagPanel;
-    [SerializeField] public DeckPanel deckPanel;
+    [SerializeField] PouchPanel pouchPanel;
+    [SerializeField] BagPanel bagPanel;
+    [SerializeField] DeckPanel deckPanel;
     [SerializeField] EscapePanel escapePanel;
+    [SerializeField] QuitPanel quitPanel;
     ActionType action;
 
     private void Start()
@@ -58,6 +59,9 @@ public class ActionBoard : MonoBehaviour
             case ActionType.Escape:
                 SetEscapeDialog();
                 break;
+            case ActionType.Quit:
+                SetQuitDialog();
+                break;
         }
     }
 
@@ -69,6 +73,7 @@ public class ActionBoard : MonoBehaviour
         bagPanel.gameObject.SetActive(false);
         deckPanel.gameObject.SetActive(false);
         escapePanel.ClosePanel();
+        quitPanel.ClosePanel();
     }
 
     private void SetTalkPanel()
@@ -109,6 +114,12 @@ public class ActionBoard : MonoBehaviour
     {
         escapePanel.gameObject.SetActive(true);
         escapePanel.PanelOpen();
+    }
+
+    private void SetQuitDialog()
+    {
+        quitPanel.gameObject.SetActive(true);
+        quitPanel.PanelOpen();
     }
 
     public void CloseActionPanel()
