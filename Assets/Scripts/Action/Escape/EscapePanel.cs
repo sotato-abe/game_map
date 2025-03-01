@@ -39,10 +39,4 @@ public class EscapePanel : Panel
         isActive = false;
         OnActionExecute?.Invoke();
     }
-
-    private void ClosePanel()
-    {
-        isActive = false;
-        OnActionExit?.Invoke();
-    }
 }
