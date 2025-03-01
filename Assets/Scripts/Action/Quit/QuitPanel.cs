@@ -26,6 +26,11 @@ public class QuitPanel : Panel
         }
     }
 
+    public void PanelOpen()
+    {
+        isActive = true;
+    }
+
     private void Escape()
     {
         isActive = false;
