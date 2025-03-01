@@ -11,12 +11,10 @@ public class ActionController : MonoBehaviour
     [SerializeField] ActionIcon actionIconPrefab;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] GameObject actionListObject;
-
+    
     // 選択中のアクション
-    ActionIcon selectedAction;
-
+    private ActionIcon selectedAction;
     public ActionType activeAction;
-
     private List<ActionIcon> actionIconList = new List<ActionIcon>();
     private List<ActionType> actionList = new List<ActionType>();
 
@@ -57,11 +55,11 @@ public class ActionController : MonoBehaviour
     public void ChangeActionPanel(ActionType type)
     {
         actionBoard.ChangeActionPanel(type);
-        SelectActiveAction(type);
+        SelectActiveActionIcon(type);
         activeAction = type;
     }
 
-    public void SelectActiveAction(ActionType target)
+    private void SelectActiveActionIcon(ActionType target)
     {
         // 現在選択中のアクションを非アクティブにする
         if (selectedAction != null)
