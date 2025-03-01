@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: gun
   m_EditorClassIdentifier: 
   name: gun1
+  part: 2
   life: 0
   battery: 0
   attack: 2
@@ -25,5 +26,8 @@ MonoBehaviour:
   probability:
     value: 40
   sprite: {fileID: -1128487502, guid: dd8f2d48257b402418c9890a627ea753, type: 3}
-  skillList:
-  - {fileID: 11400000, guid: 0018ba5578349574aa0ab513439f3c0d, type: 2}
+  description: shot shot
+  attackList:
+  - type: 0
+    val: 5
+  enchantList: []

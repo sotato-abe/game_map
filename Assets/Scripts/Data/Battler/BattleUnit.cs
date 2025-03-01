@@ -9,26 +9,28 @@ public class BattleUnit : MonoBehaviour
 
     public Battler Battler { get; set; }
     [SerializeField] CharacterCard characterCard;
-    [SerializeField] TextMeshProUGUI lifeText;
-    [SerializeField] TextMeshProUGUI batteryText;
-    [SerializeField] TextMeshProUGUI soulText;
-    [SerializeField] TextMeshProUGUI attackText;
-    [SerializeField] TextMeshProUGUI techniqueText;
-    [SerializeField] TextMeshProUGUI defenseText;
-    [SerializeField] TextMeshProUGUI speedText;
+    [SerializeField] BattlerEnegyIcon lifeIcon;
+    [SerializeField] BattlerEnegyIcon batteryIcon;
+    [SerializeField] BattlerEnegyIcon soulIcon;
+    [SerializeField] BattlerStatusDialog statusDialog;
     [SerializeField] TalkPanel talkPanel;
 
     public virtual void Setup(Battler battler)
     {
         Battler = battler;
         characterCard.SetCharacter(battler);
-        lifeText.SetText($"{battler.Life}");
-        batteryText.SetText($"{battler.Battery}");
-        soulText.SetText($"{battler.Soul}");
-        attackText.SetText($"{battler.Attack}");
-        techniqueText.SetText($"{battler.Technique}");
-        defenseText.SetText($"{battler.Defense}");
-        speedText.SetText($"{battler.Speed}");
+        statusDialog.Setup(Battler);
+        UpdateEnegyUI();
+    }
+
+    public void OnPointerEnter()
+    {
+        statusDialog.ShowDialog(true);
+    }
+
+    public void OnPointerExit()
+    {
+        statusDialog.ShowDialog(false);
     }
 
     public IEnumerator SetTalkMessage(string message)
@@ -44,15 +46,16 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
-    public virtual void UpdateUI()
+    public virtual void UpdateEnegyUI()
     {
-        lifeText.SetText($"{Battler.Life}");
-        batteryText.SetText($"{Battler.Battery}");
-        soulText.SetText($"{Battler.Soul}");
-        attackText.SetText($"{Battler.Base.Attack}");
-        techniqueText.SetText($"{Battler.Base.Technique}");
-        defenseText.SetText($"{Battler.Base.Defense}");
-        speedText.SetText($"{Battler.Base.Speed}");
+        Enegy life = new Enegy(EnegyType.Life, Battler.Life);
+        Enegy battery = new Enegy(EnegyType.Battery, Battler.Battery);
+        Enegy soul = new Enegy(EnegyType.Soul, Battler.Soul);
+
+        lifeIcon.SetEnegy(life);
+        batteryIcon.SetEnegy(battery);
+        soulIcon.SetEnegy(soul);
+        statusDialog.Setup(Battler);
     }
 
     public void SetMessage(MessageType messageType)
@@ -70,7 +73,6 @@ public class BattleUnit : MonoBehaviour
         int index = Mathf.Min(2, messagesList.Count - 1);
         StartCoroutine(SetTalkMessage(messagesList[index].message)); // ← message をプロパティに修正
     }
-
 
     public void SetMotion(MotionType motion)
     {

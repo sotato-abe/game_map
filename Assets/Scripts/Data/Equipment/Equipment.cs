@@ -6,20 +6,19 @@ using UnityEngine;
 public class Equipment
 {
     [SerializeField] EquipmentBase _base;
+    
     public EquipmentBase Base { get => _base; }
-
     public int Life { get; set; }
     public int Battery { get; set; }
     public int Attack { get; set; }
     public int Technique { get; set; }
     public int Defense { get; set; }
     public int Speed { get; set; }
-    public Cost LifeCost { get; set; }
-    public Cost BatteryCost { get; set; }
-    public Cost SoulCost { get; set; }
+    public Enegy LifeCost { get; set; }
+    public Enegy BatteryCost { get; set; }
+    public Enegy SoulCost { get; set; }
     public Probability Probability { get; set; }
-    public List<Skill> SkillList { get; set; }
-    public List<Cost> CostList { get; set; }
+    public List<Enegy> CostList { get; set; }
 
     public void Init()
     {
@@ -33,7 +32,6 @@ public class Equipment
         BatteryCost = BatteryCost;
         SoulCost = SoulCost;
         Probability = Probability;
-        SkillList = SkillList;
         CostList = CostList;
     }
 }

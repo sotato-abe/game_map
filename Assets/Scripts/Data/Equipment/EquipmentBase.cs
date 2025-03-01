@@ -6,6 +6,7 @@ using UnityEngine;
 public class EquipmentBase : ScriptableObject
 {
     [SerializeField] new string name;
+    [SerializeField] EquipmentPart part;
     [SerializeField] int life;
     [SerializeField] int battery;
     [SerializeField] int attack;
@@ -17,7 +18,9 @@ public class EquipmentBase : ScriptableObject
     [SerializeField] int soulCost;
     [SerializeField] Probability probability; // TODO:１～１００のクラスにする
     [SerializeField] Sprite sprite;
-    [SerializeField] private List<Skill> skillList = new List<Skill>();
+    [SerializeField] string description;
+    [SerializeField] private List<Enegy> attackList = new List<Enegy>();
+    [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
     public string Name { get => name; }
     public int Life { get => life; }
@@ -26,13 +29,15 @@ public class EquipmentBase : ScriptableObject
     public int Technique { get => technique; }
     public int Defense { get => defense; }
     public int Speed { get => speed; }
-    public Cost LifeCost => new Cost(CostType.Life, lifeCost);
-    public Cost BatteryCost => new Cost(CostType.Battery, batteryCost);
-    public Cost SoulCost => new Cost(CostType.Soul, soulCost);
+    public Enegy LifeCost => new Enegy(EnegyType.Life, lifeCost);
+    public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
+    public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
     public Probability Probability { get => probability; }
     public Sprite Sprite { get => sprite; }
-    public List<Skill> SkillList { get => skillList; }
-    public List<Cost> CostList => new List<Cost>
+    public string Description { get => description; }
+    public List<Enegy> AttackList { get => attackList; }
+    public List<Enchant> EnchantList { get => enchantList; }
+    public List<Enegy> CostList => new List<Enegy>
     {
         LifeCost,
         BatteryCost,
