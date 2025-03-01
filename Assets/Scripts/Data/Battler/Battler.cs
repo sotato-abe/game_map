@@ -77,17 +77,12 @@ public class Battler
                 Soul = Soul + recovery.val;
             }
         }
-
-        Debug.Log($"Life/{Life}");
-        Debug.Log($"Battery/{Battery}");
-        Debug.Log($"Soul/{Soul}");
     }
 
     public void TakeDamage(List<Damage> damageList)
     {
         foreach (Damage damage in damageList)
         {
-            Debug.Log($"damage:{damage.AttackType} /{damage.Val}");
             if (damage.AttackType == AttackType.Enegy)
             {
                 if (damage.SubType == (int)EnegyType.Life)
@@ -104,9 +99,6 @@ public class Battler
                 }
             }
         }
-        Debug.Log($"Life/{Life}");
-        Debug.Log($"Battery/{Battery}");
-        Debug.Log($"Soul/{Soul}");
     }
 
     public bool AddItemToInventory(Item item)

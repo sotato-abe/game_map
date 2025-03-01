@@ -38,7 +38,6 @@ public class ActionBoard : MonoBehaviour
 
     public void ChangeActionPanel(ActionType targetAction)
     {
-        Debug.Log("ChangeActionPanel");
         action = targetAction;
         ResetPanel();
         switch (action)
@@ -105,7 +104,6 @@ public class ActionBoard : MonoBehaviour
 
     private void SetBagPanel()
     {
-        Debug.Log("SetBagPanel");
         bagPanel.gameObject.SetActive(true);
         bagPanel.PanelOpen();
     }
@@ -135,13 +133,11 @@ public class ActionBoard : MonoBehaviour
 
     public void ActionExecute()
     {
-        Debug.Log("ActionExecute");
         OnActionExecute?.Invoke();
     }
 
     public void ActionExit()
     {
-        Debug.Log("ActionExit");
         OnActionExit?.Invoke();
     }
 }

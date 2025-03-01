@@ -65,7 +65,6 @@ public class ReserveSystem : MonoBehaviour
 
     public void ReserveStart()
     {
-        Debug.Log($"ReserveSystem:ReserveStart:{actionList.Count}/{actionList[0]}");
         state = ReserveState.ActionSelection;
         transform.gameObject.SetActive(true);
         actionBoard.gameObject.SetActive(true);
@@ -113,7 +112,6 @@ public class ReserveSystem : MonoBehaviour
                 break;
 
             case ActionType.Quit:
-                Debug.Log("Quit を実行");
                 StartCoroutine(ResorveEnd());
                 break;
 

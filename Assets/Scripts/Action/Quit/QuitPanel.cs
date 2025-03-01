@@ -12,23 +12,15 @@ public class QuitPanel : Panel
 
     public void Update()
     {
-        if (isActive)
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                Escape();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ClosePanel();
-            }
+            Escape();
         }
-    }
 
-    public void PanelOpen()
-    {
-        isActive = true;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ClosePanel();
+        }
     }
 
     private void Escape()
