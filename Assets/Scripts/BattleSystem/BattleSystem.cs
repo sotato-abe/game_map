@@ -57,20 +57,18 @@ public class BattleSystem : MonoBehaviour
             }
 
             // TODO : パネルごとの操作はパネル自体に持たせる。
-
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                // actionBoard.TargetSelection(true);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                // actionBoard.TargetSelection(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                StartCoroutine(SetBattleState(BattleState.ActionExecution));
-            }
+            // if (Input.GetKeyDown(KeyCode.RightArrow))
+            // {
+            //     // actionBoard.TargetSelection(true);
+            // }
+            // else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            // {
+            //     // actionBoard.TargetSelection(false);
+            // }
+            // if (Input.GetKeyDown(KeyCode.Return))
+            // {
+            //     StartCoroutine(SetBattleState(BattleState.ActionExecution));
+            // }
         }
     }
 
