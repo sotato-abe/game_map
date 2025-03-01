@@ -12,8 +12,8 @@ public class EnemyUnit : BattleUnit
         base.Setup(battler);
     }
 
-    public override void UpdateUI()
+    public override void UpdateEnegyUI()
     {
-        base.UpdateUI();
+        base.UpdateEnegyUI();
     }
 }

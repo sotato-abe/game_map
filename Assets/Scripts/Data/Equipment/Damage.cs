@@ -5,12 +5,15 @@ using System.Collections.Generic;
 
 public class Damage
 {
-    public SkillType Type { get; private set; } // スキルの種類
+    public AttackType AttackType { get; private set; } // 攻撃の種類
+    // TODO 名前が気持ち悪いから変えたい
+    public int SubType { get; private set; } // スキルの種類
     public int Val { get; set; } // ダメージの値
 
-    public Damage(SkillType type, int value)
+    public Damage(AttackType type, int subType, int value)
     {
-        Type = type;
+        AttackType = type;
+        SubType = subType;
         Val = value;
     }
 }

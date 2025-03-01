@@ -8,9 +8,17 @@ public class CostIcon : MonoBehaviour
 {
     [SerializeField] Image image;
     [SerializeField] private TextMeshProUGUI text;
-    public void SetCostIcon(Cost cost)
+    [SerializeField] EnegyIconList enegyIconList;
+
+    public void SetCostIcon(Enegy cost)
     {
         text.text = cost.val.ToString();
+        SetCostIcon(cost.type);
+    }
+
+    public void SetCostIcon(EnegyType type)
+    {
+        image.sprite = enegyIconList.GetIcon(type);
     }
 }
 

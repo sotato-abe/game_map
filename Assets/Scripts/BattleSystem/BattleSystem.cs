@@ -130,8 +130,11 @@ public class BattleSystem : MonoBehaviour
             case ActionType.Command:
                 yield return StartCoroutine(CommandTurn());
                 break;
-            case ActionType.Item:
-                yield return StartCoroutine(ItemTurn());
+            case ActionType.Pouch:
+                yield return StartCoroutine(PouchTurn());
+                break;
+            case ActionType.Bag:
+                yield return StartCoroutine(BagTurn());
                 break;
             case ActionType.Escape:
                 yield return StartCoroutine(EscapeTurn());
@@ -161,12 +164,21 @@ public class BattleSystem : MonoBehaviour
         yield return StartCoroutine(messagePanel.TypeDialog("Implant activation start... Activation"));
     }
 
-    public IEnumerator ItemTurn()
+    public IEnumerator PouchTurn()
     {
         state = BattleState.ActionExecution;
         playerUnit.SetMotion(MotionType.Rotate);
         StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        actionBoard.itemPanel.UseItem();
+        actionBoard.pouchPanel.UseItem();
+        yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
+    }
+
+    public IEnumerator BagTurn()
+    {
+        state = BattleState.ActionExecution;
+        playerUnit.SetMotion(MotionType.Rotate);
+        StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
+        // actionBoard.bagPanel.UseItem();
         yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
     }
 
@@ -188,19 +200,6 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(targetUnit.SetTalkMessage("Auch!!"));
         yield return StartCoroutine(messagePanel.TypeDialog($"{sourceUnit.Battler.Base.Name} attacks {targetUnit.Battler.Base.Name}!"));
 
-        List<Skill> skillList = new List<Skill>(); // 空のリストで初期化
-                                                   // もしくは sourceUnit からスキルリストを取得
-        if (sourceUnit.Battler.Equipments != null)
-        {
-            foreach (Equipment equipment in sourceUnit.Battler.Equipments)
-            {
-                foreach (Skill skill in equipment.SkillList)
-                {
-                    skillList.Add(skill);
-                }
-            }
-        }
-
         // 攻撃処理
         attackSystem.ExecuteAttack(sourceUnit, targetUnit);
 
@@ -220,7 +219,7 @@ public class BattleSystem : MonoBehaviour
         targetUnit.SetMotion(MotionType.Jump);
         yield return StartCoroutine(messagePanel.TypeDialog($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
 
-        List<Item> targetItems = targetUnit.Battler.Base.Items;
+        List<Item> targetItems = targetUnit.Battler.Inventory;
         if (targetItems != null && targetItems.Count > 0)
         {
             // ランダムにアイテムを取得（例: 2つ取得）

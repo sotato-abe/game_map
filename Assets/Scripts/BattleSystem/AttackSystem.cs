@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class AttackSystem : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class AttackSystem : MonoBehaviour
         if (0 < damageList.Count)
         {
             TakeDamage(damageList);
-            this.targetUnit.UpdateUI();
+            this.targetUnit.UpdateEnegyUI();
             this.targetUnit.SetMotion(MotionType.Shake);
         }
         AttackResult();
@@ -27,45 +28,42 @@ public class AttackSystem : MonoBehaviour
     // ダメージを計算
     private List<Damage> CalculateDamage()
     {
-        List<Skill> skills = new List<Skill>();
-        Dictionary<SkillType, Damage> damageDict = new Dictionary<SkillType, Damage>();
-
         // TODO : ちゃんとPlayer判定をする
         if (sourceUnit.Battler.Base.Name == "Sola")
         {
-            skills.AddRange(attackPanel.ActivateEquipments());
-            Debug.Log($"CalculateDamage:skills:{skills.Count}");
+            return CalculateDamageSola();
         }
         else
         {
-            // 各装備のスキルをリストに追加
-            foreach (Equipment equipment in sourceUnit.Battler.Base.Equipments)
-            {
-                // Error skillを追加できていない。
-                if (Random.Range(0, 100) < equipment.Base.Probability)
-                {
-                    skills.AddRange(equipment.Base.SkillList);
-                }
-            }
-        }
+            return CalculateDamageEnemy();
 
-        // スキルごとのダメージを計算
-        foreach (Skill skill in skills)
-        {
-            if (damageDict.ContainsKey(skill.Type))
-            {
-                damageDict[skill.Type].Val += skill.Val; // 既存のダメージに加算
-            }
-            else
-            {
-                damageDict[skill.Type] = new Damage(skill.Type, skill.Val); // 新規追加
-            }
         }
-
-        // Dictionary から List に変換して返す
-        return new List<Damage>(damageDict.Values);
     }
 
+    private List<Damage> CalculateDamageSola()
+    {
+        attackPanel.gameObject.SetActive(true);
+        return attackPanel.ActivateEquipments();
+    }
+
+    private List<Damage> CalculateDamageEnemy()
+    {
+        List<Damage> damageList = new List<Damage>();
+
+        sourceUnit.Battler.Equipments.ForEach(equipment =>
+        {
+            if (Random.Range(0, 100) < equipment.Base.Probability)
+            {
+                equipment.Base.AttackList.ForEach(attack =>
+                {
+                    Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
+                    damageList.Add(damage);
+                });
+            }
+        });
+
+        return damageList;
+    }
 
     // ダメージを適用
     private void TakeDamage(List<Damage> damageList)

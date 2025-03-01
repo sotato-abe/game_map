@@ -9,8 +9,9 @@ public class EquipmentUnit : MonoBehaviour
     [SerializeField] Image image;
     [SerializeField] GameObject skillList;
     [SerializeField] GameObject costList;
-    [SerializeField] SkillIcon skillPrefab;
+    [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] CostIcon costPrefab;
+    [SerializeField] EquipmentDialog equipmentDialog;
 
     public virtual void Setup(Equipment equipment)
     {
@@ -18,22 +19,60 @@ public class EquipmentUnit : MonoBehaviour
         image.sprite = Equipment.Base.Sprite;
         SetSkill();
         SetCost();
+        equipmentDialog.Setup(Equipment);
+    }
+
+    public void OnPointerEnter()
+    {
+        equipmentDialog.ShowDialog(true);
+        StartCoroutine(Targetfoucs(true));
+    }
+
+    public void OnPointerExit()
+    {
+        equipmentDialog.ShowDialog(false);
+        StartCoroutine(Targetfoucs(false));
     }
 
     private void SetSkill()
     {
-        foreach (var skill in Equipment.Base.SkillList)
+        // skillList内のオブジェクトを削除
+        foreach (Transform child in skillList.transform)
         {
-            SkillIcon skillObject = Instantiate(skillPrefab, skillList.transform);
-            skillObject.gameObject.SetActive(true);
-            SkillIcon skillUnit = skillObject.GetComponent<SkillIcon>();
+            Destroy(child.gameObject);
+        }
 
-            skillUnit.SetSkillIcon(skill);
+        foreach (Enegy attack in Equipment.Base.AttackList)
+        {
+            CostIcon attackObject = Instantiate(costPrefab, skillList.transform);
+            attackObject.gameObject.SetActive(true);
+            CostIcon attackUnit = attackObject.GetComponent<CostIcon>();
+            attackUnit.SetCostIcon(attack);
+        }
+        foreach (Enchant enchant in Equipment.Base.EnchantList)
+        {
+            EnchantIcon enchantObject = Instantiate(enchantPrefab, skillList.transform);
+            enchantObject.gameObject.SetActive(true);
+            EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
+            enchantUnit.SetEnchant(enchant);
+        }
+        foreach (Enegy enegy in Equipment.CostList)
+        {
+            CostIcon costObject = Instantiate(costPrefab, skillList.transform);
+            costObject.gameObject.SetActive(true);
+            CostIcon costUnit = costObject.GetComponent<CostIcon>();
+            costUnit.SetCostIcon(enegy);
         }
     }
 
     private void SetCost()
     {
+        // costList内のオブジェクトを削除
+        foreach (Transform child in costList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         foreach (var cost in Equipment.Base.CostList)
         {
             if (0 < cost.val)
@@ -92,6 +131,36 @@ public class EquipmentUnit : MonoBehaviour
         if (this != null)
         {
             transform.position = new Vector3(transform.position.x, groundY, transform.position.z);
+        }
+    }
+
+    public IEnumerator Targetfoucs(bool focusFlg)
+    {
+        float time = 0.05f;
+        float currentTime = 0f;
+        if (focusFlg)
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
+        }
+        else
+        {
+            Vector3 originalScale = transform.localScale;
+            Vector3 targetScale = new Vector3(1, 1, 1);
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+            transform.localScale = targetScale;
         }
     }
 }
