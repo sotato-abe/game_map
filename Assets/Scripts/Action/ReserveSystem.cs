@@ -8,14 +8,17 @@ public class ReserveSystem : MonoBehaviour
 {
     public UnityAction OnReserveEnd;
 
+    [SerializeField] ActionIcon actionIconPrefab;
     [SerializeField] ActionBoard actionBoard;
-    [SerializeField] ActionController actionController;
+    [SerializeField] GameObject actionListObject;
     [SerializeField] MessagePanel messagePanel;
 
     // ステート管理
     private ReserveState state;
     private ActionType activeAction = ActionType.Bag;
+    private ActionIcon selectedAction;
     private List<ActionType> actionList = new List<ActionType>();
+    private List<ActionIcon> actionIconList = new List<ActionIcon>();
 
     void Start()
     {
@@ -41,14 +44,14 @@ public class ReserveSystem : MonoBehaviour
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
                 activeAction = actionList[index]; // 更新
-                actionController.ChangeActionPanel(activeAction);
+                SelectAction(activeAction);
             }
             else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
                 activeAction = actionList[index]; // 更新
-                actionController.ChangeActionPanel(activeAction);
+                SelectAction(activeAction);
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -61,16 +64,78 @@ public class ReserveSystem : MonoBehaviour
     public void ReserveStart()
     {
         state = ReserveState.ActionSelection;
-        actionController.ResetActionList(actionList);
         transform.gameObject.SetActive(true);
+        setActionList();
+    }
+
+    private void setActionList()
+    {
+        foreach (ActionType actionValue in actionList)
+        {
+            ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
+            actionIconList.Add(actionIcon);
+            actionIcon.SetAction(actionValue);
+            if (activeAction == actionValue)
+            {
+                actionBoard.ChangeActionPanel(actionValue);
+            }
+        }
+
+        selectedAction = actionIconList.Count > 0 ? actionIconList[0] : null;
+
+        if (selectedAction)
+        {
+            selectedAction.SetActive(true);
+        }
+    }
+
+    private void SelectAction(ActionType selectAction)
+    {
+        actionBoard.ChangeActionPanel(selectAction);
+        SelectActiveActionIcon(selectAction);
+        activeAction = selectAction;
+    }
+
+    public void ExecuteAction()
+    {
+
+    }
+
+    public void ExitAction()
+    {
+
+    }
+
+    private void SelectActiveActionIcon(ActionType target)
+    {
+        // 現在選択中のアクションを非アクティブにする
+        if (selectedAction != null)
+        {
+            selectedAction.SetActive(false);
+        }
+
+        // 対応するアクションアイコンを探してアクティブにする
+        foreach (ActionIcon icon in actionIconList)
+        {
+            if (icon.type == activeAction)
+            {
+                selectedAction = icon;
+                selectedAction.SetActive(false);
+            }
+
+            if (icon.type == target)
+            {
+                selectedAction = icon;
+                selectedAction.SetActive(true);
+            }
+        }
     }
 
     public IEnumerator ResorveEnd()
     {
-        state = ReserveState.Standby; 
+        state = ReserveState.Standby;
         yield return StartCoroutine(messagePanel.TypeDialog($"closed the back"));
         yield return new WaitForSeconds(1.0f);
-        actionController.CloseAction();
         OnReserveEnd?.Invoke();
     }
 }
