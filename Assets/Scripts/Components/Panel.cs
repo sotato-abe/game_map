@@ -18,7 +18,6 @@ public class Panel : MonoBehaviour
     {
         if (!isAnimating) // 二重実行防止
         {
-            Debug.Log($"PanelOpen:{isActive}");
             openMotionCoroutine = StartCoroutine(OpenMotion());
         }
     }
