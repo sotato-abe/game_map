@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class BagPanel : Panel
 {
+    public UnityAction OnActionExecute;
+    public UnityAction OnActionExit;
     [SerializeField] BagCategoryIcon categoryPrefab;
     [SerializeField] InventoryDialog inventoryDialog;
     [SerializeField] PouchWindow pouchWindow;
@@ -25,6 +28,32 @@ public class BagPanel : Panel
         implantWindow.gameObject.SetActive(false);
         SetCategoryList();
     }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            isActive = true;
+        }
+
+        if (isActive)
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SelectDialog(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SelectDialog(false);
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isActive = false;
+                OnActionExit?.Invoke();
+            }
+        }
+    }
+
     private void SetCategoryList()
     {
         // 一度CategoryListの中身を空の状態にする
