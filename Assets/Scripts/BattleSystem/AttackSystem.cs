@@ -2,94 +2,101 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 public class AttackSystem : MonoBehaviour
 {
-    private BattleUnit sourceUnit;
-    private BattleUnit targetUnit;
+    public UnityAction OnBattleResult;
+    public UnityAction OnExecuteBattleAction;
+    public UnityAction OnBattleDefeat;
+    private BattleUnit playerUnit;
+    private BattleUnit enemyUnit;
 
     [SerializeField] private AttackPanel attackPanel;
 
-    public void ExecuteAttack(BattleUnit sourceUnit, BattleUnit targetUnit)
+    public void SetBattler(BattleUnit playerUnit, BattleUnit enemyUnit)
     {
-        this.sourceUnit = sourceUnit;
-        this.targetUnit = targetUnit;
-
-        List<Damage> damageList = CalculateDamage();
-        if (0 < damageList.Count)
-        {
-            TakeDamage(damageList);
-            this.targetUnit.UpdateEnegyUI();
-            this.targetUnit.SetMotion(MotionType.Shake);
-        }
-        AttackResult();
+        this.playerUnit = playerUnit;
+        this.enemyUnit = enemyUnit;
     }
 
-    // ダメージを計算
-    private List<Damage> CalculateDamage()
+    public void ExecutePlayerAttack(List<Damage> damages)
     {
-        // TODO : ちゃんとPlayer判定をする
-        if (sourceUnit.Battler.Base.Name == "Sola")
+        if (0 < damages.Count)
         {
-            return CalculateDamageSola();
+            enemyUnit.Battler.TakeDamage(damages);
+            enemyUnit.UpdateEnegyUI();
+            enemyUnit.SetMotion(MotionType.Shake);
+        }
+        if (enemyUnit.Battler.Life <= 0)
+        {
+            OnBattleResult?.Invoke();
         }
         else
         {
-            return CalculateDamageEnemy();
-
+            OnExecuteBattleAction?.Invoke();
         }
     }
 
-    private List<Damage> CalculateDamageSola()
+    public void ExecuteEnemyAttack()
     {
-        attackPanel.gameObject.SetActive(true);
-        return attackPanel.ActivateEquipments();
-    }
+        List<Damage> damages = new List<Damage>();
 
-    private List<Damage> CalculateDamageEnemy()
-    {
-        List<Damage> damageList = new List<Damage>();
-
-        sourceUnit.Battler.Equipments.ForEach(equipment =>
+        foreach (Equipment equipment in enemyUnit.Battler.Equipments)
         {
+            if (CheckEnegy(equipment) == false)
+            {
+                continue;
+            }
+
             if (Random.Range(0, 100) < equipment.Base.Probability)
             {
-                equipment.Base.AttackList.ForEach(attack =>
+                UseEnegy(equipment);
+                foreach (var attack in equipment.Base.AttackList)
                 {
                     Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
-                    damageList.Add(damage);
-                });
+                    damages.Add(damage);
+                }
             }
-        });
+        }
 
-        return damageList;
-    }
-
-    // ダメージを適用
-    private void TakeDamage(List<Damage> damageList)
-    {
-        targetUnit.Battler.TakeDamage(damageList);
-    }
-
-    // アタック結果
-    private void AttackResult()
-    {
-        if (targetUnit.Battler.Life <= 0)
+        if (0 < damages.Count)
         {
-            StartCoroutine(SetBattleState(BattleState.BattleResult));
-            StartCoroutine(BattleResult(sourceUnit, targetUnit));
+            playerUnit.SetMotion(MotionType.Shake);
+            playerUnit.Battler.TakeDamage(damages);
+            playerUnit.UpdateEnegyUI();
+        }
+        if (playerUnit.Battler.Life <= 0)
+        {
+            OnBattleDefeat?.Invoke();
+        }
+        else
+        {
+            OnExecuteBattleAction?.Invoke();
         }
     }
 
-    private IEnumerator SetBattleState(BattleState state)
+    public bool CheckEnegy(Equipment equipment)
     {
-        // バトルステートを設定する処理（仮）
-        yield return null;
+        if (
+            equipment.Base.LifeCost.val <= enemyUnit.Battler.Life &&
+            equipment.Base.BatteryCost.val <= enemyUnit.Battler.Battery &&
+            equipment.Base.SoulCost.val <= enemyUnit.Battler.Soul
+        )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    private IEnumerator BattleResult(BattleUnit source, BattleUnit target)
+    public void UseEnegy(Equipment equipment)
     {
-        // バトル結果の処理（仮）
-        yield return null;
+        enemyUnit.Battler.Life -= equipment.Base.LifeCost.val;
+        enemyUnit.Battler.Battery -= equipment.Base.BatteryCost.val;
+        enemyUnit.Battler.Soul -= equipment.Base.SoulCost.val;
+        enemyUnit.UpdateEnegyUI();
     }
 }
