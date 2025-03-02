@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Panel : MonoBehaviour
 {
+    public UnityAction OnActionExecute;
+    public UnityAction OnActionExit;
+
     public bool isActive = false;
     private bool isAnimating = false; // アニメーション中かどうかのフラグ
     private Coroutine openMotionCoroutine = null; // コルーチンの参照

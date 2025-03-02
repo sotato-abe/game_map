@@ -74,14 +74,14 @@ public class TurnOrderSystem : MonoBehaviour
         if (targetTurnBattler.battler.Base.Name == "Sola") // TODO: 仮の分岐ちゃんとプレイヤーと他を分ける
         {
             Debug.Log($"プレイヤーのターン開始");
-            yield return StartCoroutine(battleSystem.SetBattleState(BattleState.ActionSelection));
+            battleSystem.SetState(BattleState.ActionSelection);
         }
         else
         {
             Debug.Log($"敵のターン開始");
-            yield return StartCoroutine(battleSystem.EnemyAttack());
+            // yield return StartCoroutine(battleSystem.EnemyAttack());
         }
-        // StartCoroutine(TestTurn());
+        yield return null;
     }
 
     private IEnumerator TestTurn()

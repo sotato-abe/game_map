@@ -27,8 +27,8 @@ public class ReserveSystem : MonoBehaviour
         actionList.Add(ActionType.Quit);
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
-        actionBoard.OnActionExecute += ExecuteAction;
-        actionBoard.OnActionExit += ExitAction;
+        actionBoard.OnReserveExecuteAction += ReserveExecuteAction;
+        actionBoard.OnReserveExitAction += ReserveExitAction;
     }
 
     public void SetState(ReserveState targetState)
@@ -68,6 +68,7 @@ public class ReserveSystem : MonoBehaviour
         state = ReserveState.ActionSelection;
         transform.gameObject.SetActive(true);
         actionBoard.gameObject.SetActive(true);
+        actionBoard.SetEventType(EventType.Reserve);
         setActionList();
     }
 
@@ -99,7 +100,7 @@ public class ReserveSystem : MonoBehaviour
         activeAction = selectAction;
     }
 
-    public void ExecuteAction()
+    public void ReserveExecuteAction()
     {
         switch (activeAction)
         {
@@ -112,7 +113,7 @@ public class ReserveSystem : MonoBehaviour
                 break;
 
             case ActionType.Quit:
-                StartCoroutine(ResorveEnd());
+                ResorveEnd();
                 break;
 
             default:
@@ -124,7 +125,7 @@ public class ReserveSystem : MonoBehaviour
         state = ReserveState.ActionSelection;
     }
 
-    public void ExitAction()
+    public void ReserveExitAction()
     {
         state = ReserveState.ActionSelection;
     }
@@ -154,7 +155,7 @@ public class ReserveSystem : MonoBehaviour
         }
     }
 
-    public IEnumerator ResorveEnd()
+    public void ResorveEnd()
     {
         state = ReserveState.Standby;
         activeAction = actionList[0];
@@ -163,9 +164,7 @@ public class ReserveSystem : MonoBehaviour
             Destroy(icon.gameObject);
         }
         actionIconList.Clear();
-        actionBoard.gameObject.SetActive(false);
-        yield return StartCoroutine(messagePanel.TypeDialog($"closed the back"));
-        yield return new WaitForSeconds(1.0f);
+        actionBoard.ClosePanel();
         OnReserveEnd?.Invoke();
     }
 }
