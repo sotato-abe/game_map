@@ -40,6 +40,9 @@ public class BattleSystem : MonoBehaviour
 
         actionBoard.OnExecuteBattleAction += ExecuteBattleAction;
         actionBoard.OnExitBattleAction += ExitBattleAction;
+        attackSystem.OnBattleResult += BattleResult;
+        attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
+        attackSystem.OnBattleDefeat += BattleDefeat;
     }
 
     public void SetState(BattleState targetState)
@@ -65,11 +68,6 @@ public class BattleSystem : MonoBehaviour
                 activeAction = actionList[index]; // 更新
                 SelectAction(activeAction);
             }
-
-            // if (Input.GetKeyDown(KeyCode.Return))
-            // {
-            //     state = BattleState.ActionSelected;
-            // }
         }
     }
 
@@ -146,6 +144,7 @@ public class BattleSystem : MonoBehaviour
 
         // アクション実行後は、State を Standby に戻す
         state = BattleState.ActionSelection;
+        turnOrderSystem.EndTurn();
     }
 
     public void ExitBattleAction()
@@ -182,18 +181,21 @@ public class BattleSystem : MonoBehaviour
     {
         enemyUnit.Setup(enemy);
         actionBoard.ChangeActionPanel(ActionType.Talk);
+        attackSystem.SetBattler(playerUnit, enemyUnit);
         yield return StartCoroutine(messagePanel.TypeDialog($"{enemy.Base.Name} is coming!!"));
     }
 
-    public IEnumerator BattleResult(BattleUnit sourceUnit, BattleUnit targetUnit)
+    public void BattleResult()
     {
-        StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
-        targetUnit.SetMotion(MotionType.Jump);
-        yield return StartCoroutine(messagePanel.TypeDialog($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
+        List<string> resultItemMessageList = new List<string>();
 
-        List<Item> targetItems = targetUnit.Battler.Inventory;
+        resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
+
+        List<Item> targetItems = enemyUnit.Battler.Inventory;
         if (targetItems != null && targetItems.Count > 0)
         {
+            // TODO : アイテムからそれぞれのレア度を考慮して確率で取得
+
             // ランダムにアイテムを取得（例: 2つ取得）
             int itemsToAward = Mathf.Min(2, targetItems.Count); // 最大2個
             List<Item> awardedItems = new List<Item>();
@@ -213,41 +215,52 @@ public class BattleSystem : MonoBehaviour
             {
                 Item randomItem = shuffledItems[i];
                 awardedItems.Add(randomItem);
-                sourceUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
+                playerUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
             }
 
-            string resultItemMessage = $"{sourceUnit.Battler.Base.Name} obtained ";
+            string itemList ="";
 
             // 獲得したアイテムを表示
             foreach (Item item in awardedItems)
             {
-                resultItemMessage += $"{item.Base.Name},";
+                itemList += $"{item.Base.Name},";
             }
-            sourceUnit.Battler.Money += targetUnit.Battler.Money;
-            sourceUnit.Battler.Disk += targetUnit.Battler.Disk;
+            resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} got {itemList}");
+
+            playerUnit.Battler.Money += enemyUnit.Battler.Money;
+            playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
             if (playerUnit.Battler is PlayerBattler playerBattler)
             {
                 playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
             }
-
-            yield return StartCoroutine(messagePanel.TypeDialog(resultItemMessage));
-            StartCoroutine(messagePanel.TypeDialog($"{playerUnit.Battler.Base.Name} won the battle.."));
         }
         else
         {
-            yield return StartCoroutine(messagePanel.TypeDialog("No items were found on the enemy."));
+            resultItemMessageList.Add("No items were found on the enemy.");
         }
 
-        yield return new WaitForSeconds(1f);
-        SetState(BattleState.BattleResult);
+        StartCoroutine(BattleResultView(resultItemMessageList));
+    }
+
+    private IEnumerator BattleResultView(List<string> resultItemMessageList)
+    {
+        foreach (string message in resultItemMessageList)
+        {
+            yield return StartCoroutine(messagePanel.TypeDialog(message));
+        }
+        yield return new WaitForSeconds(3f);
+        BattleEnd();
+    }
+
+    public void BattleDefeat()
+    {
+        Debug.Log("GameOver");
     }
 
     public IEnumerator EnemyAttack()
     {
-        Debug.Log("EnemyAttack");
-        // yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
-        yield return new WaitForSeconds(2f);
-        turnOrderSystem.EndTurn();
+        attackSystem.ExecuteEnemyAttack();
+        yield return new WaitForSeconds(1f);
     }
 
     public void BattleEnd()

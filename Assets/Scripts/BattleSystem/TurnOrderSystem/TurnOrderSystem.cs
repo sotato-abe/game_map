@@ -79,7 +79,7 @@ public class TurnOrderSystem : MonoBehaviour
         else
         {
             Debug.Log($"敵のターン開始");
-            // yield return StartCoroutine(battleSystem.EnemyAttack());
+            StartCoroutine(battleSystem.EnemyAttack());
         }
         yield return null;
     }

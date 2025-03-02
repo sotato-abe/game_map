@@ -12,6 +12,7 @@ public class AttackPanel : Panel
     [SerializeField] TextMeshProUGUI batteryCostText;
     [SerializeField] TextMeshProUGUI soulCostText;
     [SerializeField] BattleUnit playerUnit;
+    [SerializeField] AttackSystem attackSystem;
 
     private int lifeCost = 0;
     private int batteryCost = 0;
@@ -38,9 +39,12 @@ public class AttackPanel : Panel
             SetEquipmentList();
             SetEnegyCost();
         }
-        else
+    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            // Debug.LogWarning("playerUnit or its properties are not initialized.");
+            ExecuteAttack();
         }
     }
 
@@ -99,6 +103,12 @@ public class AttackPanel : Panel
         lifeCostText.SetText($"{lifeCost}");
         batteryCostText.SetText($"{batteryCost}");
         soulCostText.SetText($"{soulCost}");
+    }
+
+    private void ExecuteAttack()
+    {
+        List<Damage> damages = ActivateEquipments();
+        attackSystem.ExecutePlayerAttack(damages);
     }
 
     public List<Damage> ActivateEquipments()
