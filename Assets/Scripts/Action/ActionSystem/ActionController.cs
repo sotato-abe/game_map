@@ -125,7 +125,7 @@ public class ActionController : MonoBehaviour
 
     public void CloseAction()
     {
-        actionBoard.CloseActionPanel();
+        // actionBoard.CloseActionPanel();
         RemoveActionList();
     }
 

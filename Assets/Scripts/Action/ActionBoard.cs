@@ -23,6 +23,8 @@ public class ActionBoard : MonoBehaviour
     {
         bagPanel.OnActionExecute += ActionExecute;
         bagPanel.OnActionExit += ActionExit;
+        deckPanel.OnActionExecute += ActionExecute;
+        deckPanel.OnActionExit += ActionExit;
         escapePanel.OnActionExecute += ActionExecute;
         escapePanel.OnActionExit += ActionExit;
         quitPanel.OnActionExecute += ActionExecute;
@@ -76,8 +78,8 @@ public class ActionBoard : MonoBehaviour
         pouchPanel.gameObject.SetActive(false);
         bagPanel.gameObject.SetActive(false);
         deckPanel.gameObject.SetActive(false);
-        escapePanel.ClosePanel();
-        quitPanel.ClosePanel();
+        escapePanel.gameObject.SetActive(false);
+        quitPanel.gameObject.SetActive(false);
     }
 
     private void SetTalkPanel()
@@ -124,11 +126,6 @@ public class ActionBoard : MonoBehaviour
     {
         quitPanel.gameObject.SetActive(true);
         quitPanel.PanelOpen();
-    }
-
-    public void CloseActionPanel()
-    {
-        ResetPanel();
     }
 
     public void ActionExecute()

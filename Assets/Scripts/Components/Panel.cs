@@ -25,7 +25,6 @@ public class Panel : MonoBehaviour
     public void ClosePanel()
     {
         isActive = false;
-        transform.gameObject.SetActive(false);
     }
 
     private IEnumerator OpenMotion()
