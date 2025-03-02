@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class DeckPanel : Panel
 {
-    public UnityAction OnActionExecute;
-    public UnityAction OnActionExit;
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))

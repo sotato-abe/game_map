@@ -1,6 +1,6 @@
 public enum ReserveState
 {
-        Standby,
-        ActionSelection,
-        ActionSelected,
+    Standby,
+    ActionSelection,
+    ActionSelected,
 }

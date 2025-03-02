@@ -7,8 +7,10 @@ using UnityEngine.Events;
 
 public class ActionBoard : MonoBehaviour
 {
-    public UnityAction OnActionExecute;
-    public UnityAction OnActionExit;
+    public UnityAction OnReserveExecuteAction;
+    public UnityAction OnReserveExitAction;
+    public UnityAction OnExecuteBattleAction;
+    public UnityAction OnExitBattleAction;
 
     [SerializeField] AttackPanel attackPanel;
     [SerializeField] CommandPanel commandPanel;
@@ -19,29 +21,42 @@ public class ActionBoard : MonoBehaviour
     [SerializeField] QuitPanel quitPanel;
     ActionType action;
 
+    EventType eventType;
+
+    private List<Panel> panelList = new List<Panel>();
+
     private void Start()
     {
-        bagPanel.OnActionExecute += ActionExecute;
-        bagPanel.OnActionExit += ActionExit;
-        deckPanel.OnActionExecute += ActionExecute;
-        deckPanel.OnActionExit += ActionExit;
-        escapePanel.OnActionExecute += ActionExecute;
-        escapePanel.OnActionExit += ActionExit;
-        quitPanel.OnActionExecute += ActionExecute;
-        quitPanel.OnActionExit += ActionExit;
+        panelList.Add(attackPanel);
+        panelList.Add(commandPanel);
+        panelList.Add(pouchPanel);
+        panelList.Add(bagPanel);
+        panelList.Add(deckPanel);
+        panelList.Add(escapePanel);
+        panelList.Add(quitPanel);
+
+        foreach (Panel panel in panelList)
+        {
+            panel.OnActionExecute += ActionExecute;
+            panel.OnActionExit += ActionExit;
+        }
     }
 
     public void Init()
     {
         Debug.Log("init");
         action = 0;
+    }
 
+    public void SetEventType(EventType type)
+    {
+        eventType = type;
     }
 
     public void ChangeActionPanel(ActionType targetAction)
     {
         action = targetAction;
-        ResetPanel();
+        ClosePanel();
         switch (action)
         {
             case ActionType.Talk:
@@ -71,7 +86,7 @@ public class ActionBoard : MonoBehaviour
         }
     }
 
-    private void ResetPanel()
+    public void ClosePanel()
     {
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
@@ -130,11 +145,25 @@ public class ActionBoard : MonoBehaviour
 
     public void ActionExecute()
     {
-        OnActionExecute?.Invoke();
+        if (eventType == EventType.Reserve)
+        {
+            OnReserveExecuteAction?.Invoke();
+        }
+        else if (eventType == EventType.Battle)
+        {
+            OnExecuteBattleAction?.Invoke();
+        }
     }
 
     public void ActionExit()
     {
-        OnActionExit?.Invoke();
+        if (eventType == EventType.Reserve)
+        {
+            OnReserveExitAction?.Invoke();
+        }
+        else if (eventType == EventType.Battle)
+        {
+            OnExitBattleAction?.Invoke();
+        }
     }
 }

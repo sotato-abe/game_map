@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class BagPanel : Panel
 {
-    public UnityAction OnActionExecute;
-    public UnityAction OnActionExit;
     [SerializeField] BagCategoryIcon categoryPrefab;
     [SerializeField] InventoryDialog inventoryDialog;
     [SerializeField] PouchWindow pouchWindow;

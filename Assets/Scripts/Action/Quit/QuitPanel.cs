@@ -7,23 +7,20 @@ using UnityEngine.Events;
 
 public class QuitPanel : Panel
 {
-    public UnityAction OnActionExecute;
-    public UnityAction OnActionExit;
-
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            Escape();
+            Quit();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ClosePanel();
+            OnActionExit?.Invoke();
         }
     }
 
-    private void Escape()
+    private void Quit()
     {
         isActive = false;
         OnActionExecute?.Invoke();
