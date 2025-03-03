@@ -50,7 +50,7 @@ public class PouchPanel : Panel
                     UseItem();
                 }
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 isActive = false;
@@ -139,6 +139,7 @@ public class PouchPanel : Panel
 
                     SetItemUnit();
                     playerUnit.UpdateEnegyUI();
+                    OnActionExecute?.Invoke();
                 }
                 else
                 {

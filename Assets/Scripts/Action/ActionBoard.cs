@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using UnityEngine.Events;
 
 public class ActionBoard : MonoBehaviour
@@ -12,32 +9,48 @@ public class ActionBoard : MonoBehaviour
     public UnityAction OnExecuteBattleAction;
     public UnityAction OnExitBattleAction;
 
-    [SerializeField] TalkPanel talkPanel;
-    [SerializeField] AttackPanel attackPanel;
-    [SerializeField] CommandPanel commandPanel;
-    [SerializeField] PouchPanel pouchPanel;
-    [SerializeField] BagPanel bagPanel;
-    [SerializeField] DeckPanel deckPanel;
-    [SerializeField] EscapePanel escapePanel;
-    [SerializeField] QuitPanel quitPanel;
-    ActionType action;
+    [SerializeField] private TalkPanel talkPanel;
+    [SerializeField] private AttackPanel attackPanel;
+    [SerializeField] private CommandPanel commandPanel;
+    [SerializeField] private PouchPanel pouchPanel;
+    [SerializeField] private BagPanel bagPanel;
+    [SerializeField] private DeckPanel deckPanel;
+    [SerializeField] private EscapePanel escapePanel;
+    [SerializeField] private QuitPanel quitPanel;
 
-    EventType eventType;
+    private Dictionary<ActionType, Panel> actionPanels;
+    private Dictionary<EventType, UnityAction> executeActions;
+    private Dictionary<EventType, UnityAction> exitActions;
 
-    private List<Panel> panelList = new List<Panel>();
+    private EventType eventType;
 
     private void Start()
     {
-        panelList.Add(talkPanel);
-        panelList.Add(attackPanel);
-        panelList.Add(commandPanel);
-        panelList.Add(pouchPanel);
-        panelList.Add(bagPanel);
-        panelList.Add(deckPanel);
-        panelList.Add(escapePanel);
-        panelList.Add(quitPanel);
+        actionPanels = new Dictionary<ActionType, Panel>
+        {
+            { ActionType.Talk, talkPanel },
+            { ActionType.Attack, attackPanel },
+            { ActionType.Command, commandPanel },
+            { ActionType.Pouch, pouchPanel },
+            { ActionType.Bag, bagPanel },
+            { ActionType.Deck, deckPanel },
+            { ActionType.Escape, escapePanel },
+            { ActionType.Quit, quitPanel }
+        };
 
-        foreach (Panel panel in panelList)
+        executeActions = new Dictionary<EventType, UnityAction>
+        {
+            { EventType.Reserve, OnReserveExecuteAction },
+            { EventType.Battle, OnExecuteBattleAction }
+        };
+
+        exitActions = new Dictionary<EventType, UnityAction>
+        {
+            { EventType.Reserve, OnReserveExitAction },
+            { EventType.Battle, OnExitBattleAction }
+        };
+
+        foreach (var panel in actionPanels.Values)
         {
             panel.OnActionExecute += ActionExecute;
             panel.OnActionExit += ActionExit;
@@ -47,62 +60,30 @@ public class ActionBoard : MonoBehaviour
     public void Init()
     {
         Debug.Log("init");
-        action = 0;
     }
 
-    public void SetEventType(EventType type)
-    {
-        eventType = type;
-    }
+    public void SetEventType(EventType type) => eventType = type;
 
     public void ChangeActionPanel(ActionType targetAction)
     {
-        action = targetAction;
         ClosePanel();
-        switch (action)
+        if (actionPanels.TryGetValue(targetAction, out Panel panel))
         {
-            case ActionType.Talk:
-                talkPanel.PanelOpen();
-                break;
-            case ActionType.Attack:
-                attackPanel.PanelOpen();
-                break;
-            case ActionType.Command:
-                commandPanel.PanelOpen();
-                break;
-            case ActionType.Pouch:
-                pouchPanel.PanelOpen();
-                break;
-            case ActionType.Bag:
-                bagPanel.PanelOpen();
-                break;
-            case ActionType.Deck:
-                deckPanel.PanelOpen();
-                break;
-            case ActionType.Escape:
-                escapePanel.PanelOpen();
-                break;
-            case ActionType.Quit:
-                quitPanel.PanelOpen();
-                break;
+            panel.PanelOpen();
         }
     }
 
     public void ClosePanel()
     {
-        talkPanel.gameObject.SetActive(false);
-        attackPanel.gameObject.SetActive(false);
-        commandPanel.gameObject.SetActive(false);
-        pouchPanel.gameObject.SetActive(false);
-        bagPanel.gameObject.SetActive(false);
-        deckPanel.gameObject.SetActive(false);
-        escapePanel.gameObject.SetActive(false);
-        quitPanel.gameObject.SetActive(false);
+        foreach (var panel in actionPanels.Values)
+        {
+            panel.gameObject.SetActive(false);
+        }
     }
 
     public void ChangeExecuteFlg(bool executeFlg)
     {
-        foreach (Panel panel in panelList)
+        foreach (var panel in actionPanels.Values)
         {
             panel.executeFlg = executeFlg;
         }
@@ -110,25 +91,17 @@ public class ActionBoard : MonoBehaviour
 
     public void ActionExecute()
     {
-        if (eventType == EventType.Reserve)
+        if (executeActions.TryGetValue(eventType, out UnityAction action))
         {
-            OnReserveExecuteAction?.Invoke();
-        }
-        else if (eventType == EventType.Battle)
-        {
-            OnExecuteBattleAction?.Invoke();
+            action?.Invoke();
         }
     }
 
     public void ActionExit()
     {
-        if (eventType == EventType.Reserve)
+        if (exitActions.TryGetValue(eventType, out UnityAction action))
         {
-            OnReserveExitAction?.Invoke();
-        }
-        else if (eventType == EventType.Battle)
-        {
-            OnExitBattleAction?.Invoke();
+            action?.Invoke();
         }
     }
 }
