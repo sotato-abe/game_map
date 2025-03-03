@@ -28,7 +28,7 @@ public class CommandPanel : Panel
         RefreshEnegyCost();
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            SetCommandDialog();
+            SetCommandUnit();
             SetEnegyCost();
         }
         else
@@ -37,7 +37,7 @@ public class CommandPanel : Panel
         }
     }
 
-    private void SetCommandDialog()
+    private void SetCommandUnit()
     {
 
         foreach (Transform child in commandList.transform)

@@ -8,21 +8,27 @@ public class InventoryDialog : MonoBehaviour
 {
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] GameObject itemList;
+    [SerializeField] BattleUnit playerUnit;
 
-    private List<ItemUnit> inventory;
+    private List<ItemUnit> itemUnitList = new List<ItemUnit>();
     int selectedItem = 0;
 
-    public void SetItemUnit(List<Item> items)
+    public void SetItemUnit()
     {
-        ResetItemUnit();
+        foreach (Transform child in itemList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         int itemNum = 0;
-        foreach (var item in items)
+
+        foreach (Item item in playerUnit.Battler.Inventory)
         {
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
             itemUnit.Setup(item);
-            inventory.Add(itemUnit);
+            itemUnitList.Add(itemUnit);
 
             if (itemNum == selectedItem)
             {
@@ -31,14 +37,5 @@ public class InventoryDialog : MonoBehaviour
 
             itemNum++;
         }
-    }
-
-    private void ResetItemUnit()
-    {
-        foreach (var item in inventory)
-        {
-            Destroy(item.gameObject);
-        }
-        inventory.Clear();
     }
 }

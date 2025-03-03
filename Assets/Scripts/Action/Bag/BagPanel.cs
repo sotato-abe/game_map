@@ -24,6 +24,7 @@ public class BagPanel : Panel
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
         implantWindow.gameObject.SetActive(false);
+        inventoryDialog.SetItemUnit();
         SetCategoryList();
     }
     public void Update()
@@ -138,10 +139,5 @@ public class BagPanel : Panel
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
         implantWindow.gameObject.SetActive(false);
-    }
-
-    private void SetItemUnit()
-    {
-        inventoryDialog.SetItemUnit(playerUnit.Battler.Inventory);
     }
 }
