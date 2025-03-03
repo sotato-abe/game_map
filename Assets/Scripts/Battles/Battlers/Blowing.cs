@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TalkPanel : MonoBehaviour
+public class Blowing : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
     [SerializeField] float letterPerSecond;

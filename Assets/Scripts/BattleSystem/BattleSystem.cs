@@ -79,6 +79,11 @@ public class BattleSystem : MonoBehaviour
                 activeAction = actionList[index]; // 更新
                 SelectAction(activeAction);
             }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                state = BattleState.ActionSelected;
+            }
         }
     }
 

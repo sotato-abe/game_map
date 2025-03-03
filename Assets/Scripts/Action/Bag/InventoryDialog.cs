@@ -26,7 +26,7 @@ public class InventoryDialog : MonoBehaviour
 
             if (itemNum == selectedItem)
             {
-                itemUnit.Targetfoucs(true);
+                itemUnit.SetTarget(true);
             }
 
             itemNum++;
