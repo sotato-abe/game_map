@@ -57,11 +57,6 @@ public class ActionBoard : MonoBehaviour
         }
     }
 
-    public void Init()
-    {
-        Debug.Log("init");
-    }
-
     public void SetEventType(EventType type) => eventType = type;
 
     public void ChangeActionPanel(ActionType targetAction)
