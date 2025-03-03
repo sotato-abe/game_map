@@ -63,7 +63,7 @@ public class BattleSystem : MonoBehaviour
 
     public void Update()
     {
-        if (state == BattleState.ActionSelection)
+        if (state == BattleState.ActionSelection || state == BattleState.TurnWait)
         {
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -79,7 +79,6 @@ public class BattleSystem : MonoBehaviour
                 activeAction = actionList[index]; // 更新
                 SelectAction(activeAction);
             }
-
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 state = BattleState.ActionSelected;
@@ -119,6 +118,7 @@ public class BattleSystem : MonoBehaviour
 
     public void StartActionSelection()
     {
+        actionBoard.ChangeExecuteFlg(true);
         state = BattleState.ActionSelection;
     }
 
@@ -175,6 +175,7 @@ public class BattleSystem : MonoBehaviour
 
         // アクション実行後は、State を Standby に戻す
         state = BattleState.ActionSelection;
+        actionBoard.ChangeExecuteFlg(false);
         turnOrderSystem.EndTurn();
     }
 

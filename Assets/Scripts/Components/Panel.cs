@@ -7,7 +7,9 @@ public class Panel : MonoBehaviour
     public UnityAction OnActionExecute;
     public UnityAction OnActionExit;
 
+    // public ActionType type;
     public bool isActive = false;
+    public bool executeFlg = false;
     private bool isAnimating = false; // アニメーション中かどうかのフラグ
     private Coroutine openMotionCoroutine = null; // コルーチンの参照
     private float groundY; // 初期位置を保存
@@ -20,6 +22,7 @@ public class Panel : MonoBehaviour
 
     public void PanelOpen()
     {
+        transform.gameObject.SetActive(true);
         if (!isAnimating) // 二重実行防止
         {
             openMotionCoroutine = StartCoroutine(OpenMotion());
@@ -79,5 +82,10 @@ public class Panel : MonoBehaviour
             StopCoroutine(openMotionCoroutine);
             openMotionCoroutine = null;
         }
+    }
+
+    public void ChangeExetuteFlg(bool flg)
+    {
+        executeFlg = flg;
     }
 }

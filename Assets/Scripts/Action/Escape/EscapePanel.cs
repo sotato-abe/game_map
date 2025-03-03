@@ -11,15 +11,12 @@ public class EscapePanel : Panel
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (executeFlg)
         {
-            Escape();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            isActive = false;
-            OnActionExit?.Invoke();
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                Escape();
+            }
         }
     }
 

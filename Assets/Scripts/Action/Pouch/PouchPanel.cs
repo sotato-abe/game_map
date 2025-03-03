@@ -29,6 +29,43 @@ public class PouchPanel : Panel
         }
     }
 
+    public void Update()
+    {
+        if (isActive)
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SelectItem(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SelectItem(false);
+            }
+
+            if (executeFlg)
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    UseItem();
+                }
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isActive = false;
+                OnActionExit?.Invoke();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                isActive = true;
+            }
+        }
+    }
+
     private void SetItemUnit()
     {
         foreach (Transform child in itemList.transform)
@@ -55,37 +92,7 @@ public class PouchPanel : Panel
             itemNum++;
         }
     }
-    public void Update()
-    {
-        if (isActive)
-        {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                SelectItem(true);
-            }
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                SelectItem(false);
-            }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                UseItem();
-            }
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                isActive = false;
-                OnActionExit?.Invoke();
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                isActive = true;
-            }
-        }
-    }
     public void SelectItem(bool selectDirection)
     {
         if (itemList.transform.childCount > 0)
