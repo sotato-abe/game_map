@@ -12,6 +12,7 @@ public class ActionBoard : MonoBehaviour
     public UnityAction OnExecuteBattleAction;
     public UnityAction OnExitBattleAction;
 
+    [SerializeField] TalkPanel talkPanel;
     [SerializeField] AttackPanel attackPanel;
     [SerializeField] CommandPanel commandPanel;
     [SerializeField] PouchPanel pouchPanel;
@@ -27,6 +28,7 @@ public class ActionBoard : MonoBehaviour
 
     private void Start()
     {
+        panelList.Add(talkPanel);
         panelList.Add(attackPanel);
         panelList.Add(commandPanel);
         panelList.Add(pouchPanel);
@@ -88,6 +90,7 @@ public class ActionBoard : MonoBehaviour
 
     public void ClosePanel()
     {
+        talkPanel.gameObject.SetActive(false);
         attackPanel.gameObject.SetActive(false);
         commandPanel.gameObject.SetActive(false);
         pouchPanel.gameObject.SetActive(false);
@@ -99,6 +102,8 @@ public class ActionBoard : MonoBehaviour
 
     private void SetTalkPanel()
     {
+        talkPanel.gameObject.SetActive(true);
+        talkPanel.PanelOpen();
     }
 
     private void SetAttackPanel()

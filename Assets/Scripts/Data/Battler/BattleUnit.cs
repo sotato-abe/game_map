@@ -13,7 +13,7 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] BattlerEnegyIcon batteryIcon;
     [SerializeField] BattlerEnegyIcon soulIcon;
     [SerializeField] BattlerStatusDialog statusDialog;
-    [SerializeField] TalkPanel talkPanel;
+    [SerializeField] Blowing blowing;
 
     public virtual void Setup(Battler battler)
     {
@@ -35,14 +35,14 @@ public class BattleUnit : MonoBehaviour
 
     public IEnumerator SetTalkMessage(string message)
     {
-        if (talkPanel != null) // Nullチェックを追加
+        if (blowing != null) // Nullチェックを追加
         {
-            talkPanel.gameObject.SetActive(true);
-            yield return talkPanel.TypeDialog(message);
+            blowing.gameObject.SetActive(true);
+            yield return blowing.TypeDialog(message);
         }
         else
         {
-            Debug.LogError("talkPanel is not assigned!");
+            Debug.LogError("blowing is not assigned!");
         }
     }
 

@@ -12,7 +12,7 @@ public class PouchPanel : Panel
 
     int selectedItem;
 
-    private void Init()
+    private void Start()
     {
         selectedItem = 0;
     }
@@ -49,10 +49,41 @@ public class PouchPanel : Panel
 
             if (itemNum == selectedItem)
             {
-                itemUnit.Targetfoucs(true);
+                itemUnit.SetTarget(true);
             }
 
             itemNum++;
+        }
+    }
+    public void Update()
+    {
+        if (isActive)
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SelectItem(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SelectItem(false);
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                UseItem();
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isActive = false;
+                OnActionExit?.Invoke();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                isActive = true;
+            }
         }
     }
     public void SelectItem(bool selectDirection)
@@ -66,9 +97,9 @@ public class PouchPanel : Panel
 
             if (selectedItem != newSelectedItem)
             {
-                itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().Targetfoucs(false);
+                itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().SetTarget(false);
                 // 新しいアイテムを選択状態にする
-                itemList.transform.GetChild(newSelectedItem).GetComponent<ItemUnit>().Targetfoucs(true);
+                itemList.transform.GetChild(newSelectedItem).GetComponent<ItemUnit>().SetTarget(true);
                 selectedItem = newSelectedItem;
             }
 
@@ -97,7 +128,7 @@ public class PouchPanel : Panel
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
 
                     var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-                    selectedItemUnit.Targetfoucs(false);
+                    selectedItemUnit.SetTarget(false);
 
                     SetItemUnit();
                     playerUnit.UpdateEnegyUI();
