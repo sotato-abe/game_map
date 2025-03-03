@@ -84,12 +84,6 @@ public class TurnOrderSystem : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator TestTurn()
-    {
-        yield return new WaitForSeconds(3.0f);
-        EndTurn();
-    }
-
     public void EndTurn()
     {
         if (targetTurnBattler)

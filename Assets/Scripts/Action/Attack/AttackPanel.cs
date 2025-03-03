@@ -42,9 +42,12 @@ public class AttackPanel : Panel
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (executeFlg)
         {
-            ExecuteAttack();
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                ExecuteAttack();
+            }
         }
     }
 

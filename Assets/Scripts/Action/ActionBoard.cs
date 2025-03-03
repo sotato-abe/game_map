@@ -62,28 +62,28 @@ public class ActionBoard : MonoBehaviour
         switch (action)
         {
             case ActionType.Talk:
-                SetTalkPanel();
+                talkPanel.PanelOpen();
                 break;
             case ActionType.Attack:
-                SetAttackPanel();
+                attackPanel.PanelOpen();
                 break;
             case ActionType.Command:
-                SetCommandPanel();
+                commandPanel.PanelOpen();
                 break;
             case ActionType.Pouch:
-                SetPouchPanel();
+                pouchPanel.PanelOpen();
                 break;
             case ActionType.Bag:
-                SetBagPanel();
+                bagPanel.PanelOpen();
                 break;
             case ActionType.Deck:
-                SetDeckPanel();
+                deckPanel.PanelOpen();
                 break;
             case ActionType.Escape:
-                SetEscapeDialog();
+                escapePanel.PanelOpen();
                 break;
             case ActionType.Quit:
-                SetQuitDialog();
+                quitPanel.PanelOpen();
                 break;
         }
     }
@@ -100,52 +100,12 @@ public class ActionBoard : MonoBehaviour
         quitPanel.gameObject.SetActive(false);
     }
 
-    private void SetTalkPanel()
+    public void ChangeExecuteFlg(bool executeFlg)
     {
-        talkPanel.gameObject.SetActive(true);
-        talkPanel.PanelOpen();
-    }
-
-    private void SetAttackPanel()
-    {
-        attackPanel.gameObject.SetActive(true);
-        attackPanel.PanelOpen();
-    }
-
-    private void SetCommandPanel()
-    {
-        commandPanel.gameObject.SetActive(true);
-        commandPanel.PanelOpen();
-    }
-
-    private void SetPouchPanel()
-    {
-        pouchPanel.gameObject.SetActive(true);
-        pouchPanel.PanelOpen();
-    }
-
-    private void SetBagPanel()
-    {
-        bagPanel.gameObject.SetActive(true);
-        bagPanel.PanelOpen();
-    }
-
-    private void SetDeckPanel()
-    {
-        deckPanel.gameObject.SetActive(true);
-        deckPanel.PanelOpen();
-    }
-
-    private void SetEscapeDialog()
-    {
-        escapePanel.gameObject.SetActive(true);
-        escapePanel.PanelOpen();
-    }
-
-    private void SetQuitDialog()
-    {
-        quitPanel.gameObject.SetActive(true);
-        quitPanel.PanelOpen();
+        foreach (Panel panel in panelList)
+        {
+            panel.executeFlg = executeFlg;
+        }
     }
 
     public void ActionExecute()

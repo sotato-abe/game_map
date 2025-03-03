@@ -49,7 +49,6 @@ public class CommandPanel : Panel
 
         foreach (var command in playerUnit.Battler.Deck)
         {
-            // CommandUnitのインスタンスを生成
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
             commandUnitObject.gameObject.SetActive(true);
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
