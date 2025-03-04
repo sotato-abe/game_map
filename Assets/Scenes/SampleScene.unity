@@ -134506,6 +134506,10 @@ PrefabInstance:
       propertyPath: playerUnit
       value: 
       objectReference: {fileID: 329474217}
+    - target: {fileID: 2935292983555901413, guid: 95d34aaab1b696e4da822bf523616c87, type: 3}
+      propertyPath: attackSystem
+      value: 
+      objectReference: {fileID: 1883646491}
     - target: {fileID: 2935292983555901414, guid: 95d34aaab1b696e4da822bf523616c87, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -135440,6 +135444,10 @@ MonoBehaviour:
   fieldInfoPanel: {fileID: 237653653}
   enemies:
   - _base: {fileID: 11400000, guid: 68b491635af498f4598f586f90439224, type: 2}
+    level: 3
+    soul: 0
+    Enchants: []
+  - _base: {fileID: 11400000, guid: afb95766c8c50324f8b8b130c64665e4, type: 2}
     level: 3
     soul: 0
     Enchants: []
