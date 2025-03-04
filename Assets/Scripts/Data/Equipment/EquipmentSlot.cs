@@ -23,7 +23,6 @@ public class EquipmentSlot : MonoBehaviour
         if (equipment.Base.Type == equipmentType)
         {
             this.equipment = equipment;
-            Debug.Log($"EquipmentSlot:{equipmentType}:{equipment.Base.Name}");
             maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 1f);
             image.sprite = equipment.Base.Sprite;
             equipmentDialog.Setup(equipment);

@@ -58,7 +58,6 @@ public class RenderWorldMap : MonoBehaviour
     {
         TileMapData mapData = LoadJsonMapData(groundJsonData);
 
-        Debug.Log($"RenderMap:{mapData.rows}/{mapData.cols}");
         for (int y = 0; y < mapData.rows; y++)
         {
             for (int x = 0; x < mapData.cols; x++)
@@ -73,7 +72,6 @@ public class RenderWorldMap : MonoBehaviour
                     Tile tile = ScriptableObject.CreateInstance<Tile>();
                     tile.sprite = groundTile.Sprite;
                     groundTilemap.SetTile(new Vector3Int(x, y, 0), tile);
-                    Debug.Log($"Tile at ({x}, {y}): {mapData.data[y][x]}");
                 }
             }
         }
