@@ -218,9 +218,9 @@ public class BattleSystem : MonoBehaviour
             // シャッフルされたリストから最大2つを選択
             for (int i = 0; i < itemsToAward; i++)
             {
-                Item randomItem = shuffledItems[i];
-                awardedItems.Add(randomItem);
-                playerUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
+                bool success = playerUnit.Battler.AddItemToPouch(shuffledItems[i]); // プレイヤーのインベントリに追加
+                if (!success)
+                    playerUnit.Battler.AddItemToInventory(shuffledItems[i]); // プレイヤーのインベントリに追加
             }
 
             string itemList = "";

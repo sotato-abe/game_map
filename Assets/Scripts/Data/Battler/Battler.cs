@@ -110,6 +110,18 @@ public class Battler
         }
     }
 
+    public bool AddItemToPouch(Item item)
+    {
+        // プレイヤーのポーチにアイテムを追加する処理
+        if (Pouch.Count >= MaxPouchCount)
+        {
+            Debug.Log("Pouch is full.");
+            return false;
+        }
+        Pouch.Add(item);
+        return true;
+    }
+
     public bool AddItemToInventory(Item item)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
@@ -118,7 +130,7 @@ public class Battler
             Debug.Log("Inventory is full.");
             return false;
         }
-        Inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+        Inventory.Add(item);
         return true;
     }
 
