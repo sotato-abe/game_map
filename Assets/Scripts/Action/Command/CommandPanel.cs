@@ -47,7 +47,7 @@ public class CommandPanel : Panel
 
         int commandNum = 0;
 
-        foreach (var command in playerUnit.Battler.Deck)
+        foreach (var command in playerUnit.Battler.RunTable)
         {
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
             commandUnitObject.gameObject.SetActive(true);
