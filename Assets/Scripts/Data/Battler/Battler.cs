@@ -24,12 +24,16 @@ public class Battler
     public int Money { get; set; }
     public int Disk { get; set; }
     public int Key { get; set; }
-
-    public List<Equipment> Equipments { get; set; }
-    public List<Enchant> Enchants = new List<Enchant>();
+    public int MaxPouchCount { get; set; }
     public int MaxInventoryCount { get; set; }
+    public int MaxStorageCount { get; set; }
+    public List<Equipment> Equipments { get; set; }
+    public List<Item> Pouch { get; set; }
     public List<Item> Inventory { get; set; }
+    public List<Command> RunTable { get; set; }
     public List<Command> Deck { get; set; }
+    public List<Command> Storage { get; set; }
+    public List<Enchant> Enchants = new List<Enchant>();
     public Coordinate coordinate;
 
     public virtual void Init()
@@ -51,10 +55,15 @@ public class Battler
         Money = _base.Money;
         Disk = _base.Disk;
         Key = _base.Key;
-        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
+        MaxPouchCount = _base.MaxPouchCount;
         MaxInventoryCount = _base.MaxInventoryCount;
+        MaxStorageCount = _base.MaxStorageCount;
+        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
+        Pouch = new List<Item>(_base.Pouch ?? new List<Item>());
         Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
-        Deck = new List<Command>(_base.Commands ?? new List<Command>());
+        RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
+        Deck = new List<Command>();
+        Storage = new List<Command>();
 
         if (_base.Birthplace != null)
             coordinate = _base.Birthplace.Coordinate;
@@ -77,17 +86,12 @@ public class Battler
                 Soul = Soul + recovery.val;
             }
         }
-
-        Debug.Log($"Life/{Life}");
-        Debug.Log($"Battery/{Battery}");
-        Debug.Log($"Soul/{Soul}");
     }
 
     public void TakeDamage(List<Damage> damageList)
     {
         foreach (Damage damage in damageList)
         {
-            Debug.Log($"damage:{damage.AttackType} /{damage.Val}");
             if (damage.AttackType == AttackType.Enegy)
             {
                 if (damage.SubType == (int)EnegyType.Life)
@@ -104,9 +108,18 @@ public class Battler
                 }
             }
         }
-        Debug.Log($"Life/{Life}");
-        Debug.Log($"Battery/{Battery}");
-        Debug.Log($"Soul/{Soul}");
+    }
+
+    public bool AddItemToPouch(Item item)
+    {
+        // プレイヤーのポーチにアイテムを追加する処理
+        if (Pouch.Count >= MaxPouchCount)
+        {
+            Debug.Log("Pouch is full.");
+            return false;
+        }
+        Pouch.Add(item);
+        return true;
     }
 
     public bool AddItemToInventory(Item item)
@@ -117,7 +130,7 @@ public class Battler
             Debug.Log("Inventory is full.");
             return false;
         }
-        Inventory.Add(item); // inventory はプレイヤーのインベントリリスト
+        Inventory.Add(item);
         return true;
     }
 

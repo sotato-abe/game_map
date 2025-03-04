@@ -1,4 +1,4 @@
-public enum EquipmentPart
+public enum EquipmentType
 {
     Head,
     Body,

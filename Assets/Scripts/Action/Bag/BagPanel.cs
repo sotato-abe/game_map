@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class BagPanel : Panel
 {
@@ -16,15 +17,80 @@ public class BagPanel : Panel
 
     private List<BagCategoryIcon> categoryIconList = new List<BagCategoryIcon>();
 
-    BagCategory selectedCategory = BagCategory.All; // TODO：bagCategoryに変更
+    private BagCategory selectedCategory = BagCategory.All; // TODO：bagCategoryに変更
 
     private void Start()
     {
-        pouchWindow.gameObject.SetActive(false);
-        equipmentWindow.gameObject.SetActive(false);
-        implantWindow.gameObject.SetActive(false);
+        ResetDialog();
+        // inventoryDialog.OnActionExecute += ExecuteTurn;
+        inventoryDialog.SetItemUnit();
         SetCategoryList();
     }
+    private void OnEnable()
+    {
+        inventoryDialog.SetItemUnit();
+        pouchWindow.SetItemUnit(playerUnit.Battler.Pouch);
+        equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
+    }
+
+    public void Update()
+    {
+        if (!isActive)
+        {
+            //BagPanelを有効化
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                Debug.Log($"BagPanel:Return");
+                isActive = true;
+            }
+        }
+        else
+        {
+            //BagPanelを操作
+            if (Input.GetKeyDown(KeyCode.Period))
+            {
+                SelectDialog(true);
+            }
+            if (Input.GetKeyDown(KeyCode.Comma))
+            {
+                SelectDialog(false);
+            }
+            //BagPanelを無効化
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isActive = false;
+                OnActionExit?.Invoke();
+            }
+
+            //InventoryDialogを操作
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Up);
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Right);
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Down);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Left);
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                inventoryDialog.UseItem();
+            }
+        }
+    }
+
+    public void ExecuteTurn()
+    {
+        OnActionExecute?.Invoke();
+    }
+
     private void SetCategoryList()
     {
         // 一度CategoryListの中身を空の状態にする
@@ -111,10 +177,5 @@ public class BagPanel : Panel
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
         implantWindow.gameObject.SetActive(false);
-    }
-
-    private void SetItemUnit()
-    {
-        inventoryDialog.SetItemUnit(playerUnit.Battler.Inventory);
     }
 }

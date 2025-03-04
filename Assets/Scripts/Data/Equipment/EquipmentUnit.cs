@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EquipmentUnit : MonoBehaviour
 {
-    public Equipment Equipment { get; set; }
+    public Equipment equipment { get; set; }
     [SerializeField] Image image;
     [SerializeField] GameObject skillList;
     [SerializeField] GameObject costList;
@@ -15,11 +15,11 @@ public class EquipmentUnit : MonoBehaviour
 
     public virtual void Setup(Equipment equipment)
     {
-        Equipment = equipment;
-        image.sprite = Equipment.Base.Sprite;
+        this.equipment = equipment;
+        image.sprite = equipment.Base.Sprite;
         SetSkill();
         SetCost();
-        equipmentDialog.Setup(Equipment);
+        equipmentDialog.Setup(equipment);
     }
 
     public void OnPointerEnter()
@@ -42,21 +42,21 @@ public class EquipmentUnit : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (Enegy attack in Equipment.Base.AttackList)
+        foreach (Enegy attack in equipment.Base.AttackList)
         {
             CostIcon attackObject = Instantiate(costPrefab, skillList.transform);
             attackObject.gameObject.SetActive(true);
             CostIcon attackUnit = attackObject.GetComponent<CostIcon>();
             attackUnit.SetCostIcon(attack);
         }
-        foreach (Enchant enchant in Equipment.Base.EnchantList)
+        foreach (Enchant enchant in equipment.Base.EnchantList)
         {
             EnchantIcon enchantObject = Instantiate(enchantPrefab, skillList.transform);
             enchantObject.gameObject.SetActive(true);
             EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
             enchantUnit.SetEnchant(enchant);
         }
-        foreach (Enegy enegy in Equipment.CostList)
+        foreach (Enegy enegy in equipment.CostList)
         {
             CostIcon costObject = Instantiate(costPrefab, skillList.transform);
             costObject.gameObject.SetActive(true);
@@ -73,7 +73,7 @@ public class EquipmentUnit : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (var cost in Equipment.Base.CostList)
+        foreach (var cost in equipment.Base.CostList)
         {
             if (0 < cost.val)
             {

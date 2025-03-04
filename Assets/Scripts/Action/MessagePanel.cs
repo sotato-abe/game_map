@@ -7,8 +7,11 @@ using TMPro;
 public class MessagePanel : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] TextMeshProUGUI logText;
     [SerializeField] float letterPerSecond;
+    [SerializeField] Image panel;
     [SerializeField] Image dialogBackground;
+    [SerializeField] Image logBtn;
     private Coroutine fadeCoroutine;
 
     public IEnumerator TypeDialog(string line)
@@ -55,9 +58,21 @@ public class MessagePanel : MonoBehaviour
             bgColor.a = alpha;
             dialogBackground.color = bgColor;
 
+            Color plColor = panel.color;
+            plColor.a = alpha;
+            panel.color = plColor;
+
+            Color logBtnColor = logBtn.color;
+            logBtnColor.a = alpha;
+            logBtn.color = logBtnColor;
+
             Color txColor = text.color;
             txColor.a = Mathf.Clamp(alpha, 0.3f, 1f);
             text.color = txColor;
+
+            Color logTxColor = logText.color;
+            logTxColor.a = Mathf.Clamp(alpha, 0.3f, 1f);
+            logText.color = logTxColor;
 
             yield return null; // 次のフレームまで待機
         }
@@ -67,9 +82,22 @@ public class MessagePanel : MonoBehaviour
         finalColor.a = targetAlpha;
         dialogBackground.color = finalColor;
 
+
+        Color finalPlColor = panel.color;
+        finalPlColor.a = targetAlpha;
+        panel.color = finalPlColor;
+
+        Color finallogBtnColor = logBtn.color;
+        finallogBtnColor.a = targetAlpha;
+        logBtn.color = finallogBtnColor;
+
         Color textColor = text.color;
         textColor.a = Mathf.Clamp(targetAlpha, 0.3f, 1f);
         text.color = textColor;
+
+        Color logTextColor = logText.color;
+        logTextColor.a = Mathf.Clamp(targetAlpha, 0.3f, 1f);
+        logText.color = logTextColor;
 
         // コルーチンの参照をクリア
         fadeCoroutine = null;
