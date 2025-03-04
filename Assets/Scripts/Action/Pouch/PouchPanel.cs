@@ -10,11 +10,10 @@ public class PouchPanel : Panel
     [SerializeField] GameObject itemList;
     [SerializeField] BattleUnit playerUnit;
 
-    int selectedItem;
+    int selectedItem = 0;
 
     private void Start()
     {
-        selectedItem = 0;
     }
 
     private void OnEnable()

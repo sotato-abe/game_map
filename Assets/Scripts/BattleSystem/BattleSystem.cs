@@ -186,16 +186,15 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator EnemyAttack()
     {
+        yield return new WaitForSeconds(0.5f);
         attackSystem.ExecuteEnemyAttack();
-        yield return new WaitForSeconds(1f);
     }
 
     public void BattleResult()
     {
+        actionBoard.ChangeExecuteFlg(false);
         List<string> resultItemMessageList = new List<string>();
-
         resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
-
         List<Item> targetItems = enemyUnit.Battler.Inventory;
 
         if (targetItems != null && targetItems.Count > 0)
@@ -254,12 +253,13 @@ public class BattleSystem : MonoBehaviour
         {
             yield return StartCoroutine(messagePanel.TypeDialog(message));
         }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         BattleEnd();
     }
 
     public void BattleEnd()
     {
+        actionBoard.ChangeExecuteFlg(false);
         state = BattleState.Standby;
         activeAction = actionList[0];
         turnOrderSystem.BattlerEnd();

@@ -17,40 +17,76 @@ public class BagPanel : Panel
 
     private List<BagCategoryIcon> categoryIconList = new List<BagCategoryIcon>();
 
-    BagCategory selectedCategory = BagCategory.All; // TODO：bagCategoryに変更
+    private BagCategory selectedCategory = BagCategory.All; // TODO：bagCategoryに変更
 
     private void Start()
     {
-        pouchWindow.gameObject.SetActive(false);
-        equipmentWindow.gameObject.SetActive(false);
-        implantWindow.gameObject.SetActive(false);
+        ResetDialog();
+        inventoryDialog.OnActionExecute += ExecuteTurn;
         inventoryDialog.SetItemUnit();
         SetCategoryList();
     }
+    private void OnEnable()
+    {
+        inventoryDialog.SetItemUnit();
+    }
+
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (!isActive)
         {
-            isActive = true;
+            //BagPanelを有効化
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                Debug.Log($"BagPanel:Return");
+                isActive = true;
+            }
         }
-
-        if (isActive)
+        else
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            //BagPanelを操作
+            if (Input.GetKeyDown(KeyCode.Period))
             {
                 SelectDialog(true);
             }
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKeyDown(KeyCode.Comma))
             {
                 SelectDialog(false);
             }
+            //BagPanelを無効化
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 isActive = false;
                 OnActionExit?.Invoke();
             }
+
+            //InventoryDialogを操作
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Up);
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Right);
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Down);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                inventoryDialog.SelectItem(ArrowType.Left);
+            }
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                inventoryDialog.UseItem();
+            }
         }
+    }
+
+    public void ExecuteTurn()
+    {
+        OnActionExecute?.Invoke();
     }
 
     private void SetCategoryList()
