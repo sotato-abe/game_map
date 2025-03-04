@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5811073163847700445}
   - component: {fileID: 1814008764708954738}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Deck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 7164427130458772941}
   - component: {fileID: 4780566136066364192}
   m_Layer: 5
-  m_Name: RunPanel
+  m_Name: RunTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -427,6 +427,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   executeFlg: 0
+  commandPrefab: {fileID: 8103412522066827613, guid: aa65f4d29bd62eb4c9e444e06041f6ec, type: 3}
+  runTable: {fileID: 2643477096803128479}
+  deck: {fileID: 1404983073084466970}
+  storage: {fileID: 6288819706105182350}
+  playerUnit: {fileID: 0}
 --- !u!1 &3876064882241550739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,7 +1017,7 @@ GameObject:
   - component: {fileID: 3710315372091137459}
   - component: {fileID: 1957094142472045447}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Storage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

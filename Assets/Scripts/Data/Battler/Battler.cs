@@ -26,11 +26,13 @@ public class Battler
     public int Key { get; set; }
     public int MaxPouchCount { get; set; }
     public int MaxInventoryCount { get; set; }
+    public int MaxStorageCount { get; set; }
     public List<Equipment> Equipments { get; set; }
     public List<Item> Pouch { get; set; }
     public List<Item> Inventory { get; set; }
     public List<Command> RunTable { get; set; }
     public List<Command> Deck { get; set; }
+    public List<Command> Storage { get; set; }
     public List<Enchant> Enchants = new List<Enchant>();
     public Coordinate coordinate;
 
@@ -55,11 +57,13 @@ public class Battler
         Key = _base.Key;
         MaxPouchCount = _base.MaxPouchCount;
         MaxInventoryCount = _base.MaxInventoryCount;
+        MaxStorageCount = _base.MaxStorageCount;
         Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
         Pouch = new List<Item>(_base.Pouch ?? new List<Item>());
         Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
         Deck = new List<Command>();
+        Storage = new List<Command>();
 
         if (_base.Birthplace != null)
             coordinate = _base.Birthplace.Coordinate;
