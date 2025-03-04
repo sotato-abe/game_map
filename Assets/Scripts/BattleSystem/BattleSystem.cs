@@ -37,7 +37,7 @@ public class BattleSystem : MonoBehaviour
         actionBoard.OnExitBattleAction += () => state = BattleState.ActionSelection;
         attackSystem.OnBattleResult += BattleResult;
         attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
-        attackSystem.OnBattleDefeat += () => Debug.Log("GameOver");
+        attackSystem.OnBattleDefeat += BattleDefeat;
     }
 
     private void SetActionList()
