@@ -40,7 +40,6 @@ public class BagPanel : Panel
             //BagPanelを有効化
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                Debug.Log($"BagPanel:Return");
                 isActive = true;
             }
         }

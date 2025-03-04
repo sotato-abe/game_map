@@ -11,7 +11,7 @@ public class Enchant
     [SerializeField] int val;
 
     public EnchantType Type { get => type; }
-    public int Val { get => val; }
+    public int Val { get => val; set => val = value; }  // setter を追加
 
     public Enchant(EnchantType type, int val)
     {

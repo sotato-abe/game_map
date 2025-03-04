@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CommandUnit : MonoBehaviour
 {
-    public Command Command { get; set; }
+    public Command command { get; set; }
     [SerializeField] Image image;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
@@ -15,11 +15,11 @@ public class CommandUnit : MonoBehaviour
 
     public virtual void Setup(Command command)
     {
-        Command = command;
-        image.sprite = Command.Base.Sprite;
+        this.command = command;
+        image.sprite = this.command.Base.Sprite;
         SetEnchant();
         SetCost();
-        commandDialog.Setup(Command);
+        commandDialog.Setup(this.command);
     }
 
     public void OnPointerEnter()
@@ -43,7 +43,7 @@ public class CommandUnit : MonoBehaviour
         }
 
         // enchantList内にスキルを追加
-        foreach (var enchant in Command.Base.EnchantList)
+        foreach (var enchant in command.Base.EnchantList)
         {
             EnchantIcon enchantObject = Instantiate(enchantPrefab, enchantList.transform);
             enchantObject.gameObject.SetActive(true);
@@ -62,7 +62,7 @@ public class CommandUnit : MonoBehaviour
         }
 
         // costList内にコストを追加
-        foreach (var cost in Command.Base.CostList)
+        foreach (var cost in command.Base.CostList)
         {
             if (0 < cost.val)
             {

@@ -38,6 +38,24 @@ public class AttackSystem : MonoBehaviour
         }
     }
 
+    public void ExecutePlayerCommand(List<Enchant> enchants)
+    {
+        if (0 < enchants.Count)
+        {
+            enemyUnit.Battler.TakeEnchant(enchants);
+            enemyUnit.UpdateEnegyUI();
+            enemyUnit.SetMotion(MotionType.Shake);
+        }
+        if (enemyUnit.Battler.Life <= 0)
+        {
+            OnBattleResult?.Invoke();
+        }
+        else
+        {
+            OnExecuteBattleAction?.Invoke();
+        }
+    }
+
     public void ExecuteEnemyAttack()
     {
         List<Damage> damages = new List<Damage>();
