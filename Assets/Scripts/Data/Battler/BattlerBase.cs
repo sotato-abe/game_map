@@ -20,6 +20,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] MapBase birthplace;
     [SerializeField] int maxPouchCount = 5;
     [SerializeField] int maxInventoryCount = 10;
+    [SerializeField] int maxStorageCount = 10;
     [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Item> pouch;
     [SerializeField] List<Item> inventory;
@@ -39,6 +40,7 @@ public class BattlerBase : ScriptableObject
     public Sprite Sprite { get => sprite; }
     public int MaxPouchCount { get => maxPouchCount; }
     public int MaxInventoryCount { get => maxInventoryCount; }
+    public int MaxStorageCount { get => maxStorageCount; }
     public List<Equipment> Equipments { get => equipments; }
     public List<Item> Pouch { get => pouch; }
     public List<Item> Inventory { get => inventory; }
