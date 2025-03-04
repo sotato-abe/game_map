@@ -22,13 +22,15 @@ public class BagPanel : Panel
     private void Start()
     {
         ResetDialog();
-        inventoryDialog.OnActionExecute += ExecuteTurn;
+        // inventoryDialog.OnActionExecute += ExecuteTurn;
         inventoryDialog.SetItemUnit();
         SetCategoryList();
     }
     private void OnEnable()
     {
         inventoryDialog.SetItemUnit();
+        pouchWindow.SetItemUnit(playerUnit.Battler.Pouch);
+        equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
     }
 
     public void Update()

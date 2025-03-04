@@ -18,10 +18,12 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int disk;
     [SerializeField] int key;
     [SerializeField] MapBase birthplace;
+    [SerializeField] int maxPouchCount = 5;
+    [SerializeField] int maxInventoryCount = 10;
     [SerializeField] List<Equipment> equipments;
-    [SerializeField] int maxInventoryCount = 5;
+    [SerializeField] List<Item> pouch;
     [SerializeField] List<Item> inventory;
-    [SerializeField] List<Command> comands;
+    [SerializeField] List<Command> runTable;
     [SerializeField] List<TalkMessage> messages;
 
     public string Name { get => name; }
@@ -35,10 +37,12 @@ public class BattlerBase : ScriptableObject
     public int Disk { get => disk; }
     public int Key { get => key; }
     public Sprite Sprite { get => sprite; }
-    public List<Equipment> Equipments { get => equipments; }
+    public int MaxPouchCount { get => maxPouchCount; }
     public int MaxInventoryCount { get => maxInventoryCount; }
+    public List<Equipment> Equipments { get => equipments; }
+    public List<Item> Pouch { get => pouch; }
     public List<Item> Inventory { get => inventory; }
-    public List<Command> Commands { get => comands; }
+    public List<Command> RunTable { get => runTable; }
     public List<TalkMessage> Messages { get => messages; }
     public MapBase Birthplace { get => birthplace; }
 }

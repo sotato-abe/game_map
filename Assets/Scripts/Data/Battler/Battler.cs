@@ -24,12 +24,14 @@ public class Battler
     public int Money { get; set; }
     public int Disk { get; set; }
     public int Key { get; set; }
-
-    public List<Equipment> Equipments { get; set; }
-    public List<Enchant> Enchants = new List<Enchant>();
+    public int MaxPouchCount { get; set; }
     public int MaxInventoryCount { get; set; }
+    public List<Equipment> Equipments { get; set; }
+    public List<Item> Pouch { get; set; }
     public List<Item> Inventory { get; set; }
+    public List<Command> RunTable { get; set; }
     public List<Command> Deck { get; set; }
+    public List<Enchant> Enchants = new List<Enchant>();
     public Coordinate coordinate;
 
     public virtual void Init()
@@ -51,10 +53,13 @@ public class Battler
         Money = _base.Money;
         Disk = _base.Disk;
         Key = _base.Key;
-        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
+        MaxPouchCount = _base.MaxPouchCount;
         MaxInventoryCount = _base.MaxInventoryCount;
+        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
+        Pouch = new List<Item>(_base.Pouch ?? new List<Item>());
         Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
-        Deck = new List<Command>(_base.Commands ?? new List<Command>());
+        RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
+        Deck = new List<Command>();
 
         if (_base.Birthplace != null)
             coordinate = _base.Birthplace.Coordinate;
