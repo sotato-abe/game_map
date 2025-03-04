@@ -10,218 +10,197 @@ using UnityEngine.Events;
 
 public class BattleSystem : MonoBehaviour
 {
-    public BattleState state;
     public UnityAction OnBattleEnd;
-    [SerializeField] bool isAuto; // オート状態　TODO：全体のオート状態を受け取る
+
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] MessagePanel messagePanel;
-    [SerializeField] ActionController actionController;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] AttackSystem attackSystem;
+    [SerializeField] ActionIcon actionIconPrefab;
+    [SerializeField] GameObject actionListObject;
+
+    public BattleState state;
+    private ActionType activeAction = ActionType.Talk;
+    private ActionIcon selectedAction;
+    private readonly List<ActionType> actionList = new() { ActionType.Talk, ActionType.Attack, ActionType.Command, ActionType.Pouch, ActionType.Escape };
+    private readonly List<ActionIcon> actionIconList = new();
+
 
     void Start()
     {
         transform.gameObject.SetActive(true);
         enemyUnit.gameObject.SetActive(false);
+
+        actionBoard.OnExecuteBattleAction += ExecuteBattleAction;
+        actionBoard.OnExitBattleAction += () => state = BattleState.ActionSelection;
+        attackSystem.OnBattleResult += BattleResult;
+        attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
+        attackSystem.OnBattleDefeat += () => Debug.Log("GameOver");
+    }
+
+    private void SetActionList()
+    {
+        foreach (ActionType actionValue in actionList)
+        {
+            ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
+            actionIconList.Add(actionIcon);
+            actionIcon.SetAction(actionValue);
+            if (activeAction == actionValue)
+            {
+                actionBoard.ChangeActionPanel(actionValue);
+            }
+        }
+
+        selectedAction = actionIconList.Count > 0 ? actionIconList[0] : null;
+
+        if (selectedAction)
+        {
+            selectedAction.SetActive(true);
+        }
     }
 
     public void Update()
     {
-        if (state == BattleState.ActionSelection)
+        if (state == BattleState.ActionSelection || state == BattleState.TurnWait)
         {
-            if (Input.GetKeyDown(KeyCode.DownArrow))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                actionController.SelectAction(true);
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                actionController.SelectAction(false);
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                actionBoard.TargetSelection(true);
+                int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
+                index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
+                activeAction = actionList[index]; // 更新
+                SelectAction(activeAction);
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                actionBoard.TargetSelection(false);
+                int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
+                index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
+                activeAction = actionList[index]; // 更新
+                SelectAction(activeAction);
             }
-
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                StartCoroutine(SetBattleState(BattleState.ActionExecution));
+                state = BattleState.ActionSelected;
             }
         }
+    }
+
+    private void SelectAction(ActionType selectAction)
+    {
+        actionBoard.ChangeActionPanel(selectAction);
+        SelectActiveActionIcon(selectAction);
+        activeAction = selectAction;
     }
 
     public void BattleStart(Battler player, Battler enemy)
     {
-        state = BattleState.Start;
-        StartCoroutine(SetupBattle(player, enemy));
+        state = BattleState.TurnWait;
+        SetActionList();
+        StartCoroutine(SetupBattlers(player, enemy));
+    }
 
-        actionController.ResetActionList();
-
-        playerUnit.SetMotion(MotionType.Jump);
-        playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
+    public IEnumerator SetupBattlers(Battler player, Battler enemy)
+    {
+        enemyUnit.Setup(enemy);
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.SetMotion(MotionType.Jump);
         enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
+        playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
 
-        state = BattleState.TurnWait;
+        attackSystem.SetBattler(playerUnit, enemyUnit);
+        turnOrderSystem.SetUpBattlerTurns(new List<Battler> { player, enemy });
+        actionBoard.gameObject.SetActive(true);
+        actionBoard.SetEventType(EventType.Battle);
 
-        List<Battler> battlers = new List<Battler> { player, enemy };
-        turnOrderSystem.SetUpBattlerTurns(battlers);
+        yield return messagePanel.TypeDialog($"{enemy.Base.Name} is coming!!");
     }
 
-    public IEnumerator SetupBattle(Battler player, Battler enemy)
+    public void StartActionSelection()
     {
-        enemyUnit.Setup(enemy);
-        actionBoard.changeActionPanel(ActionType.Talk);
-        yield return StartCoroutine(messagePanel.TypeDialog($"{enemy.Base.Name} is coming!!"));
+        actionBoard.ChangeExecuteFlg(true);
+        state = BattleState.ActionSelection;
     }
 
-    public IEnumerator SetBattleState(BattleState newState)
+    private void SelectActiveActionIcon(ActionType target)
     {
-        state = newState;
-        switch (state)
+        // 現在選択中のアクションを非アクティブにする
+        if (selectedAction != null)
         {
-            case BattleState.Start:
-                break;
-            case BattleState.TurnWait:
-                HandleTurnWait();
-                break;
-            case BattleState.ActionSelection:
-                HandleActionSelection();
-                break;
-            case BattleState.ActionExecution:
-                yield return StartCoroutine(HandleActionExecution());
-                break;
-            case BattleState.BattleResult:
-                // yield return StartCoroutine(BattleResult(playerUnit, enemyUnit));
-                break;
-            case BattleState.BattleOver:
-                BattleEnd();
-                break;
+            selectedAction.SetActive(false);
+        }
+
+        // 対応するアクションアイコンを探してアクティブにする
+        foreach (ActionIcon icon in actionIconList)
+        {
+            if (icon.type == activeAction)
+            {
+                selectedAction = icon;
+                selectedAction.SetActive(false);
+            }
+
+            if (icon.type == target)
+            {
+                selectedAction = icon;
+                selectedAction.SetActive(true);
+            }
         }
     }
 
-    void HandleTurnWait()
+    public void ExecuteBattleAction()
     {
+        switch (activeAction)
+        {
+            case ActionType.Talk:
+                Debug.Log("Talk を開く処理を実行");
+                break;
+
+            case ActionType.Attack:
+                Debug.Log("Attack を開く処理を実行");
+                break;
+
+            case ActionType.Command:
+                Debug.Log("Command を開く処理を実行");
+                break;
+
+            case ActionType.Escape:
+                Debug.Log("Escape を開く処理を実行");
+                BattleEnd();
+                break;
+
+            default:
+                Debug.Log("未定義のアクションが選択されました");
+                break;
+        }
+
+        // アクション実行後は、State を Standby に戻す
+        state = BattleState.ActionSelection;
+        actionBoard.ChangeExecuteFlg(false);
         turnOrderSystem.EndTurn();
     }
 
-    void HandleActionSelection()
+    public void ExitBattleAction()
     {
+        state = BattleState.ActionSelection;
     }
 
-    public IEnumerator HandleActionExecution()
+    public IEnumerator EnemyAttack()
     {
-        ActionType action = (ActionType)actionController.selectedIndex;
-
-        switch (action)
-        {
-            case ActionType.Talk:
-                yield return StartCoroutine(TalkTurn());
-                break;
-            case ActionType.Attack:
-                yield return StartCoroutine(AttackTurn());
-                break;
-            case ActionType.Command:
-                yield return StartCoroutine(CommandTurn());
-                break;
-            case ActionType.Pouch:
-                yield return StartCoroutine(PouchTurn());
-                break;
-            case ActionType.Bag:
-                yield return StartCoroutine(BagTurn());
-                break;
-            case ActionType.Escape:
-                yield return StartCoroutine(EscapeTurn());
-                break;
-        }
-        StartCoroutine(SetBattleState(BattleState.TurnWait));
-    }
-
-    public IEnumerator TalkTurn()
-    {
-        state = BattleState.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("what's up")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(enemyUnit.SetTalkMessage("yeaeeehhhhhhhhh!!\nI'm gonna blow you away!")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(messagePanel.TypeDialog("The player tried talking to him, but he didn't respond."));
-    }
-
-    public IEnumerator AttackTurn()
-    {
-        state = BattleState.ActionExecution;
-        yield return StartCoroutine(AttackAction(playerUnit, enemyUnit));
-    }
-
-    public IEnumerator CommandTurn()
-    {
-        state = BattleState.ActionExecution;
-        StartCoroutine(playerUnit.SetTalkMessage("I'm serious")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(messagePanel.TypeDialog("Implant activation start... Activation"));
-    }
-
-    public IEnumerator PouchTurn()
-    {
-        state = BattleState.ActionExecution;
-        playerUnit.SetMotion(MotionType.Rotate);
-        StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        actionBoard.pouchPanel.UseItem();
-        yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
-    }
-
-    public IEnumerator BagTurn()
-    {
-        state = BattleState.ActionExecution;
-        playerUnit.SetMotion(MotionType.Rotate);
-        StartCoroutine(playerUnit.SetTalkMessage("Take this!")); // TODO : キャラクターメッセージリストから取得する。
-        // actionBoard.bagPanel.UseItem();
-        yield return StartCoroutine(messagePanel.TypeDialog("The player fished through his backpack but found nothing"));
-    }
-
-    public IEnumerator EscapeTurn()
-    {
-        state = BattleState.ActionExecution;
-        StartCoroutine(enemyUnit.SetTalkMessage("Wait!!")); // TODO : キャラクターメッセージリストから取得する。
-        StartCoroutine(playerUnit.SetTalkMessage("Let's run for it here")); // TODO : キャラクターメッセージリストから取得する。
-        yield return StartCoroutine(messagePanel.TypeDialog("Player is trying to escape"));
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(SetBattleState(BattleState.BattleOver));
-    }
-
-    //AtackManagerに切り離す
-    private IEnumerator AttackAction(BattleUnit sourceUnit, BattleUnit targetUnit)
-    {
-        // 攻撃前のアニメーションやメッセージ
-        StartCoroutine(sourceUnit.SetTalkMessage("I'm gonna crush you"));
-        StartCoroutine(targetUnit.SetTalkMessage("Auch!!"));
-        yield return StartCoroutine(messagePanel.TypeDialog($"{sourceUnit.Battler.Base.Name} attacks {targetUnit.Battler.Base.Name}!"));
-
-        // 攻撃処理
-        attackSystem.ExecuteAttack(sourceUnit, targetUnit);
-
-        // ダメージ適用後の待機
         yield return new WaitForSeconds(0.5f);
-
-        // HPが0以下ならバトル結果処理
-        if (targetUnit.Battler.Life <= 0)
-        {
-            yield return StartCoroutine(BattleResult(sourceUnit, targetUnit));
-        }
+        attackSystem.ExecuteEnemyAttack();
     }
 
-    public IEnumerator BattleResult(BattleUnit sourceUnit, BattleUnit targetUnit)
+    public void BattleResult()
     {
-        StartCoroutine(targetUnit.SetTalkMessage("You'll regret this!!")); // TODO : キャラクターメッセージリストから取得する。
-        targetUnit.SetMotion(MotionType.Jump);
-        yield return StartCoroutine(messagePanel.TypeDialog($"{targetUnit.Battler.Base.Name} walked away\n{sourceUnit.Battler.Base.Name} win"));
+        actionBoard.ChangeExecuteFlg(false);
+        List<string> resultItemMessageList = new List<string>();
+        resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
+        List<Item> targetItems = enemyUnit.Battler.Inventory;
 
-        List<Item> targetItems = targetUnit.Battler.Inventory;
         if (targetItems != null && targetItems.Count > 0)
         {
+            // TODO : アイテムからそれぞれのレア度を考慮して確率で取得
+
             // ランダムにアイテムを取得（例: 2つ取得）
             int itemsToAward = Mathf.Min(2, targetItems.Count); // 最大2個
             List<Item> awardedItems = new List<Item>();
@@ -239,49 +218,64 @@ public class BattleSystem : MonoBehaviour
             // シャッフルされたリストから最大2つを選択
             for (int i = 0; i < itemsToAward; i++)
             {
-                Item randomItem = shuffledItems[i];
-                awardedItems.Add(randomItem);
-                sourceUnit.Battler.AddItemToInventory(randomItem); // プレイヤーのインベントリに追加
+                bool success = playerUnit.Battler.AddItemToPouch(shuffledItems[i]); // プレイヤーのインベントリに追加
+                if (!success)
+                    playerUnit.Battler.AddItemToInventory(shuffledItems[i]); // プレイヤーのインベントリに追加
             }
 
-            string resultItemMessage = $"{sourceUnit.Battler.Base.Name} obtained ";
+            string itemList = "";
 
             // 獲得したアイテムを表示
             foreach (Item item in awardedItems)
             {
-                resultItemMessage += $"{item.Base.Name},";
+                itemList += $"{item.Base.Name},";
             }
-            sourceUnit.Battler.Money += targetUnit.Battler.Money;
-            sourceUnit.Battler.Disk += targetUnit.Battler.Disk;
+            resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} got {itemList}");
+
+            playerUnit.Battler.Money += enemyUnit.Battler.Money;
+            playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
             if (playerUnit.Battler is PlayerBattler playerBattler)
             {
                 playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
             }
-
-            yield return StartCoroutine(messagePanel.TypeDialog(resultItemMessage));
-            StartCoroutine(messagePanel.TypeDialog($"{playerUnit.Battler.Base.Name} won the battle.."));
         }
         else
         {
-            yield return StartCoroutine(messagePanel.TypeDialog("No items were found on the enemy."));
+            resultItemMessageList.Add("No items were found on the enemy.");
         }
 
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(SetBattleState(BattleState.BattleOver));
+        StartCoroutine(BattleResultView(resultItemMessageList));
     }
 
-    public IEnumerator EnemyAttack()
+    private IEnumerator BattleResultView(List<string> resultItemMessageList)
     {
-        Debug.Log("EnemyAttack");
-        yield return StartCoroutine(AttackAction(enemyUnit, playerUnit));
-        turnOrderSystem.EndTurn();
+        foreach (string message in resultItemMessageList)
+        {
+            yield return StartCoroutine(messagePanel.TypeDialog(message));
+        }
+        yield return new WaitForSeconds(1.5f);
+        BattleEnd();
     }
 
     public void BattleEnd()
     {
+        actionBoard.ChangeExecuteFlg(false);
+        state = BattleState.Standby;
+        activeAction = actionList[0];
+        turnOrderSystem.BattlerEnd();
+        foreach (ActionIcon icon in actionIconList)
+        {
+            Destroy(icon.gameObject);
+        }
+        actionIconList.Clear();
+        actionBoard.ClosePanel();
         enemyUnit.gameObject.SetActive(false);
         playerUnit.SetMotion(MotionType.Move);
-        actionController.CloseAction();
         OnBattleEnd?.Invoke();
+    }
+
+    public void BattleDefeat()
+    {
+        Debug.Log("GameOver");
     }
 }

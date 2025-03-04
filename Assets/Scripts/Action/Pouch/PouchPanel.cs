@@ -10,11 +10,10 @@ public class PouchPanel : Panel
     [SerializeField] GameObject itemList;
     [SerializeField] BattleUnit playerUnit;
 
-    int selectedItem;
+    int selectedItem = 0;
 
-    private void Init()
+    private void Start()
     {
-        selectedItem = 0;
     }
 
     private void OnEnable()
@@ -29,6 +28,43 @@ public class PouchPanel : Panel
         }
     }
 
+    public void Update()
+    {
+        if (isActive)
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SelectItem(true);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SelectItem(false);
+            }
+
+            if (executeFlg)
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    UseItem();
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isActive = false;
+                OnActionExit?.Invoke();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                isActive = true;
+            }
+        }
+    }
+
     private void SetItemUnit()
     {
         foreach (Transform child in itemList.transform)
@@ -38,7 +74,7 @@ public class PouchPanel : Panel
 
         int itemNum = 0;
 
-        foreach (var item in playerUnit.Battler.Inventory)
+        foreach (var item in playerUnit.Battler.Pouch)
         {
             // ItemUnitのインスタンスを生成
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
@@ -49,12 +85,13 @@ public class PouchPanel : Panel
 
             if (itemNum == selectedItem)
             {
-                itemUnit.Targetfoucs(true);
+                itemUnit.SetTarget(true);
             }
 
             itemNum++;
         }
     }
+
     public void SelectItem(bool selectDirection)
     {
         if (itemList.transform.childCount > 0)
@@ -66,9 +103,9 @@ public class PouchPanel : Panel
 
             if (selectedItem != newSelectedItem)
             {
-                itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().Targetfoucs(false);
+                itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().SetTarget(false);
                 // 新しいアイテムを選択状態にする
-                itemList.transform.GetChild(newSelectedItem).GetComponent<ItemUnit>().Targetfoucs(true);
+                itemList.transform.GetChild(newSelectedItem).GetComponent<ItemUnit>().SetTarget(true);
                 selectedItem = newSelectedItem;
             }
 
@@ -92,15 +129,16 @@ public class PouchPanel : Panel
                 if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
                 {
                     playerUnit.Battler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    playerUnit.Battler.Inventory.Remove(targetItemUnit.Item);
+                    playerUnit.Battler.Pouch.Remove(targetItemUnit.Item);
 
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
 
                     var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-                    selectedItemUnit.Targetfoucs(false);
+                    selectedItemUnit.SetTarget(false);
 
                     SetItemUnit();
                     playerUnit.UpdateEnegyUI();
+                    OnActionExecute?.Invoke();
                 }
                 else
                 {

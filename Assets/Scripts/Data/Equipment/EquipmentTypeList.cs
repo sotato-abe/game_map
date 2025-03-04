@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Equipment/EquipmentPartList")]
-public class EquipmentPartList : ScriptableObject
+[CreateAssetMenu(menuName = "Equipment/EquipmentTypeList")]
+public class EquipmentTypeList : ScriptableObject
 {
     [System.Serializable]
-    public class EquipmentPartPair
+    public class EquipmentTypePair
     {
-        public EquipmentPart type;
+        public EquipmentType type;
         public Sprite icon;
     }
 
-    [SerializeField] private List<EquipmentPartPair> equipmentParts;
+    [SerializeField] private List<EquipmentTypePair> equipmentTypes;
 
-    private Dictionary<EquipmentPart, Sprite> equipmentPartDictionary;
+    private Dictionary<EquipmentType, Sprite> equipmentPartDictionary;
 
     private void OnEnable()
     {
@@ -22,9 +22,9 @@ public class EquipmentPartList : ScriptableObject
 
     private void InitDictionary()
     {
-        equipmentPartDictionary = new Dictionary<EquipmentPart, Sprite>();
+        equipmentPartDictionary = new Dictionary<EquipmentType, Sprite>();
 
-        foreach (var pair in equipmentParts)
+        foreach (var pair in equipmentTypes)
         {
             if (!equipmentPartDictionary.ContainsKey(pair.type))
             {
@@ -33,7 +33,7 @@ public class EquipmentPartList : ScriptableObject
         }
     }
 
-    public Sprite GetIcon(EquipmentPart type)
+    public Sprite GetIcon(EquipmentType type)
     {
         if (equipmentPartDictionary == null || equipmentPartDictionary.Count == 0)
         {

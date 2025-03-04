@@ -7,4 +7,5 @@ public enum ActionType
         Bag,
         Deck,
         Escape,
+        Quit,
 }

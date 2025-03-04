@@ -1,9 +1,8 @@
 public enum BattleState
 {
-        Start,
-        TurnWait,
-        ActionSelection,
-        ActionExecution,
-        BattleResult,
-        BattleOver,
+    Standby,
+    TurnWait,
+    ActionSelection,
+    ActionSelected,
+    BattleResult,
 }

@@ -28,7 +28,7 @@ public class CommandPanel : Panel
         RefreshEnegyCost();
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            SetCommandDialog();
+            SetCommandUnit();
             SetEnegyCost();
         }
         else
@@ -37,7 +37,7 @@ public class CommandPanel : Panel
         }
     }
 
-    private void SetCommandDialog()
+    private void SetCommandUnit()
     {
 
         foreach (Transform child in commandList.transform)
@@ -47,9 +47,8 @@ public class CommandPanel : Panel
 
         int commandNum = 0;
 
-        foreach (var command in playerUnit.Battler.Deck)
+        foreach (var command in playerUnit.Battler.RunTable)
         {
-            // CommandUnitのインスタンスを生成
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
             commandUnitObject.gameObject.SetActive(true);
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
