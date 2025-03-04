@@ -6,7 +6,7 @@ using UnityEngine;
 public class EquipmentBase : ScriptableObject
 {
     [SerializeField] new string name;
-    [SerializeField] EquipmentPart part;
+    [SerializeField] EquipmentType type;
     [SerializeField] int life;
     [SerializeField] int battery;
     [SerializeField] int attack;
@@ -23,6 +23,7 @@ public class EquipmentBase : ScriptableObject
     [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
     public string Name { get => name; }
+    public EquipmentType Type { get => type; }
     public int Life { get => life; }
     public int Battery { get => battery; }
     public int Attack { get => attack; }

@@ -5,29 +5,38 @@ using UnityEngine.UI;
 
 public class EquipmentSlot : MonoBehaviour
 {
-    public Equipment Equipment { get; set; }
+    public Equipment equipment { get; set; }
     [SerializeField] Image image;
-    [SerializeField] EquipmentPart equipmentPart;
-    [SerializeField] EquipmentPartList equipmentPartList;
+    [SerializeField] Image maskImage;
+    [SerializeField] Image backImage;
+    [SerializeField] EquipmentType equipmentType;
+    [SerializeField] EquipmentTypeList equipmentTypeList;
 
     public void Start()
     {
-        SetEquipmentPartImage();
+        SetEquipmentTypeImage();
     }
 
-    public virtual void Setup(Equipment equipment)
+    public void Setup(Equipment equipment)
     {
-        // if(parts == equipment.Base.Parts)
-        // {
-        //     Equipment = equipment;
-        //     image.sprite = Equipment.Base.Sprite;
-        // }
-        Equipment = equipment;
-        image.sprite = Equipment.Base.Sprite;
+        if (equipment.Base.Type == equipmentType)
+        {
+            this.equipment = equipment;
+            Debug.Log($"EquipmentSlot:{equipmentType}:{equipment.Base.Name}");
+            maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 1f);
+            image.sprite = equipment.Base.Sprite;
+        }
     }
 
-    public void SetEquipmentPartImage()
+    public void RemoveEquipment()
     {
-        image.sprite = equipmentPartList.GetIcon(equipmentPart);
+        this.equipment = null;
+        maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 0f);
+        image.sprite = null;
+    }
+
+    public void SetEquipmentTypeImage()
+    {
+        backImage.sprite = equipmentTypeList.GetIcon(equipmentType);
     }
 }

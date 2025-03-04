@@ -74,7 +74,7 @@ public class PouchPanel : Panel
 
         int itemNum = 0;
 
-        foreach (var item in playerUnit.Battler.Inventory)
+        foreach (var item in playerUnit.Battler.Pouch)
         {
             // ItemUnitのインスタンスを生成
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
@@ -129,7 +129,7 @@ public class PouchPanel : Panel
                 if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
                 {
                     playerUnit.Battler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    playerUnit.Battler.Inventory.Remove(targetItemUnit.Item);
+                    playerUnit.Battler.Pouch.Remove(targetItemUnit.Item);
 
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
 
