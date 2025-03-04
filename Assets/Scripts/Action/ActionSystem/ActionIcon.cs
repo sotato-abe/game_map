@@ -6,12 +6,13 @@ using TMPro;
 
 public class ActionIcon : MonoBehaviour
 {
-    [SerializeField] private Image actionImage;
+    [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] ActionIconList actionIconList;
+
 
     public ActionType type;
     private bool isActive = false;
-
     private float defaultWidth = 70f;
     private float defaultHeight = 80f;
     private float defaultFontSize = 12f; // デフォルトのフォントサイズ
@@ -27,10 +28,10 @@ public class ActionIcon : MonoBehaviour
 
     public void SetAction(ActionType actionType)
     {
-        text.SetText("");
-        string actionText = System.Enum.GetName(typeof(ActionType), actionType);
-        text.text = actionText;
         type = actionType;
+        image.sprite = actionIconList.GetIcon(type);
+        string actionText = System.Enum.GetName(typeof(ActionType), type);
+        text.text = actionText;
     }
 
     public void SetActive(bool activeFlg)
