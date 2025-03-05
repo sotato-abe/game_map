@@ -35,6 +35,16 @@ public class BagPanel : Panel
 
     public void Update()
     {
+        //BagCategoryを変更
+        if (Input.GetKeyDown(KeyCode.Period))
+        {
+            SelectDialog(true);
+        }
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            SelectDialog(false);
+        }
+        
         if (!isActive)
         {
             //BagPanelを有効化
@@ -45,15 +55,6 @@ public class BagPanel : Panel
         }
         else
         {
-            //BagPanelを操作
-            if (Input.GetKeyDown(KeyCode.Period))
-            {
-                SelectDialog(true);
-            }
-            if (Input.GetKeyDown(KeyCode.Comma))
-            {
-                SelectDialog(false);
-            }
             //BagPanelを無効化
             if (Input.GetKeyDown(KeyCode.Escape))
             {
