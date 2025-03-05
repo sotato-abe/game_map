@@ -37,7 +37,7 @@ public class BattleSystem : MonoBehaviour
         actionBoard.OnExitBattleAction += () => state = BattleState.ActionSelection;
         attackSystem.OnBattleResult += BattleResult;
         attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
-        attackSystem.OnBattleDefeat += () => Debug.Log("GameOver");
+        attackSystem.OnBattleDefeat += BattleDefeat;
     }
 
     private void SetActionList()
@@ -193,47 +193,37 @@ public class BattleSystem : MonoBehaviour
     public void BattleResult()
     {
         actionBoard.ChangeExecuteFlg(false);
+        List<Item> targetItems = enemyUnit.Battler.Inventory;
         List<string> resultItemMessageList = new List<string>();
         resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
-        List<Item> targetItems = enemyUnit.Battler.Inventory;
 
         if (targetItems != null && targetItems.Count > 0)
         {
-            // TODO : アイテムからそれぞれのレア度を考慮して確率で取得
-
-            // ランダムにアイテムを取得（例: 2つ取得）
-            int itemsToAward = Mathf.Min(2, targetItems.Count); // 最大2個
+            string itemList = "";
             List<Item> awardedItems = new List<Item>();
 
-            // アイテムリストをシャッフル
-            List<Item> shuffledItems = new List<Item>(targetItems);
-            for (int i = 0; i < shuffledItems.Count; i++)
+            foreach (Item item in targetItems)
             {
-                Item temp = shuffledItems[i];
-                int randomIndex = Random.Range(i, shuffledItems.Count);
-                shuffledItems[i] = shuffledItems[randomIndex];
-                shuffledItems[randomIndex] = temp;
+                // TODO：アイテムのレア度によって取得確率を変える
+                if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
+                {
+                    bool success = playerUnit.Battler.AddItemToPouch(item); // プレイヤーのインベントリに追加
+                    if (!success)
+                    {
+                        playerUnit.Battler.AddItemToInventory(item);
+                    }
+                    itemList += $"{item.Base.Name},";
+                }
             }
 
-            // シャッフルされたリストから最大2つを選択
-            for (int i = 0; i < itemsToAward; i++)
+            if (itemList != "")
             {
-                bool success = playerUnit.Battler.AddItemToPouch(shuffledItems[i]); // プレイヤーのインベントリに追加
-                if (!success)
-                    playerUnit.Battler.AddItemToInventory(shuffledItems[i]); // プレイヤーのインベントリに追加
+                resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} got {itemList}");
             }
-
-            string itemList = "";
-
-            // 獲得したアイテムを表示
-            foreach (Item item in awardedItems)
-            {
-                itemList += $"{item.Base.Name},";
-            }
-            resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} got {itemList}");
 
             playerUnit.Battler.Money += enemyUnit.Battler.Money;
             playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
+
             if (playerUnit.Battler is PlayerBattler playerBattler)
             {
                 playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す

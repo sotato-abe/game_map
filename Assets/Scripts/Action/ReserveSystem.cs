@@ -58,7 +58,6 @@ public class ReserveSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                Debug.Log($"ReserveSystem:Return");
                 state = ReserveState.ActionSelected;
             }
         }

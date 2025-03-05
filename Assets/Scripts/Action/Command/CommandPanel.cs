@@ -12,6 +12,7 @@ public class CommandPanel : Panel
     [SerializeField] TextMeshProUGUI batteryCostText;
     [SerializeField] TextMeshProUGUI soulCostText;
     [SerializeField] BattleUnit playerUnit;
+    [SerializeField] AttackSystem attackSystem;
 
     private int lifeCost = 0;
     private int batteryCost = 0;
@@ -36,9 +37,20 @@ public class CommandPanel : Panel
             Debug.LogWarning("playerUnit or its properties are not initialized.");
         }
     }
+    public void Update()
+    {
+        if (executeFlg)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                ExecuteCommand();
+            }
+        }
+    }
 
     private void SetCommandUnit()
     {
+        commandUnitList.Clear();
 
         foreach (Transform child in commandList.transform)
         {
@@ -52,6 +64,7 @@ public class CommandPanel : Panel
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
             commandUnitObject.gameObject.SetActive(true);
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
+            commandUnitList.Add(commandUnit);
             commandUnit.Setup(command);
             CountEnegyCost(command);
             commandNum++;
@@ -92,5 +105,61 @@ public class CommandPanel : Panel
         lifeCostText.SetText($"{lifeCost}");
         batteryCostText.SetText($"{batteryCost}");
         soulCostText.SetText($"{soulCost}");
+    }
+
+    private void ExecuteCommand()
+    {
+        List<EnchantCount> enchants = ActivateCommands();
+        attackSystem.ExecutePlayerCommand(enchants);
+    }
+
+    public List<EnchantCount> ActivateCommands()
+    {
+        List<EnchantCount> enchants = new List<EnchantCount>();
+
+        foreach (CommandUnit commandUnit in commandUnitList)
+        {
+            if (CheckEnegy(commandUnit) == false)
+            {
+                continue;
+            }
+
+            UseEnegy(commandUnit);
+
+            TargetType target = commandUnit.command.Base.TargetType;
+            Debug.Log($"target:{target}");
+
+            foreach (var enchant in commandUnit.command.Base.EnchantList)
+            {
+                EnchantCount enchantCount = new EnchantCount(enchant.Type, target, enchant.Val);
+                enchants.Add(enchantCount);
+            }
+        }
+
+        return enchants;
+    }
+
+    public bool CheckEnegy(CommandUnit commandUnit)
+    {
+        if (
+            commandUnit.command.Base.LifeCost.val <= playerUnit.Battler.Life &&
+            commandUnit.command.Base.BatteryCost.val <= playerUnit.Battler.Battery &&
+            commandUnit.command.Base.SoulCost.val <= playerUnit.Battler.Soul
+        )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void UseEnegy(CommandUnit commandUnit)
+    {
+        playerUnit.Battler.Life -= commandUnit.command.Base.LifeCost.val;
+        playerUnit.Battler.Battery -= commandUnit.command.Base.BatteryCost.val;
+        playerUnit.Battler.Soul -= commandUnit.command.Base.SoulCost.val;
+        playerUnit.UpdateEnegyUI();
     }
 }

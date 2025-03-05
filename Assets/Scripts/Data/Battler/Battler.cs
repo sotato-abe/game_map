@@ -63,6 +63,7 @@ public class Battler
         Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
         Deck = new List<Command>();
+        Enchants = new List<Enchant>();
         Storage = new List<Command>();
 
         if (_base.Birthplace != null)
@@ -88,6 +89,7 @@ public class Battler
         }
     }
 
+    // ライフを割り切るときにfalseを返す（isAlive）
     public void TakeDamage(List<Damage> damageList)
     {
         foreach (Damage damage in damageList)
@@ -109,6 +111,25 @@ public class Battler
             }
         }
     }
+
+    public void TakeEnchant(List<Enchant> enchantList)
+    {
+        foreach (Enchant enchant in enchantList)
+        {
+            Enchant existingEnchant = Enchants.Find(e => e.Type == enchant.Type);
+            if (existingEnchant != null)
+            {
+                // 既存のEnchantの値を加算
+                existingEnchant.Val += enchant.Val;
+            }
+            else
+            {
+                // 新規追加
+                Enchants.Add(new Enchant(enchant.Type, enchant.Val));
+            }
+        }
+    }
+
 
     public bool AddItemToPouch(Item item)
     {
