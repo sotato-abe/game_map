@@ -38,6 +38,55 @@ public class AttackSystem : MonoBehaviour
         }
     }
 
+    public void ExecutePlayerCommand(List<EnchantCount> enchantCounts)
+    {
+        if (0 < enchantCounts.Count)
+        {
+            List<Enchant> playerEnchants = new List<Enchant>();
+            List<Enchant> enemyEnchants = new List<Enchant>();
+
+            foreach (EnchantCount enchantCount in enchantCounts)
+            {
+                if (enchantCount.Target == TargetType.Own || enchantCount.Target == TargetType.Ally || enchantCount.Target == TargetType.All)
+                {
+                    Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
+                    playerEnchants.Add(enchant);
+
+                }
+                if (enchantCount.Target == TargetType.Opponent || enchantCount.Target == TargetType.Enemy || enchantCount.Target == TargetType.All)
+                {
+                    Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
+                    enemyEnchants.Add(enchant);
+                }
+            }
+            if (playerEnchants.Count > 0)
+            {
+                Debug.Log($"enchantCount:{playerEnchants.Count}");
+                playerUnit.Battler.TakeEnchant(playerEnchants);
+                playerUnit.UpdateEnegyUI();
+                playerUnit.SetMotion(MotionType.Shake);
+            }
+            if (enemyEnchants.Count > 0)
+            {
+                enemyUnit.Battler.TakeEnchant(enemyEnchants);
+                enemyUnit.UpdateEnegyUI();
+                enemyUnit.SetMotion(MotionType.Shake);
+            }
+        }
+        if (playerUnit.Battler.Life <= 0)
+        {
+            OnBattleDefeat?.Invoke();
+        }
+        if (enemyUnit.Battler.Life <= 0)
+        {
+            OnBattleResult?.Invoke();
+        }
+        else
+        {
+            OnExecuteBattleAction?.Invoke();
+        }
+    }
+
     public void ExecuteEnemyAttack()
     {
         List<Damage> damages = new List<Damage>();

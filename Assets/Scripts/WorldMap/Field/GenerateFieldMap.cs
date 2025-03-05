@@ -57,8 +57,6 @@ public class GenerateFieldMap : MonoBehaviour
     {
         characterDirection = entryDirection;
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerCoordinate);
-        Debug.Log($"Coordinate:Row: {playerCoordinate.row}, Col: {playerCoordinate.col}");
-        Debug.Log($"ReloadMap floorType:{fieldData.floorType}");
         ClearMap(); // 現在のマップをクリア
         GenarateMap();
     }
@@ -293,7 +291,6 @@ public class GenerateFieldMap : MonoBehaviour
     {
         tileSet = floorTiles[(int)fieldData.floorType];
         tileSize = tileSet.Floor.bounds.size.x; // タイルサイズを取得
-        // Debug.Log($"TileType:{tileSet.Type}");
         mapCenterPos = new Vector2(width * tileSize / 2, height * tileSize / 2); // マップの中心座標を計算
 
         for (int x = 0; x < width; x++)

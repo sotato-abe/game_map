@@ -116,7 +116,6 @@ public class AttackPanel : Panel
 
     public List<Damage> ActivateEquipments()
     {
-        Debug.Log("equipmentUnitList.Count:" + equipmentUnitList.Count);
         List<Damage> damages = new List<Damage>();
 
         foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
@@ -136,8 +135,6 @@ public class AttackPanel : Panel
                 equipmentUnit.SetEquipmentMotion(EquipmentUnitMotionType.Jump);
             }
         }
-
-        Debug.Log($"ActivateEquipments:skills:{damages.Count}");
 
         return damages;
     }
