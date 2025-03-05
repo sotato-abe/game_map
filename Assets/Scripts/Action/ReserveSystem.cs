@@ -24,6 +24,7 @@ public class ReserveSystem : MonoBehaviour
     {
         actionList.Add(ActionType.Bag);
         actionList.Add(ActionType.Deck);
+        actionList.Add(ActionType.Status);
         actionList.Add(ActionType.Quit);
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
@@ -110,6 +111,9 @@ public class ReserveSystem : MonoBehaviour
 
             case ActionType.Deck:
                 Debug.Log("Deck を開く処理を実行");
+                break;
+            case ActionType.Status:
+                Debug.Log("Status を開く処理を実行");
                 break;
 
             case ActionType.Quit:
