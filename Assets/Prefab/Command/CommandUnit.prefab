@@ -277,7 +277,7 @@ MonoBehaviour:
   enchantList: {fileID: 6749829272488986800}
   costList: {fileID: 8762432885456871895}
   enchantPrefab: {fileID: 8622350729763964468, guid: ba2022424263edc459a04f4bb512c871, type: 3}
-  costPrefab: {fileID: 1212935942699164278, guid: 2c47637378fcada4ab9d4c9638e7f0e2, type: 3}
+  enegyPrefab: {fileID: 1212935942699164278, guid: 2c47637378fcada4ab9d4c9638e7f0e2, type: 3}
   commandDialog: {fileID: 4735354907922209027}
 --- !u!1 &1807350101541421182
 GameObject:
@@ -1185,6 +1185,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6844075859393910331, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844075859393910331, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844075859393910331, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6844075859393910331, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6895285115160979336, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7886105917884991114, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1229,7 +1249,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dialog
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 430145559518200675, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
 --- !u!114 &4735354907922209027 stripped
 MonoBehaviour:

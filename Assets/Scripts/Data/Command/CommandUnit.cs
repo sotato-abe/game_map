@@ -10,7 +10,7 @@ public class CommandUnit : MonoBehaviour
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
-    [SerializeField] CostIcon costPrefab;
+    [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] CommandDialog commandDialog;
 
     public virtual void Setup(Command command)
@@ -66,10 +66,10 @@ public class CommandUnit : MonoBehaviour
         {
             if (0 < cost.val)
             {
-                CostIcon costObject = Instantiate(costPrefab, costList.transform);
-                costObject.gameObject.SetActive(true);
-                CostIcon costUnit = costObject.GetComponent<CostIcon>();
-                costUnit.SetCostIcon(cost);
+                EnegyIcon enegyObject = Instantiate(enegyPrefab, costList.transform);
+                enegyObject.gameObject.SetActive(true);
+                EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
+                enegyUnit.SetCostIcon(cost);
             }
         }
     }

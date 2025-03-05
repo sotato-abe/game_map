@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CostIcon : MonoBehaviour
+public class EnegyIcon : MonoBehaviour
 {
     [SerializeField] Image image;
     [SerializeField] private TextMeshProUGUI text;

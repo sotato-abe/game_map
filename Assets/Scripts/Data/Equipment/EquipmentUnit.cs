@@ -10,7 +10,7 @@ public class EquipmentUnit : MonoBehaviour
     [SerializeField] GameObject skillList;
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
-    [SerializeField] CostIcon costPrefab;
+    [SerializeField] EnegyIcon costPrefab;
     [SerializeField] EquipmentDialog equipmentDialog;
 
     public virtual void Setup(Equipment equipment)
@@ -44,9 +44,9 @@ public class EquipmentUnit : MonoBehaviour
 
         foreach (Enegy attack in equipment.Base.AttackList)
         {
-            CostIcon attackObject = Instantiate(costPrefab, skillList.transform);
+            EnegyIcon attackObject = Instantiate(costPrefab, skillList.transform);
             attackObject.gameObject.SetActive(true);
-            CostIcon attackUnit = attackObject.GetComponent<CostIcon>();
+            EnegyIcon attackUnit = attackObject.GetComponent<EnegyIcon>();
             attackUnit.SetCostIcon(attack);
         }
         foreach (Enchant enchant in equipment.Base.EnchantList)
@@ -55,13 +55,6 @@ public class EquipmentUnit : MonoBehaviour
             enchantObject.gameObject.SetActive(true);
             EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
             enchantUnit.SetEnchant(enchant);
-        }
-        foreach (Enegy enegy in equipment.CostList)
-        {
-            CostIcon costObject = Instantiate(costPrefab, skillList.transform);
-            costObject.gameObject.SetActive(true);
-            CostIcon costUnit = costObject.GetComponent<CostIcon>();
-            costUnit.SetCostIcon(enegy);
         }
     }
 
@@ -77,10 +70,10 @@ public class EquipmentUnit : MonoBehaviour
         {
             if (0 < cost.val)
             {
-                CostIcon costObject = Instantiate(costPrefab, costList.transform);
-                costObject.gameObject.SetActive(true);
-                CostIcon costUnit = costObject.GetComponent<CostIcon>();
-                costUnit.SetCostIcon(cost);
+                EnegyIcon enegyObject = Instantiate(costPrefab, costList.transform);
+                enegyObject.gameObject.SetActive(true);
+                EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
+                enegyUnit.SetCostIcon(cost);
             }
         }
     }

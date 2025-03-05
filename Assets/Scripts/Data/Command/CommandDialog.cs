@@ -11,7 +11,7 @@ public class CommandDialog : Dialog
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
-    [SerializeField] CostIcon costPrefab;
+    [SerializeField] EnegyIcon costPrefab;
 
 
     void Start()
@@ -59,10 +59,10 @@ public class CommandDialog : Dialog
         {
             if (0 < cost.val)
             {
-                CostIcon costObject = Instantiate(costPrefab, costList.transform);
-                costObject.gameObject.SetActive(true);
-                CostIcon costUnit = costObject.GetComponent<CostIcon>();
-                costUnit.SetCostIcon(cost);
+                EnegyIcon enegyObject = Instantiate(costPrefab, costList.transform);
+                enegyObject.gameObject.SetActive(true);
+                EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
+                enegyUnit.SetCostIcon(cost);
             }
         }
     }

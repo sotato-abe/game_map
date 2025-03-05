@@ -9,6 +9,14 @@ public class StatusPanel : Panel
 {
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] CharacterCard characterCard;
+    [SerializeField] GameObject enegyList;
+    [SerializeField] GameObject statusList;
+    [SerializeField] GameObject storageList;
+    [SerializeField] GameObject abilityList;
+    [SerializeField] EnegyIcon enegyIconPrefab;
+    // [SerializeField] StatusIcon statusIconPrefab;
+    [SerializeField] EnegyIcon enchantIconPrefab;
+
 
     private Battler battler;
 
@@ -69,6 +77,6 @@ public class StatusPanel : Panel
 
     private void SetAbility()
     {
-        
+
     }
 }
