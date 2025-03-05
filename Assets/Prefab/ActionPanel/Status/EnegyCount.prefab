@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1636656232038531407}
   - component: {fileID: 4758215934113360597}
+  - component: {fileID: 724495618032016475}
   m_Layer: 5
   m_Name: EnegyCount
   m_TagString: Untagged
@@ -47,6 +48,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2587111441730976587}
   m_CullTransparentMesh: 1
+--- !u!114 &724495618032016475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2587111441730976587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075ef374865fab7478885e2b66eefd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1364672782912308613}
+  text: {fileID: 9048136044339352478}
+  enegyIconList: {fileID: 11400000, guid: 2cf861fee1c91ce4b80a73943b1c4112, type: 2}
 --- !u!1 &5042490636004730174
 GameObject:
   m_ObjectHideFlags: 0

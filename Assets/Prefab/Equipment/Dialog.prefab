@@ -93,7 +93,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 908512612969957457}
+  - {fileID: 5370302610216995355}
   m_Father: {fileID: 17825801417880691}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -572,10 +572,10 @@ MonoBehaviour:
   description: {fileID: 1018571976516136955}
   enchantList: {fileID: 89747333108274652}
   costList: {fileID: 2508011912876010623}
-  enegyIcon: {fileID: 8681941864015157636, guid: 029abe508f2cb384789b4e045c85d73d, type: 3}
+  enegyPrefab: {fileID: 8681941864015157636, guid: 029abe508f2cb384789b4e045c85d73d, type: 3}
   enchantIcon: {fileID: 1197513031629182013, guid: eba4909821cc82c4f9105f52b67899bd, type: 3}
   costPrefab: {fileID: 1212935942699164278, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
---- !u!1001 &5137969564354690943
+--- !u!1001 &94917220693327157
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -600,19 +600,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5464576573043144494, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5464576573043144494, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5464576573043144494, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5464576573043144494, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5464576573043144494, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
       propertyPath: m_SizeDelta.x
@@ -672,10 +672,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
---- !u!224 &908512612969957457 stripped
+--- !u!224 &5370302610216995355 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5464576573043144494, guid: de9d0892e0ce7ed42873098684deb208, type: 3}
-  m_PrefabInstance: {fileID: 5137969564354690943}
+  m_PrefabInstance: {fileID: 94917220693327157}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5244104978701812203
 PrefabInstance:
