@@ -26,6 +26,16 @@ public class MessagePanel : MonoBehaviour
         StartCoroutine(FadeOutAlpha());
     }
 
+    public void OnPointerEnter()
+    {
+        SetPanelValidity(0.9f);
+    }
+
+    public void OnPointerExit()
+    {
+        SetPanelValidity(0.2f);
+    }
+
     private IEnumerator FadeOutAlpha()
     {
         yield return new WaitForSeconds(5f);
