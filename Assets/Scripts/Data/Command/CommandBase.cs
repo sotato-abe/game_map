@@ -8,9 +8,7 @@ public class CommandBase : ScriptableObject
     // Start is called before the first frame update
     [SerializeField] new string name;
     [SerializeField] CommandType commandType;
-    [SerializeField] EnchantType enchantType; //コマンドがエンチャントのときにタイプとして使用する
-    [SerializeField] int value; // 攻撃の実数
-    [SerializeField] int count; // 攻撃や回復の回数、エンチャントの個数に使用する
+    [SerializeField] TargetType targetType;
     [SerializeField] int lifeCost;
     [SerializeField] int batteryCost;
     [SerializeField] int soulCost;
@@ -20,9 +18,7 @@ public class CommandBase : ScriptableObject
 
     public string Name { get => name; }
     public CommandType CommandType { get => commandType; }
-    public EnchantType EnchantType { get => enchantType; }
-    public int Value { get => value; }
-    public int Count { get => count; }
+    public TargetType TargetType { get => targetType; }
     public Enegy LifeCost => new Enegy(EnegyType.Life, lifeCost);
     public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
     public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
