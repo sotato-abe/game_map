@@ -109,13 +109,13 @@ public class CommandPanel : Panel
 
     private void ExecuteCommand()
     {
-        List<Enchant> enchants = ActivateCommands();
+        List<EnchantCount> enchants = ActivateCommands();
         attackSystem.ExecutePlayerCommand(enchants);
     }
 
-    public List<Enchant> ActivateCommands()
+    public List<EnchantCount> ActivateCommands()
     {
-        List<Enchant> enchants = new List<Enchant>();
+        List<EnchantCount> enchants = new List<EnchantCount>();
 
         foreach (CommandUnit commandUnit in commandUnitList)
         {
@@ -126,9 +126,13 @@ public class CommandPanel : Panel
 
             UseEnegy(commandUnit);
 
+            TargetType target = commandUnit.command.Base.TargetType;
+            Debug.Log($"target:{target}");
+
             foreach (var enchant in commandUnit.command.Base.EnchantList)
             {
-                enchants.Add(enchant);
+                EnchantCount enchantCount = new EnchantCount(enchant.Type, target, enchant.Val);
+                enchants.Add(enchantCount);
             }
         }
 
