@@ -7,6 +7,21 @@ using UnityEngine.Events;
 
 public class StatusPanel : Panel
 {
+    [SerializeField] BattleUnit playerUnit;
+    [SerializeField] CharacterCard characterCard;
+
+    private Battler battler;
+
+    private void Start()
+    {
+        Setup();
+    }
+
+    private void OnEnable()
+    {
+        Setup();
+    }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Return))
@@ -24,5 +39,36 @@ public class StatusPanel : Panel
     {
         isActive = false;
         OnActionExecute?.Invoke();
+    }
+
+    private void Setup()
+    {
+        this.battler = playerUnit.Battler;
+        SetCharacterCard();
+    }
+
+    private void SetCharacterCard()
+    {
+        characterCard.SetCharacter(battler);
+    }
+
+    private void SetEnegy()
+    {
+
+    }
+
+    private void SetStatus()
+    {
+
+    }
+
+    private void SetEnchant()
+    {
+
+    }
+
+    private void SetAbility()
+    {
+        
     }
 }
