@@ -29,7 +29,7 @@ public class BagPanel : Panel
     private void OnEnable()
     {
         inventoryDialog.SetItemUnit();
-        pouchWindow.SetItemUnit(playerUnit.Battler.Pouch);
+        pouchWindow.SetItemUnit(playerUnit.Battler.PouchList);
         equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
     }
 

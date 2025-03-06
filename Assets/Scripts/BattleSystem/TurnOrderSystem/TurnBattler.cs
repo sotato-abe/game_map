@@ -23,7 +23,7 @@ public class TurnBattler : MonoBehaviour
     public void SetBattler(Battler targetBattler)
     {
         battler = targetBattler;
-        interval = Mathf.Max(0.5f, 10f / battler.Base.Speed); // 最小0.5秒の待機時間を確保
+        interval = Mathf.Max(0.5f, 10f / battler.Base.Speed.val); // 最小0.5秒の待機時間を確保
 
         // 既にコルーチンが動作している場合は停止
         if (generateIconCoroutine != null)
