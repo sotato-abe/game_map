@@ -13,12 +13,7 @@ public class EnegyIcon : MonoBehaviour
     public void SetCostIcon(Enegy cost)
     {
         text.text = cost.val.ToString();
-        SetCostIcon(cost.type);
-    }
-
-    public void SetCostIcon(EnegyType type)
-    {
-        image.sprite = enegyIconList.GetIcon(type);
+        image.sprite = enegyIconList.GetIcon(cost.type);
     }
 }
 
