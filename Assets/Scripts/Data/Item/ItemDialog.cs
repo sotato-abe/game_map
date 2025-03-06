@@ -81,6 +81,7 @@ public class ItemDialog : Dialog
         {
             if (0 < cost.val)
             {
+                Debug.Log($"SetCost:{cost.val}:{itemName.text}");
                 EnegyIcon enegyObject = Instantiate(costPrefab, costList.transform);
                 enegyObject.gameObject.SetActive(true);
                 EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
