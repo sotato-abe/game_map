@@ -37,6 +37,7 @@ public class BattleSystem : MonoBehaviour
         actionBoard.OnExitBattleAction += () => state = BattleState.ActionSelection;
         attackSystem.OnBattleResult += BattleResult;
         attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
+        attackSystem.OnBattleEscape += BattleEscape;
         attackSystem.OnBattleDefeat += BattleDefeat;
     }
 
@@ -165,7 +166,6 @@ public class BattleSystem : MonoBehaviour
 
             case ActionType.Escape:
                 Debug.Log("Escape を開く処理を実行");
-                BattleEnd();
                 break;
 
             default:
@@ -242,6 +242,17 @@ public class BattleSystem : MonoBehaviour
         {
             yield return StartCoroutine(messagePanel.TypeDialog(message));
         }
+        yield return new WaitForSeconds(1.5f);
+        BattleEnd();
+    }
+
+    private void BattleEscape()
+    {
+        StartCoroutine(EscapeResultView());
+    }
+
+    private IEnumerator EscapeResultView()
+    {
         yield return new WaitForSeconds(1.5f);
         BattleEnd();
     }

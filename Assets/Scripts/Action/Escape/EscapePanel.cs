@@ -8,6 +8,7 @@ using UnityEngine.Events;
 public class EscapePanel : Panel
 {
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private AttackSystem attackSystem;
 
     public void Update()
     {
@@ -28,6 +29,6 @@ public class EscapePanel : Panel
     private void Escape()
     {
         isActive = false;
-        OnActionExecute?.Invoke();
+        attackSystem.ExecutePlayerEscape();
     }
 }
