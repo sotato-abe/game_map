@@ -13,10 +13,9 @@ public class StatusPanel : Panel
     [SerializeField] GameObject statusList;
     [SerializeField] GameObject storageList;
     [SerializeField] GameObject abilityList;
-    [SerializeField] EnegyIcon enegyIconPrefab;
-    // [SerializeField] StatusIcon statusIconPrefab;
-    [SerializeField] EnegyIcon enchantIconPrefab;
-
+    [SerializeField] EnegyIcon enegyCounterPrefab;
+    [SerializeField] StatusIcon statusCounterPrefab;
+    [SerializeField] EnchantIcon enchantIconPrefab;
 
     private Battler battler;
 

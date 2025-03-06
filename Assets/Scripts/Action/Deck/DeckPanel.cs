@@ -66,7 +66,7 @@ public class DeckPanel : Panel
             Destroy(child.gameObject);
         }
 
-        foreach (Command command in playerUnit.Battler.Deck)
+        foreach (Command command in playerUnit.Battler.DeckList)
         {
             CommandSlot commandSlot = Instantiate(commandPrefab, deck.transform);
             commandSlot.gameObject.SetActive(true);
@@ -81,7 +81,7 @@ public class DeckPanel : Panel
             Destroy(child.gameObject);
         }
 
-        foreach (Command command in playerUnit.Battler.Storage)
+        foreach (Command command in playerUnit.Battler.StorageList)
         {
             CommandSlot commandSlot = Instantiate(commandPrefab, storage.transform);
             commandSlot.gameObject.SetActive(true);

@@ -24,7 +24,7 @@ public class InventoryDialog : MonoBehaviour
 
         int itemNum = 0;
 
-        foreach (Item item in playerUnit.Battler.Inventory)
+        foreach (Item item in playerUnit.Battler.BagList)
         {
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
@@ -96,7 +96,7 @@ public class InventoryDialog : MonoBehaviour
                 if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
                 {
                     playerUnit.Battler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    playerUnit.Battler.Inventory.Remove(targetItemUnit.Item);
+                    playerUnit.Battler.BagList.Remove(targetItemUnit.Item);
 
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
 

@@ -193,7 +193,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleResult()
     {
         actionBoard.ChangeExecuteFlg(false);
-        List<Item> targetItems = enemyUnit.Battler.Inventory;
+        List<Item> targetItems = enemyUnit.Battler.BagList;
         List<string> resultItemMessageList = new List<string>();
         resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
 
@@ -207,12 +207,11 @@ public class BattleSystem : MonoBehaviour
                 // TODO：アイテムのレア度によって取得確率を変える
                 if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
                 {
-                    bool success = playerUnit.Battler.AddItemToPouch(item); // プレイヤーのインベントリに追加
-                    if (!success)
+                    bool success = playerUnit.Battler.AddItem(item); // プレイヤーのインベントリに追加
+                    if (success)
                     {
-                        playerUnit.Battler.AddItemToInventory(item);
+                        itemList += $"{item.Base.Name},";
                     }
-                    itemList += $"{item.Base.Name},";
                 }
             }
 

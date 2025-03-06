@@ -17,22 +17,26 @@ public class Battler
     public int Life { get; set; }
     public int MaxBattery { get; set; }
     public int Battery { get; set; }
-    public int Attack { get; set; }
-    public int Technique { get; set; }
-    public int Defense { get; set; }
-    public int Speed { get; set; }
+    
+    public Status Attack { get; set; }
+    public Status Technique { get; set; }
+    public Status Defense { get; set; }
+    public Status Speed { get; set; }
+    public Status Luck { get; set; }
+    public Status Memory { get; set; }
+    public Status Storage { get; set; }
+    public Status Pouch { get; set; }
+    public Status Bag { get; set; }
     public int Money { get; set; }
     public int Disk { get; set; }
     public int Key { get; set; }
-    public int MaxPouchCount { get; set; }
-    public int MaxInventoryCount { get; set; }
-    public int MaxStorageCount { get; set; }
+
     public List<Equipment> Equipments { get; set; }
-    public List<Item> Pouch { get; set; }
-    public List<Item> Inventory { get; set; }
     public List<Command> RunTable { get; set; }
-    public List<Command> Deck { get; set; }
-    public List<Command> Storage { get; set; }
+    public List<Command> DeckList { get; set; }
+    public List<Command> StorageList { get; set; }
+    public List<Item> PouchList { get; set; }
+    public List<Item> BagList { get; set; }
     public List<Enchant> Enchants = new List<Enchant>();
     public Coordinate coordinate;
 
@@ -52,19 +56,22 @@ public class Battler
         Technique = _base.Technique;
         Defense = _base.Defense;
         Speed = _base.Speed;
+        Luck = _base.Luck;
+        Memory = _base.Memory;
+        Storage = _base.Storage;
+        Pouch = _base.Pouch;
+        Bag = _base.Bag;
         Money = _base.Money;
         Disk = _base.Disk;
         Key = _base.Key;
-        MaxPouchCount = _base.MaxPouchCount;
-        MaxInventoryCount = _base.MaxInventoryCount;
-        MaxStorageCount = _base.MaxStorageCount;
+
         Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
-        Pouch = new List<Item>(_base.Pouch ?? new List<Item>());
-        Inventory = new List<Item>(_base.Inventory ?? new List<Item>());
+        PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
+        BagList = new List<Item>(_base.BagList ?? new List<Item>());
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
-        Deck = new List<Command>();
+        DeckList = new List<Command>();
+        StorageList = new List<Command>();
         Enchants = new List<Enchant>();
-        Storage = new List<Command>();
 
         if (_base.Birthplace != null)
             coordinate = _base.Birthplace.Coordinate;
@@ -130,40 +137,33 @@ public class Battler
         }
     }
 
-
-    public bool AddItemToPouch(Item item)
+    public bool AddItem(Item item)
     {
-        // プレイヤーのポーチにアイテムを追加する処理
-        if (Pouch.Count >= MaxPouchCount)
+        if (PouchList.Count < Pouch.val)
         {
-            Debug.Log("Pouch is full.");
+            PouchList.Add(item);
+        }
+        else if (BagList.Count < Bag.val)
+        {
+            BagList.Add(item);
+        }
+        else
+        {
+            Debug.Log("Bag is full.");
             return false;
         }
-        Pouch.Add(item);
-        return true;
-    }
-
-    public bool AddItemToInventory(Item item)
-    {
-        // プレイヤーのインベントリにアイテムを追加する処理
-        if (Inventory.Count >= MaxInventoryCount)
-        {
-            Debug.Log("Inventory is full.");
-            return false;
-        }
-        Inventory.Add(item);
         return true;
     }
 
     public void AddEquipmentToEquipments(Equipment equipment)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
-        Equipments.Add(equipment); // inventory はプレイヤーのインベントリリスト
+        Equipments.Add(equipment); // Bag はプレイヤーのインベントリリスト
     }
 
     public void AddCommandToDeck(Command command)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
-        Deck.Add(command); // inventory はプレイヤーのインベントリリスト
+        DeckList.Add(command); // Bag はプレイヤーのインベントリリスト
     }
 }
