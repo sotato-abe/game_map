@@ -22,10 +22,10 @@ public class BattlerStatusDialog : Dialog
     public virtual void Setup(Battler battler)
     {
         battlerName.SetText(battler.Base.Name);
-        attackText.SetText(battler.Attack.ToString());
-        techniqueText.SetText(battler.Technique.ToString());
-        defenseText.SetText(battler.Defense.ToString());
-        speedText.SetText(battler.Speed.ToString());
+        attackText.SetText(battler.Attack.val.ToString());
+        techniqueText.SetText(battler.Technique.val.ToString());
+        defenseText.SetText(battler.Defense.val.ToString());
+        speedText.SetText(battler.Speed.val.ToString());
 
         ResetList();
         SetEnchant(battler.Enchants);
