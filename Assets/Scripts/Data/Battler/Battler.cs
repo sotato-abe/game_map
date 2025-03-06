@@ -7,9 +7,10 @@ using UnityEngine;
 public class Battler
 {
     [SerializeField] BattlerBase _base;
-    [SerializeField] int level;
-    [SerializeField] int soul;
+    [SerializeField] int level = 1;
+    [SerializeField] int soul = 0;
 
+    private float experience = 0;
     public BattlerBase Base { get => _base; }
     public int Level { get => level; }
     public int Soul { get => soul; set => soul = value; }

@@ -9,6 +9,7 @@ public class StatusPanel : Panel
 {
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] CharacterCard characterCard;
+    [SerializeField] TextMeshProUGUI level;
     [SerializeField] GameObject enegyList;
     [SerializeField] GameObject statusList;
     [SerializeField] GameObject storageList;
@@ -88,6 +89,8 @@ public class StatusPanel : Panel
     {
         ClearTransformChildren(statusList.transform);
         ClearTransformChildren(storageList.transform);
+
+        level.text = battler.Level.ToString();
 
         foreach (Status status in battler.StatusList)
         {

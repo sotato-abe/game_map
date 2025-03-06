@@ -26,6 +26,7 @@ public class AttackSystem : MonoBehaviour
         {
             enemyUnit.Battler.TakeDamage(damages);
             enemyUnit.UpdateEnegyUI();
+            StartCoroutine(enemyUnit.SetTalkMessage("Auch!!"));
             enemyUnit.SetMotion(MotionType.Shake);
         }
         if (enemyUnit.Battler.Life <= 0)
@@ -49,6 +50,7 @@ public class AttackSystem : MonoBehaviour
             {
                 if (enchantCount.Target == TargetType.Own || enchantCount.Target == TargetType.Ally || enchantCount.Target == TargetType.All)
                 {
+                    Debug.Log($"ExecutePlayerCommand:{TargetType.Own}");
                     Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
                     playerEnchants.Add(enchant);
 
@@ -113,6 +115,7 @@ public class AttackSystem : MonoBehaviour
         {
             playerUnit.SetMotion(MotionType.Shake);
             playerUnit.Battler.TakeDamage(damages);
+            StartCoroutine(playerUnit.SetTalkMessage("Dumm,"));
             playerUnit.UpdateEnegyUI();
         }
         if (playerUnit.Battler.Life <= 0)

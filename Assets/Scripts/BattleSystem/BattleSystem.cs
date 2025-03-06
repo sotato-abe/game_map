@@ -193,7 +193,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleResult()
     {
         actionBoard.ChangeExecuteFlg(false);
-        List<Item> targetItems = enemyUnit.Battler.BagList;
+        List<Item> targetItems = enemyUnit.Battler.PouchList;
         List<string> resultItemMessageList = new List<string>();
         resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
 
