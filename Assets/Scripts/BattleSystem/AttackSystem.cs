@@ -20,6 +20,17 @@ public class AttackSystem : MonoBehaviour
         this.enemyUnit = enemyUnit;
     }
 
+    public void ExecutePlayerTalk()
+    {
+        StartCoroutine(enemyUnit.SetTalkMessage("...  "));
+        
+        // TODO : Talkのアクション実装
+        // 確率でクエスト開放する
+        // クエストを受注するとバトルは終了する
+
+        OnExecuteBattleAction?.Invoke();
+    }
+
     public void ExecutePlayerAttack(List<Damage> damages)
     {
         if (0 < damages.Count)
