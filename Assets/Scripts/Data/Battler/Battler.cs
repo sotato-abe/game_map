@@ -40,6 +40,19 @@ public class Battler
     public List<Enchant> Enchants = new List<Enchant>();
     public Coordinate coordinate;
 
+    public List<Status> StatusList => new List<Status>
+    {
+        Attack,
+        Technique,
+        Defense,
+        Speed,
+        Luck,
+        Memory,
+        Storage,
+        Pouch,
+        Bag,
+    };
+
     public virtual void Init()
     {
         if (_base == null)

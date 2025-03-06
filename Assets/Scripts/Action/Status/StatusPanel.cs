@@ -12,12 +12,14 @@ public class StatusPanel : Panel
     [SerializeField] GameObject enegyList;
     [SerializeField] GameObject statusList;
     [SerializeField] GameObject storageList;
+    [SerializeField] GameObject enchantList;
     [SerializeField] GameObject abilityList;
     [SerializeField] EnegyIcon enegyCounterPrefab;
     [SerializeField] StatusIcon statusCounterPrefab;
     [SerializeField] EnchantIcon enchantIconPrefab;
 
     private Battler battler;
+    private List<Enegy> enegyCountList = new List<Enegy>();
 
     private void Start()
     {
@@ -52,6 +54,9 @@ public class StatusPanel : Panel
     {
         this.battler = playerUnit.Battler;
         SetCharacterCard();
+        SetEnegy();
+        SetStatus();
+        SetEnchant();
     }
 
     private void SetCharacterCard()
@@ -61,17 +66,66 @@ public class StatusPanel : Panel
 
     private void SetEnegy()
     {
+        if (enegyCountList.Count > 0)
+        {
+            enegyCountList.Clear();
+        }
+        ClearTransformChildren(enegyList.transform);
 
+        Enegy life = new Enegy(EnegyType.Life, battler.MaxLife);
+        Enegy battery = new Enegy(EnegyType.Battery, battler.MaxBattery);
+        enegyCountList.Add(life);
+        enegyCountList.Add(battery);
+
+        foreach (Enegy enegy in enegyCountList)
+        {
+            EnegyIcon enegyCounterObject = Instantiate(enegyCounterPrefab, enegyList.transform);
+            enegyCounterObject.gameObject.SetActive(true);
+            enegyCounterObject.SetCostIcon(enegy);
+        }
     }
-
     private void SetStatus()
     {
+        ClearTransformChildren(statusList.transform);
+        ClearTransformChildren(storageList.transform);
 
+        foreach (Status status in battler.StatusList)
+        {
+            Transform parent = GetTargetParent(status.type);
+            if (parent == null) continue;
+
+            StatusIcon statusCounterObject = Instantiate(statusCounterPrefab, parent);
+            statusCounterObject.gameObject.SetActive(true);
+            statusCounterObject.SetStatusIcon(status);
+        }
     }
 
+    private void ClearTransformChildren(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private Transform GetTargetParent(StatusType type)
+    {
+        return (type == StatusType.ATK || type == StatusType.TEC ||
+                type == StatusType.DEF || type == StatusType.SPD || type == StatusType.LUK)
+                ? statusList.transform
+                : (type == StatusType.MMR || type == StatusType.BAG)
+                ? storageList.transform
+                : null;
+    }
     private void SetEnchant()
     {
-
+        ClearTransformChildren(enchantList.transform);
+        foreach (Enchant enchant in battler.Enchants)
+        {
+            EnchantIcon enchantCounter = Instantiate(enchantIconPrefab, enchantList.transform);
+            enchantCounter.gameObject.SetActive(true);
+            enchantCounter.SetEnchant(enchant);
+        }
     }
 
     private void SetAbility()
