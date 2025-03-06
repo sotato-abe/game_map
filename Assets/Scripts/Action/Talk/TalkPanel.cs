@@ -7,17 +7,21 @@ using UnityEngine.Events;
 
 public class TalkPanel : Panel
 {
+    [SerializeField] AttackSystem attackSystem;
+
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (executeFlg)
         {
-            Escape();
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                TalkExecute();
+            }
         }
     }
 
-    private void Escape()
+    private void TalkExecute()
     {
-        isActive = false;
-        OnActionExecute?.Invoke();
+        attackSystem.ExecutePlayerTalk();
     }
 }
