@@ -8,6 +8,7 @@ public class EquipmentDialog : Dialog
 {
     [SerializeField] private TextMeshProUGUI equipmentName;
     [SerializeField] private TextMeshProUGUI description;
+    [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnegyIcon enegyPrefab;
@@ -24,6 +25,7 @@ public class EquipmentDialog : Dialog
     {
         equipmentName.text = equipment.Base.Name;
         description.text = equipment.Base.Description;
+        probability.SetText($"{equipment.Base.Probability}%");
         ResetSkillList();
         SetAttack(equipment.Base.AttackList);
         SetEnchant(equipment.Base.EnchantList);
