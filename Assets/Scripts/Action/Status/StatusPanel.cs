@@ -9,9 +9,9 @@ public class StatusPanel : Panel
 {
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] CharacterCard characterCard;
-    [SerializeField] TextMeshProUGUI life;
-    [SerializeField] TextMeshProUGUI battery;
-    [SerializeField] TextMeshProUGUI soul;
+    [SerializeField] BattlerEnegyBar life;
+    [SerializeField] BattlerEnegyBar battery;
+    [SerializeField] BattlerEnegyBar soul;
     [SerializeField] TextMeshProUGUI level;
     [SerializeField] GameObject enegyList;
     [SerializeField] GameObject statusList;
@@ -76,10 +76,10 @@ public class StatusPanel : Panel
         }
         ClearTransformChildren(enegyList.transform);
 
-        this.life.text = battler.Life.ToString();
-        this.battery.text = battler.Battery.ToString();
-        this.soul.text = battler.Soul.ToString();
-        
+        this.life.SetEnegy(EnegyType.Life, battler.MaxLife, battler.Life);
+        this.battery.SetEnegy(EnegyType.Battery, battler.MaxBattery, battler.Battery);
+        this.soul.SetEnegy(EnegyType.Soul, 100, battler.Soul);
+
         Enegy life = new Enegy(EnegyType.Life, battler.MaxLife);
         Enegy battery = new Enegy(EnegyType.Battery, battler.MaxBattery);
         enegyCountList.Add(life);
