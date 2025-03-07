@@ -103,8 +103,8 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SetupBattlers(Battler player, Battler enemy)
     {
-        enemyUnit.Setup(enemy);
         enemyUnit.gameObject.SetActive(true);
+        enemyUnit.Setup(enemy);
         enemyUnit.SetMotion(MotionType.Jump);
         enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
         playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
