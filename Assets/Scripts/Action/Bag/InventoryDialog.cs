@@ -99,9 +99,11 @@ public class InventoryDialog : MonoBehaviour
                     playerUnit.Battler.BagList.Remove(targetItemUnit.Item);
 
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
-
-                    var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-                    selectedItemUnit.SetTarget(false);
+                    if (selectedItem > 0)
+                    {
+                        var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
+                        selectedItemUnit.SetTarget(false);
+                    }
 
                     SetItemUnit();
                     playerUnit.UpdateEnegyUI();
