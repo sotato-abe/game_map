@@ -98,10 +98,10 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.TurnWait;
         SetActionList();
-        StartCoroutine(SetupBattlers(player, enemy));
+        SetupBattlers(player, enemy);
     }
 
-    public IEnumerator SetupBattlers(Battler player, Battler enemy)
+    public void SetupBattlers(Battler player, Battler enemy)
     {
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.Setup(enemy);
@@ -113,8 +113,7 @@ public class BattleSystem : MonoBehaviour
         turnOrderSystem.SetUpBattlerTurns(new List<Battler> { player, enemy });
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
-
-        yield return messagePanel.TypeDialog($"{enemy.Base.Name} is coming!!");
+        messagePanel.AddMesageList($"{enemy.Base.Name} is coming!!");
     }
 
     public void StartActionSelection()
@@ -240,7 +239,7 @@ public class BattleSystem : MonoBehaviour
     {
         foreach (string message in resultItemMessageList)
         {
-            yield return StartCoroutine(messagePanel.TypeDialog(message));
+            messagePanel.AddMesageList(message);
         }
         yield return new WaitForSeconds(1.5f);
         BattleEnd();

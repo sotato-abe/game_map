@@ -12,7 +12,10 @@ public class MessagePanel : MonoBehaviour
     [SerializeField] Image panel;
     [SerializeField] Image dialogBackground;
     [SerializeField] Image logBtn;
+
+    private List<string> messageList = new List<string>();
     private Coroutine fadeCoroutine;
+    private Coroutine messageCoroutine;
 
     public IEnumerator TypeDialog(string line)
     {
@@ -24,6 +27,31 @@ public class MessagePanel : MonoBehaviour
             yield return new WaitForSeconds(letterPerSecond);
         }
         StartCoroutine(FadeOutAlpha());
+    }
+
+    public void AddMesageList(string message)
+    {
+        messageList.Add(message);
+        if (messageCoroutine == null)
+        {
+            messageCoroutine = StartCoroutine(TypeMessageList());
+        }
+    }
+
+    // メッセージリストのmessageをTypeしていく
+    private IEnumerator TypeMessageList()
+    {
+        while (messageList.Count > 0)
+        {
+            string message = messageList[0]; // 先頭のメッセージを取得
+            yield return TypeDialog(message);
+
+            yield return new WaitForSeconds(2f);
+
+            messageList.RemoveAt(0); // タイプし終わったメッセージを削除
+        }
+
+        messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
     }
 
     public void OnPointerEnter()
