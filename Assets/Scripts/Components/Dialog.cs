@@ -8,6 +8,7 @@ public class Dialog : MonoBehaviour
     Vector3 originalScale = new Vector3(1f, 1f, 1f);
     Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
 
+    private Coroutine dialogCoroutine;
 
     private void Start()
     {
@@ -19,11 +20,14 @@ public class Dialog : MonoBehaviour
         if (showFlg)
         {
             transform.gameObject.SetActive(true);
-            StartCoroutine(OpenDialog());
+            dialogCoroutine = StartCoroutine(OpenDialog());
         }
         else
         {
-            StartCoroutine(CloseDialog());
+            if (dialogCoroutine == null)
+            {
+                dialogCoroutine = StartCoroutine(CloseDialog());
+            }
             transform.gameObject.SetActive(false);
         }
     }
@@ -38,6 +42,7 @@ public class Dialog : MonoBehaviour
             yield return null;
         }
         transform.localScale = targetScale;
+        dialogCoroutine = null;
     }
 
     private IEnumerator CloseDialog()
@@ -50,5 +55,6 @@ public class Dialog : MonoBehaviour
             yield return null;
         }
         transform.localScale = originalScale;
+        dialogCoroutine = null;
     }
 }

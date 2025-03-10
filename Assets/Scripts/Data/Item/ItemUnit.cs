@@ -18,7 +18,6 @@ public class ItemUnit : MonoBehaviour, IDragHandler
         image.sprite = Item.Base.Sprite;
         itemDialog.gameObject.SetActive(true);
         itemDialog.Setup(Item);
-        itemDialog.ShowDialog(false);
     }
 
     public void OnDrag(PointerEventData eventData)

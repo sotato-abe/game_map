@@ -16,7 +16,7 @@ public class ItemDialog : Dialog
 
     void Start()
     {
-        ShowDialog(false);
+        transform.gameObject.SetActive(false);
     }
 
     public virtual void Setup(Item item)
