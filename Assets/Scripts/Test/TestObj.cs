@@ -4,22 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemUnit : MonoBehaviour, IDragHandler
+public class TestObj : MonoBehaviour, IDragHandler
 {
     public Item Item { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image dialogBackground;
     [SerializeField] ItemDialog itemDialog;
     private bool isActive = false;
-
-    public virtual void Setup(Item item)
-    {
-        Item = item;
-        image.sprite = Item.Base.Sprite;
-        itemDialog.gameObject.SetActive(true);
-        itemDialog.Setup(Item);
-        itemDialog.ShowDialog(false);
-    }
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -29,12 +20,14 @@ public class ItemUnit : MonoBehaviour, IDragHandler
 
     public void OnPointerEnter()
     {
+        Debug.Log("OnPointerEnter");
         itemDialog.ShowDialog(true);
         StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
+        Debug.Log("OnPointerExit");
         itemDialog.ShowDialog(false);
         StartCoroutine(OnPointer(false));
     }
@@ -69,7 +62,7 @@ public class ItemUnit : MonoBehaviour, IDragHandler
         }
     }
 
-    public void SetTarget(bool activeFlg)
+        public void SetTarget(bool activeFlg)
     {
         if (isActive == activeFlg) return;
         isActive = activeFlg;

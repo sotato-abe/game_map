@@ -14,8 +14,19 @@ public class MessagePanel : MonoBehaviour
     [SerializeField] Image logBtn;
 
     private List<string> messageList = new List<string>();
+    private List<string> messageLog = new List<string>();
     private Coroutine fadeCoroutine;
     private Coroutine messageCoroutine;
+
+    public void OnPointerEnter()
+    {
+        SetPanelValidity(0.9f);
+    }
+
+    public void OnPointerExit()
+    {
+        SetPanelValidity(0.2f);
+    }
 
     public IEnumerator TypeDialog(string line)
     {
@@ -54,14 +65,10 @@ public class MessagePanel : MonoBehaviour
         messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
     }
 
-    public void OnPointerEnter()
+    //100件以上追加されたときは古いものから削除する機能をつけてください
+    private void AddMessageLog(string message)
     {
-        SetPanelValidity(0.9f);
-    }
-
-    public void OnPointerExit()
-    {
-        SetPanelValidity(0.2f);
+        messageLog.Add(message);
     }
 
     private IEnumerator FadeOutAlpha()
