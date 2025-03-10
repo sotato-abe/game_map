@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemUnit : MonoBehaviour, IDragHandler
+public class ItemUnit : Unit
 {
     public Item Item { get; set; }
     [SerializeField] Image image;
@@ -20,12 +20,6 @@ public class ItemUnit : MonoBehaviour, IDragHandler
         itemDialog.Setup(Item);
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
-        Debug.Log("test");
-        transform.position = eventData.position;
-    }
-
     public void OnPointerEnter()
     {
         itemDialog.ShowDialog(true);
@@ -36,36 +30,6 @@ public class ItemUnit : MonoBehaviour, IDragHandler
     {
         itemDialog.ShowDialog(false);
         StartCoroutine(OnPointer(false));
-    }
-
-    public IEnumerator OnPointer(bool focusFlg)
-    {
-        float time = 0.05f;
-        float currentTime = 0f;
-        if (focusFlg)
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
-        else
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1, 1, 1);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
     }
 
     public void SetTarget(bool activeFlg)
