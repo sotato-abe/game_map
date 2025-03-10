@@ -12,10 +12,28 @@ public class InventoryDialog : MonoBehaviour
     [SerializeField] GameObject itemList;
     [SerializeField] BattleUnit playerUnit;
 
+    private int headHeight = 105;
     private int itemWidth = 70;
+    int row = 10;
+    int padding = 10;
 
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
     private int selectedItem = 0;
+
+    public void Start()
+    {
+        SetInventorySize();
+    }
+
+    //playerUnitのBagの数値に応じでInventoryDialogのサイズを変更
+    public void SetInventorySize()
+    {
+        int width = itemWidth * row + 30;
+        int column = (playerUnit.Battler.Bag.val - 1) / row + 1;
+        Debug.Log($"Bag.val:{playerUnit.Battler.Bag.val}/column:{column}");
+        int height = itemWidth * column + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+    }
 
     public void SetItemUnit()
     {
@@ -54,14 +72,13 @@ public class InventoryDialog : MonoBehaviour
         itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
 
         Debug.Log($"OnEndDrag:{itemUnitList.Count}");
-        int row = 10;
-        int column = 3;
         for (int i = 0; i < itemUnitList.Count; i++)
         {
             Debug.Log(i);
             int cardHalfWidth = itemWidth / 2;
-            // itemUnitList[i].transform.localPosition = new Vector3(i * itemWidth + cardHalfWidth, -cardHalfWidth, 0);
-            itemUnitList[i].transform.localPosition = new Vector3((i % row) * itemWidth + cardHalfWidth + 5, -((i / row) * itemWidth + cardHalfWidth) - 5, 0);
+            int xPosition = (i % row) * itemWidth + cardHalfWidth + padding;
+            int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
+            itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }
 
