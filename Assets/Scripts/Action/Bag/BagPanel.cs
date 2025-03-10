@@ -40,11 +40,11 @@ public class BagPanel : Panel
         //BagCategoryを変更
         if (Input.GetKeyDown(KeyCode.Period))
         {
-            SelectDialog(true);
+            SelectWindow(true);
         }
         if (Input.GetKeyDown(KeyCode.Comma))
         {
-            SelectDialog(false);
+            SelectWindow(false);
         }
         
         if (!isActive)
@@ -123,7 +123,7 @@ public class BagPanel : Panel
         categoryIconList[(int)selectedCategory].SetActive(true);
     }
 
-    public void SelectDialog(bool selectDirection)
+    public void SelectWindow(bool selectDirection)
     {
         BagCategory newselectedCategory = selectedCategory;
         if (selectDirection)
@@ -142,11 +142,11 @@ public class BagPanel : Panel
                 newselectedCategory = BagCategory.Tresure;
             }
         }
-        ChangeDialog(newselectedCategory);
+        ChangeWindow(newselectedCategory);
         ChangeCategory();
     }
 
-    public void ChangeDialog(BagCategory dialog)
+    public void ChangeWindow(BagCategory dialog)
     {
         if (selectedCategory == dialog)
         {

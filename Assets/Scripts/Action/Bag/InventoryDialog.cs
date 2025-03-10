@@ -12,11 +12,16 @@ public class InventoryDialog : MonoBehaviour
     [SerializeField] GameObject itemList;
     [SerializeField] BattleUnit playerUnit;
 
+    private int itemWidth = 70;
+
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
     private int selectedItem = 0;
 
     public void SetItemUnit()
     {
+        // リストをクリア
+        itemUnitList.Clear();
+
         foreach (Transform child in itemList.transform)
         {
             Destroy(child.gameObject);
@@ -30,6 +35,7 @@ public class InventoryDialog : MonoBehaviour
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
             itemUnit.Setup(item);
+            itemUnit.OnEndDragAction += ArrengeItemUnits; // 正しく登録
             itemUnitList.Add(itemUnit);
 
             if (itemNum == selectedItem)
@@ -38,6 +44,24 @@ public class InventoryDialog : MonoBehaviour
             }
 
             itemNum++;
+        }
+        ArrengeItemUnits();
+    }
+
+    //カードを整列させる
+    public void ArrengeItemUnits()
+    {
+        itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
+
+        Debug.Log($"OnEndDrag:{itemUnitList.Count}");
+        int row = 10;
+        int column = 3;
+        for (int i = 0; i < itemUnitList.Count; i++)
+        {
+            Debug.Log(i);
+            int cardHalfWidth = itemWidth / 2;
+            // itemUnitList[i].transform.localPosition = new Vector3(i * itemWidth + cardHalfWidth, -cardHalfWidth, 0);
+            itemUnitList[i].transform.localPosition = new Vector3((i % row) * itemWidth + cardHalfWidth + 5, -((i / row) * itemWidth + cardHalfWidth) - 5, 0);
         }
     }
 
