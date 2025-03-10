@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
-public class Unit : MonoBehaviour, IDragHandler
+public class Unit : MonoBehaviour, IDragHandler, IEndDragHandler
 {
+    public UnityAction OnEndDragAction;
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        OnEndDragAction?.Invoke();
     }
 
     public IEnumerator OnPointer(bool focusFlg)
