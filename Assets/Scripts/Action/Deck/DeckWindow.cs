@@ -24,20 +24,29 @@ public class DeckWindow : MonoBehaviour, IDropHandler
 
     private Battler playerBattler;
 
-    private int headHeight = 105;
-    private int commandWidth = 70;
     int row = 5;
-    int padding = 0;
+    private int headHeight = 260;
+    private int commandWidth = 70;
+    int padding = 10;
 
     public void Start()
     {
-        SetDeckSize();
+        SetWindowSize();
     }
 
     private void OnEnable()
     {
+        SetWindowSize();
         SetRunTable();
         SetDeck();
+    }
+
+    public void SetWindowSize()
+    {
+        int width = commandWidth * row + 30;
+        int column = (playerBattler.Memory.val - 1) / row + 1;
+        int height = commandWidth * column + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
     public void SetUp(Battler battler)
@@ -68,6 +77,25 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         }
     }
 
+    public void SetDeck()
+    {
+        deckList.Clear();
+        ClearTransformChildren(deckArea.transform);
+
+        foreach (Command command in playerBattler.DeckList)
+        {
+            CommandSlot commandSlot = Instantiate(commandPrefab, deckArea.transform);
+            commandSlot.gameObject.SetActive(true);
+            commandSlot.OnEndDragAction += ArrengeDeck; // 正しく登録
+            commandSlot.Setup(command);
+            deckList.Add(commandSlot);
+        }
+
+        int commandCount = playerBattler.RunTable.Count + playerBattler.DeckList.Count;
+        deckRatio.text = $"{commandCount}/{playerBattler.Memory.val}";
+        ArrengeDeck();
+    }
+
     private void AddCommandSlot(Command command)
     {
         playerBattler.DeckList.Add(command);
@@ -81,12 +109,6 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         SetRunTable();
         SetDeck();
     }
-
-    public void SetDeckSize()
-    {
-        Debug.Log("SetDeckSize");
-    }
-
 
     public void SetRunTable()
     {
@@ -108,25 +130,6 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         }
         ArrengeRunTable();
         CountEnegyCost();
-    }
-
-    public void SetDeck()
-    {
-        deckList.Clear();
-        ClearTransformChildren(deckArea.transform);
-
-        foreach (Command command in playerBattler.DeckList)
-        {
-            CommandSlot commandSlot = Instantiate(commandPrefab, deckArea.transform);
-            commandSlot.gameObject.SetActive(true);
-            commandSlot.OnEndDragAction += ArrengeDeck; // 正しく登録
-            commandSlot.Setup(command);
-            deckList.Add(commandSlot);
-        }
-
-        int commandCount = playerBattler.RunTable.Count + playerBattler.DeckList.Count;
-        deckRatio.text = $"{commandCount}/{playerBattler.Memory.val}";
-        ArrengeDeck();
     }
 
     private void CountEnegyCost()
