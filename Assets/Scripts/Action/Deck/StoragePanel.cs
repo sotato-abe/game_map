@@ -15,9 +15,9 @@ public class StoragePanel : Panel, IDropHandler
     [SerializeField] DeckWindow deckWindow;
     [SerializeField] BattleUnit playerUnit;
 
+    int row = 10;
     private int headHeight = 40;
     private int commandWidth = 70;
-    int row = 10;
     int padding = 10;
     List<CommandSlot> storageList = new List<CommandSlot>();
     private List<GameObject> blockList = new List<GameObject>();
