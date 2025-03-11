@@ -40,6 +40,18 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
         if (droppedItemUnit != null)
         {
+            // すでにポーチに同じアイテムがあるか確認
+            if (playerBattler.PouchList.Contains(droppedItemUnit.Item))
+            {
+                Debug.Log("アイテムはすでにポーチに存在しています。");
+                return; // 追加しない
+            }
+            if (playerBattler.PouchList.Count >= playerBattler.Pouch.val)
+            {
+                Debug.Log("ポーチがいっぱいです。");
+                return; // 追加しない
+            }
+
             AddItemUnit(droppedItemUnit.Item); // ポーチに追加
             inventoryDialog.RemoveItem(droppedItemUnit); // バックから削除
         }
