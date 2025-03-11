@@ -141,15 +141,13 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
 
     public void RemoveItem(ItemUnit itemUnit)
     {
-        itemUnitList.Remove(itemUnit);
-        Destroy(itemUnit.gameObject);
         playerUnit.Battler.BagList.Remove(itemUnit.Item);
-        ArrengeItemUnits();
+        SetItemUnit();
     }
 
     public void SelectItem(ArrowType type)
     {
-        if (itemList.transform.childCount > 0)
+        if (itemUnitList.Count > 0)
         {
             int targetItem = selectedItem; // 初期値を設定
 
@@ -161,12 +159,12 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
                     break;
 
                 case ArrowType.Right:
-                    if (selectedItem < itemList.transform.childCount - 1)
+                    if (selectedItem < itemUnitList.Count - 1)
                         targetItem = selectedItem + 1;
                     break;
 
                 case ArrowType.Down:
-                    if (selectedItem <= itemList.transform.childCount - 10)
+                    if (selectedItem <= itemUnitList.Count - 10)
                         targetItem = selectedItem + 10;
                     break;
 
@@ -178,8 +176,8 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
 
             if (targetItem != selectedItem) // アイテムが変わる場合のみ処理
             {
-                itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>().SetTarget(false);
-                itemList.transform.GetChild(targetItem).GetComponent<ItemUnit>().SetTarget(true);
+                itemUnitList[selectedItem].SetTarget(false);
+                itemUnitList[targetItem].SetTarget(true);
                 selectedItem = targetItem;
             }
         }
