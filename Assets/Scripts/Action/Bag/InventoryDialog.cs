@@ -27,7 +27,7 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
 
     public void Start()
     {
-        SetInventorySize();
+        SetPanelSize();
     }
 
     // ItemUnitがドロップされたときの処理
@@ -54,7 +54,7 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
     }
 
     //playerUnitのBagの数値に応じでInventoryDialogのサイズを変更
-    public void SetInventorySize()
+    public void SetPanelSize()
     {
         int width = itemWidth * row + 30;
         int column = (playerUnit.Battler.Bag.val - 1) / row + 1;

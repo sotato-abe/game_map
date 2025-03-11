@@ -64,7 +64,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
             }
 
             AddCommandSlot(droppedCommandSlot.command); // デッキに追加
-            storagePanel.RemoveCommand(droppedCommandSlot); // ストレージから削除
+            storagePanel.RemoveCommandSlot(droppedCommandSlot); // ストレージから削除
         }
     }
 
@@ -74,9 +74,11 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         SetDeck();
     }
 
-    private void RemoveCommand(CommandSlot commandSlot)
+    public void RemoveCommand(CommandSlot commandSlot)
     {
         playerBattler.DeckList.Remove(commandSlot.command);
+        playerBattler.RunTable.Remove(commandSlot.command);
+        SetRunTable();
         SetDeck();
     }
 
@@ -110,9 +112,6 @@ public class DeckWindow : MonoBehaviour, IDropHandler
 
     public void SetDeck()
     {
-        int commandCount = playerBattler.RunTable.Count + playerBattler.DeckList.Count;
-        deckRatio.text = $"{commandCount}/{playerBattler.Memory.val}";
-
         deckList.Clear();
         ClearTransformChildren(deckArea.transform);
 
@@ -124,6 +123,10 @@ public class DeckWindow : MonoBehaviour, IDropHandler
             commandSlot.Setup(command);
             deckList.Add(commandSlot);
         }
+
+        int commandCount = playerBattler.RunTable.Count + playerBattler.DeckList.Count;
+        deckRatio.text = $"{commandCount}/{playerBattler.Memory.val}";
+        ArrengeDeck();
     }
 
     private void CountEnegyCost()
@@ -171,6 +174,14 @@ public class DeckWindow : MonoBehaviour, IDropHandler
     private void ArrengeDeck()
     {
         Debug.Log("ArrengeDeck");
+        deckList.RemoveAll(command => command == null); // 破棄されたオブジェクトを削除
+        for (int i = 0; i < deckList.Count; i++)
+        {
+            int cardHalfWidth = commandWidth / 2;
+            int xPosition = (i % row) * commandWidth + cardHalfWidth + padding;
+            int yPosition = -cardHalfWidth - padding;
+            deckList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+        }
     }
 
     private void ClearTransformChildren(Transform parent)
