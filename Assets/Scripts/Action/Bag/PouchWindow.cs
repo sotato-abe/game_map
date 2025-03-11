@@ -9,10 +9,12 @@ using UnityEngine.EventSystems;
 public class PouchWindow : MonoBehaviour, IDropHandler
 {
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] InventoryDialog inventoryDialog;
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
+    private List<GameObject> blockList = new List<GameObject>();
 
     private Battler playerBattler;
 
@@ -75,21 +77,20 @@ public class PouchWindow : MonoBehaviour, IDropHandler
             itemUnit.OnEndDragAction += ArrengeItemUnits;
             itemUnitList.Add(itemUnit);
         }
+        SetBlock();
         ArrengeItemUnits();
     }
 
-    public void AddItemUnit(Item item)
+    private void SetBlock()
     {
-        playerBattler.PouchList.Add(item);
-        SetItemUnit(playerBattler.PouchList);
-    }
-
-    public void RemoveItem(ItemUnit itemUnit)
-    {
-        itemUnitList.Remove(itemUnit);
-        Destroy(itemUnit.gameObject);
-        ArrengeItemUnits();
-        playerBattler.PouchList.Remove(itemUnit.Item);
+        int blockNum = row - playerBattler.Pouch.val % row;
+        blockList.Clear();
+        for (int i = 0; i < blockNum; i++)
+        {
+            GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
+            blockObject.gameObject.SetActive(true);
+            blockList.Add(blockObject);
+        }
     }
 
     public void ArrengeItemUnits()
@@ -102,5 +103,30 @@ public class PouchWindow : MonoBehaviour, IDropHandler
             int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
             itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
+
+        // 右下からブロックを配置
+        for (int i = 0; i < blockList.Count; i++)
+        {
+            int cardHalfWidth = itemWidth / 2;
+            int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth) - padding;
+            blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+        }
+    }
+
+    public void AddItemUnit(Item item)
+    {
+        playerBattler.PouchList.Add(item);
+        SetItemUnit(playerBattler.PouchList);
+        pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
+    }
+
+    public void RemoveItem(ItemUnit itemUnit)
+    {
+        itemUnitList.Remove(itemUnit);
+        Destroy(itemUnit.gameObject);
+        ArrengeItemUnits();
+        playerBattler.PouchList.Remove(itemUnit.Item);
+        pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
     }
 }

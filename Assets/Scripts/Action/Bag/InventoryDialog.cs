@@ -11,7 +11,9 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
     public UnityAction OnActionExecute;
     public UnityAction<ItemUnit> OnDropItemUnitAction;
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
+    [SerializeField] TextMeshProUGUI bagRatio;
     [SerializeField] BattleUnit playerUnit;
 
     private int headHeight = 105;
@@ -20,6 +22,7 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
     int padding = 10;
 
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
+    private List<GameObject> blockList = new List<GameObject>();
     private int selectedItem = 0;
 
     public void Start()
@@ -44,7 +47,6 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
     {
         int width = itemWidth * row + 30;
         int column = (playerUnit.Battler.Bag.val - 1) / row + 1;
-        Debug.Log($"Bag.val:{playerUnit.Battler.Bag.val}/column:{column}");
         int height = itemWidth * column + headHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
@@ -77,13 +79,22 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
 
             itemNum++;
         }
+        SetBlock();
         ArrengeItemUnits();
     }
 
-    public void AddItemUnit(Item item)
+    // Bagの数値に応じてパネルの左下からブロックを配置する
+    // Bagが8の場合、左下から2つブロックを配置する
+    private void SetBlock()
     {
-        playerUnit.Battler.BagList.Add(item);
-        SetItemUnit();
+        int blockNum = row - playerUnit.Battler.Bag.val % row;
+        blockList.Clear();
+        for (int i = 0; i < blockNum; i++)
+        {
+            GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
+            blockObject.gameObject.SetActive(true);
+            blockList.Add(blockObject);
+        }
     }
 
     //カードを整列させる
@@ -98,14 +109,31 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
             int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
             itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
+
+        // 右下からブロックを配置
+        for (int i = 0; i < blockList.Count; i++)
+        {
+            int cardHalfWidth = itemWidth / 2;
+            int xPosition = (playerUnit.Battler.Bag.val % row + i) * itemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerUnit.Battler.Bag.val / row) * itemWidth + cardHalfWidth) - padding;
+            blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+        }
+        Debug.Log(playerUnit.Battler.BagList.Count);
+        bagRatio.text = $"{playerUnit.Battler.BagList.Count}/{playerUnit.Battler.Bag.val}";
+    }
+
+    public void AddItemUnit(Item item)
+    {
+        playerUnit.Battler.BagList.Add(item);
+        SetItemUnit();
     }
 
     public void RemoveItem(ItemUnit itemUnit)
     {
         itemUnitList.Remove(itemUnit);
         Destroy(itemUnit.gameObject);
-        ArrengeItemUnits();
         playerUnit.Battler.BagList.Remove(itemUnit.Item);
+        ArrengeItemUnits();
     }
 
     public void SelectItem(ArrowType type)
