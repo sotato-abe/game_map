@@ -23,14 +23,14 @@ public class BagPanel : Panel
     private void Start()
     {
         ResetDialog();
-        // inventoryDialog.OnActionExecute += ExecuteTurn;
         inventoryDialog.SetItemUnit();
+        inventoryDialog.OnDropItemUnitAction += MoveItemUnit;
         SetCategoryList();
     }
     private void OnEnable()
     {
         inventoryDialog.SetItemUnit();
-        pouchWindow.SetItemUnit(playerUnit.Battler.PouchList);
+        pouchWindow.SetUp(playerUnit.Battler);
         equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
         bagRatio.text = $"{playerUnit.Battler.BagList.Count}/{playerUnit.Battler.Bag.val}";
     }
@@ -179,5 +179,23 @@ public class BagPanel : Panel
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
         implantWindow.gameObject.SetActive(false);
+    }
+
+    public void MoveItemUnit(ItemUnit itemUnit)
+    {
+        switch (selectedCategory)
+        {
+            case BagCategory.All:
+                break;
+            case BagCategory.Pouch:
+                pouchWindow.RemoveItem(itemUnit);
+                break;
+            case BagCategory.Equip:
+                break;
+            case BagCategory.Implant:
+                break;
+            case BagCategory.Tresure:
+                break;
+        }
     }
 }

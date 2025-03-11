@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class InventoryDialog : MonoBehaviour
+public class InventoryDialog : MonoBehaviour, IDropHandler
 {
     public UnityAction OnActionExecute;
+    public UnityAction<ItemUnit> OnDropItemUnitAction;
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] BattleUnit playerUnit;
@@ -23,6 +25,18 @@ public class InventoryDialog : MonoBehaviour
     public void Start()
     {
         SetInventorySize();
+    }
+
+    // ItemUnitがドロップされたときの処理
+    public void OnDrop(PointerEventData eventData)
+    {
+        ItemUnit droppedItemUnit = eventData.pointerDrag.GetComponent<ItemUnit>();
+
+        if (droppedItemUnit != null)
+        {
+            AddItemUnit(droppedItemUnit.Item); // バッグに追加
+            OnDropItemUnitAction?.Invoke(droppedItemUnit);
+        }
     }
 
     //playerUnitのBagの数値に応じでInventoryDialogのサイズを変更
@@ -66,20 +80,32 @@ public class InventoryDialog : MonoBehaviour
         ArrengeItemUnits();
     }
 
+    public void AddItemUnit(Item item)
+    {
+        playerUnit.Battler.BagList.Add(item);
+        SetItemUnit();
+    }
+
     //カードを整列させる
     public void ArrengeItemUnits()
     {
         itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
 
-        Debug.Log($"OnEndDrag:{itemUnitList.Count}");
         for (int i = 0; i < itemUnitList.Count; i++)
         {
-            Debug.Log(i);
             int cardHalfWidth = itemWidth / 2;
             int xPosition = (i % row) * itemWidth + cardHalfWidth + padding;
             int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
             itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
+    }
+
+    public void RemoveItem(ItemUnit itemUnit)
+    {
+        itemUnitList.Remove(itemUnit);
+        Destroy(itemUnit.gameObject);
+        ArrengeItemUnits();
+        playerUnit.Battler.BagList.Remove(itemUnit.Item);
     }
 
     public void SelectItem(ArrowType type)
