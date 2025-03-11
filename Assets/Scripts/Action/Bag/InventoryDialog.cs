@@ -129,7 +129,6 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
             int yPosition = -((playerUnit.Battler.Bag.val / row) * itemWidth + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
-        Debug.Log(playerUnit.Battler.BagList.Count);
         bagRatio.text = $"{playerUnit.Battler.BagList.Count}/{playerUnit.Battler.Bag.val}";
     }
 

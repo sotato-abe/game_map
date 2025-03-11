@@ -8,23 +8,22 @@ using UnityEngine.Events;
 public class DeckPanel : Panel
 {
     [SerializeField] CommandSlot commandPrefab;  // CommandSlotのプレハブ
-    [SerializeField] GameObject runTable;
-    [SerializeField] GameObject deck;
     [SerializeField] GameObject storage;
-    [SerializeField] TextMeshProUGUI lifeCostTexe;
-    [SerializeField] TextMeshProUGUI batteryCostTexe;
-    [SerializeField] TextMeshProUGUI soulCostTexe;
     [SerializeField] TextMeshProUGUI storageRatio;
-    [SerializeField] TextMeshProUGUI deckRatio;
+    [SerializeField] DeckWindow deckWindow;
     [SerializeField] BattleUnit playerUnit;
 
+    private int headHeight = 105;
+    private int commandWidth = 70;
+    int row = 5;
+    int padding = 0;
+    List<CommandSlot> storageList = new List<CommandSlot>();
 
     private void OnEnable()
     {
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            SetRunTable();
-            SetDeck();
+            deckWindow.SetUp(playerUnit.Battler);
             SetStorage();
         }
         else
@@ -49,68 +48,32 @@ public class DeckPanel : Panel
         }
     }
 
-    public void SetRunTable()
-    {
-        int lifeCost = 0;
-        int batteryCost = 0;
-        int soulCost = 0;
-
-        ClearTransformChildren(runTable.transform);
-
-        foreach (Command command in playerUnit.Battler.RunTable)
-        {
-            CommandSlot commandSlot = Instantiate(commandPrefab, runTable.transform);
-            commandSlot.gameObject.SetActive(true);
-            commandSlot.Setup(command);
-
-            foreach (Enegy cost in command.Base.CostList)
-            {
-                switch (cost.type)
-                {
-                    case EnegyType.Life:
-                        lifeCost += cost.val;
-                        break;
-                    case EnegyType.Battery:
-                        batteryCost += cost.val;
-                        break;
-                    case EnegyType.Soul:
-                        soulCost += cost.val;
-                        break;
-                }
-            }
-        }
-        lifeCostTexe.SetText(lifeCost.ToString());
-        batteryCostTexe.SetText(batteryCost.ToString());
-        soulCostTexe.SetText(soulCost.ToString());
-    }
-
-    public void SetDeck()
-    {
-        int commandCount = playerUnit.Battler.RunTable.Count + playerUnit.Battler.DeckList.Count;
-        deckRatio.text = $"{commandCount}/{playerUnit.Battler.Memory.val}";
-
-        ClearTransformChildren(deck.transform);
-
-        foreach (Command command in playerUnit.Battler.DeckList)
-        {
-            CommandSlot commandSlot = Instantiate(commandPrefab, deck.transform);
-            commandSlot.gameObject.SetActive(true);
-            commandSlot.Setup(command);
-        }
-    }
-
     public void SetStorage()
     {
         storageRatio.text = $"{playerUnit.Battler.StorageList.Count}/{playerUnit.Battler.Storage.val}";
 
+        storageList.Clear();
         ClearTransformChildren(storage.transform);
 
         foreach (Command command in playerUnit.Battler.StorageList)
         {
             CommandSlot commandSlot = Instantiate(commandPrefab, storage.transform);
             commandSlot.gameObject.SetActive(true);
+            commandSlot.OnEndDragAction += ArrengeStorage; // 正しく登録
             commandSlot.Setup(command);
+            storageList.Add(commandSlot);
         }
+    }
+
+    public void RemoveCommand(CommandSlot commandSlot)
+    {
+        playerUnit.Battler.StorageList.Remove(commandSlot.command);
+        SetStorage();
+    }
+
+    private void ArrengeStorage()
+    {
+        Debug.Log("ArrengeStorage");
     }
 
     private void ClearTransformChildren(Transform parent)
