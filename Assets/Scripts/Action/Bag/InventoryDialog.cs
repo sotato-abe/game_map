@@ -37,6 +37,17 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
 
         if (droppedItemUnit != null)
         {
+            if (playerUnit.Battler.BagList.Contains(droppedItemUnit.Item))
+            {
+                Debug.Log("アイテムはすでにポーチに存在しています。");
+                return; // 追加しない
+            }
+            if (playerUnit.Battler.BagList.Count >= playerUnit.Battler.Bag.val)
+            {
+                Debug.Log("バッグがいっぱいです。");
+                return; // 追加しない
+            }
+
             AddItemUnit(droppedItemUnit.Item); // バッグに追加
             OnDropItemUnitAction?.Invoke(droppedItemUnit);
         }
