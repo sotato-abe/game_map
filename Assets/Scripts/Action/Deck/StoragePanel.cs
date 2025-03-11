@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 
-public class DeckPanel : Panel
+public class StoragePanel : Panel
 {
     [SerializeField] CommandSlot commandPrefab;  // CommandSlotのプレハブ
     [SerializeField] GameObject storage;

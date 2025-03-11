@@ -17,7 +17,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
     [SerializeField] TextMeshProUGUI batteryCostTexe;
     [SerializeField] TextMeshProUGUI soulCostTexe;
     [SerializeField] TextMeshProUGUI deckRatio;
-    [SerializeField] DeckPanel deckPanel;
+    [SerializeField] StoragePanel storagePanel;
 
     List<CommandSlot> runTableList = new List<CommandSlot>();
     List<CommandSlot> deckList = new List<CommandSlot>();
@@ -64,7 +64,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
             }
 
             AddCommandSlot(droppedCommandSlot.command); // デッキに追加
-            deckPanel.RemoveCommand(droppedCommandSlot); // ストレージから削除
+            storagePanel.RemoveCommand(droppedCommandSlot); // ストレージから削除
         }
     }
 

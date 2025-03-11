@@ -23,7 +23,7 @@ public class ReserveSystem : MonoBehaviour
     void Start()
     {
         actionList.Add(ActionType.Bag);
-        actionList.Add(ActionType.Deck);
+        actionList.Add(ActionType.Storage);
         actionList.Add(ActionType.Status);
         actionList.Add(ActionType.Quit);
         state = ReserveState.Standby;
@@ -109,8 +109,8 @@ public class ReserveSystem : MonoBehaviour
                 Debug.Log("Bag を開く処理を実行");
                 break;
 
-            case ActionType.Deck:
-                Debug.Log("Deck を開く処理を実行");
+            case ActionType.Storage:
+                Debug.Log("Storage を開く処理を実行");
                 break;
             case ActionType.Status:
                 Debug.Log("Status を開く処理を実行");
