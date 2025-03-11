@@ -18,7 +18,7 @@ public class Battler
     public int Life { get; set; }
     public int MaxBattery { get; set; }
     public int Battery { get; set; }
-    
+
     public Status Attack { get; set; }
     public Status Technique { get; set; }
     public Status Defense { get; set; }
@@ -83,8 +83,8 @@ public class Battler
         PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
         BagList = new List<Item>(_base.BagList ?? new List<Item>());
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
-        DeckList = new List<Command>();
-        StorageList = new List<Command>();
+        DeckList = new List<Command>(_base.DeckList ?? new List<Command>());
+        StorageList = new List<Command>(_base.StorageList ?? new List<Command>());
         Enchants = new List<Enchant>();
 
         if (_base.Birthplace != null)

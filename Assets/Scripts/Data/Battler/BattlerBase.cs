@@ -26,6 +26,8 @@ public class BattlerBase : ScriptableObject
 
     [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Command> runTable;
+    [SerializeField] List<Command> deckList;
+    [SerializeField] List<Command> storageList;
     [SerializeField] List<Item> pouchList;
     [SerializeField] List<Item> bagList;
     [SerializeField] List<TalkMessage> messages;
@@ -53,6 +55,8 @@ public class BattlerBase : ScriptableObject
     public List<Item> PouchList { get => pouchList; }
     public List<Item> BagList { get => bagList; }
     public List<Command> RunTable { get => runTable; }
+    public List<Command> DeckList { get => deckList; }
+    public List<Command> StorageList { get => storageList; }
     public List<TalkMessage> Messages { get => messages; }
     public MapBase Birthplace { get => birthplace; }
 }
