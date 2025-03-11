@@ -5,9 +5,21 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class Unit : MonoBehaviour, IDragHandler, IEndDragHandler
+public class Unit : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     public UnityAction OnEndDragAction;
+    private CanvasGroup canvasGroup;
+
+    public void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        canvasGroup.blocksRaycasts = false;
+    }
+    
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
@@ -16,6 +28,12 @@ public class Unit : MonoBehaviour, IDragHandler, IEndDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         OnEndDragAction?.Invoke();
+        canvasGroup.blocksRaycasts = true;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        Debug.Log("ItemUnit OnDrop");
     }
 
     public IEnumerator OnPointer(bool focusFlg)
