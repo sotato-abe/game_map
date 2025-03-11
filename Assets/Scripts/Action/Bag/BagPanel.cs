@@ -12,7 +12,6 @@ public class BagPanel : Panel
     [SerializeField] PouchWindow pouchWindow;
     [SerializeField] EquipmentWindow equipmentWindow;
     [SerializeField] ImplantWindow implantWindow;
-    [SerializeField] TextMeshProUGUI bagRatio;
     [SerializeField] GameObject categoryList;
     [SerializeField] BattleUnit playerUnit;
 
@@ -32,7 +31,6 @@ public class BagPanel : Panel
         inventoryDialog.SetItemUnit();
         pouchWindow.SetUp(playerUnit.Battler);
         equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
-        bagRatio.text = $"{playerUnit.Battler.BagList.Count}/{playerUnit.Battler.Bag.val}";
     }
 
     public void Update()
