@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommandUnit : MonoBehaviour
+public class CommandUnit : Unit
 {
     public Command command { get; set; }
     [SerializeField] Image image;
@@ -25,13 +25,13 @@ public class CommandUnit : MonoBehaviour
     public void OnPointerEnter()
     {
         commandDialog.ShowDialog(true);
-        StartCoroutine(Targetfoucs(true));
+        StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
         commandDialog.ShowDialog(false);
-        StartCoroutine(Targetfoucs(false));
+        StartCoroutine(OnPointer(false));
     }
 
     private void SetEnchant()
@@ -71,36 +71,6 @@ public class CommandUnit : MonoBehaviour
                 EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
                 enegyUnit.SetCostIcon(cost);
             }
-        }
-    }
-
-    public IEnumerator Targetfoucs(bool focusFlg)
-    {
-        float time = 0.05f;
-        float currentTime = 0f;
-        if (focusFlg)
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
-        else
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1, 1, 1);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
         }
     }
 }

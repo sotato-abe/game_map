@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: 372335606976741563}
   - component: {fileID: 372335606976741561}
   - component: {fileID: 372335606976741562}
-  - component: {fileID: 2621495338914564458}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -168,51 +167,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2621495338914564458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 372335606976741564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 372335607700239412}
-          m_TargetAssemblyTypeName: CommandUnit, Assembly-CSharp
-          m_MethodName: OnPointerEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 372335607700239412}
-          m_TargetAssemblyTypeName: CommandUnit, Assembly-CSharp
-          m_MethodName: OnPointerExit
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &372335607700239414
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +178,7 @@ GameObject:
   - component: {fileID: 372335607700239413}
   - component: {fileID: 372335607700239409}
   - component: {fileID: 372335607700239412}
+  - component: {fileID: 875285553695060071}
   m_Layer: 5
   m_Name: CommandUnit
   m_TagString: Untagged
@@ -279,6 +234,51 @@ MonoBehaviour:
   enchantPrefab: {fileID: 8622350729763964468, guid: ba2022424263edc459a04f4bb512c871, type: 3}
   enegyPrefab: {fileID: 1212935942699164278, guid: 2c47637378fcada4ab9d4c9638e7f0e2, type: 3}
   commandDialog: {fileID: 4735354907922209027}
+--- !u!114 &875285553695060071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372335607700239414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 372335607700239412}
+          m_TargetAssemblyTypeName: CommandUnit, Assembly-CSharp
+          m_MethodName: OnPointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 372335607700239412}
+          m_TargetAssemblyTypeName: CommandUnit, Assembly-CSharp
+          m_MethodName: OnPointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1807350101541421182
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,6 +1113,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 917568779367434583, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 917568779367434583, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 917568779367434583, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 917568779367434583, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2317580555781471649, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1142,6 +1158,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2872030228104599136, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048896076267952573, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048896076267952573, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048896076267952573, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048896076267952573, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -1248,6 +1280,22 @@ PrefabInstance:
     - target: {fileID: 8651405108111346197, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
       propertyPath: m_Name
       value: Dialog
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752232425535333172, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752232425535333172, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752232425535333172, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8752232425535333172, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 430145559518200675, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
