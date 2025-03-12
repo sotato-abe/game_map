@@ -10,7 +10,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 {
     public UnityAction OnActionExecute;
     public UnityAction<ItemUnit> OnDropItemUnitAction;
-    [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ // TODO：ItemSlotに名前変更する
+    [SerializeField] GameObject equipmentSlotPrefab;  // EquipmentSlotのプレハブ
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI bagRatio;
@@ -20,8 +21,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     private int itemWidth = 70;
     int row = 10;
     int padding = 10;
+    int itemNum = 0;
 
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
+    private List<EquipmentSlot> equipmentSlotList = new List<EquipmentSlot>();
     private List<GameObject> blockList = new List<GameObject>();
     private int selectedItem = 0;
 
@@ -32,7 +35,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     private void OnEnable()
     {
-        SetItemUnit();
+        SetItem();
     }
 
     // ItemUnitがドロップされたときの処理
@@ -66,17 +69,24 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         int height = itemWidth * column + headHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
-    public void SetItemUnit()
-    {
-        // リストをクリア
-        itemUnitList.Clear();
 
+    public void SetItem()
+    {
         foreach (Transform child in itemList.transform)
         {
             Destroy(child.gameObject);
         }
 
-        int itemNum = 0;
+        itemNum = 0;
+        SetItemUnit();
+        SetEquipmentUnit();
+        SetBlock();
+        ArrengeItemUnits();
+    }
+    public void SetItemUnit()
+    {
+        // リストをクリア
+        itemUnitList.Clear();
 
         foreach (Item item in playerUnit.Battler.BagItemList)
         {
@@ -94,8 +104,24 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
             itemNum++;
         }
-        SetBlock();
-        ArrengeItemUnits();
+    }
+
+    public void SetEquipmentUnit()
+    {
+        // リストをクリア
+        equipmentSlotList.Clear();
+
+        foreach (Equipment equipment in playerUnit.Battler.BagEquipmentList)
+        {
+            GameObject equipmentSlotObject = Instantiate(equipmentSlotPrefab, itemList.transform);
+            equipmentSlotObject.gameObject.SetActive(true);
+            EquipmentSlot equipmentSlot = equipmentSlotObject.GetComponent<EquipmentSlot>();
+            equipmentSlot.Setup(equipment);
+            // equipmentSlot.OnEndDragAction += ArrengeItemUnits; // 正しく登録
+            equipmentSlotList.Add(equipmentSlot);
+
+            itemNum++;
+        }
     }
 
     // Bagの数値に応じてパネルの左下からブロックを配置する
@@ -116,13 +142,30 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void ArrengeItemUnits()
     {
         itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
+        equipmentSlotList.RemoveAll(equipment => equipment == null); // 念のため Equipment も削除
 
-        for (int i = 0; i < itemUnitList.Count; i++)
+        // ItemとEquipmentをまとめたリストを作成
+        List<GameObject> combinedList = new List<GameObject>();
+
+        // itemUnitList から GameObject を追加
+        foreach (var itemUnit in itemUnitList)
+        {
+            combinedList.Add(itemUnit.gameObject);
+        }
+
+        // equipmentSlotList から GameObject を追加
+        foreach (var equipmentSlot in equipmentSlotList)
+        {
+            combinedList.Add(equipmentSlot.gameObject);
+        }
+
+        // まとめたリストで描画処理
+        for (int i = 0; i < combinedList.Count; i++)
         {
             int cardHalfWidth = itemWidth / 2;
             int xPosition = (i % row) * itemWidth + cardHalfWidth + padding;
             int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
-            itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+            combinedList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         // 右下からブロックを配置
@@ -133,7 +176,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             int yPosition = -((playerUnit.Battler.Bag.val / row) * itemWidth + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
-        bagRatio.text = $"{playerUnit.Battler.BagItemList.Count}/{playerUnit.Battler.Bag.val}";
+        int itemCount = playerUnit.Battler.BagItemList.Count + playerUnit.Battler.BagEquipmentList.Count;
+        bagRatio.text = $"{itemCount}/{playerUnit.Battler.Bag.val}";
     }
 
     public void AddItemUnit(Item item)
