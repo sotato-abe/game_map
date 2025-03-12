@@ -7,10 +7,21 @@ public class EquipmentSlot : Unit
 {
     public Equipment equipment { get; set; }
     [SerializeField] Image image;
+    [SerializeField] Image plusIcon;
+    [SerializeField] Image blockIcon;
     [SerializeField] Image cursor;
     [SerializeField] EquipmentTypeList equipmentTypeList;
     [SerializeField] EquipmentDialog equipmentDialog;
     public bool isActive = false;
+
+//SetUpより前に実行したい
+    private void Awake()
+    {
+        Debug.Log("EquipmentSlot Start");
+        plusIcon.gameObject.SetActive(true);
+        blockIcon.gameObject.SetActive(false);
+        image.gameObject.SetActive(false);
+    }
 
     public void Setup(Equipment equipment)
     {
@@ -18,6 +29,10 @@ public class EquipmentSlot : Unit
         image.sprite = equipment.Base.Sprite;
         equipmentDialog.gameObject.SetActive(true);
         equipmentDialog.Setup(equipment);
+        Debug.Log("EquipmentSlot Setup");
+        plusIcon.gameObject.SetActive(false);
+        blockIcon.gameObject.SetActive(false);
+        image.gameObject.SetActive(true);
     }
 
     public void OnPointerEnter()
