@@ -41,12 +41,58 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         SetDeck();
     }
 
-    public void SetWindowSize()
+    public void OnDrop(PointerEventData eventData)
     {
-        int width = commandWidth * row + 30;
-        int column = (playerBattler.Memory.val - 1) / row + 1;
-        int height = commandWidth * column + headHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+        CommandSlot droppedCommandSlot = eventData.pointerDrag.GetComponent<CommandSlot>();
+
+        if (droppedCommandSlot == null) return;
+
+        if (eventData.pointerEnter != null)
+        {
+            Debug.Log("OnDrop");
+            // RunTableにドロップされた場合
+            if (eventData.pointerEnter.transform.IsChildOf(runTableArea.transform))
+            {
+                Debug.Log("RunTableにドロップされました。");
+                if (playerBattler.RunTable.Contains(droppedCommandSlot.command))
+                {
+                    Debug.Log("コマンドはすでにランテーブルに存在しています。");
+                    return;
+                }
+                if (playerBattler.DeckList.Count >= playerBattler.Memory.val)
+                {
+                    Debug.Log("メモリがいっぱいです。");
+                    return;
+                }
+                AddRunTableCommand(droppedCommandSlot.command);
+                playerBattler.DeckList.Remove(droppedCommandSlot.command);
+                storagePanel.RemoveCommandSlot(droppedCommandSlot);
+                SetRunTable();
+                SetDeck();
+                return;
+            }
+            // Deckにドロップされた場合
+            else if (eventData.pointerEnter.transform.IsChildOf(deckArea.transform))
+            {
+                Debug.Log("Deckにドロップされました。");
+                if (playerBattler.DeckList.Contains(droppedCommandSlot.command))
+                {
+                    Debug.Log("コマンドはすでにデッキに存在しています。");
+                    return;
+                }
+                if (playerBattler.DeckList.Count >= playerBattler.Memory.val)
+                {
+                    Debug.Log("メモリがいっぱいです。");
+                    return;
+                }
+                AddDeckCommand(droppedCommandSlot.command);
+                playerBattler.RunTable.Remove(droppedCommandSlot.command);
+                storagePanel.RemoveCommandSlot(droppedCommandSlot);
+                SetRunTable();
+                SetDeck();
+                return;
+            }
+        }
     }
 
     public void SetUp(Battler battler)
@@ -54,27 +100,12 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         playerBattler = battler;
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public void SetWindowSize()
     {
-        CommandSlot droppedCommandSlot = eventData.pointerDrag.GetComponent<CommandSlot>();
-
-        if (droppedCommandSlot != null)
-        {
-            // すでにデッキに同じアイテムがあるか確認
-            if (playerBattler.DeckList.Contains(droppedCommandSlot.command))
-            {
-                Debug.Log("アイテムはすでにデッキに存在しています。");
-                return; // 追加しない
-            }
-            if (playerBattler.DeckList.Count >= playerBattler.Memory.val)
-            {
-                Debug.Log("デッキがいっぱいです。");
-                return; // 追加しない
-            }
-
-            AddCommandSlot(droppedCommandSlot.command); // デッキに追加
-            storagePanel.RemoveCommandSlot(droppedCommandSlot); // ストレージから削除
-        }
+        int width = commandWidth * row + 30;
+        int column = (playerBattler.Memory.val - 1) / row + 1;
+        int height = commandWidth * column + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
     public void SetDeck()
@@ -96,7 +127,13 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         ArrengeDeck();
     }
 
-    private void AddCommandSlot(Command command)
+    private void AddRunTableCommand(Command command)
+    {
+        playerBattler.RunTable.Add(command);
+        SetRunTable();
+    }
+
+    private void AddDeckCommand(Command command)
     {
         playerBattler.DeckList.Add(command);
         SetDeck();
