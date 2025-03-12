@@ -37,7 +37,8 @@ public class Battler
     public List<Command> DeckList { get; set; }
     public List<Command> StorageList { get; set; }
     public List<Item> PouchList { get; set; }
-    public List<Item> BagList { get; set; }
+    public List<Item> BagItemList { get; set; }
+    public List<Equipment> BagEquipmentList { get; set; }
     public List<Enchant> Enchants = new List<Enchant>();
     public Coordinate coordinate;
 
@@ -81,7 +82,8 @@ public class Battler
 
         Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
         PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
-        BagList = new List<Item>(_base.BagList ?? new List<Item>());
+        BagItemList = new List<Item>(_base.BagItemList ?? new List<Item>());
+        BagEquipmentList = new List<Equipment>(_base.BagEquipmentList ?? new List<Equipment>());
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
         DeckList = new List<Command>(_base.DeckList ?? new List<Command>());
         StorageList = new List<Command>(_base.StorageList ?? new List<Command>());
@@ -157,9 +159,9 @@ public class Battler
         {
             PouchList.Add(item);
         }
-        else if (BagList.Count < Bag.val)
+        else if (BagItemList.Count < Bag.val)
         {
-            BagList.Add(item);
+            BagItemList.Add(item);
         }
         else
         {
