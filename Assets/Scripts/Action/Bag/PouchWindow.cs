@@ -12,7 +12,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
-    [SerializeField] InventoryDialog inventoryDialog;
+    [SerializeField] InventoryWindow inventoryWindow;
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
     private List<GameObject> blockList = new List<GameObject>();
 
@@ -53,7 +53,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
             }
 
             AddItemUnit(droppedItemUnit.Item); // ポーチに追加
-            inventoryDialog.RemoveItem(droppedItemUnit); // バックから削除
+            inventoryWindow.RemoveItem(droppedItemUnit); // バックから削除
         }
     }
 
