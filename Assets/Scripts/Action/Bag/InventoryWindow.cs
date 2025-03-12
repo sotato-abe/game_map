@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class InventoryDialog : MonoBehaviour, IDropHandler
+public class InventoryWindow : MonoBehaviour, IDropHandler
 {
     public UnityAction OnActionExecute;
     public UnityAction<ItemUnit> OnDropItemUnitAction;
@@ -28,6 +28,11 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
     public void Start()
     {
         SetPanelSize();
+    }
+
+    private void OnEnable()
+    {
+        SetItemUnit();
     }
 
     // ItemUnitがドロップされたときの処理
@@ -53,7 +58,7 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
         }
     }
 
-    //playerUnitのBagの数値に応じでInventoryDialogのサイズを変更
+    //playerUnitのBagの数値に応じでInventoryWindowのサイズを変更
     public void SetPanelSize()
     {
         int width = itemWidth * row + 30;
@@ -61,7 +66,6 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
         int height = itemWidth * column + headHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
-
     public void SetItemUnit()
     {
         // リストをクリア

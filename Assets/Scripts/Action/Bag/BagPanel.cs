@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class BagPanel : Panel
 {
     [SerializeField] BagCategoryIcon categoryPrefab;
-    [SerializeField] InventoryDialog inventoryDialog;
+    [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] PouchWindow pouchWindow;
     [SerializeField] EquipmentWindow equipmentWindow;
     [SerializeField] ImplantWindow implantWindow;
@@ -21,13 +21,11 @@ public class BagPanel : Panel
     private void Start()
     {
         ResetDialog();
-        inventoryDialog.SetItemUnit();
-        inventoryDialog.OnDropItemUnitAction += MoveItemUnit;
+        inventoryWindow.OnDropItemUnitAction += MoveItemUnit;
         SetCategoryList();
     }
     private void OnEnable()
     {
-        inventoryDialog.SetItemUnit();
         pouchWindow.SetUp(playerUnit.Battler);
         equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
     }
@@ -61,26 +59,26 @@ public class BagPanel : Panel
                 OnActionExit?.Invoke();
             }
 
-            //InventoryDialogを操作
+            //InventoryWindowを操作
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Up);
+                inventoryWindow.SelectItem(ArrowType.Up);
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Right);
+                inventoryWindow.SelectItem(ArrowType.Right);
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Down);
+                inventoryWindow.SelectItem(ArrowType.Down);
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Left);
+                inventoryWindow.SelectItem(ArrowType.Left);
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                inventoryDialog.UseItem();
+                inventoryWindow.UseItem();
             }
         }
     }
