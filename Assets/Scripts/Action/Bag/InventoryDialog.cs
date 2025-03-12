@@ -37,12 +37,12 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
 
         if (droppedItemUnit != null)
         {
-            if (playerUnit.Battler.BagList.Contains(droppedItemUnit.Item))
+            if (playerUnit.Battler.BagItemList.Contains(droppedItemUnit.Item))
             {
                 Debug.Log("アイテムはすでにポーチに存在しています。");
                 return; // 追加しない
             }
-            if (playerUnit.Battler.BagList.Count >= playerUnit.Battler.Bag.val)
+            if (playerUnit.Battler.BagItemList.Count >= playerUnit.Battler.Bag.val)
             {
                 Debug.Log("バッグがいっぱいです。");
                 return; // 追加しない
@@ -74,7 +74,7 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
 
         int itemNum = 0;
 
-        foreach (Item item in playerUnit.Battler.BagList)
+        foreach (Item item in playerUnit.Battler.BagItemList)
         {
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
@@ -129,18 +129,18 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
             int yPosition = -((playerUnit.Battler.Bag.val / row) * itemWidth + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
-        bagRatio.text = $"{playerUnit.Battler.BagList.Count}/{playerUnit.Battler.Bag.val}";
+        bagRatio.text = $"{playerUnit.Battler.BagItemList.Count}/{playerUnit.Battler.Bag.val}";
     }
 
     public void AddItemUnit(Item item)
     {
-        playerUnit.Battler.BagList.Add(item);
+        playerUnit.Battler.BagItemList.Add(item);
         SetItemUnit();
     }
 
     public void RemoveItem(ItemUnit itemUnit)
     {
-        playerUnit.Battler.BagList.Remove(itemUnit.Item);
+        playerUnit.Battler.BagItemList.Remove(itemUnit.Item);
         SetItemUnit();
     }
 
@@ -199,7 +199,7 @@ public class InventoryDialog : MonoBehaviour, IDropHandler
                 if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
                 {
                     playerUnit.Battler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    playerUnit.Battler.BagList.Remove(targetItemUnit.Item);
+                    playerUnit.Battler.BagItemList.Remove(targetItemUnit.Item);
 
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
                     if (selectedItem > 0)

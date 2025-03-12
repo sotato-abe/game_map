@@ -29,14 +29,15 @@ public class BattlerBase : ScriptableObject
     [SerializeField] List<Command> deckList;
     [SerializeField] List<Command> storageList;
     [SerializeField] List<Item> pouchList;
-    [SerializeField] List<Item> bagList;
+    [SerializeField] List<Item> bagItemList;
+    [SerializeField] List<Equipment> bagEquipmentList;
     [SerializeField] List<TalkMessage> messages;
 
     public string Name { get => name; }
     public Sprite Sprite { get => sprite; }
     public int MaxLife { get => maxLife; }
     public int MaxBattery { get => maxBattery; }
-    
+
     public Status Attack => new Status(StatusType.ATK, attack);
     public Status Technique => new Status(StatusType.TEC, technique);
     public Status Defense => new Status(StatusType.DEF, defense);
@@ -50,10 +51,11 @@ public class BattlerBase : ScriptableObject
     public int Money { get => money; }
     public int Disk { get => disk; }
     public int Key { get => key; }
-    
+
     public List<Equipment> Equipments { get => equipments; }
     public List<Item> PouchList { get => pouchList; }
-    public List<Item> BagList { get => bagList; }
+    public List<Item> BagItemList { get => bagItemList; }
+    public List<Equipment> BagEquipmentList { get => bagEquipmentList; }
     public List<Command> RunTable { get => runTable; }
     public List<Command> DeckList { get => deckList; }
     public List<Command> StorageList { get => storageList; }
