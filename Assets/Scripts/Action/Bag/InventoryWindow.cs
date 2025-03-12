@@ -120,6 +120,12 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             // equipmentSlot.OnEndDragAction += ArrengeItemUnits; // 正しく登録
             equipmentSlotList.Add(equipmentSlot);
 
+            if (itemNum == selectedItem)
+            {
+                Debug.Log("EquipmentSlot SetTarget");
+                equipmentSlot.SetTarget(true);
+            }
+
             itemNum++;
         }
     }
@@ -184,17 +190,20 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     {
         playerUnit.Battler.BagItemList.Add(item);
         SetItemUnit();
+        ArrengeItemUnits();
     }
 
     public void RemoveItem(ItemUnit itemUnit)
     {
         playerUnit.Battler.BagItemList.Remove(itemUnit.Item);
         SetItemUnit();
+        ArrengeItemUnits();
     }
 
     public void SelectItem(ArrowType type)
     {
-        if (itemUnitList.Count > 0)
+        int itemCount = itemUnitList.Count + equipmentSlotList.Count;
+        if (itemCount > 0)
         {
             int targetItem = selectedItem; // 初期値を設定
 
@@ -206,12 +215,12 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                     break;
 
                 case ArrowType.Right:
-                    if (selectedItem < itemUnitList.Count - 1)
+                    if (selectedItem < itemCount - 1)
                         targetItem = selectedItem + 1;
                     break;
 
                 case ArrowType.Down:
-                    if (selectedItem <= itemUnitList.Count - 10)
+                    if (selectedItem <= itemCount - 10)
                         targetItem = selectedItem + 10;
                     break;
 
@@ -223,8 +232,23 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
             if (targetItem != selectedItem) // アイテムが変わる場合のみ処理
             {
-                itemUnitList[selectedItem].SetTarget(false);
-                itemUnitList[targetItem].SetTarget(true);
+                if (selectedItem < itemUnitList.Count)
+                {
+                    itemUnitList[selectedItem].SetTarget(false);
+                }
+                else
+                {
+                    equipmentSlotList[selectedItem - itemUnitList.Count].SetTarget(false);
+                }
+
+                if (targetItem < itemUnitList.Count)
+                {
+                    itemUnitList[targetItem].SetTarget(true);
+                }
+                else
+                {
+                    equipmentSlotList[targetItem - itemUnitList.Count].SetTarget(true);
+                }
                 selectedItem = targetItem;
             }
         }
@@ -257,6 +281,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                     }
 
                     SetItemUnit();
+                    ArrengeItemUnits();
                     playerUnit.UpdateEnegyUI();
                     OnActionExecute?.Invoke();
                 }
