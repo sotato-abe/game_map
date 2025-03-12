@@ -3,30 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquipmentSlot : MonoBehaviour
+public class EquipmentSlot : Unit
 {
     public Equipment equipment { get; set; }
     [SerializeField] Image image;
-    [SerializeField] Image maskImage;
-    [SerializeField] Image backImage;
-    [SerializeField] EquipmentType equipmentType;
+    [SerializeField] Image cursor;
     [SerializeField] EquipmentTypeList equipmentTypeList;
     [SerializeField] EquipmentDialog equipmentDialog;
-
-    public void Start()
-    {
-        SetEquipmentTypeImage();
-    }
+    public bool isActive = false;
 
     public void Setup(Equipment equipment)
     {
-        if (equipment.Base.Type == equipmentType)
-        {
-            this.equipment = equipment;
-            maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 1f);
-            image.sprite = equipment.Base.Sprite;
-            equipmentDialog.Setup(equipment);
-        }
+        this.equipment = equipment;
+        image.sprite = equipment.Base.Sprite;
+        equipmentDialog.gameObject.SetActive(true);
+        equipmentDialog.Setup(equipment);
     }
 
     public void OnPointerEnter()
@@ -34,7 +25,7 @@ public class EquipmentSlot : MonoBehaviour
         if (equipment != null)
         {
             equipmentDialog.ShowDialog(true);
-            StartCoroutine(Targetfoucs(true));
+            StartCoroutine(OnPointer(true));
         }
     }
 
@@ -43,49 +34,19 @@ public class EquipmentSlot : MonoBehaviour
         if (equipment != null)
         {
             equipmentDialog.ShowDialog(false);
-            StartCoroutine(Targetfoucs(false));
+            StartCoroutine(OnPointer(true));
         }
     }
 
-    public void RemoveEquipment()
+    public void SetTarget(bool activeFlg)
     {
-        this.equipment = null;
-        maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 0f);
-        image.sprite = null;
-    }
+        Debug.Log("EquipmentSlot SetTarget");
+        if (isActive == activeFlg) return;
+        isActive = activeFlg;
 
-    public void SetEquipmentTypeImage()
-    {
-        backImage.sprite = equipmentTypeList.GetIcon(equipmentType);
-    }
-
-    public IEnumerator Targetfoucs(bool focusFlg)
-    {
-        float time = 0.05f;
-        float currentTime = 0f;
-        if (focusFlg)
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
-        else
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1, 1, 1);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
+        // 背景の透明度を変更する。
+        Color bgColor = cursor.color;
+        bgColor.a = isActive ? 1f : 0f;
+        cursor.color = bgColor;
     }
 }
