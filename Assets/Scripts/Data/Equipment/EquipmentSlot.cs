@@ -11,7 +11,7 @@ public class EquipmentSlot : Unit
     [SerializeField] EquipmentTypeList equipmentTypeList;
     [SerializeField] bool isBlock = false;
 
-    //SetUpより前に実行したい
+    //Setupより前に実行したい
     private void Awake()
     {
         Debug.Log("EquipmentSlot Start");

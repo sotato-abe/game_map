@@ -26,7 +26,7 @@ public class StoragePanel : Panel, IDropHandler
     {
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            deckWindow.SetUp(playerUnit.Battler);
+            deckWindow.Setup(playerUnit.Battler);
             SetPanelSize();
             SetStorage();
         }

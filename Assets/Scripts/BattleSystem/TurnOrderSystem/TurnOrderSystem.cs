@@ -13,7 +13,7 @@ public class TurnOrderSystem : MonoBehaviour
     private List<Battler> battlers = new List<Battler>(); // 保存用
     private bool isActive = false;
 
-    public void SetUpBattlerTurns(List<Battler> newBattlers)
+    public void SetupBattlerTurns(List<Battler> newBattlers)
     {
         // 既存の子オブジェクトをすべて削除
         foreach (Transform child in battlerList.transform)

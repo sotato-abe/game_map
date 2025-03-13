@@ -114,7 +114,7 @@ public class BattleSystem : MonoBehaviour
         playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
 
         attackSystem.SetBattler(playerUnit, enemyUnit);
-        turnOrderSystem.SetUpBattlerTurns(new List<Battler> { player, enemy });
+        turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
         messagePanel.AddMesageList($"{enemy.Base.Name} is coming!!");
