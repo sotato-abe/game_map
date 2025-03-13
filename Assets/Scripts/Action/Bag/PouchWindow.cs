@@ -18,7 +18,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     private Battler playerBattler;
 
-    private int headHeight = 105;
+    private int headHeight = 97;
     private int itemWidth = 70;
     int row = 5;
     int padding = 10;

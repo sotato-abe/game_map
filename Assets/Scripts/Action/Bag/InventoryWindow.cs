@@ -17,7 +17,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     [SerializeField] TextMeshProUGUI bagRatio;
     [SerializeField] BattleUnit playerUnit;
 
-    private int headHeight = 105;
+    private int headHeight = 97;
     private int itemWidth = 70;
     int row = 10;
     int padding = 10;
