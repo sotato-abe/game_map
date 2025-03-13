@@ -10,6 +10,7 @@ public class EquipmentSlot : Unit
     [SerializeField] Image plusIcon;
     [SerializeField] Image blockIcon;
     [SerializeField] Image cursor;
+    [SerializeField] EquipmentType equipmentType;
     [SerializeField] EquipmentTypeList equipmentTypeList;
     [SerializeField] EquipmentDialog equipmentDialog;
     public bool isActive = false;
@@ -21,6 +22,10 @@ public class EquipmentSlot : Unit
         plusIcon.gameObject.SetActive(true);
         blockIcon.gameObject.SetActive(false);
         image.gameObject.SetActive(false);
+        if(equipmentType != null)
+        {
+            SetEquipmentType();
+        }
     }
 
     public void Setup(Equipment equipment)
@@ -51,6 +56,11 @@ public class EquipmentSlot : Unit
             equipmentDialog.ShowDialog(false);
             StartCoroutine(OnPointer(true));
         }
+    }
+
+    private void SetEquipmentType()
+    {
+        plusIcon.sprite = equipmentTypeList.GetIcon(equipmentType);
     }
 
     public void SetTarget(bool activeFlg)
