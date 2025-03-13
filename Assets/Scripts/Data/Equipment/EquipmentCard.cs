@@ -11,7 +11,6 @@ public class EquipmentCard : Unit
     [SerializeField] EquipmentDialog equipmentDialog;
     public bool isActive = false;
 
-//SetUpより前に実行したい
     private void Awake()
     {
         equipmentDialog.gameObject.SetActive(false);
@@ -21,30 +20,24 @@ public class EquipmentCard : Unit
     {
         this.equipment = equipment;
         image.sprite = equipment.Base.Sprite;
+        equipmentDialog.gameObject.SetActive(true);
         equipmentDialog.Setup(equipment);
     }
 
     public void OnPointerEnter()
     {
-        if (equipment != null)
-        {
-            equipmentDialog.ShowDialog(true);
-            StartCoroutine(OnPointer(true));
-        }
+        equipmentDialog.ShowDialog(true);
+        StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
-        if (equipment != null)
-        {
-            equipmentDialog.ShowDialog(false);
-            StartCoroutine(OnPointer(true));
-        }
+        equipmentDialog.ShowDialog(false);
+        StartCoroutine(OnPointer(false));
     }
 
     public void SetTarget(bool activeFlg)
     {
-        Debug.Log("EquipmentSlot SetTarget");
         if (isActive == activeFlg) return;
         isActive = activeFlg;
 
