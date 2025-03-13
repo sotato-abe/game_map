@@ -11,7 +11,6 @@ public class BagPanel : Panel
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] PouchWindow pouchWindow;
     [SerializeField] EquipmentWindow equipmentWindow;
-    [SerializeField] ImplantWindow implantWindow;
     [SerializeField] GameObject categoryList;
     [SerializeField] BattleUnit playerUnit;
 
@@ -160,9 +159,6 @@ public class BagPanel : Panel
             case BagCategory.Equip:
                 equipmentWindow.gameObject.SetActive(true);
                 break;
-            case BagCategory.Implant:
-                implantWindow.gameObject.SetActive(true);
-                break;
             case BagCategory.Tresure:
                 break;
         }
@@ -173,7 +169,6 @@ public class BagPanel : Panel
     {
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
-        implantWindow.gameObject.SetActive(false);
     }
 
     public void MoveItemUnit(ItemUnit itemUnit)
@@ -186,8 +181,6 @@ public class BagPanel : Panel
                 pouchWindow.RemoveItem(itemUnit);
                 break;
             case BagCategory.Equip:
-                break;
-            case BagCategory.Implant:
                 break;
             case BagCategory.Tresure:
                 break;
