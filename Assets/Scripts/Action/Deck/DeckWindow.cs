@@ -22,7 +22,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         UpdateDeckUI();
     }
     
-    public void SetUp(Battler battler) => playerBattler = battler;
+    public void Setup(Battler battler) => playerBattler = battler;
     
     private void SetWindowSize()
     {

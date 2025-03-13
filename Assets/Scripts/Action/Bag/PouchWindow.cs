@@ -56,7 +56,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         }
     }
 
-    public void SetUp(Battler battler)
+    public void Setup(Battler battler)
     {
         playerBattler = battler;
         SetItemUnit(playerBattler.PouchList);
