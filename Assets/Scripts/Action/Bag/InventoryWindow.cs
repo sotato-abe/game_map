@@ -82,7 +82,31 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         SetEquipmentUnit();
         SetBlock();
         ArrengeItemUnits();
+
+        if (0 < itemNum && selectedItem == 0)
+        {
+            if (itemUnitList.Count > 0)
+            {
+                itemUnitList[0].SetTarget(true);
+            }
+            else if (equipmentCardList.Count > 0)
+            {
+                equipmentCardList[0].SetTarget(true);
+            }
+        }
+        else if (0 < itemNum && selectedItem > 0)
+        {
+            if (selectedItem < itemUnitList.Count)
+            {
+                itemUnitList[selectedItem].SetTarget(true);
+            }
+            else
+            {
+                equipmentCardList[selectedItem - itemUnitList.Count].SetTarget(true);
+            }
+        }
     }
+
     public void SetItemUnit()
     {
         // リストをクリア
@@ -90,19 +114,14 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
         foreach (Item item in playerUnit.Battler.BagItemList)
         {
+            itemNum++;
+
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
             itemUnit.Setup(item);
-            itemUnit.OnEndDragAction += ArrengeItemUnits; // 正しく登録
+            itemUnit.OnEndDragAction += ArrengeItemUnits;
             itemUnitList.Add(itemUnit);
-
-            if (itemNum == selectedItem)
-            {
-                itemUnit.SetTarget(true);
-            }
-
-            itemNum++;
         }
     }
 
@@ -113,20 +132,14 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
         foreach (Equipment equipment in playerUnit.Battler.BagEquipmentList)
         {
+            itemNum++;
+
             GameObject equipmentCardObject = Instantiate(equipmentCardPrefab, itemList.transform);
             equipmentCardObject.gameObject.SetActive(true);
             EquipmentCard equipmentCard = equipmentCardObject.GetComponent<EquipmentCard>();
             equipmentCard.Setup(equipment);
-            // equipmentCard.OnEndDragAction += ArrengeItemUnits; // 正しく登録
+            equipmentCard.OnEndDragAction += ArrengeItemUnits;
             equipmentCardList.Add(equipmentCard);
-
-            if (itemNum == selectedItem)
-            {
-                Debug.Log("EquipmentCard SetTarget");
-                equipmentCard.SetTarget(true);
-            }
-
-            itemNum++;
         }
     }
 
@@ -203,101 +216,121 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void SelectItem(ArrowType type)
     {
         int itemCount = itemUnitList.Count + equipmentCardList.Count;
-        if (itemCount > 0)
-        {
-            int targetItem = selectedItem; // 初期値を設定
-
-            switch (type)
-            {
-                case ArrowType.Up:
-                    if (selectedItem >= 10)
-                        targetItem = selectedItem - 10;
-                    break;
-
-                case ArrowType.Right:
-                    if (selectedItem < itemCount - 1)
-                        targetItem = selectedItem + 1;
-                    break;
-
-                case ArrowType.Down:
-                    if (selectedItem <= itemCount - 10)
-                        targetItem = selectedItem + 10;
-                    break;
-
-                case ArrowType.Left:
-                    if (selectedItem > 0)
-                        targetItem = selectedItem - 1;
-                    break;
-            }
-
-            if (targetItem != selectedItem) // アイテムが変わる場合のみ処理
-            {
-                if (selectedItem < itemUnitList.Count)
-                {
-                    itemUnitList[selectedItem].SetTarget(false);
-                }
-                else
-                {
-                    equipmentCardList[selectedItem - itemUnitList.Count].SetTarget(false);
-                }
-
-                if (targetItem < itemUnitList.Count)
-                {
-                    itemUnitList[targetItem].SetTarget(true);
-                }
-                else
-                {
-                    equipmentCardList[targetItem - itemUnitList.Count].SetTarget(true);
-                }
-                selectedItem = targetItem;
-            }
-        }
-        else
+        if (itemCount == 0)
         {
             Debug.LogWarning("No items in the list.");
+            return;
+        }
+
+        int targetItem = selectedItem;  // 初期値を設定
+
+        switch (type)
+        {
+            case ArrowType.Up:
+                if (selectedItem >= 10) targetItem -= 10;
+                break;
+            case ArrowType.Right:
+                if (selectedItem < itemCount - 1) targetItem += 1;
+                break;
+            case ArrowType.Down:
+                if (selectedItem <= itemCount - 10) targetItem += 10;
+                break;
+            case ArrowType.Left:
+                if (selectedItem > 0) targetItem -= 1;
+                break;
+        }
+
+        if (targetItem != selectedItem) // アイテムが変わる場合のみ処理
+        {
+            if (selectedItem < itemUnitList.Count)
+            {
+                itemUnitList[selectedItem].SetTarget(false);
+            }
+            else
+            {
+                equipmentCardList[selectedItem - itemUnitList.Count].SetTarget(false);
+            }
+
+            if (targetItem < itemUnitList.Count)
+            {
+                itemUnitList[targetItem].SetTarget(true);
+            }
+            else
+            {
+                equipmentCardList[targetItem - itemUnitList.Count].SetTarget(true);
+            }
+            selectedItem = targetItem;
         }
     }
 
     public void UseItem()
     {
+        Debug.Log($"UseItem:{selectedItem}");
         if (itemList.transform.childCount > 0)
         {
-            // 選択されたアイテムの ItemUnit を取得
-            if (selectedItem >= 0 && selectedItem < itemList.transform.childCount)
+            if (selectedItem >= 0 && selectedItem < itemUnitList.Count)
             {
-                // 選択されたアイテムの ItemUnit を取得
+                // アイテムを使用する
                 var targetItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-
-                if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
-                {
-                    playerUnit.Battler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    playerUnit.Battler.BagItemList.Remove(targetItemUnit.Item);
-
-                    selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
-                    if (selectedItem > 0)
-                    {
-                        var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-                        selectedItemUnit.SetTarget(false);
-                    }
-
-                    SetItemUnit();
-                    ArrengeItemUnits();
-                    playerUnit.UpdateEnegyUI();
-                    OnActionExecute?.Invoke();
-                }
-                else
-                {
-                    Debug.LogWarning("No item found to use.");
-                }
+                UseItemUnit(targetItemUnit);
+            }
+            else if (itemUnitList.Count <= selectedItem && selectedItem < itemList.transform.childCount)
+            {
+                // 装備品を装備する
+                var targetEquipmentCard = itemList.transform.GetChild(selectedItem).GetComponent<EquipmentCard>();
+                UseEquipmentUnit(targetEquipmentCard);
             }
             else
             {
                 Debug.LogWarning("Selected item is out of bounds.");
             }
+            int itemCount = playerUnit.Battler.BagItemList.Count + playerUnit.Battler.BagEquipmentList.Count;
+            if (selectedItem >= itemCount)
+            {
+                selectedItem = itemCount - 1;
+            }
+            SetItem();
+            playerUnit.UpdateEnegyUI();
         }
         else
         {
             Debug.LogWarning("Selected item is out of bounds.");
+        }
+    }
+
+    private void UseItemUnit(ItemUnit itemUnit)
+    {
+        if (itemUnit != null && itemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
+        {
+            playerUnit.Battler.TakeRecovery(itemUnit.Item.Base.RecoveryList);
+            playerUnit.Battler.BagItemList.Remove(itemUnit.Item);
+        }
+        else
+        {
+            Debug.LogWarning($"No item found to use.{selectedItem}");
+        }
+    }
+
+    private void UseEquipmentUnit(EquipmentCard targetEquipmentCard)
+    {
+        if (targetEquipmentCard != null && targetEquipmentCard.Equipment != null)
+        {
+            // 装備品を装備する
+            // もともと装備していた装備品をバッグに追加
+            Equipment changedEquipment = playerUnit.Battler.AddEquipment(targetEquipmentCard.Equipment);
+            if (changedEquipment != null)
+            {
+                playerUnit.Battler.BagEquipmentList.Remove(targetEquipmentCard.Equipment);
+                playerUnit.Battler.BagEquipmentList.Add(changedEquipment);
+            }
+            else
+            {
+                playerUnit.Battler.BagEquipmentList.Remove(targetEquipmentCard.Equipment);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No equipment found to use.");
         }
     }
 }

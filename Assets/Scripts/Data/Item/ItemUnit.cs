@@ -8,7 +8,7 @@ public class ItemUnit : Unit
 {
     public Item Item { get; set; }
     [SerializeField] Image image;
-    [SerializeField] Image dialogBackground;
+    [SerializeField] Image cursor;
     [SerializeField] ItemDialog itemDialog;
     private bool isActive = false;
 
@@ -38,8 +38,8 @@ public class ItemUnit : Unit
         isActive = activeFlg;
 
         // 背景の透明度を変更する。
-        Color bgColor = dialogBackground.color;
+        Color bgColor = cursor.color;
         bgColor.a = isActive ? 1f : 0f;
-        dialogBackground.color = bgColor;
+        cursor.color = bgColor;
     }
 }

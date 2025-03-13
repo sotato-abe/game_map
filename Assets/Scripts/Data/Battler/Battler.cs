@@ -153,6 +153,24 @@ public class Battler
         }
     }
 
+    //　同じタイプの装備がある場合は、それを外してから追加して元の装備を返す
+    // もともと装備をしていない場合はnullを返す
+    public Equipment AddEquipment(Equipment equipment)
+    {
+        Equipment existingEquipment = Equipments.Find(e => e.Base.Type == equipment.Base.Type);
+        if (existingEquipment != null)
+        {
+            Equipments.Remove(existingEquipment);
+            Equipments.Add(equipment);
+            return existingEquipment;
+        }
+        else
+        {
+            Equipments.Add(equipment);
+            return null;
+        }
+    }
+
     public bool AddItem(Item item)
     {
         if (PouchList.Count < Pouch.val)
