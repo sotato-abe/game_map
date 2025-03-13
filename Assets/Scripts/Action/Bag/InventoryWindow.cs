@@ -11,7 +11,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public UnityAction OnActionExecute;
     public UnityAction<ItemUnit> OnDropItemUnitAction;
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ // TODO：ItemSlotに名前変更する
-    [SerializeField] GameObject equipmentSlotPrefab;  // EquipmentSlotのプレハブ
+    [SerializeField] GameObject equipmentCardPrefab;  // EquipmentCardのプレハブ
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI bagRatio;
@@ -24,7 +24,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     int itemNum = 0;
 
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
-    private List<EquipmentSlot> equipmentSlotList = new List<EquipmentSlot>();
+    private List<EquipmentCard> equipmentCardList = new List<EquipmentCard>();
     private List<GameObject> blockList = new List<GameObject>();
     private int selectedItem = 0;
 
@@ -109,21 +109,21 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void SetEquipmentUnit()
     {
         // リストをクリア
-        equipmentSlotList.Clear();
+        equipmentCardList.Clear();
 
         foreach (Equipment equipment in playerUnit.Battler.BagEquipmentList)
         {
-            GameObject equipmentSlotObject = Instantiate(equipmentSlotPrefab, itemList.transform);
-            equipmentSlotObject.gameObject.SetActive(true);
-            EquipmentSlot equipmentSlot = equipmentSlotObject.GetComponent<EquipmentSlot>();
-            equipmentSlot.Setup(equipment);
-            // equipmentSlot.OnEndDragAction += ArrengeItemUnits; // 正しく登録
-            equipmentSlotList.Add(equipmentSlot);
+            GameObject equipmentCardObject = Instantiate(equipmentCardPrefab, itemList.transform);
+            equipmentCardObject.gameObject.SetActive(true);
+            EquipmentCard equipmentCard = equipmentCardObject.GetComponent<EquipmentCard>();
+            equipmentCard.Setup(equipment);
+            // equipmentCard.OnEndDragAction += ArrengeItemUnits; // 正しく登録
+            equipmentCardList.Add(equipmentCard);
 
             if (itemNum == selectedItem)
             {
-                Debug.Log("EquipmentSlot SetTarget");
-                equipmentSlot.SetTarget(true);
+                Debug.Log("EquipmentCard SetTarget");
+                equipmentCard.SetTarget(true);
             }
 
             itemNum++;
@@ -148,7 +148,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void ArrengeItemUnits()
     {
         itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
-        equipmentSlotList.RemoveAll(equipment => equipment == null); // 念のため Equipment も削除
+        equipmentCardList.RemoveAll(equipment => equipment == null); // 念のため Equipment も削除
 
         // ItemとEquipmentをまとめたリストを作成
         List<GameObject> combinedList = new List<GameObject>();
@@ -159,10 +159,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             combinedList.Add(itemUnit.gameObject);
         }
 
-        // equipmentSlotList から GameObject を追加
-        foreach (var equipmentSlot in equipmentSlotList)
+        // equipmentCardList から GameObject を追加
+        foreach (var equipmentCard in equipmentCardList)
         {
-            combinedList.Add(equipmentSlot.gameObject);
+            combinedList.Add(equipmentCard.gameObject);
         }
 
         // まとめたリストで描画処理
@@ -202,7 +202,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void SelectItem(ArrowType type)
     {
-        int itemCount = itemUnitList.Count + equipmentSlotList.Count;
+        int itemCount = itemUnitList.Count + equipmentCardList.Count;
         if (itemCount > 0)
         {
             int targetItem = selectedItem; // 初期値を設定
@@ -238,7 +238,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 }
                 else
                 {
-                    equipmentSlotList[selectedItem - itemUnitList.Count].SetTarget(false);
+                    equipmentCardList[selectedItem - itemUnitList.Count].SetTarget(false);
                 }
 
                 if (targetItem < itemUnitList.Count)
@@ -247,7 +247,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 }
                 else
                 {
-                    equipmentSlotList[targetItem - itemUnitList.Count].SetTarget(true);
+                    equipmentCardList[targetItem - itemUnitList.Count].SetTarget(true);
                 }
                 selectedItem = targetItem;
             }

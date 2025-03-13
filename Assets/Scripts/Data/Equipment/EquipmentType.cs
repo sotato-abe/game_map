@@ -4,5 +4,9 @@ public enum EquipmentType
     Body,
     Arm,
     Leg,
+    HeadIMP,
+    BodyIMP,
+    ArmIMP,
+    LegIMP,
     Accessory,
 }
