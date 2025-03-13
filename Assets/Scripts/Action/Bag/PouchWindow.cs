@@ -15,7 +15,6 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     [SerializeField] InventoryWindow inventoryWindow;
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
     private List<GameObject> blockList = new List<GameObject>();
-
     private Battler playerBattler;
 
     private int headHeight = 97;

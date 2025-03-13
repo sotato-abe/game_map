@@ -26,7 +26,7 @@ public class BagPanel : Panel
     private void OnEnable()
     {
         pouchWindow.SetUp(playerUnit.Battler);
-        equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
+        equipmentWindow.SetUp(playerUnit.Battler);
     }
 
     public void Update()

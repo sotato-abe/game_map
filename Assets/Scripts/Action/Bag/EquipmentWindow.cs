@@ -12,28 +12,28 @@ public class EquipmentWindow : MonoBehaviour
     [SerializeField] EquipmentSlot arm2;
     [SerializeField] EquipmentSlot leg;
     [SerializeField] GameObject accessoryList;
-    [SerializeField] EquipmentSlot equipmentPrefab;  // ItemUnitのプレハブ
+    [SerializeField] EquipmentCard equipmentPrefab;  // ItemUnitのプレハブ
+
+    public Battler playerBattler;
+
+    public void SetUp(Battler battler)
+    {
+        playerBattler = battler;
+        SetEquipment(playerBattler.Equipments);
+    }
 
     public void SetEquipment(List<Equipment> equipments)
     {
         foreach (Equipment equipment in equipments)
         {
             if (equipment.Base.Type == EquipmentType.Head)
-                head.Setup(equipment);
+                Debug.Log("Head");
             if (equipment.Base.Type == EquipmentType.Body)
-                body.Setup(equipment);
+                Debug.Log("Body");
             if (equipment.Base.Type == EquipmentType.Arm)
-                if (arm1.equipment == null)
-                {
-                    arm1.Setup(equipment);
-                }
-                else if (arm2.equipment == null)
-                {
-                    arm2.Setup(equipment);
-                }
-            // arm2のことも考える
+                Debug.Log("Arm");
             if (equipment.Base.Type == EquipmentType.Leg)
-                leg.Setup(equipment);
+                Debug.Log("Leg");
             if (equipment.Base.Type == EquipmentType.Accessory)
                 Debug.Log("Accessory");
         }
