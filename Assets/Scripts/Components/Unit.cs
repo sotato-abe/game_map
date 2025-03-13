@@ -44,7 +44,7 @@ public class Unit : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         if (focusFlg)
         {
             Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
+            Vector3 targetScale = new Vector3(1.2f, 1.2f, 1.2f);
             while (currentTime < time)
             {
                 transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);

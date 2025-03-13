@@ -5,20 +5,15 @@ using UnityEngine.UI;
 
 public class EquipmentCard : Unit
 {
-    public Equipment equipment { get; set; }
+    public Equipment Equipment { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image cursor;
     [SerializeField] EquipmentDialog equipmentDialog;
     public bool isActive = false;
 
-    private void Awake()
-    {
-        equipmentDialog.gameObject.SetActive(false);
-    }
-
     public void Setup(Equipment equipment)
     {
-        this.equipment = equipment;
+        Equipment = equipment;
         image.sprite = equipment.Base.Sprite;
         equipmentDialog.gameObject.SetActive(true);
         equipmentDialog.Setup(equipment);
