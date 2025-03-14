@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8874157724909466650}
   - component: {fileID: 1851525428909801415}
   - component: {fileID: 3149896507070786257}
+  - component: {fileID: 1797486295542622037}
   m_Layer: 5
   m_Name: BodyParts
   m_TagString: Untagged
@@ -110,6 +111,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 3
+--- !u!225 &1797486295542622037
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124358662998323595}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &732728080231111033
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,11 +453,8 @@ MonoBehaviour:
   leg: {fileID: 3160588312627050035}
   accessoryList: {fileID: 5136037388789450782}
   equipmentPrefab: {fileID: 1234602639693830469, guid: 6c16e44d737901545be30fb23a7e40c6, type: 3}
-  playerBattler:
-    _base: {fileID: 0}
-    level: 1
-    soul: 0
-    Enchants: []
+  inventoryWindow: {fileID: 0}
+  battlerUnit: {fileID: 0}
 --- !u!1 &3802523797896050005
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,6 +545,7 @@ GameObject:
   - component: {fileID: 8316493943149520341}
   - component: {fileID: 2630618105645047990}
   - component: {fileID: 8443523522866475728}
+  - component: {fileID: 7212018956637833913}
   m_Layer: 5
   m_Name: AccesoryList
   m_TagString: Untagged
@@ -627,6 +638,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 3
+--- !u!225 &7212018956637833913
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5136037388789450782}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &7311843540905775945
 GameObject:
   m_ObjectHideFlags: 0
