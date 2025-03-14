@@ -32,4 +32,14 @@ public class EquipmentSlot : Unit
     {
         plusIcon.sprite = equipmentTypeList.GetIcon(equipmentType);
     }
+
+    public void ReSetSlot()
+    {
+        //自身にアタッチされているEquipmentCardを削除
+        EquipmentCard equipmentCard = transform.GetComponentInChildren<EquipmentCard>();
+        if (equipmentCard != null)
+        {
+            Destroy(equipmentCard.gameObject);
+        }
+    }
 }

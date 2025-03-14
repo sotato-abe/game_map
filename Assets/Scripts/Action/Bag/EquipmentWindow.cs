@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class EquipmentWindow : MonoBehaviour
+public class EquipmentWindow : MonoBehaviour, IDropHandler
 {
     [SerializeField] EquipmentSlot head;
     [SerializeField] EquipmentSlot body;
@@ -12,12 +14,13 @@ public class EquipmentWindow : MonoBehaviour
     [SerializeField] EquipmentSlot arm2;
     [SerializeField] EquipmentSlot leg;
     [SerializeField] GameObject accessoryList;
-    [SerializeField] EquipmentCard equipmentPrefab;  // ItemUnitのプレハブ
+    [SerializeField] EquipmentCard equipmentPrefab;
+    [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] BattleUnit battlerUnit;
 
     private Battler playerBattler;
 
-    private void Start()
+    private void Awake()
     {
         if (playerBattler == null)
         {
@@ -27,8 +30,33 @@ public class EquipmentWindow : MonoBehaviour
         SetEquipmentList();
     }
 
+    public void OnDrop(PointerEventData eventData)
+    {
+        Debug.Log("OnDrop");
+        EquipmentCard droppedEquipmentCard = eventData.pointerDrag.GetComponent<EquipmentCard>();
+
+        if (droppedEquipmentCard != null)
+        {
+            // すでにポーチに同じアイテムがあるか確認
+            if (playerBattler.Equipments.Contains(droppedEquipmentCard.Equipment))
+            {
+                Debug.Log("アイテムはすでに装備しています。");
+                return; // 追加しない
+            }
+            AddEquipment(droppedEquipmentCard.Equipment); // ポーチに追加
+            inventoryWindow.RemoveEquipment(droppedEquipmentCard); // バックから削除
+        }
+    }
+
     public void SetEquipmentList()
     {
+        //  装備リストを初期化
+        head.ReSetSlot();
+        body.ReSetSlot();
+        arm1.ReSetSlot();
+        arm2.ReSetSlot();
+        leg.ReSetSlot();
+
         List<Equipment> equipments = playerBattler.Equipments;
         for (int i = 0; i < equipments.Count; i++)
         {
