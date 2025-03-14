@@ -15,6 +15,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI bagRatio;
+    [SerializeField] EquipmentWindow equipmentWindow;
     [SerializeField] BattleUnit playerUnit;
 
     private int headHeight = 97;
@@ -304,6 +305,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         {
             playerUnit.Battler.TakeRecovery(itemUnit.Item.Base.RecoveryList);
             playerUnit.Battler.BagItemList.Remove(itemUnit.Item);
+            SetItem();
+            playerUnit.UpdateEnegyUI();
         }
         else
         {
@@ -315,18 +318,9 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     {
         if (targetEquipmentCard != null && targetEquipmentCard.Equipment != null)
         {
-            // 装備品を装備する
-            // もともと装備していた装備品をバッグに追加
-            Equipment changedEquipment = playerUnit.Battler.AddEquipment(targetEquipmentCard.Equipment);
-            if (changedEquipment != null)
-            {
-                playerUnit.Battler.BagEquipmentList.Remove(targetEquipmentCard.Equipment);
-                playerUnit.Battler.BagEquipmentList.Add(changedEquipment);
-            }
-            else
-            {
-                playerUnit.Battler.BagEquipmentList.Remove(targetEquipmentCard.Equipment);
-            }
+            string name = targetEquipmentCard.Equipment.Base.Name;
+            playerUnit.Battler.BagEquipmentList.Remove(targetEquipmentCard.Equipment);
+            equipmentWindow.AddEquipment(targetEquipmentCard.Equipment);
         }
         else
         {
