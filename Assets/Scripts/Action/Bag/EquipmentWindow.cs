@@ -24,40 +24,90 @@ public class EquipmentWindow : MonoBehaviour
             Debug.LogWarning("playerBattler is not initialized.");
         }
         playerBattler = battlerUnit.Battler;
-        SetEquipmentList(playerBattler.Equipments);
+        SetEquipmentList();
     }
 
-    public void SetEquipmentList(List<Equipment> equipments)
+    public void SetEquipmentList()
     {
+        List<Equipment> equipments = playerBattler.Equipments;
         for (int i = 0; i < equipments.Count; i++)
         {
-            SetEquipment(equipments[i]);
+            AddEquipment(equipments[i]);
         }
     }
 
-    public void SetEquipment(Equipment equipment)
+    public void AddEquipment(Equipment equipment)
     {
-        switch (equipment.Base.Type)
+        if (equipment.Base.Type == EquipmentType.Arm)
         {
-            case EquipmentType.Head:
-                SetEquipmentCard(head.gameObject, equipment);
-                break;
-            case EquipmentType.Body:
-                SetEquipmentCard(body.gameObject, equipment);
-                break;
-            case EquipmentType.Arm:
-                SetArmEquipmentCard(equipment);
-                break;
-            case EquipmentType.Leg:
-                SetEquipmentCard(leg.gameObject, equipment);
-                break;
-            case EquipmentType.Accessory:
-                break;
+            SetArmTargetSlot(equipment);
+            return;
+        }
+        EquipmentSlot slot = GetTargetSlot(equipment.Base.Type);
+        SetEquipmentCard(slot.gameObject, equipment);
+    }
+
+    private EquipmentSlot GetTargetSlot(EquipmentType type)
+    {
+        return type switch
+        {
+            EquipmentType.Head => head,
+            EquipmentType.Body => body,
+            EquipmentType.Arm => arm1.transform.childCount > 0 ? arm2 : arm1,
+            EquipmentType.Leg => leg,
+            _ => null,
+        };
+    }
+
+    private void SetArmTargetSlot(Equipment equipment)
+    {
+        Debug.Log($"SetArmEquipmentCard:{equipment.Base.Name}/{equipment.Base.Type}");
+
+        if (equipment.Base.Type != EquipmentType.Arm)
+        {
+            Debug.Log("EquipmentType is not Arm.");
+            return;
+        }
+
+        // arm1 の EquipmentCard を取得（無ければ新規作成）
+        EquipmentCard arm1Card = arm1.GetComponentInChildren<EquipmentCard>();
+        if (arm1Card == null)
+        {
+            arm1Card = Instantiate(equipmentPrefab, arm1.transform);
+            arm1Card.transform.position = arm1.transform.position;
+            arm1Card.transform.localScale = arm1.transform.localScale;
+        }
+
+        Equipment oldArm1Equipment = arm1Card.Equipment;
+        arm1Card.Setup(equipment);
+
+        if (oldArm1Equipment != null)
+        {
+            // arm2 の EquipmentCard を取得（無ければ新規作成）
+            EquipmentCard arm2Card = arm2.GetComponentInChildren<EquipmentCard>();
+            if (arm2Card == null)
+            {
+                arm2Card = Instantiate(equipmentPrefab, arm2.transform);
+                arm2Card.transform.position = arm2.transform.position;
+                arm2Card.transform.localScale = arm2.transform.localScale;
+            }
+
+            Equipment oldArm2Equipment = arm2Card.Equipment;
+            arm2Card.Setup(oldArm1Equipment);
+
+            // arm2 に古い装備があればバッグに戻す
+            if (oldArm2Equipment != null)
+            {
+                playerBattler.Equipments.Remove(oldArm2Equipment);
+                playerBattler.BagEquipmentList.Add(oldArm2Equipment);
+            }
         }
     }
 
-    private Equipment SetEquipmentCard(GameObject targetPosition, Equipment equipment)
+
+    private void SetEquipmentCard(GameObject targetPosition, Equipment equipment)
     {
+        Debug.Log($"SetEquipmentCard:{equipment.Base.Name}/{equipment.Base.Type}");
         // EquipmentCard がすでに存在するか確認
         EquipmentCard equipmentCard = targetPosition.GetComponent<EquipmentCard>();
 
@@ -83,54 +133,12 @@ public class EquipmentWindow : MonoBehaviour
         if (!playerBattler.Equipments.Contains(equipment))
         {
             playerBattler.Equipments.Add(equipment);
+            // playerBattler.Equipments.Insert(0, equipment);
         }
 
         // 新しい装備をセット
         equipmentCard.Setup(equipment);
 
-        return oldEquipment;
-    }
-
-    private void SetArmEquipmentCard(Equipment equipment)
-    {
-        Debug.Log($"equipment:{equipment.Base.Name}/{equipment.Base.Type}");
-
-        if (equipment.Base.Type != EquipmentType.Arm)
-        {
-            Debug.Log("EquipmentType is not Arm.");
-            return;
-        }
-
-        // arm1に装備する
-        if (arm1.transform.childCount > 0)
-        {
-            // arm1に装備がある場合、それをarm2に移動
-            EquipmentCard arm1Card = arm1.GetComponentInChildren<EquipmentCard>();
-            if (arm1Card != null)
-            {
-                Equipment arm1Equipment = arm1Card.Equipment;
-                Debug.Log($"Moving {arm1Equipment.Base.Name} from arm1 to arm2.");
-
-                // arm2に装備がある場合はバッグに戻す
-                if (arm2.transform.childCount > 0)
-                {
-                    EquipmentCard arm2Card = arm2.GetComponentInChildren<EquipmentCard>();
-                    if (arm2Card != null)
-                    {
-                        Equipment arm2Equipment = arm2Card.Equipment;
-                        Debug.Log($"Moving {arm2Equipment.Base.Name} from arm2 to bag.");
-                        // arm2の装備をバッグに戻す
-                        playerBattler.Equipments.Remove(arm2Equipment);
-                        playerBattler.BagEquipmentList.Add(arm2Equipment);
-                    }
-                }
-
-                // arm2にarm1の装備を移動
-                SetEquipmentCard(arm2.gameObject, arm1Equipment);
-            }
-        }
-
-        // arm1に新しい装備をセット
-        SetEquipmentCard(arm1.gameObject, equipment);
+        Debug.Log($"SetEquipmentCard: {equipment.Base.Name}");
     }
 }
