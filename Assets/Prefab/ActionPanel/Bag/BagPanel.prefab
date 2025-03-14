@@ -555,6 +555,7 @@ MonoBehaviour:
   blockPrefab: {fileID: 4616596723818648230, guid: db0b17dc1fb86b147b1220d89a6b8d0a, type: 3}
   itemList: {fileID: 6939920270731194773}
   bagRatio: {fileID: 311511329371344871}
+  equipmentWindow: {fileID: 6426410017650142673}
   playerUnit: {fileID: 0}
 --- !u!1 &6939920271761459250
 GameObject:
@@ -2541,6 +2542,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8355046463750783407, guid: e9eaa2584602f5945a24d3b77fb3e15f, type: 3}
+      propertyPath: inventoryWindow
+      value: 
+      objectReference: {fileID: 8590021868802433912}
     - target: {fileID: 8524170073818931758, guid: e9eaa2584602f5945a24d3b77fb3e15f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

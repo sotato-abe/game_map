@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class EquipmentCard : Unit
 {
@@ -11,7 +12,7 @@ public class EquipmentCard : Unit
     [SerializeField] EquipmentDialog equipmentDialog;
     public bool isActive = false;
 
-    public void Setup(Equipment equipment)
+    public virtual void Setup(Equipment equipment)
     {
         Equipment = equipment;
         image.sprite = equipment.Base.Sprite;
