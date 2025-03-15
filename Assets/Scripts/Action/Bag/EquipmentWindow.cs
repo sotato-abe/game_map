@@ -34,7 +34,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("OnDrop");
         EquipmentCard droppedEquipmentCard = eventData.pointerDrag.GetComponent<EquipmentCard>();
 
         if (droppedEquipmentCard != null)
@@ -50,32 +49,48 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         }
     }
 
+    // すでに装備しているアイテムを表示する。
     public void SetEquipmentList()
     {
-        Debug.Log("Equipments: " + playerBattler.Equipments.Count);
         //  装備リストを初期化
         head.ReSetSlot();
         body.ReSetSlot();
         arm1.ReSetSlot();
         arm2.ReSetSlot();
         leg.ReSetSlot();
+        armEquipmentList.Clear();
 
         List<Equipment> equipments = playerBattler.Equipments;
+
         for (int i = 0; i < equipments.Count; i++)
         {
-            AddEquipment(equipments[i]);
+            if (equipments[i].Base.Type == EquipmentType.Arm)
+            {
+                armEquipmentList.Add(equipments[i]);
+                continue;
+            }
+            else
+            {
+                EquipmentSlot slot = GetTargetSlot(equipments[i].Base.Type);
+                SetEquipmentCard(slot, equipments[i]);
+            }
         }
+        SetArmEquipmentCard();
     }
 
+    // 外部から追加する際に使用する。
     public void AddEquipment(Equipment equipment)
     {
         if (equipment.Base.Type == EquipmentType.Arm)
         {
-            SetArmTargetSlot(equipment);
-            return;
+            armEquipmentList.Add(equipment);
+            SetArmEquipmentCard();
         }
-        EquipmentSlot slot = GetTargetSlot(equipment.Base.Type);
-        SetEquipmentCard(slot.gameObject, equipment);
+        else
+        {
+            EquipmentSlot slot = GetTargetSlot(equipment.Base.Type);
+            SetEquipmentCard(slot, equipment);
+        }
     }
 
     private EquipmentSlot GetTargetSlot(EquipmentType type)
@@ -84,15 +99,14 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         {
             EquipmentType.Head => head,
             EquipmentType.Body => body,
-            EquipmentType.Arm => arm1.transform.childCount > 0 ? arm2 : arm1,
+            EquipmentType.Arm => arm2.transform.childCount > 0 ? arm2 : arm1,
             EquipmentType.Leg => leg,
             _ => null,
         };
     }
 
-    private void SetArmTargetSlot(Equipment equipment)
+    private void SetArmEquipmentCard()
     {
-        armEquipmentList.Add(equipment);
         // アイテムの数が2個以上ある時に、後ろの2つ以外をバックに戻す。
         if (armEquipmentList.Count > 2)
         {
@@ -104,23 +118,26 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             armEquipmentList.RemoveRange(0, armEquipmentList.Count - 2);
         }
         //バックに残ったアイテムを装備する
-        for (int i = 0; i < armEquipmentList.Count; i++)
+        switch (armEquipmentList.Count)
         {
-            EquipmentSlot slot = i == 0 ? arm2 : arm1;
-            SetEquipmentCard(slot.gameObject, armEquipmentList[i]);
+            case 1:
+                SetEquipmentCard(arm1, armEquipmentList[0]);
+                break;
+            case 2:
+                SetEquipmentCard(arm2, armEquipmentList[0]);
+                SetEquipmentCard(arm1, armEquipmentList[1]);
+                break;
         }
     }
 
 
-    private void SetEquipmentCard(GameObject targetPosition, Equipment equipment)
+    private void SetEquipmentCard(EquipmentSlot targetPosition, Equipment equipment)
     {
-        Debug.Log($"SetEquipmentCard:{equipment.Base.Name}/{equipment.Base.Type}");
         // EquipmentCard がすでに存在するか確認
-        EquipmentCard equipmentCard = transform.GetComponentInChildren<EquipmentCard>() ;
+        EquipmentCard equipmentCard = targetPosition.GetComponentInChildren<EquipmentCard>();
 
         if (equipmentCard != null)
         {
-            Debug.Log("oldEquipment: " + equipmentCard.Equipment.Base.Name);
             // 既に装備されているものを外してバッグに戻す
             equipmentCard.Setup(equipment);
         }
@@ -130,13 +147,13 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             EquipmentCard newEquipmentCard = Instantiate(equipmentPrefab, targetPosition.transform);
             newEquipmentCard.transform.position = targetPosition.transform.position;
             newEquipmentCard.transform.localScale = targetPosition.transform.localScale;
+            newEquipmentCard.Setup(equipment);
             newEquipmentCard.OnEndDragAction += ArrengeEquipmentCards;
         }
     }
 
     private void ArrengeEquipmentCards()
     {
-        Debug.Log("ArrengeEquipmentCards");
         // head, body, arm1, arm2, leg に追加された EquipmentCard を整列
         head.ArrangeEquipmentCard();
         body.ArrangeEquipmentCard();
