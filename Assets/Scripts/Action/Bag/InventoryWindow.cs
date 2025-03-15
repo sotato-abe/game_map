@@ -217,8 +217,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void RemoveEquipment(EquipmentCard equipmentCard)
     {
         playerUnit.Battler.BagEquipmentList.Remove(equipmentCard.Equipment);
-        SetEquipmentUnit();
-        ArrengeItemUnits();
+        SetItem();
     }
 
     public void SelectItem(ArrowType type)
