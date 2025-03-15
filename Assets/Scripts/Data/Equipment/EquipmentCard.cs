@@ -16,7 +16,7 @@ public class EquipmentCard : Unit
     {
         Equipment = equipment;
         image.sprite = equipment.Base.Sprite;
-        equipmentDialog.gameObject.SetActive(true);
+        equipmentDialog.gameObject.SetActive(false);
         equipmentDialog.Setup(equipment);
     }
 

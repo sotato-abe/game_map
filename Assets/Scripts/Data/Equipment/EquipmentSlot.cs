@@ -42,4 +42,13 @@ public class EquipmentSlot : Unit
             Destroy(equipmentCard.gameObject);
         }
     }
+
+    public void ArrangeEquipmentCard()
+    {
+        EquipmentCard equipmentCard = transform.GetComponentInChildren<EquipmentCard>();
+        if (equipmentCard != null)
+        {
+            equipmentCard.transform.position = transform.position;
+        }
+    }
 }

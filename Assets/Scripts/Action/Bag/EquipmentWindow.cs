@@ -18,6 +18,8 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] BattleUnit battlerUnit;
 
+    List<Equipment> armEquipmentList = new List<Equipment>();
+
     private Battler playerBattler;
 
     private void Awake()
@@ -50,6 +52,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     public void SetEquipmentList()
     {
+        Debug.Log("Equipments: " + playerBattler.Equipments.Count);
         //  装備リストを初期化
         head.ReSetSlot();
         body.ReSetSlot();
@@ -89,46 +92,22 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     private void SetArmTargetSlot(Equipment equipment)
     {
-        Debug.Log($"SetArmEquipmentCard:{equipment.Base.Name}/{equipment.Base.Type}");
-
-        if (equipment.Base.Type != EquipmentType.Arm)
+        armEquipmentList.Add(equipment);
+        // アイテムの数が2個以上ある時に、後ろの2つ以外をバックに戻す。
+        if (armEquipmentList.Count > 2)
         {
-            Debug.Log("EquipmentType is not Arm.");
-            return;
-        }
-
-        // arm1 の EquipmentCard を取得（無ければ新規作成）
-        EquipmentCard arm1Card = arm1.GetComponentInChildren<EquipmentCard>();
-        if (arm1Card == null)
-        {
-            arm1Card = Instantiate(equipmentPrefab, arm1.transform);
-            arm1Card.transform.position = arm1.transform.position;
-            arm1Card.transform.localScale = arm1.transform.localScale;
-        }
-
-        Equipment oldArm1Equipment = arm1Card.Equipment;
-        arm1Card.Setup(equipment);
-
-        if (oldArm1Equipment != null)
-        {
-            // arm2 の EquipmentCard を取得（無ければ新規作成）
-            EquipmentCard arm2Card = arm2.GetComponentInChildren<EquipmentCard>();
-            if (arm2Card == null)
+            for (int i = 0; i < armEquipmentList.Count - 2; i++)
             {
-                arm2Card = Instantiate(equipmentPrefab, arm2.transform);
-                arm2Card.transform.position = arm2.transform.position;
-                arm2Card.transform.localScale = arm2.transform.localScale;
+                playerBattler.Equipments.Remove(armEquipmentList[i]);
+                playerBattler.BagEquipmentList.Add(armEquipmentList[i]);
             }
-
-            Equipment oldArm2Equipment = arm2Card.Equipment;
-            arm2Card.Setup(oldArm1Equipment);
-
-            // arm2 に古い装備があればバッグに戻す
-            if (oldArm2Equipment != null)
-            {
-                playerBattler.Equipments.Remove(oldArm2Equipment);
-                playerBattler.BagEquipmentList.Add(oldArm2Equipment);
-            }
+            armEquipmentList.RemoveRange(0, armEquipmentList.Count - 2);
+        }
+        //バックに残ったアイテムを装備する
+        for (int i = 0; i < armEquipmentList.Count; i++)
+        {
+            EquipmentSlot slot = i == 0 ? arm2 : arm1;
+            SetEquipmentCard(slot.gameObject, armEquipmentList[i]);
         }
     }
 
@@ -137,36 +116,32 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     {
         Debug.Log($"SetEquipmentCard:{equipment.Base.Name}/{equipment.Base.Type}");
         // EquipmentCard がすでに存在するか確認
-        EquipmentCard equipmentCard = targetPosition.GetComponent<EquipmentCard>();
+        EquipmentCard equipmentCard = transform.GetComponentInChildren<EquipmentCard>() ;
 
-        // 既に装備されているものがあれば取得
-        Equipment oldEquipment = equipmentCard != null ? equipmentCard.Equipment : null;
-
-        if (oldEquipment != null)
+        if (equipmentCard != null)
         {
-            Debug.Log("oldEquipment: " + oldEquipment.Base.Name);
+            Debug.Log("oldEquipment: " + equipmentCard.Equipment.Base.Name);
             // 既に装備されているものを外してバッグに戻す
-            playerBattler.Equipments.Remove(oldEquipment);
-            playerBattler.BagEquipmentList.Add(oldEquipment);
+            equipmentCard.Setup(equipment);
         }
         else
         {
             // EquipmentCard が存在しない場合のみ新規作成
-            equipmentCard = Instantiate(equipmentPrefab, targetPosition.transform);
-            equipmentCard.transform.position = targetPosition.transform.position;
-            equipmentCard.transform.localScale = targetPosition.transform.localScale;
+            EquipmentCard newEquipmentCard = Instantiate(equipmentPrefab, targetPosition.transform);
+            newEquipmentCard.transform.position = targetPosition.transform.position;
+            newEquipmentCard.transform.localScale = targetPosition.transform.localScale;
+            newEquipmentCard.OnEndDragAction += ArrengeEquipmentCards;
         }
+    }
 
-        // 新しい装備を Equipments に追加（重複防止）
-        if (!playerBattler.Equipments.Contains(equipment))
-        {
-            playerBattler.Equipments.Add(equipment);
-            // playerBattler.Equipments.Insert(0, equipment);
-        }
-
-        // 新しい装備をセット
-        equipmentCard.Setup(equipment);
-
-        Debug.Log($"SetEquipmentCard: {equipment.Base.Name}");
+    private void ArrengeEquipmentCards()
+    {
+        Debug.Log("ArrengeEquipmentCards");
+        // head, body, arm1, arm2, leg に追加された EquipmentCard を整列
+        head.ArrangeEquipmentCard();
+        body.ArrangeEquipmentCard();
+        arm1.ArrangeEquipmentCard();
+        arm2.ArrangeEquipmentCard();
+        leg.ArrangeEquipmentCard();
     }
 }
