@@ -81,6 +81,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     // 外部から追加する際に使用する。
     public void AddEquipment(Equipment equipment)
     {
+        playerBattler.Equipments.Add(equipment);
         if (equipment.Base.Type == EquipmentType.Arm)
         {
             armEquipmentList.Add(equipment);
