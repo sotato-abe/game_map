@@ -9,26 +9,26 @@ public class ItemUnit : Unit
     public Item Item { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image cursor;
-    [SerializeField] ItemDialog itemDialog;
+    [SerializeField] ItemDialog dialog;
     private bool isActive = false;
 
     public virtual void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
-        itemDialog.gameObject.SetActive(true);
-        itemDialog.Setup(Item);
+        dialog.gameObject.SetActive(true);
+        dialog.Setup(Item);
     }
 
     public void OnPointerEnter()
     {
-        itemDialog.ShowDialog(true);
+        dialog.ShowDialog(true);
         StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
-        itemDialog.ShowDialog(false);
+        dialog.ShowDialog(false);
         StartCoroutine(OnPointer(false));
     }
 

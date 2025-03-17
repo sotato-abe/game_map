@@ -4,31 +4,31 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EquipmentBlock : Unit
+public class ItemBlock : Unit
 {
-    public Equipment Equipment { get; set; }
+    public Item Item { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image cursor;
-    [SerializeField] EquipmentDialog dialog;
-    public bool isActive = false;
+    [SerializeField] ItemDialog itemDialog;
+    private bool isActive = false;
 
-    public virtual void Setup(Equipment equipment)
+    public virtual void Setup(Item item)
     {
-        Equipment = equipment;
-        image.sprite = equipment.Base.Sprite;
-        dialog.gameObject.SetActive(false);
-        dialog.Setup(equipment);
+        Item = item;
+        image.sprite = Item.Base.Sprite;
+        itemDialog.gameObject.SetActive(true);
+        itemDialog.Setup(Item);
     }
 
     public void OnPointerEnter()
     {
-        dialog.ShowDialog(true);
+        itemDialog.ShowDialog(true);
         StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
-        dialog.ShowDialog(false);
+        itemDialog.ShowDialog(false);
         StartCoroutine(OnPointer(false));
     }
 

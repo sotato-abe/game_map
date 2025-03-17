@@ -1,8 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Dialog : MonoBehaviour
 {
+    [SerializeField] public NamePlate namePlate;
+    [SerializeField] public TextMeshProUGUI description;
+
     float time = 0.05f;
     float currentTime = 0f;
     Vector3 originalScale = new Vector3(1f, 1f, 1f);

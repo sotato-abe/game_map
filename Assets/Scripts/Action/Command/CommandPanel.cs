@@ -126,10 +126,10 @@ public class CommandPanel : Panel
 
             UseEnegy(commandUnit);
 
-            TargetType target = commandUnit.command.Base.TargetType;
+            TargetType target = commandUnit.Command.Base.TargetType;
             Debug.Log($"target:{target}");
 
-            foreach (var enchant in commandUnit.command.Base.EnchantList)
+            foreach (var enchant in commandUnit.Command.Base.EnchantList)
             {
                 EnchantCount enchantCount = new EnchantCount(enchant.Type, target, enchant.Val);
                 enchants.Add(enchantCount);
@@ -142,9 +142,9 @@ public class CommandPanel : Panel
     public bool CheckEnegy(CommandUnit commandUnit)
     {
         if (
-            commandUnit.command.Base.LifeCost.val <= playerUnit.Battler.Life &&
-            commandUnit.command.Base.BatteryCost.val <= playerUnit.Battler.Battery &&
-            commandUnit.command.Base.SoulCost.val <= playerUnit.Battler.Soul
+            commandUnit.Command.Base.LifeCost.val <= playerUnit.Battler.Life &&
+            commandUnit.Command.Base.BatteryCost.val <= playerUnit.Battler.Battery &&
+            commandUnit.Command.Base.SoulCost.val <= playerUnit.Battler.Soul
         )
         {
             return true;
@@ -157,9 +157,9 @@ public class CommandPanel : Panel
 
     public void UseEnegy(CommandUnit commandUnit)
     {
-        playerUnit.Battler.Life -= commandUnit.command.Base.LifeCost.val;
-        playerUnit.Battler.Battery -= commandUnit.command.Base.BatteryCost.val;
-        playerUnit.Battler.Soul -= commandUnit.command.Base.SoulCost.val;
+        playerUnit.Battler.Life -= commandUnit.Command.Base.LifeCost.val;
+        playerUnit.Battler.Battery -= commandUnit.Command.Base.BatteryCost.val;
+        playerUnit.Battler.Soul -= commandUnit.Command.Base.SoulCost.val;
         playerUnit.UpdateEnegyUI();
     }
 }
