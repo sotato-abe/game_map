@@ -42,7 +42,7 @@ RectTransform:
   - {fileID: 8865728380043352267}
   - {fileID: 566440020610577034}
   m_Father: {fileID: 3259985065766097283}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -454,7 +454,7 @@ MonoBehaviour:
   accessoryList: {fileID: 5136037388789450782}
   equipmentPrefab: {fileID: 1234602639693830469, guid: 6c16e44d737901545be30fb23a7e40c6, type: 3}
   inventoryWindow: {fileID: 0}
-  battlerUnit: {fileID: 0}
+  playerUnit: {fileID: 0}
 --- !u!1 &3802523797896050005
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,8 +485,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7150774319572972813}
   - {fileID: 5200028115077521103}
+  - {fileID: 7150774319572972813}
   m_Father: {fileID: 4041847859090537226}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -569,7 +569,7 @@ RectTransform:
   - {fileID: 535505524293461085}
   - {fileID: 2214624262280193924}
   m_Father: {fileID: 3259985065766097283}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
