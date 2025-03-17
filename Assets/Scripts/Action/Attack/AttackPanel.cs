@@ -29,13 +29,9 @@ public class AttackPanel : Panel
 
     private void OnEnable()
     {
-        RefreshEnegyCost();
-        if (playerUnit != null && playerBattler != null)
-        {
-            playerBattler = playerUnit.Battler;
-            SetEquipmentList();
-            SetEnegyCost();
-        }
+        playerBattler = playerUnit.Battler;
+        SetEquipmentList();
+        SetEnegyCost();
     }
 
     public void Update()
@@ -91,16 +87,6 @@ public class AttackPanel : Panel
 
     public void SetEnegyCost()
     {
-        lifeCostText.SetText($"{lifeCost}");
-        batteryCostText.SetText($"{batteryCost}");
-        soulCostText.SetText($"{soulCost}");
-    }
-
-    public void RefreshEnegyCost()
-    {
-        lifeCost = 0;
-        batteryCost = 0;
-        soulCost = 0;
         lifeCostText.SetText($"{lifeCost}");
         batteryCostText.SetText($"{batteryCost}");
         soulCostText.SetText($"{soulCost}");
