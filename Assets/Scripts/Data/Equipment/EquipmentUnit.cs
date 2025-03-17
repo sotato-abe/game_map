@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class EquipmentUnit : MonoBehaviour
 {
-    public Equipment equipment { get; set; }
+    public Equipment Equipment { get; set; }
     [SerializeField] Image image;
     [SerializeField] GameObject skillList;
     [SerializeField] GameObject costList;
@@ -15,11 +15,11 @@ public class EquipmentUnit : MonoBehaviour
 
     public virtual void Setup(Equipment equipment)
     {
-        this.equipment = equipment;
-        image.sprite = equipment.Base.Sprite;
+        Equipment = equipment;
+        image.sprite = Equipment.Base.Sprite;
         SetSkill();
         SetCost();
-        equipmentDialog.Setup(equipment);
+        equipmentDialog.Setup(Equipment);
     }
 
     public void OnPointerEnter()
@@ -42,14 +42,14 @@ public class EquipmentUnit : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (Enegy attack in equipment.Base.AttackList)
+        foreach (Enegy attack in Equipment.Base.AttackList)
         {
             EnegyIcon attackObject = Instantiate(costPrefab, skillList.transform);
             attackObject.gameObject.SetActive(true);
             EnegyIcon attackUnit = attackObject.GetComponent<EnegyIcon>();
             attackUnit.SetCostIcon(attack);
         }
-        foreach (Enchant enchant in equipment.Base.EnchantList)
+        foreach (Enchant enchant in Equipment.Base.EnchantList)
         {
             EnchantIcon enchantObject = Instantiate(enchantPrefab, skillList.transform);
             enchantObject.gameObject.SetActive(true);
@@ -66,7 +66,7 @@ public class EquipmentUnit : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (var cost in equipment.Base.CostList)
+        foreach (var cost in Equipment.Base.CostList)
         {
             if (0 < cost.val)
             {

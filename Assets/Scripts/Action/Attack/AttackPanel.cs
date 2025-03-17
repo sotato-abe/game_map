@@ -31,7 +31,7 @@ public class AttackPanel : Panel
     {
         playerBattler = playerUnit.Battler;
         SetEquipmentList();
-        SetEnegyCost();
+        CountEnegyCost();
     }
 
     public void Update()
@@ -62,27 +62,30 @@ public class AttackPanel : Panel
             EquipmentUnit equipmentUnit = equipmentUnitObject.GetComponent<EquipmentUnit>();
             equipmentUnitList.Add(equipmentUnit);
             equipmentUnit.Setup(equipment);
-            CountEnegyCost(equipment);
         }
     }
 
-    public void CountEnegyCost(Equipment equipment)
+    public void CountEnegyCost()
     {
-        foreach (Enegy cost in equipment.Base.CostList)
+        lifeCost = 0;
+        batteryCost = 0;
+        soulCost = 0;
+
+        foreach (Equipment equipment in playerBattler.Equipments)
         {
-            switch (cost.type)
+            var lifeCheck = playerBattler.Life > equipment.Base.LifeCost.val + lifeCost;
+            var batteryCheck = playerBattler.Battery >= equipment.Base.BatteryCost.val + batteryCost;
+            var soulCheck = playerBattler.Soul >= equipment.Base.SoulCost.val + soulCost;
+
+            if (lifeCheck && batteryCheck && soulCheck)
             {
-                case EnegyType.Life:
-                    lifeCost += cost.val;
-                    break;
-                case EnegyType.Battery:
-                    batteryCost += cost.val;
-                    break;
-                case EnegyType.Soul:
-                    soulCost += cost.val;
-                    break;
+                lifeCost += equipment.Base.LifeCost.val;
+                batteryCost += equipment.Base.BatteryCost.val;
+                soulCost += equipment.Base.SoulCost.val;
             }
         }
+
+        SetEnegyCost();
     }
 
     public void SetEnegyCost()
@@ -96,6 +99,7 @@ public class AttackPanel : Panel
     {
         List<Damage> damages = ActivateEquipments();
         attackSystem.ExecutePlayerAttack(damages);
+        CountEnegyCost();
     }
 
     public List<Damage> ActivateEquipments()
@@ -104,14 +108,14 @@ public class AttackPanel : Panel
 
         foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
         {
-            if (CheckEnegy(equipmentUnit) == false)
+            if (CheckEnegy(equipmentUnit.Equipment) == false)
             {
                 continue;
             }
-            if (Random.Range(0, 100) < equipmentUnit.equipment.Base.Probability)
+            if (Random.Range(0, 100) < equipmentUnit.Equipment.Base.Probability)
             {
-                UseEnegy(equipmentUnit);
-                foreach (var attack in equipmentUnit.equipment.Base.AttackList)
+                UseEnegy(equipmentUnit.Equipment);
+                foreach (var attack in equipmentUnit.Equipment.Base.AttackList)
                 {
                     Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
                     damages.Add(damage);
@@ -123,12 +127,12 @@ public class AttackPanel : Panel
         return damages;
     }
 
-    public bool CheckEnegy(EquipmentUnit equipmentUnit)
+    public bool CheckEnegy(Equipment equipment)
     {
         if (
-            equipmentUnit.equipment.Base.LifeCost.val <= playerBattler.Life &&
-            equipmentUnit.equipment.Base.BatteryCost.val <= playerBattler.Battery &&
-            equipmentUnit.equipment.Base.SoulCost.val <= playerBattler.Soul
+            equipment.LifeCost.val <= playerBattler.Life &&
+            equipment.BatteryCost.val <= playerBattler.Battery &&
+            equipment.SoulCost.val <= playerBattler.Soul
         )
         {
             return true;
@@ -139,11 +143,11 @@ public class AttackPanel : Panel
         }
     }
 
-    public void UseEnegy(EquipmentUnit equipmentUnit)
+    public void UseEnegy(Equipment equipment)
     {
-        playerBattler.Life -= equipmentUnit.equipment.Base.LifeCost.val;
-        playerBattler.Battery -= equipmentUnit.equipment.Base.BatteryCost.val;
-        playerBattler.Soul -= equipmentUnit.equipment.Base.SoulCost.val;
+        playerBattler.Life -= equipment.Base.LifeCost.val;
+        playerBattler.Battery -= equipment.Base.BatteryCost.val;
+        playerBattler.Soul -= equipment.Base.SoulCost.val;
         playerUnit.UpdateEnegyUI();
     }
 }
