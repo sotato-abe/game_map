@@ -35,20 +35,20 @@ public class EquipmentSlot : Unit
 
     public void ReSetSlot()
     {
-        //自身にアタッチされているEquipmentCardを削除
-        EquipmentCard equipmentCard = transform.GetComponentInChildren<EquipmentCard>();
-        if (equipmentCard != null)
+        //自身にアタッチされているEquipmentBlockを削除
+        EquipmentBlock equipmentBlock = transform.GetComponentInChildren<EquipmentBlock>();
+        if (equipmentBlock != null)
         {
-            Destroy(equipmentCard.gameObject);
+            Destroy(equipmentBlock.gameObject);
         }
     }
 
-    public void ArrangeEquipmentCard()
+    public void ArrangeEquipmentBlock()
     {
-        EquipmentCard equipmentCard = transform.GetComponentInChildren<EquipmentCard>();
-        if (equipmentCard != null)
+        EquipmentBlock equipmentBlock = transform.GetComponentInChildren<EquipmentBlock>();
+        if (equipmentBlock != null)
         {
-            equipmentCard.transform.position = transform.position;
+            equipmentBlock.transform.position = transform.position;
         }
     }
 }
