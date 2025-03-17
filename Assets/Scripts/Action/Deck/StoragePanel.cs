@@ -15,6 +15,8 @@ public class StoragePanel : Panel, IDropHandler
     [SerializeField] DeckWindow deckWindow;
     [SerializeField] BattleUnit playerUnit;
 
+    private Battler playerBattler;
+
     int row = 10;
     private int headHeight = 40;
     private int commandWidth = 70;
@@ -22,11 +24,18 @@ public class StoragePanel : Panel, IDropHandler
     List<CommandSlot> storageList = new List<CommandSlot>();
     private List<GameObject> blockList = new List<GameObject>();
 
+    public void Start()
+    {
+        playerBattler = playerUnit.Battler;
+        SetPanelSize();
+    }
+
     private void OnEnable()
     {
         if (playerUnit != null && playerUnit.Battler != null)
         {
-            deckWindow.Setup(playerUnit.Battler);
+            playerBattler = playerUnit.Battler;
+            deckWindow.Setup(playerBattler);
             SetPanelSize();
             SetStorage();
         }
@@ -43,12 +52,12 @@ public class StoragePanel : Panel, IDropHandler
 
         if (droppedCommandSlot != null)
         {
-            if (playerUnit.Battler.StorageList.Contains(droppedCommandSlot.command))
+            if (playerBattler.StorageList.Contains(droppedCommandSlot.command))
             {
                 Debug.Log("コマンドはすでにデッキに存在しています。");
                 return; // 追加しない
             }
-            if (playerUnit.Battler.StorageList.Count >= playerUnit.Battler.Storage.val)
+            if (playerBattler.StorageList.Count >= playerBattler.Storage.val)
             {
                 Debug.Log("ストレージがいっぱいです。");
                 return; // 追加しない
@@ -78,7 +87,7 @@ public class StoragePanel : Panel, IDropHandler
     public void SetPanelSize()
     {
         int width = commandWidth * row + 30;
-        int column = (playerUnit.Battler.Storage.val - 1) / row + 1;
+        int column = (playerBattler.Storage.val - 1) / row + 1;
         int height = commandWidth * column + headHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
@@ -91,7 +100,7 @@ public class StoragePanel : Panel, IDropHandler
             Destroy(child.gameObject);
         }
 
-        foreach (Command command in playerUnit.Battler.StorageList)
+        foreach (Command command in playerBattler.StorageList)
         {
             CommandSlot commandSlot = Instantiate(commandPrefab, storageArea.transform);
             commandSlot.gameObject.SetActive(true);
@@ -101,12 +110,12 @@ public class StoragePanel : Panel, IDropHandler
         }
         SetBlock();
         ArrengeStorage();
-        storageRatio.text = $"{playerUnit.Battler.StorageList.Count}/{playerUnit.Battler.Storage.val}";
+        storageRatio.text = $"{playerBattler.StorageList.Count}/{playerBattler.Storage.val}";
     }
 
     private void SetBlock()
     {
-        int blockNum = row - playerUnit.Battler.Storage.val % row;
+        int blockNum = row - playerBattler.Storage.val % row;
         blockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
@@ -118,13 +127,13 @@ public class StoragePanel : Panel, IDropHandler
 
     public void AddCommandSlot(Command command)
     {
-        playerUnit.Battler.StorageList.Add(command);
+        playerBattler.StorageList.Add(command);
         SetStorage();
     }
 
     public void RemoveCommandSlot(CommandSlot commandSlot)
     {
-        playerUnit.Battler.StorageList.Remove(commandSlot.command);
+        playerBattler.StorageList.Remove(commandSlot.command);
         SetStorage();
     }
 
@@ -143,8 +152,8 @@ public class StoragePanel : Panel, IDropHandler
         for (int i = 0; i < blockList.Count; i++)
         {
             int cardHalfWidth = commandWidth / 2;
-            int xPosition = (playerUnit.Battler.Storage.val % row + i) * commandWidth + cardHalfWidth + padding;
-            int yPosition = -((playerUnit.Battler.Storage.val / row) * commandWidth + cardHalfWidth) - padding;
+            int xPosition = (playerBattler.Storage.val % row + i) * commandWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Storage.val / row) * commandWidth + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }

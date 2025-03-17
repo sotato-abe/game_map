@@ -13,6 +13,8 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] InventoryWindow inventoryWindow;
+    [SerializeField] BattleUnit playerUnit;
+
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
     private List<GameObject> blockList = new List<GameObject>();
     private Battler playerBattler;
@@ -24,13 +26,23 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     public void Start()
     {
+        playerBattler = playerUnit.Battler;
         SetPouchSize();
     }
 
     private void OnEnable()
     {
-        SetItemUnit(playerBattler.PouchList);
+        playerBattler = playerUnit.Battler;
+        SetItemUnit();
         pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
+    }
+
+    public void SetPouchSize()
+    {
+        int width = itemWidth * row + 30;
+        int column = (playerBattler.Pouch.val - 1) / row + 1;
+        int height = itemWidth * column + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -56,21 +68,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         }
     }
 
-    public void Setup(Battler battler)
-    {
-        playerBattler = battler;
-        SetItemUnit(playerBattler.PouchList);
-    }
-
-    public void SetPouchSize()
-    {
-        int width = itemWidth * row + 30;
-        int column = (playerBattler.Pouch.val - 1) / row + 1;
-        int height = itemWidth * column + headHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
-    }
-
-    public void SetItemUnit(List<Item> items)
+    private void SetItemUnit()
     {
         itemUnitList.Clear();
 
@@ -79,7 +77,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
             Destroy(child.gameObject);
         }
 
-        foreach (Item item in items)
+        foreach (Item item in playerBattler.PouchList)
         {
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
@@ -128,7 +126,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     public void AddItemUnit(Item item)
     {
         playerBattler.PouchList.Add(item);
-        SetItemUnit(playerBattler.PouchList);
+        SetItemUnit();
         pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
     }
 

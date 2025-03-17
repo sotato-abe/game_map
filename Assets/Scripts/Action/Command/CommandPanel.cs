@@ -14,21 +14,24 @@ public class CommandPanel : Panel
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] AttackSystem attackSystem;
 
+    private Battler playerBattler;
     private int lifeCost = 0;
     private int batteryCost = 0;
     private int soulCost = 0;
     List<CommandUnit> commandUnitList = new List<CommandUnit>();
 
-    private void Init()
+    public void Start()
     {
+        playerBattler = playerUnit.Battler;
         RefreshEnegyCost();
     }
 
     private void OnEnable()
     {
         RefreshEnegyCost();
-        if (playerUnit != null && playerUnit.Battler != null)
+        if (playerUnit != null && playerBattler != null)
         {
+            playerBattler = playerUnit.Battler;
             SetCommandUnit();
             SetEnegyCost();
         }
@@ -59,7 +62,7 @@ public class CommandPanel : Panel
 
         int commandNum = 0;
 
-        foreach (var command in playerUnit.Battler.RunTable)
+        foreach (var command in playerBattler.RunTable)
         {
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
             commandUnitObject.gameObject.SetActive(true);
@@ -142,9 +145,9 @@ public class CommandPanel : Panel
     public bool CheckEnegy(CommandUnit commandUnit)
     {
         if (
-            commandUnit.Command.Base.LifeCost.val <= playerUnit.Battler.Life &&
-            commandUnit.Command.Base.BatteryCost.val <= playerUnit.Battler.Battery &&
-            commandUnit.Command.Base.SoulCost.val <= playerUnit.Battler.Soul
+            commandUnit.Command.Base.LifeCost.val <= playerBattler.Life &&
+            commandUnit.Command.Base.BatteryCost.val <= playerBattler.Battery &&
+            commandUnit.Command.Base.SoulCost.val <= playerBattler.Soul
         )
         {
             return true;
@@ -157,9 +160,9 @@ public class CommandPanel : Panel
 
     public void UseEnegy(CommandUnit commandUnit)
     {
-        playerUnit.Battler.Life -= commandUnit.Command.Base.LifeCost.val;
-        playerUnit.Battler.Battery -= commandUnit.Command.Base.BatteryCost.val;
-        playerUnit.Battler.Soul -= commandUnit.Command.Base.SoulCost.val;
+        playerBattler.Life -= commandUnit.Command.Base.LifeCost.val;
+        playerBattler.Battery -= commandUnit.Command.Base.BatteryCost.val;
+        playerBattler.Soul -= commandUnit.Command.Base.SoulCost.val;
         playerUnit.UpdateEnegyUI();
     }
 }

@@ -18,6 +18,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     [SerializeField] EquipmentWindow equipmentWindow;
     [SerializeField] BattleUnit playerUnit;
 
+    private Battler playerBattler;
+
     private int headHeight = 97;
     private int itemWidth = 70;
     int row = 10;
@@ -31,12 +33,22 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void Start()
     {
+        playerBattler = playerUnit.Battler;
         SetPanelSize();
     }
 
     private void OnEnable()
     {
+        playerBattler = playerUnit.Battler;
         SetItem();
+    }
+
+    public void SetPanelSize()
+    {
+        int width = itemWidth * row + 30;
+        int column = (playerBattler.Bag.val - 1) / row + 1;
+        int height = itemWidth * column + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
     // ItemUnitがドロップされたときの処理
@@ -46,12 +58,12 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
         if (droppedItemUnit != null)
         {
-            if (playerUnit.Battler.BagItemList.Contains(droppedItemUnit.Item))
+            if (playerBattler.BagItemList.Contains(droppedItemUnit.Item))
             {
                 Debug.Log("アイテムはすでにポーチに存在しています。");
                 return; // 追加しない
             }
-            if (playerUnit.Battler.BagItemList.Count >= playerUnit.Battler.Bag.val)
+            if (playerBattler.BagItemList.Count >= playerBattler.Bag.val)
             {
                 Debug.Log("バッグがいっぱいです。");
                 return; // 追加しない
@@ -63,13 +75,6 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     }
 
     //playerUnitのBagの数値に応じでInventoryWindowのサイズを変更
-    public void SetPanelSize()
-    {
-        int width = itemWidth * row + 30;
-        int column = (playerUnit.Battler.Bag.val - 1) / row + 1;
-        int height = itemWidth * column + headHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
-    }
 
     public void SetItem()
     {
@@ -113,7 +118,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         // リストをクリア
         itemUnitList.Clear();
 
-        foreach (Item item in playerUnit.Battler.BagItemList)
+        foreach (Item item in playerBattler.BagItemList)
         {
             itemNum++;
 
@@ -131,7 +136,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         // リストをクリア
         equipmentBlockList.Clear();
 
-        foreach (Equipment equipment in playerUnit.Battler.BagEquipmentList)
+        foreach (Equipment equipment in playerBattler.BagEquipmentList)
         {
             itemNum++;
 
@@ -148,7 +153,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     // Bagが8の場合、左下から2つブロックを配置する
     private void SetBlock()
     {
-        int blockNum = row - playerUnit.Battler.Bag.val % row;
+        int blockNum = row - playerBattler.Bag.val % row;
         blockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
@@ -192,31 +197,31 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         for (int i = 0; i < blockList.Count; i++)
         {
             int cardHalfWidth = itemWidth / 2;
-            int xPosition = (playerUnit.Battler.Bag.val % row + i) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((playerUnit.Battler.Bag.val / row) * itemWidth + cardHalfWidth) - padding;
+            int xPosition = (playerBattler.Bag.val % row + i) * itemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Bag.val / row) * itemWidth + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
-        int itemCount = playerUnit.Battler.BagItemList.Count + playerUnit.Battler.BagEquipmentList.Count;
-        bagRatio.text = $"{itemCount}/{playerUnit.Battler.Bag.val}";
+        int itemCount = playerBattler.BagItemList.Count + playerBattler.BagEquipmentList.Count;
+        bagRatio.text = $"{itemCount}/{playerBattler.Bag.val}";
     }
 
     public void AddItemUnit(Item item)
     {
-        playerUnit.Battler.BagItemList.Add(item);
+        playerBattler.BagItemList.Add(item);
         SetItemUnit();
         ArrengeItemUnits();
     }
 
     public void RemoveItem(ItemUnit itemUnit)
     {
-        playerUnit.Battler.BagItemList.Remove(itemUnit.Item);
+        playerBattler.BagItemList.Remove(itemUnit.Item);
         SetItemUnit();
         ArrengeItemUnits();
     }
 
     public void RemoveEquipment(EquipmentBlock equipmentBlock)
     {
-        playerUnit.Battler.BagEquipmentList.Remove(equipmentBlock.Equipment);
+        playerBattler.BagEquipmentList.Remove(equipmentBlock.Equipment);
         SetItem();
     }
 
@@ -291,7 +296,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             {
                 Debug.LogWarning("Selected item is out of bounds.");
             }
-            int itemCount = playerUnit.Battler.BagItemList.Count + playerUnit.Battler.BagEquipmentList.Count;
+            int itemCount = playerBattler.BagItemList.Count + playerBattler.BagEquipmentList.Count;
             if (selectedItem >= itemCount)
             {
                 selectedItem = itemCount - 1;
@@ -309,8 +314,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     {
         if (itemUnit != null && itemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
         {
-            playerUnit.Battler.TakeRecovery(itemUnit.Item.Base.RecoveryList);
-            playerUnit.Battler.BagItemList.Remove(itemUnit.Item);
+            playerBattler.TakeRecovery(itemUnit.Item.Base.RecoveryList);
+            playerBattler.BagItemList.Remove(itemUnit.Item);
             SetItem();
             playerUnit.UpdateEnegyUI();
         }
@@ -325,7 +330,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         if (targetEquipmentBlock != null && targetEquipmentBlock.Equipment != null)
         {
             string name = targetEquipmentBlock.Equipment.Base.Name;
-            playerUnit.Battler.BagEquipmentList.Remove(targetEquipmentBlock.Equipment);
+            playerBattler.BagEquipmentList.Remove(targetEquipmentBlock.Equipment);
             equipmentWindow.AddEquipment(targetEquipmentBlock.Equipment);
         }
         else
