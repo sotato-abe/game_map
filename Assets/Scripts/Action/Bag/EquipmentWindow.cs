@@ -14,7 +14,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     [SerializeField] EquipmentSlot arm2;
     [SerializeField] EquipmentSlot leg;
     [SerializeField] GameObject accessoryList;
-    [SerializeField] EquipmentCard equipmentPrefab;
+    [SerializeField] EquipmentBlock equipmentPrefab;
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] BattleUnit battlerUnit;
 
@@ -34,18 +34,18 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        EquipmentCard droppedEquipmentCard = eventData.pointerDrag.GetComponent<EquipmentCard>();
+        EquipmentBlock droppedEquipmentBlock = eventData.pointerDrag.GetComponent<EquipmentBlock>();
 
-        if (droppedEquipmentCard != null)
+        if (droppedEquipmentBlock != null)
         {
             // すでにポーチに同じアイテムがあるか確認
-            if (playerBattler.Equipments.Contains(droppedEquipmentCard.Equipment))
+            if (playerBattler.Equipments.Contains(droppedEquipmentBlock.Equipment))
             {
                 Debug.Log("アイテムはすでに装備しています。");
                 return; // 追加しない
             }
-            AddEquipment(droppedEquipmentCard.Equipment); // ポーチに追加
-            inventoryWindow.RemoveEquipment(droppedEquipmentCard); // バックから削除
+            AddEquipment(droppedEquipmentBlock.Equipment); // ポーチに追加
+            inventoryWindow.RemoveEquipment(droppedEquipmentBlock); // バックから削除
         }
     }
 
@@ -72,10 +72,10 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             else
             {
                 EquipmentSlot slot = GetTargetSlot(equipments[i].Base.Type);
-                SetEquipmentCard(slot, equipments[i]);
+                SetEquipmentBlock(slot, equipments[i]);
             }
         }
-        SetArmEquipmentCard();
+        SetArmEquipmentBlock();
     }
 
     // 外部から追加する際に使用する。
@@ -85,12 +85,12 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         if (equipment.Base.Type == EquipmentType.Arm)
         {
             armEquipmentList.Add(equipment);
-            SetArmEquipmentCard();
+            SetArmEquipmentBlock();
         }
         else
         {
             EquipmentSlot slot = GetTargetSlot(equipment.Base.Type);
-            SetEquipmentCard(slot, equipment);
+            SetEquipmentBlock(slot, equipment);
         }
     }
 
@@ -106,7 +106,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         };
     }
 
-    private void SetArmEquipmentCard()
+    private void SetArmEquipmentBlock()
     {
         // アイテムの数が2個以上ある時に、後ろの2つ以外をバックに戻す。
         if (armEquipmentList.Count > 2)
@@ -122,44 +122,44 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         switch (armEquipmentList.Count)
         {
             case 1:
-                SetEquipmentCard(arm1, armEquipmentList[0]);
+                SetEquipmentBlock(arm1, armEquipmentList[0]);
                 break;
             case 2:
-                SetEquipmentCard(arm2, armEquipmentList[0]);
-                SetEquipmentCard(arm1, armEquipmentList[1]);
+                SetEquipmentBlock(arm2, armEquipmentList[0]);
+                SetEquipmentBlock(arm1, armEquipmentList[1]);
                 break;
         }
     }
 
 
-    private void SetEquipmentCard(EquipmentSlot targetPosition, Equipment equipment)
+    private void SetEquipmentBlock(EquipmentSlot targetPosition, Equipment equipment)
     {
-        // EquipmentCard がすでに存在するか確認
-        EquipmentCard equipmentCard = targetPosition.GetComponentInChildren<EquipmentCard>();
+        // EquipmentBlock がすでに存在するか確認
+        EquipmentBlock equipmentBlock = targetPosition.GetComponentInChildren<EquipmentBlock>();
 
-        if (equipmentCard != null)
+        if (equipmentBlock != null)
         {
             // 既に装備されているものを外してバッグに戻す
-            equipmentCard.Setup(equipment);
+            equipmentBlock.Setup(equipment);
         }
         else
         {
-            // EquipmentCard が存在しない場合のみ新規作成
-            EquipmentCard newEquipmentCard = Instantiate(equipmentPrefab, targetPosition.transform);
-            newEquipmentCard.transform.position = targetPosition.transform.position;
-            newEquipmentCard.transform.localScale = targetPosition.transform.localScale;
-            newEquipmentCard.Setup(equipment);
-            newEquipmentCard.OnEndDragAction += ArrengeEquipmentCards;
+            // EquipmentBlock が存在しない場合のみ新規作成
+            EquipmentBlock newEquipmentBlock = Instantiate(equipmentPrefab, targetPosition.transform);
+            newEquipmentBlock.transform.position = targetPosition.transform.position;
+            newEquipmentBlock.transform.localScale = targetPosition.transform.localScale;
+            newEquipmentBlock.Setup(equipment);
+            newEquipmentBlock.OnEndDragAction += ArrengeEquipmentBlocks;
         }
     }
 
-    private void ArrengeEquipmentCards()
+    private void ArrengeEquipmentBlocks()
     {
-        // head, body, arm1, arm2, leg に追加された EquipmentCard を整列
-        head.ArrangeEquipmentCard();
-        body.ArrangeEquipmentCard();
-        arm1.ArrangeEquipmentCard();
-        arm2.ArrangeEquipmentCard();
-        leg.ArrangeEquipmentCard();
+        // head, body, arm1, arm2, leg に追加された EquipmentBlock を整列
+        head.ArrangeEquipmentBlock();
+        body.ArrangeEquipmentBlock();
+        arm1.ArrangeEquipmentBlock();
+        arm2.ArrangeEquipmentBlock();
+        leg.ArrangeEquipmentBlock();
     }
 }
