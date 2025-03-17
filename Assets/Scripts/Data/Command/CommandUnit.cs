@@ -5,32 +5,33 @@ using UnityEngine.UI;
 
 public class CommandUnit : Unit
 {
-    public Command command { get; set; }
+    public Command Command { get; set; }
     [SerializeField] Image image;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon enegyPrefab;
-    [SerializeField] CommandDialog commandDialog;
+    [SerializeField] CommandDialog dialog;
 
     public virtual void Setup(Command command)
     {
-        this.command = command;
-        image.sprite = this.command.Base.Sprite;
+        Command = command;
+        image.sprite = Command.Base.Sprite;
         SetEnchant();
         SetCost();
-        commandDialog.Setup(this.command);
+        dialog.gameObject.SetActive(true);
+        dialog.Setup(Command);
     }
 
     public void OnPointerEnter()
     {
-        commandDialog.ShowDialog(true);
+        dialog.ShowDialog(true);
         StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
-        commandDialog.ShowDialog(false);
+        dialog.ShowDialog(false);
         StartCoroutine(OnPointer(false));
     }
 
@@ -43,7 +44,7 @@ public class CommandUnit : Unit
         }
 
         // enchantList内にスキルを追加
-        foreach (var enchant in command.Base.EnchantList)
+        foreach (var enchant in Command.Base.EnchantList)
         {
             EnchantIcon enchantObject = Instantiate(enchantPrefab, enchantList.transform);
             enchantObject.gameObject.SetActive(true);
@@ -62,7 +63,7 @@ public class CommandUnit : Unit
         }
 
         // costList内にコストを追加
-        foreach (var cost in command.Base.CostList)
+        foreach (var cost in Command.Base.CostList)
         {
             if (0 < cost.val)
             {

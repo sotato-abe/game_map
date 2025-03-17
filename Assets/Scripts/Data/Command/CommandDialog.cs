@@ -6,22 +6,14 @@ using TMPro;
 
 public class CommandDialog : Dialog
 {
-    [SerializeField] private TextMeshProUGUI commandName;
-    [SerializeField] private TextMeshProUGUI description;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon costPrefab;
 
-
-    void Start()
+    public void Setup(Command command)
     {
-        transform.gameObject.SetActive(false);
-    }
-
-    public virtual void Setup(Command command)
-    {
-        commandName.text = command.Base.Name;
+        namePlate.SetName(command.Base.Name);
         description.text = command.Base.Description;
         SetEnchant(command.Base.EnchantList);
         SetCost(command.Base.CostList);

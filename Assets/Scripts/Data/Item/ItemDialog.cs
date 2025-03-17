@@ -6,22 +6,15 @@ using TMPro;
 
 public class ItemDialog : Dialog
 {
-    [SerializeField] private TextMeshProUGUI itemName;
-    [SerializeField] private TextMeshProUGUI description;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnegyIcon costPrefab;
     [SerializeField] EnchantIcon enchantPrefab;
 
-    void Start()
+    public void Setup(Item item)
     {
-        transform.gameObject.SetActive(false);
-    }
-
-    public virtual void Setup(Item item)
-    {
-        itemName.text = item.Base.Name;
+        namePlate.SetName(item.Base.Name);
         description.text = item.Base.Description;
         ResetListList();
         SetEnegy(item.Base.RecoveryList);

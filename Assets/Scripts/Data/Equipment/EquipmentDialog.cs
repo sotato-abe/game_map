@@ -6,8 +6,6 @@ using TMPro;
 
 public class EquipmentDialog : Dialog
 {
-    [SerializeField] private TextMeshProUGUI equipmentName;
-    [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
@@ -15,15 +13,9 @@ public class EquipmentDialog : Dialog
     [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] EnegyIcon costPrefab;
 
-
-    void Start()
+    public void Setup(Equipment equipment)
     {
-        transform.gameObject.SetActive(false);
-    }
-
-    public virtual void Setup(Equipment equipment)
-    {
-        equipmentName.text = equipment.Base.Name;
+        namePlate.SetName(equipment.Base.Name);
         description.text = equipment.Base.Description;
         probability.SetText($"{equipment.Base.Probability}%");
         ResetSkillList();
