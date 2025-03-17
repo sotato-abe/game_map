@@ -12,6 +12,8 @@ public class PouchPanel : Panel
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] BattleUnit playerUnit;
 
+    private Battler playerBattler;
+
     int selectedItem = 0;
 
     private int headHeight = 40;
@@ -23,19 +25,14 @@ public class PouchPanel : Panel
 
     private void Start()
     {
+        playerBattler = playerUnit.Battler;
         SetPanelSize();
     }
 
     private void OnEnable()
     {
-        if (playerUnit != null && playerUnit.Battler != null)
-        {
-            SetItemUnit();
-        }
-        else
-        {
-            Debug.LogWarning("playerUnit or its properties are not initialized.");
-        }
+        playerBattler = playerUnit.Battler;
+        SetItemUnit();
     }
 
     public void Update()
@@ -80,9 +77,9 @@ public class PouchPanel : Panel
 
     public void SetPanelSize()
     {
-        Debug.Log("SetPanelSize:" + playerUnit.Battler.Pouch.val);
+        Debug.Log("SetPanelSize:" + playerBattler.Pouch.val);
         int width = itemWidth * row + 40;
-        int column = (playerUnit.Battler.Pouch.val - 1) / row + 1;
+        int column = (playerBattler.Pouch.val - 1) / row + 1;
         int height = itemWidth * column + headHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
@@ -97,7 +94,7 @@ public class PouchPanel : Panel
 
         int itemNum = 0;
 
-        foreach (var item in playerUnit.Battler.PouchList)
+        foreach (var item in playerBattler.PouchList)
         {
             // ItemUnitのインスタンスを生成
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
@@ -114,13 +111,13 @@ public class PouchPanel : Panel
             itemNum++;
         }
         SetBlock();
-        pouchRatio.text = $"{playerUnit.Battler.PouchList.Count}/{playerUnit.Battler.Pouch.val}";
+        pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
         ArrengeItemUnits();
     }
 
     private void SetBlock()
     {
-        int blockNum = row - playerUnit.Battler.Pouch.val % row;
+        int blockNum = row - playerBattler.Pouch.val % row;
         blockList.Clear();
 
         for (int i = 0; i < blockNum; i++)
@@ -147,8 +144,8 @@ public class PouchPanel : Panel
         for (int i = 0; i < blockList.Count; i++)
         {
             int cardHalfWidth = itemWidth / 2;
-            int xPosition = (playerUnit.Battler.Pouch.val % row + i) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((playerUnit.Battler.Pouch.val / row) * itemWidth + cardHalfWidth) - padding;
+            int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }
@@ -209,8 +206,8 @@ public class PouchPanel : Panel
                 if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
                 {
                     isActive = false;
-                    playerUnit.Battler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    playerUnit.Battler.PouchList.Remove(targetItemUnit.Item);
+                    playerBattler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
+                    playerBattler.PouchList.Remove(targetItemUnit.Item);
 
                     selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
 

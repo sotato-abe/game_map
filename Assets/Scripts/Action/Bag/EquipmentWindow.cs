@@ -16,7 +16,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     [SerializeField] GameObject accessoryList;
     [SerializeField] EquipmentBlock equipmentPrefab;
     [SerializeField] InventoryWindow inventoryWindow;
-    [SerializeField] BattleUnit battlerUnit;
+    [SerializeField] BattleUnit playerUnit;
 
     List<Equipment> armEquipmentList = new List<Equipment>();
 
@@ -28,7 +28,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         {
             Debug.LogWarning("playerBattler is not initialized.");
         }
-        playerBattler = battlerUnit.Battler;
+        playerBattler = playerUnit.Battler;
         SetEquipmentList();
     }
 
