@@ -15,16 +15,18 @@ public class BagPanel : Panel
     [SerializeField] BattleUnit playerUnit;
 
     private List<BagCategoryIcon> categoryIconList = new List<BagCategoryIcon>();
-    private BagCategory selectedCategory = BagCategory.All; // TODO：bagCategoryに変更
+    private BagCategory selectedCategory = BagCategory.Pouch; // TODO：bagCategoryに変更
 
     private void Start()
     {
         ResetDialog();
         inventoryWindow.OnDropItemUnitAction += MoveItemUnit;
         SetCategoryList();
+        ChangeCategory();
     }
     private void OnEnable()
     {
+        ChangeCategory();
     }
 
     public void Update()
@@ -38,7 +40,7 @@ public class BagPanel : Panel
         {
             SelectWindow(false);
         }
-        
+
         if (!isActive)
         {
             //BagPanelを有効化
@@ -106,15 +108,6 @@ public class BagPanel : Panel
         }
     }
 
-    private void ChangeCategory()
-    {
-        foreach (BagCategoryIcon icon in categoryIconList)
-        {
-            icon.SetActive(false);
-        }
-        categoryIconList[(int)selectedCategory].SetActive(true);
-    }
-
     public void SelectWindow(bool selectDirection)
     {
         BagCategory newselectedCategory = selectedCategory;
@@ -123,34 +116,33 @@ public class BagPanel : Panel
             newselectedCategory++;
             if (newselectedCategory > BagCategory.Tresure)
             {
-                newselectedCategory = BagCategory.All;
+                newselectedCategory = BagCategory.Pouch;
             }
         }
         else
         {
             newselectedCategory--;
-            if (newselectedCategory < BagCategory.All)
+            if (newselectedCategory < BagCategory.Pouch)
             {
                 newselectedCategory = BagCategory.Tresure;
             }
         }
-        ChangeWindow(newselectedCategory);
+        selectedCategory = newselectedCategory;
         ChangeCategory();
     }
 
-    public void ChangeWindow(BagCategory dialog)
+    public void ChangeCategory()
     {
-        if (selectedCategory == dialog)
+        foreach (BagCategoryIcon icon in categoryIconList)
         {
-            return;
+            icon.SetActive(false);
         }
+        categoryIconList[(int)selectedCategory].SetActive(true);
+
 
         ResetDialog();
-        switch (dialog)
+        switch (selectedCategory)
         {
-            case BagCategory.All:
-                // TODO：インベントリのステータスを表示する
-                break;
             case BagCategory.Pouch:
                 pouchWindow.gameObject.SetActive(true);
                 break;
@@ -160,7 +152,6 @@ public class BagPanel : Panel
             case BagCategory.Tresure:
                 break;
         }
-        selectedCategory = dialog;
     }
 
     private void ResetDialog()
@@ -173,8 +164,6 @@ public class BagPanel : Panel
     {
         switch (selectedCategory)
         {
-            case BagCategory.All:
-                break;
             case BagCategory.Pouch:
                 pouchWindow.RemoveItem(itemUnit);
                 break;
