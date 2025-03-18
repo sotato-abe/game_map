@@ -49,7 +49,7 @@ public class TurnOrderSystem : MonoBehaviour
 
         if (turnBattlerList.Count == 0)
         {
-            Debug.Log("No TurnBattlerList");
+            Debug.LogWarning("No TurnBattlerList");
         }
 
         foreach (TurnBattler turnBattler in turnBattlerList)

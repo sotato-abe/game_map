@@ -7,9 +7,9 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 //　actionPanelを切り替えるボタンのアイコン
-public class ActionIcon : MonoBehaviour, IPointerClickHandler
+public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 {
-    public UnityAction<ActionType> OnPointerClickAction;
+    public UnityAction<ActionType> OnPointerEnterAction;
     [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] ActionIconList actionIconList;
@@ -30,10 +30,9 @@ public class ActionIcon : MonoBehaviour, IPointerClickHandler
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public void OnPointerClick(PointerEventData eventDat)
+        public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("ActionIcon OnPointerClick");
-        OnPointerClickAction?.Invoke(type);
+        OnPointerEnterAction?.Invoke(type);
     }
 
     public void SetAction(ActionType actionType)

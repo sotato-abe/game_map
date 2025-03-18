@@ -14,7 +14,6 @@ public class EquipmentSlot : Unit
     //Setupより前に実行したい
     private void Awake()
     {
-        Debug.Log("EquipmentSlot Start");
         plusIcon.gameObject.SetActive(true);
         blockIcon.gameObject.SetActive(false);
         if (isBlock)

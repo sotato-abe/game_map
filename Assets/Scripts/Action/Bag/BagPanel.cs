@@ -22,11 +22,9 @@ public class BagPanel : Panel
         ResetDialog();
         inventoryWindow.OnDropItemUnitAction += MoveItemUnit;
         SetCategoryList();
-        ChangeCategory();
     }
     private void OnEnable()
     {
-        ChangeCategory();
     }
 
     public void Update()
@@ -106,6 +104,7 @@ public class BagPanel : Panel
                 categoryIcon.SetActive(true);
             }
         }
+        ChangeCategory();
     }
 
     public void SelectWindow(bool selectDirection)
