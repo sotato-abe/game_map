@@ -78,7 +78,7 @@ public class ReserveSystem : MonoBehaviour
         {
             ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
             actionIcon.SetAction(actionValue);
-            actionIcon.OnPointerClickAction += SelectAction;
+            actionIcon.OnPointerEnterAction += SelectAction;
             actionIconList.Add(actionIcon);
             if (activeAction == actionValue)
             {
@@ -98,6 +98,7 @@ public class ReserveSystem : MonoBehaviour
     {
         if (state == ReserveState.ActionSelection)
         {
+            if(activeAction == selectAction) return;
             activeAction = selectAction;
             SelectActiveActionIcon(selectAction);
             actionBoard.ChangeActionPanel(selectAction);
@@ -124,7 +125,7 @@ public class ReserveSystem : MonoBehaviour
                 break;
 
             default:
-                Debug.Log("未定義のアクションが選択されました");
+                Debug.LogWarning("未定義のアクションが選択されました");
                 break;
         }
 

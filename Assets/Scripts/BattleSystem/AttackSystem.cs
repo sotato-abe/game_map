@@ -61,13 +61,15 @@ public class AttackSystem : MonoBehaviour
 
             foreach (EnchantCount enchantCount in enchantCounts)
             {
+                // 自身へのエンチャント
                 if (enchantCount.Target == TargetType.Own || enchantCount.Target == TargetType.Ally || enchantCount.Target == TargetType.All)
                 {
-                    Debug.Log($"ExecutePlayerCommand:{TargetType.Own}");
                     Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
                     playerEnchants.Add(enchant);
 
                 }
+
+                // 相手へのエンチャント
                 if (enchantCount.Target == TargetType.Opponent || enchantCount.Target == TargetType.Enemy || enchantCount.Target == TargetType.All)
                 {
                     Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
@@ -76,7 +78,6 @@ public class AttackSystem : MonoBehaviour
             }
             if (playerEnchants.Count > 0)
             {
-                Debug.Log($"enchantCount:{playerEnchants.Count}");
                 playerUnit.Battler.TakeEnchant(playerEnchants);
                 playerUnit.UpdateEnegyUI();
                 playerUnit.SetMotion(MotionType.Shake);

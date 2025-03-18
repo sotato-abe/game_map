@@ -116,7 +116,6 @@ public class CommandPanel : Panel
             UseEnegy(commandUnit.Command);
 
             TargetType target = commandUnit.Command.Base.TargetType;
-            Debug.Log($"target:{target}");
 
             foreach (var enchant in commandUnit.Command.Base.EnchantList)
             {

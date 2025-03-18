@@ -46,7 +46,7 @@ public class BattleSystem : MonoBehaviour
         foreach (ActionType actionValue in actionList)
         {
             ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
-            actionIcon.OnPointerClickAction += SelectAction;
+            actionIcon.OnPointerEnterAction += SelectAction;
             actionIcon.SetAction(actionValue);
             actionIconList.Add(actionIcon);
             if (activeAction == actionValue)
@@ -92,6 +92,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleState.ActionSelection || state == BattleState.TurnWait)
         {
+            if(activeAction == selectAction) return;
             activeAction = selectAction;
             SelectActiveActionIcon(selectAction);
             actionBoard.ChangeActionPanel(selectAction);
@@ -172,7 +173,7 @@ public class BattleSystem : MonoBehaviour
                 break;
 
             default:
-                Debug.Log("未定義のアクションが選択されました");
+                Debug.LogWarning("未定義のアクションが選択されました");
                 break;
         }
 

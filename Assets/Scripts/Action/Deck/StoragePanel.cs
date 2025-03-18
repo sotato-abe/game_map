@@ -139,7 +139,6 @@ public class StoragePanel : Panel, IDropHandler
 
     private void ArrengeStorage()
     {
-        Debug.Log("ArrengeStorage");
         storageList.RemoveAll(command => command == null); // 破棄されたオブジェクトを削除
         for (int i = 0; i < storageList.Count; i++)
         {

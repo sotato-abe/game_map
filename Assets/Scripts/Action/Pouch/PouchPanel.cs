@@ -77,7 +77,6 @@ public class PouchPanel : Panel
 
     public void SetPanelSize()
     {
-        Debug.Log("SetPanelSize:" + playerBattler.Pouch.val);
         int width = itemWidth * row + 40;
         int column = (playerBattler.Pouch.val - 1) / row + 1;
         int height = itemWidth * column + headHeight;

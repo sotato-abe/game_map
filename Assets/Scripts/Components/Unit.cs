@@ -17,7 +17,6 @@ public class Unit : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("OnBeginDrag");
         canvasGroup.blocksRaycasts = false;
     }
     

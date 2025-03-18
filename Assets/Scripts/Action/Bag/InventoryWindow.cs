@@ -277,7 +277,6 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void UseItem()
     {
-        Debug.Log($"UseItem:{selectedItem}");
         if (itemList.transform.childCount > 0)
         {
             if (selectedItem >= 0 && selectedItem < itemUnitList.Count)
