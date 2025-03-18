@@ -16,7 +16,6 @@ public class ItemUnit : Unit
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
-        dialog.gameObject.SetActive(true);
         dialog.Setup(Item);
     }
 
