@@ -17,7 +17,7 @@ public class EquipmentDialog : Dialog
     {
         namePlate.SetName(equipment.Base.Name);
         description.text = equipment.Base.Description;
-        probability.SetText($"{equipment.Base.Probability}%");
+        probability.SetText(equipment.Base.Probability.Value.ToString() + "%");
         ResetSkillList();
         SetAttack(equipment.Base.AttackList);
         SetEnchant(equipment.Base.EnchantList);

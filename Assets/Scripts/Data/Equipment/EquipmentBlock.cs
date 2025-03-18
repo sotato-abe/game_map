@@ -16,7 +16,6 @@ public class EquipmentBlock : Unit
     {
         Equipment = equipment;
         image.sprite = equipment.Base.Sprite;
-        dialog.gameObject.SetActive(true);
         dialog.Setup(equipment);
     }
 

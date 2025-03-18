@@ -17,7 +17,7 @@ public class Dialog : MonoBehaviour
 
     private void Start()
     {
-        transform.gameObject.SetActive(false);
+        ShowDialog(false);
     }
 
     public void ShowDialog(bool showFlg)

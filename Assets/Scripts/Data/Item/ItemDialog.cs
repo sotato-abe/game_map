@@ -16,13 +16,13 @@ public class ItemDialog : Dialog
     {
         namePlate.SetName(item.Base.Name);
         description.text = item.Base.Description;
-        ResetListList();
+        ResetSkillList();
         SetEnegy(item.Base.RecoveryList);
         SetEnchant(item.Base.EnchantList);
         SetCost(item.Base.CostList);
     }
 
-    private void ResetListList()
+    private void ResetSkillList()
     {
         // skillList内のオブジェクトを削除
         foreach (Transform child in enchantList.transform)
