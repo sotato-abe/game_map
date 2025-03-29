@@ -3,89 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquipmentSlot : MonoBehaviour
+public class EquipmentSlot : Unit
 {
-    public Equipment equipment { get; set; }
-    [SerializeField] Image image;
-    [SerializeField] Image maskImage;
-    [SerializeField] Image backImage;
+    [SerializeField] Image plusIcon;
+    [SerializeField] Image blockIcon;
     [SerializeField] EquipmentType equipmentType;
     [SerializeField] EquipmentTypeList equipmentTypeList;
-    [SerializeField] EquipmentDialog equipmentDialog;
+    [SerializeField] bool isBlock = false;
 
-    public void Start()
+    //Setupより前に実行したい
+    private void Awake()
     {
-        SetEquipmentTypeImage();
-    }
-
-    public void Setup(Equipment equipment)
-    {
-        if (equipment.Base.Type == equipmentType)
+        plusIcon.gameObject.SetActive(true);
+        blockIcon.gameObject.SetActive(false);
+        if (isBlock)
         {
-            this.equipment = equipment;
-            maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 1f);
-            image.sprite = equipment.Base.Sprite;
-            equipmentDialog.Setup(equipment);
+            plusIcon.gameObject.SetActive(false);
+            blockIcon.gameObject.SetActive(true);
+        }
+        else if (equipmentType != null)
+        {
+            SetEquipmentType();
         }
     }
 
-    public void OnPointerEnter()
+    private void SetEquipmentType()
     {
-        if (equipment != null)
+        plusIcon.sprite = equipmentTypeList.GetIcon(equipmentType);
+    }
+
+    public void ReSetSlot()
+    {
+        //自身にアタッチされているEquipmentBlockを削除
+        EquipmentBlock equipmentBlock = transform.GetComponentInChildren<EquipmentBlock>();
+        if (equipmentBlock != null)
         {
-            equipmentDialog.ShowDialog(true);
-            StartCoroutine(Targetfoucs(true));
+            Destroy(equipmentBlock.gameObject);
         }
     }
 
-    public void OnPointerExit()
+    public void ArrangeEquipmentBlock()
     {
-        if (equipment != null)
+        EquipmentBlock equipmentBlock = transform.GetComponentInChildren<EquipmentBlock>();
+        if (equipmentBlock != null)
         {
-            equipmentDialog.ShowDialog(false);
-            StartCoroutine(Targetfoucs(false));
-        }
-    }
-
-    public void RemoveEquipment()
-    {
-        this.equipment = null;
-        maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 0f);
-        image.sprite = null;
-    }
-
-    public void SetEquipmentTypeImage()
-    {
-        backImage.sprite = equipmentTypeList.GetIcon(equipmentType);
-    }
-
-    public IEnumerator Targetfoucs(bool focusFlg)
-    {
-        float time = 0.05f;
-        float currentTime = 0f;
-        if (focusFlg)
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
-        else
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1, 1, 1);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
+            equipmentBlock.transform.position = transform.position;
         }
     }
 }

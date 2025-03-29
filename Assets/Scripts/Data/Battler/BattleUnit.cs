@@ -9,9 +9,9 @@ public class BattleUnit : MonoBehaviour
 
     public Battler Battler { get; set; }
     [SerializeField] CharacterCard characterCard;
-    [SerializeField] BattlerEnegyIcon lifeIcon;
-    [SerializeField] BattlerEnegyIcon batteryIcon;
-    [SerializeField] BattlerEnegyIcon soulIcon;
+    [SerializeField] BattlerEnegyBar lifeBar;
+    [SerializeField] BattlerEnegyBar batteryBar;
+    [SerializeField] BattlerEnegyBar soulBar;
     [SerializeField] BattlerStatusDialog statusDialog;
     [SerializeField] Blowing blowing;
 
@@ -20,7 +20,14 @@ public class BattleUnit : MonoBehaviour
         Battler = battler;
         characterCard.SetCharacter(battler);
         statusDialog.Setup(Battler);
-        UpdateEnegyUI();
+        SetEnegy();
+    }
+
+    private void SetEnegy()
+    {
+        lifeBar.SetEnegy(EnegyType.Life, Battler.MaxLife, Battler.Life);
+        batteryBar.SetEnegy(EnegyType.Battery, Battler.MaxBattery, Battler.Battery);
+        soulBar.SetEnegy(EnegyType.Soul, 100, Battler.Soul);
     }
 
     public void OnPointerEnter()
@@ -48,13 +55,9 @@ public class BattleUnit : MonoBehaviour
 
     public virtual void UpdateEnegyUI()
     {
-        Enegy life = new Enegy(EnegyType.Life, Battler.Life);
-        Enegy battery = new Enegy(EnegyType.Battery, Battler.Battery);
-        Enegy soul = new Enegy(EnegyType.Soul, Battler.Soul);
-
-        lifeIcon.SetEnegy(life);
-        batteryIcon.SetEnegy(battery);
-        soulIcon.SetEnegy(soul);
+        lifeBar.ChangeEnegyVal(Battler.Life);
+        batteryBar.ChangeEnegyVal(Battler.Battery);
+        soulBar.ChangeEnegyVal(Battler.Soul);
         statusDialog.Setup(Battler);
     }
 

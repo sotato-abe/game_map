@@ -23,7 +23,8 @@ public class ReserveSystem : MonoBehaviour
     void Start()
     {
         actionList.Add(ActionType.Bag);
-        actionList.Add(ActionType.Deck);
+        actionList.Add(ActionType.Storage);
+        actionList.Add(ActionType.Status);
         actionList.Add(ActionType.Quit);
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
@@ -31,29 +32,23 @@ public class ReserveSystem : MonoBehaviour
         actionBoard.OnReserveExitAction += ReserveExitAction;
     }
 
-    public void SetState(ReserveState targetState)
-    {
-        state = targetState;
-    }
-
     public void Update()
     {
         if (state == ReserveState.ActionSelection)
         {
-
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
-                activeAction = actionList[index]; // 更新
-                SelectAction(activeAction);
+                ActionType selectAction = actionList[index]; // 更新
+                SelectAction(selectAction);
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
-                activeAction = actionList[index]; // 更新
-                SelectAction(activeAction);
+                ActionType selectAction = actionList[index]; // 更新
+                SelectAction(selectAction);
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
@@ -61,6 +56,11 @@ public class ReserveSystem : MonoBehaviour
                 state = ReserveState.ActionSelected;
             }
         }
+    }
+    
+    public void SetState(ReserveState targetState)
+    {
+        state = targetState;
     }
 
     public void ReserveStart()
@@ -77,8 +77,9 @@ public class ReserveSystem : MonoBehaviour
         foreach (ActionType actionValue in actionList)
         {
             ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
-            actionIconList.Add(actionIcon);
             actionIcon.SetAction(actionValue);
+            actionIcon.OnPointerEnterAction += SelectAction;
+            actionIconList.Add(actionIcon);
             if (activeAction == actionValue)
             {
                 actionBoard.ChangeActionPanel(actionValue);
@@ -95,9 +96,13 @@ public class ReserveSystem : MonoBehaviour
 
     private void SelectAction(ActionType selectAction)
     {
-        actionBoard.ChangeActionPanel(selectAction);
-        SelectActiveActionIcon(selectAction);
-        activeAction = selectAction;
+        if (state == ReserveState.ActionSelection)
+        {
+            if(activeAction == selectAction) return;
+            activeAction = selectAction;
+            SelectActiveActionIcon(selectAction);
+            actionBoard.ChangeActionPanel(selectAction);
+        }
     }
 
     public void ReserveExecuteAction()
@@ -108,8 +113,11 @@ public class ReserveSystem : MonoBehaviour
                 Debug.Log("Bag を開く処理を実行");
                 break;
 
-            case ActionType.Deck:
-                Debug.Log("Deck を開く処理を実行");
+            case ActionType.Storage:
+                Debug.Log("Storage を開く処理を実行");
+                break;
+            case ActionType.Status:
+                Debug.Log("Status を開く処理を実行");
                 break;
 
             case ActionType.Quit:
@@ -117,7 +125,7 @@ public class ReserveSystem : MonoBehaviour
                 break;
 
             default:
-                Debug.Log("未定義のアクションが選択されました");
+                Debug.LogWarning("未定義のアクションが選択されました");
                 break;
         }
 

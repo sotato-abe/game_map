@@ -9,6 +9,7 @@ public class CharacterCard : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;  // 表示用のTextMeshProUGUIフィールド
     [SerializeField] private Image cardImage;  // 表示用のTextMeshProUGUIフィールド
+    [SerializeField] private NamePlate namePlate;  // 表示用のTextMeshProUGUIフィールド
 
     private void OnEnable()
     {
@@ -19,6 +20,7 @@ public class CharacterCard : MonoBehaviour
     {
         cardImage.sprite = battler.Base.Sprite;
         nameText.SetText(battler.Base.Name);
+        namePlate.SetName(battler.Base.Name);
     }
 
     public void SetCardMotion(MotionType targetMotion)

@@ -6,22 +6,14 @@ using TMPro;
 
 public class CommandDialog : Dialog
 {
-    [SerializeField] private TextMeshProUGUI commandName;
-    [SerializeField] private TextMeshProUGUI description;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
-    [SerializeField] CostIcon costPrefab;
+    [SerializeField] EnegyIcon costPrefab;
 
-
-    void Start()
+    public void Setup(Command command)
     {
-        transform.gameObject.SetActive(false);
-    }
-
-    public virtual void Setup(Command command)
-    {
-        commandName.text = command.Base.Name;
+        namePlate.SetName(command.Base.Name);
         description.text = command.Base.Description;
         SetEnchant(command.Base.EnchantList);
         SetCost(command.Base.CostList);
@@ -59,10 +51,10 @@ public class CommandDialog : Dialog
         {
             if (0 < cost.val)
             {
-                CostIcon costObject = Instantiate(costPrefab, costList.transform);
-                costObject.gameObject.SetActive(true);
-                CostIcon costUnit = costObject.GetComponent<CostIcon>();
-                costUnit.SetCostIcon(cost);
+                EnegyIcon enegyObject = Instantiate(costPrefab, costList.transform);
+                enegyObject.gameObject.SetActive(true);
+                EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
+                enegyUnit.SetCostIcon(cost);
             }
         }
     }

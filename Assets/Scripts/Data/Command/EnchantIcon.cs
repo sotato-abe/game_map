@@ -13,12 +13,7 @@ public class EnchantIcon : MonoBehaviour
     public void SetEnchant(Enchant enchant)
     {
         text.text = enchant.Val.ToString();
-        SetEnchantIcon(enchant.Type);
-    }
-
-    public void SetEnchantIcon(EnchantType type)
-    {
-        image.sprite = enchantIconList.GetIcon(type);
+        image.sprite = enchantIconList.GetIcon(enchant.Type);
     }
 }
 

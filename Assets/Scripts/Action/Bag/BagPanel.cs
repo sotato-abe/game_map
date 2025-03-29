@@ -8,29 +8,23 @@ using UnityEngine.Events;
 public class BagPanel : Panel
 {
     [SerializeField] BagCategoryIcon categoryPrefab;
-    [SerializeField] InventoryDialog inventoryDialog;
+    [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] PouchWindow pouchWindow;
     [SerializeField] EquipmentWindow equipmentWindow;
-    [SerializeField] ImplantWindow implantWindow;
     [SerializeField] GameObject categoryList;
     [SerializeField] BattleUnit playerUnit;
 
     private List<BagCategoryIcon> categoryIconList = new List<BagCategoryIcon>();
-
-    private BagCategory selectedCategory = BagCategory.All; // TODO：bagCategoryに変更
+    private BagCategory selectedCategory = BagCategory.Pouch; // TODO：bagCategoryに変更
 
     private void Start()
     {
         ResetDialog();
-        // inventoryDialog.OnActionExecute += ExecuteTurn;
-        inventoryDialog.SetItemUnit();
+        inventoryWindow.OnDropItemUnitAction += MoveItemUnit;
         SetCategoryList();
     }
     private void OnEnable()
     {
-        inventoryDialog.SetItemUnit();
-        pouchWindow.SetItemUnit(playerUnit.Battler.Pouch);
-        equipmentWindow.SetEquipment(playerUnit.Battler.Equipments);
     }
 
     public void Update()
@@ -38,13 +32,13 @@ public class BagPanel : Panel
         //BagCategoryを変更
         if (Input.GetKeyDown(KeyCode.Period))
         {
-            SelectDialog(true);
+            SelectWindow(true);
         }
         if (Input.GetKeyDown(KeyCode.Comma))
         {
-            SelectDialog(false);
+            SelectWindow(false);
         }
-        
+
         if (!isActive)
         {
             //BagPanelを有効化
@@ -62,26 +56,26 @@ public class BagPanel : Panel
                 OnActionExit?.Invoke();
             }
 
-            //InventoryDialogを操作
+            //InventoryWindowを操作
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Up);
+                inventoryWindow.SelectItem(ArrowType.Up);
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Right);
+                inventoryWindow.SelectItem(ArrowType.Right);
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Down);
+                inventoryWindow.SelectItem(ArrowType.Down);
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                inventoryDialog.SelectItem(ArrowType.Left);
+                inventoryWindow.SelectItem(ArrowType.Left);
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                inventoryDialog.UseItem();
+                inventoryWindow.UseItem();
             }
         }
     }
@@ -110,18 +104,10 @@ public class BagPanel : Panel
                 categoryIcon.SetActive(true);
             }
         }
+        ChangeCategory();
     }
 
-    private void ChangeCategory()
-    {
-        foreach (BagCategoryIcon icon in categoryIconList)
-        {
-            icon.SetActive(false);
-        }
-        categoryIconList[(int)selectedCategory].SetActive(true);
-    }
-
-    public void SelectDialog(bool selectDirection)
+    public void SelectWindow(bool selectDirection)
     {
         BagCategory newselectedCategory = selectedCategory;
         if (selectDirection)
@@ -129,53 +115,61 @@ public class BagPanel : Panel
             newselectedCategory++;
             if (newselectedCategory > BagCategory.Tresure)
             {
-                newselectedCategory = BagCategory.All;
+                newselectedCategory = BagCategory.Pouch;
             }
         }
         else
         {
             newselectedCategory--;
-            if (newselectedCategory < BagCategory.All)
+            if (newselectedCategory < BagCategory.Pouch)
             {
                 newselectedCategory = BagCategory.Tresure;
             }
         }
-        ChangeDialog(newselectedCategory);
+        selectedCategory = newselectedCategory;
         ChangeCategory();
     }
 
-    public void ChangeDialog(BagCategory dialog)
+    public void ChangeCategory()
     {
-        if (selectedCategory == dialog)
+        foreach (BagCategoryIcon icon in categoryIconList)
         {
-            return;
+            icon.SetActive(false);
         }
+        categoryIconList[(int)selectedCategory].SetActive(true);
+
 
         ResetDialog();
-        switch (dialog)
+        switch (selectedCategory)
         {
-            case BagCategory.All:
-                // TODO：インベントリのステータスを表示する
-                break;
             case BagCategory.Pouch:
                 pouchWindow.gameObject.SetActive(true);
                 break;
             case BagCategory.Equip:
                 equipmentWindow.gameObject.SetActive(true);
                 break;
-            case BagCategory.Implant:
-                implantWindow.gameObject.SetActive(true);
-                break;
             case BagCategory.Tresure:
                 break;
         }
-        selectedCategory = dialog;
     }
 
     private void ResetDialog()
     {
         pouchWindow.gameObject.SetActive(false);
         equipmentWindow.gameObject.SetActive(false);
-        implantWindow.gameObject.SetActive(false);
+    }
+
+    public void MoveItemUnit(ItemUnit itemUnit)
+    {
+        switch (selectedCategory)
+        {
+            case BagCategory.Pouch:
+                pouchWindow.RemoveItem(itemUnit);
+                break;
+            case BagCategory.Equip:
+                break;
+            case BagCategory.Tresure:
+                break;
+        }
     }
 }
