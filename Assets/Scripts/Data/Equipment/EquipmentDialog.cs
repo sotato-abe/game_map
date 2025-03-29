@@ -6,24 +6,18 @@ using TMPro;
 
 public class EquipmentDialog : Dialog
 {
-    [SerializeField] private TextMeshProUGUI equipmentName;
-    [SerializeField] private TextMeshProUGUI description;
+    [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
-    [SerializeField] CostIcon enegyIcon;
+    [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantIcon;
-    [SerializeField] CostIcon costPrefab;
+    [SerializeField] EnegyIcon costPrefab;
 
-
-    void Start()
+    public void Setup(Equipment equipment)
     {
-        transform.gameObject.SetActive(false);
-    }
-
-    public virtual void Setup(Equipment equipment)
-    {
-        equipmentName.text = equipment.Base.Name;
+        namePlate.SetName(equipment.Base.Name);
         description.text = equipment.Base.Description;
+        probability.SetText(equipment.Base.Probability.Value.ToString() + "%");
         ResetSkillList();
         SetAttack(equipment.Base.AttackList);
         SetEnchant(equipment.Base.EnchantList);
@@ -44,9 +38,9 @@ public class EquipmentDialog : Dialog
         // attackList内に攻撃力を追加
         foreach (var attack in attacks)
         {
-            CostIcon attackObject = Instantiate(enegyIcon, enchantList.transform);
+            EnegyIcon attackObject = Instantiate(enegyPrefab, enchantList.transform);
             attackObject.gameObject.SetActive(true);
-            CostIcon attackUnit = attackObject.GetComponent<CostIcon>();
+            EnegyIcon attackUnit = attackObject.GetComponent<EnegyIcon>();
             attackUnit.SetCostIcon(attack);
         }
     }
@@ -77,10 +71,10 @@ public class EquipmentDialog : Dialog
         {
             if (0 < cost.val)
             {
-                CostIcon costObject = Instantiate(costPrefab, costList.transform);
-                costObject.gameObject.SetActive(true);
-                CostIcon costUnit = costObject.GetComponent<CostIcon>();
-                costUnit.SetCostIcon(cost);
+                EnegyIcon enegyObject = Instantiate(costPrefab, costList.transform);
+                enegyObject.gameObject.SetActive(true);
+                EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
+                enegyUnit.SetCostIcon(cost);
             }
         }
     }

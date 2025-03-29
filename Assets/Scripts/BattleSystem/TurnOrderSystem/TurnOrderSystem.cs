@@ -13,7 +13,7 @@ public class TurnOrderSystem : MonoBehaviour
     private List<Battler> battlers = new List<Battler>(); // 保存用
     private bool isActive = false;
 
-    public void SetUpBattlerTurns(List<Battler> newBattlers)
+    public void SetupBattlerTurns(List<Battler> newBattlers)
     {
         // 既存の子オブジェクトをすべて削除
         foreach (Transform child in battlerList.transform)
@@ -49,7 +49,7 @@ public class TurnOrderSystem : MonoBehaviour
 
         if (turnBattlerList.Count == 0)
         {
-            Debug.Log("No TurnBattlerList");
+            Debug.LogWarning("No TurnBattlerList");
         }
 
         foreach (TurnBattler turnBattler in turnBattlerList)

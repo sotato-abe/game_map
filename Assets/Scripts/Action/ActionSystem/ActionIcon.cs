@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class ActionIcon : MonoBehaviour
+//　actionPanelを切り替えるボタンのアイコン
+public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 {
+    public UnityAction<ActionType> OnPointerEnterAction;
     [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] ActionIconList actionIconList;
 
 
     public ActionType type;
-    private bool isActive = false;
+    [SerializeField] private bool isActive = false;
     private float defaultWidth = 70f;
     private float defaultHeight = 80f;
     private float defaultFontSize = 12f; // デフォルトのフォントサイズ
@@ -24,6 +28,11 @@ public class ActionIcon : MonoBehaviour
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+    }
+
+        public void OnPointerEnter(PointerEventData eventData)
+    {
+        OnPointerEnterAction?.Invoke(type);
     }
 
     public void SetAction(ActionType actionType)

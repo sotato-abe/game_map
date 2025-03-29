@@ -2,63 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class ItemUnit : MonoBehaviour
+public class ItemUnit : Unit
 {
     public Item Item { get; set; }
     [SerializeField] Image image;
-    [SerializeField] Image dialogBackground;
-    [SerializeField] ItemDialog itemDialog;
+    [SerializeField] Image cursor;
+    [SerializeField] ItemDialog dialog;
     private bool isActive = false;
 
     public virtual void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
-        itemDialog.Setup(Item);
+        dialog.Setup(Item);
     }
 
     public void OnPointerEnter()
     {
-        itemDialog.ShowDialog(true);
+        dialog.ShowDialog(true);
         StartCoroutine(OnPointer(true));
-
     }
 
     public void OnPointerExit()
     {
-        itemDialog.ShowDialog(false);
+        dialog.ShowDialog(false);
         StartCoroutine(OnPointer(false));
-    }
-
-    public IEnumerator OnPointer(bool focusFlg)
-    {
-        float time = 0.05f;
-        float currentTime = 0f;
-        if (focusFlg)
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.1f, 1.1f, 1.1f);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
-        else
-        {
-            Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1, 1, 1);
-            while (currentTime < time)
-            {
-                transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            transform.localScale = targetScale;
-        }
     }
 
     public void SetTarget(bool activeFlg)
@@ -67,8 +37,8 @@ public class ItemUnit : MonoBehaviour
         isActive = activeFlg;
 
         // 背景の透明度を変更する。
-        Color bgColor = dialogBackground.color;
+        Color bgColor = cursor.color;
         bgColor.a = isActive ? 1f : 0f;
-        dialogBackground.color = bgColor;
+        cursor.color = bgColor;
     }
 }

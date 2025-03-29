@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
         playerController.ChangeField += ChangeField;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        StartCoroutine(messagePanel.TypeDialog("game start"));
+        messagePanel.AddMesageList("game start");
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
         playerCoordinate = playerController.Battler.coordinate;
     }

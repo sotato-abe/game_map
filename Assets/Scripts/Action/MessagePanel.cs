@@ -12,7 +12,21 @@ public class MessagePanel : MonoBehaviour
     [SerializeField] Image panel;
     [SerializeField] Image dialogBackground;
     [SerializeField] Image logBtn;
+
+    private List<string> messageList = new List<string>();
+    private List<string> messageLog = new List<string>();
     private Coroutine fadeCoroutine;
+    private Coroutine messageCoroutine;
+
+    public void OnPointerEnter()
+    {
+        SetPanelValidity(0.9f);
+    }
+
+    public void OnPointerExit()
+    {
+        SetPanelValidity(0.2f);
+    }
 
     public IEnumerator TypeDialog(string line)
     {
@@ -26,14 +40,35 @@ public class MessagePanel : MonoBehaviour
         StartCoroutine(FadeOutAlpha());
     }
 
-    public void OnPointerEnter()
+    public void AddMesageList(string message)
     {
-        SetPanelValidity(0.9f);
+        messageList.Add(message);
+        if (messageCoroutine == null)
+        {
+            messageCoroutine = StartCoroutine(TypeMessageList());
+        }
     }
 
-    public void OnPointerExit()
+    // メッセージリストのmessageをTypeしていく
+    private IEnumerator TypeMessageList()
     {
-        SetPanelValidity(0.2f);
+        while (messageList.Count > 0)
+        {
+            string message = messageList[0]; // 先頭のメッセージを取得
+            yield return TypeDialog(message);
+
+            yield return new WaitForSeconds(2f);
+
+            messageList.RemoveAt(0); // タイプし終わったメッセージを削除
+        }
+
+        messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
+    }
+
+    //100件以上追加されたときは古いものから削除する機能をつけてください
+    private void AddMessageLog(string message)
+    {
+        messageLog.Add(message);
     }
 
     private IEnumerator FadeOutAlpha()

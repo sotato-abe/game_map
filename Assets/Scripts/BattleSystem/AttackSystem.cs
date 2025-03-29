@@ -9,6 +9,7 @@ public class AttackSystem : MonoBehaviour
     public UnityAction OnBattleResult;
     public UnityAction OnExecuteBattleAction;
     public UnityAction OnBattleDefeat;
+    public UnityAction OnBattleEscape;
     private BattleUnit playerUnit;
     private BattleUnit enemyUnit;
 
@@ -20,12 +21,25 @@ public class AttackSystem : MonoBehaviour
         this.enemyUnit = enemyUnit;
     }
 
+    public void ExecutePlayerTalk()
+    {
+        StartCoroutine(playerUnit.SetTalkMessage("hey"));
+        StartCoroutine(enemyUnit.SetTalkMessage("...  "));
+
+        // TODO : Talkのアクション実装
+        // 確率でクエスト開放する
+        // クエストを受注するとバトルは終了する
+
+        OnExecuteBattleAction?.Invoke();
+    }
+
     public void ExecutePlayerAttack(List<Damage> damages)
     {
         if (0 < damages.Count)
         {
             enemyUnit.Battler.TakeDamage(damages);
             enemyUnit.UpdateEnegyUI();
+            StartCoroutine(enemyUnit.SetTalkMessage("Auch!!"));
             enemyUnit.SetMotion(MotionType.Shake);
         }
         if (enemyUnit.Battler.Life <= 0)
@@ -47,12 +61,15 @@ public class AttackSystem : MonoBehaviour
 
             foreach (EnchantCount enchantCount in enchantCounts)
             {
+                // 自身へのエンチャント
                 if (enchantCount.Target == TargetType.Own || enchantCount.Target == TargetType.Ally || enchantCount.Target == TargetType.All)
                 {
                     Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
                     playerEnchants.Add(enchant);
 
                 }
+
+                // 相手へのエンチャント
                 if (enchantCount.Target == TargetType.Opponent || enchantCount.Target == TargetType.Enemy || enchantCount.Target == TargetType.All)
                 {
                     Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
@@ -61,7 +78,6 @@ public class AttackSystem : MonoBehaviour
             }
             if (playerEnchants.Count > 0)
             {
-                Debug.Log($"enchantCount:{playerEnchants.Count}");
                 playerUnit.Battler.TakeEnchant(playerEnchants);
                 playerUnit.UpdateEnegyUI();
                 playerUnit.SetMotion(MotionType.Shake);
@@ -85,6 +101,14 @@ public class AttackSystem : MonoBehaviour
         {
             OnExecuteBattleAction?.Invoke();
         }
+    }
+
+    public void ExecutePlayerEscape()
+    {
+        // TODO : 逃亡時の処理を追加
+        StartCoroutine(playerUnit.SetTalkMessage("Run!"));
+        StartCoroutine(enemyUnit.SetTalkMessage("wait!!"));
+        OnBattleEscape?.Invoke();
     }
 
     public void ExecuteEnemyAttack()
@@ -113,6 +137,7 @@ public class AttackSystem : MonoBehaviour
         {
             playerUnit.SetMotion(MotionType.Shake);
             playerUnit.Battler.TakeDamage(damages);
+            StartCoroutine(playerUnit.SetTalkMessage("Dumm,"));
             playerUnit.UpdateEnegyUI();
         }
         if (playerUnit.Battler.Life <= 0)

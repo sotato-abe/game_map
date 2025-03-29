@@ -37,6 +37,7 @@ public class BattleSystem : MonoBehaviour
         actionBoard.OnExitBattleAction += () => state = BattleState.ActionSelection;
         attackSystem.OnBattleResult += BattleResult;
         attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
+        attackSystem.OnBattleEscape += BattleEscape;
         attackSystem.OnBattleDefeat += BattleDefeat;
     }
 
@@ -45,8 +46,9 @@ public class BattleSystem : MonoBehaviour
         foreach (ActionType actionValue in actionList)
         {
             ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
-            actionIconList.Add(actionIcon);
+            actionIcon.OnPointerEnterAction += SelectAction;
             actionIcon.SetAction(actionValue);
+            actionIconList.Add(actionIcon);
             if (activeAction == actionValue)
             {
                 actionBoard.ChangeActionPanel(actionValue);
@@ -69,15 +71,15 @@ public class BattleSystem : MonoBehaviour
             {
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
-                activeAction = actionList[index]; // 更新
-                SelectAction(activeAction);
+                ActionType selectAction = actionList[index]; // 更新
+                SelectAction(selectAction);
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
-                activeAction = actionList[index]; // 更新
-                SelectAction(activeAction);
+                ActionType selectAction = actionList[index]; // 更新
+                SelectAction(selectAction);
             }
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -88,32 +90,35 @@ public class BattleSystem : MonoBehaviour
 
     private void SelectAction(ActionType selectAction)
     {
-        actionBoard.ChangeActionPanel(selectAction);
-        SelectActiveActionIcon(selectAction);
-        activeAction = selectAction;
+        if (state == BattleState.ActionSelection || state == BattleState.TurnWait)
+        {
+            if(activeAction == selectAction) return;
+            activeAction = selectAction;
+            SelectActiveActionIcon(selectAction);
+            actionBoard.ChangeActionPanel(selectAction);
+        }
     }
 
     public void BattleStart(Battler player, Battler enemy)
     {
         state = BattleState.TurnWait;
         SetActionList();
-        StartCoroutine(SetupBattlers(player, enemy));
+        SetupBattlers(player, enemy);
     }
 
-    public IEnumerator SetupBattlers(Battler player, Battler enemy)
+    public void SetupBattlers(Battler player, Battler enemy)
     {
-        enemyUnit.Setup(enemy);
         enemyUnit.gameObject.SetActive(true);
+        enemyUnit.Setup(enemy);
         enemyUnit.SetMotion(MotionType.Jump);
         enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
         playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
 
         attackSystem.SetBattler(playerUnit, enemyUnit);
-        turnOrderSystem.SetUpBattlerTurns(new List<Battler> { player, enemy });
+        turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
-
-        yield return messagePanel.TypeDialog($"{enemy.Base.Name} is coming!!");
+        messagePanel.AddMesageList($"{enemy.Base.Name} is coming!!");
     }
 
     public void StartActionSelection()
@@ -165,11 +170,10 @@ public class BattleSystem : MonoBehaviour
 
             case ActionType.Escape:
                 Debug.Log("Escape を開く処理を実行");
-                BattleEnd();
                 break;
 
             default:
-                Debug.Log("未定義のアクションが選択されました");
+                Debug.LogWarning("未定義のアクションが選択されました");
                 break;
         }
 
@@ -193,7 +197,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleResult()
     {
         actionBoard.ChangeExecuteFlg(false);
-        List<Item> targetItems = enemyUnit.Battler.Inventory;
+        List<Item> targetItems = enemyUnit.Battler.PouchList;
         List<string> resultItemMessageList = new List<string>();
         resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
 
@@ -207,12 +211,11 @@ public class BattleSystem : MonoBehaviour
                 // TODO：アイテムのレア度によって取得確率を変える
                 if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
                 {
-                    bool success = playerUnit.Battler.AddItemToPouch(item); // プレイヤーのインベントリに追加
-                    if (!success)
+                    bool success = playerUnit.Battler.AddItem(item); // プレイヤーのインベントリに追加
+                    if (success)
                     {
-                        playerUnit.Battler.AddItemToInventory(item);
+                        itemList += $"{item.Base.Name},";
                     }
-                    itemList += $"{item.Base.Name},";
                 }
             }
 
@@ -241,8 +244,19 @@ public class BattleSystem : MonoBehaviour
     {
         foreach (string message in resultItemMessageList)
         {
-            yield return StartCoroutine(messagePanel.TypeDialog(message));
+            messagePanel.AddMesageList(message);
         }
+        yield return new WaitForSeconds(1.5f);
+        BattleEnd();
+    }
+
+    private void BattleEscape()
+    {
+        StartCoroutine(EscapeResultView());
+    }
+
+    private IEnumerator EscapeResultView()
+    {
         yield return new WaitForSeconds(1.5f);
         BattleEnd();
     }

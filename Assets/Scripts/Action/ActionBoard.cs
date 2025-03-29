@@ -14,7 +14,8 @@ public class ActionBoard : MonoBehaviour
     [SerializeField] private CommandPanel commandPanel;
     [SerializeField] private PouchPanel pouchPanel;
     [SerializeField] private BagPanel bagPanel;
-    [SerializeField] private DeckPanel deckPanel;
+    [SerializeField] private StoragePanel storagePanel;
+    [SerializeField] private StatusPanel statusPanel;
     [SerializeField] private EscapePanel escapePanel;
     [SerializeField] private QuitPanel quitPanel;
 
@@ -33,7 +34,8 @@ public class ActionBoard : MonoBehaviour
             { ActionType.Command, commandPanel },
             { ActionType.Pouch, pouchPanel },
             { ActionType.Bag, bagPanel },
-            { ActionType.Deck, deckPanel },
+            { ActionType.Storage, storagePanel },
+            { ActionType.Status, statusPanel },
             { ActionType.Escape, escapePanel },
             { ActionType.Quit, quitPanel }
         };

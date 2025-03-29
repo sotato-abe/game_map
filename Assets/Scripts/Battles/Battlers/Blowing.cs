@@ -10,6 +10,10 @@ public class Blowing : MonoBehaviour
     [SerializeField] float letterPerSecond;
     private RectTransform talkPanelRectTransform;
 
+    private float baseWidth = 100f; // 基本のパネル幅
+    private float baseHeight = 40f; // 基本のパネル高さ
+    private float maxWidth = 350f; // 最大のパネルの幅
+
     private void Awake()
     {
         gameObject.SetActive(true); // オブジェクトをアクティブにする
@@ -51,26 +55,15 @@ public class Blowing : MonoBehaviour
 
     private void ResizePanel(string line)
     {
-        int charPerLine = 30; // 1行あたりの文字数
-        float baseWidth = 100f; // 基本のパネル高さ
-        float baseHeight = 80f; // 基本のパネル高さ
-        float widthIncrement = 15f; // 20文字ごとに増加する高さ
-        float heightIncrement = 30f; // 20文字ごとに増加する高さ
+        if (talkPanelRectTransform == null || text == null) return;
 
-        // テキスト全体の長さを取得
-        int totalCharacters = line.Length;
+        // 現在のフォントサイズとテキストの幅を計算
+        float textWidth = text.fontSize * line.Length * 0.5f; // 文字数に応じた幅
+        float panelWidth = Mathf.Min(baseWidth + textWidth, maxWidth); // 最大幅を超えないように
+        float panelHeight = baseHeight + Mathf.Ceil(textWidth / maxWidth) * text.fontSize * 1.8f; // 行数に応じて高さ増加
 
-        // 行数を計算（20文字ごとに1行としてカウント）
-        int lineCount = Mathf.CeilToInt((float)totalCharacters / charPerLine);
-
-        // 新しい高さを計算
-        float newHeight = baseHeight + (lineCount - 1) * heightIncrement; // 基本高さ + 行数に応じた増加
-        float newWidth = totalCharacters < charPerLine ? baseWidth + (totalCharacters * widthIncrement) : baseWidth + (charPerLine * widthIncrement); // 基本高さ + 行数に応じた増加
-
-        // パネルのサイズを設定（幅はテキストに基づき、余白を加える）
-        if (talkPanelRectTransform != null)
-        {
-            talkPanelRectTransform.sizeDelta = new Vector2(newWidth, newHeight);
-        }
+        // サイズ適用
+        talkPanelRectTransform.sizeDelta = new Vector2(panelWidth, panelHeight);
     }
+
 }
