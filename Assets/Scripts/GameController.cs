@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] PlayerController playerController;
+    [SerializeField] FieldPlayerController fieldPlayerController;
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
@@ -20,14 +20,14 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        playerController.OnReserve += ReserveStart;
-        playerController.OnEncount += BattleStart;
-        playerController.ChangeField += ChangeField;
+        fieldPlayerController.OnReserve += ReserveStart;
+        fieldPlayerController.OnEncount += BattleStart;
+        fieldPlayerController.ChangeField += ChangeField;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
         messagePanel.AddMesageList("game start");
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
-        playerCoordinate = playerController.Battler.coordinate;
+        playerCoordinate = fieldPlayerController.Battler.coordinate;
     }
 
     // フィールド移動時の方向を受け取る
@@ -51,7 +51,7 @@ public class GameController : MonoBehaviour
     public void ReserveStart()
     {
         Debug.Log("ReserveStart");
-        playerController.SetMoveFlg(false);
+        fieldPlayerController.SetMoveFlg(false);
         battleSystem.gameObject.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
@@ -60,7 +60,7 @@ public class GameController : MonoBehaviour
     public void ReserveEnd()
     {
         Debug.Log("ReserveEnd");
-        playerController.SetMoveFlg(true);
+        fieldPlayerController.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
@@ -68,12 +68,12 @@ public class GameController : MonoBehaviour
     public void BattleStart()
     {
         Debug.Log("BattleStart");
-        playerController.SetMoveFlg(false);
+        fieldPlayerController.SetMoveFlg(false);
         // fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
         enemy = fieldInfoSystem.GetRandomEnemy();
         battleSystem.gameObject.SetActive(true);
-        battleSystem.BattleStart(playerController.Battler, enemy);
+        battleSystem.BattleStart(fieldPlayerController.Battler, enemy);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 
@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
-        playerController.SetMoveFlg(true);
+        fieldPlayerController.SetMoveFlg(true);
         // fieldInfoSystem.FieldDialogOpen();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
