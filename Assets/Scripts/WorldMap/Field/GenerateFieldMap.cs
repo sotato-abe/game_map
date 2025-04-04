@@ -310,6 +310,9 @@ public class GenerateFieldMap : MonoBehaviour
                 if (tileType != (int)TileType.Base && tileType != (int)TileType.Wall && tileType != (int)TileType.Edge)
                 {
                     groundObj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Floor, "MapGround", "Ground");
+                    if (groundObj != null)
+                        groundObj.transform.SetParent(fieldCanvas.transform, false);
+
                     spawnedObjects.Add(groundObj);
                 }
                 if (tileType == (int)TileType.Floor)
@@ -326,7 +329,10 @@ public class GenerateFieldMap : MonoBehaviour
                     obj = InstantiatePrefab(objectItemPrefab, pos, "ObjectItem", "Object");
 
                 if (obj != null)
+                {
+                    obj.transform.SetParent(fieldCanvas.transform, false);
                     spawnedObjects.Add(obj);
+                }
             }
         }
     }

@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
+    [SerializeField] TargetPin targetPin;
     [SerializeField] PlayerBattler battler;
     [SerializeField] BattleUnit playerUnit;
 
