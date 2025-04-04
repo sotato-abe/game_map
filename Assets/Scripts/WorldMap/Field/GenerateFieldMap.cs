@@ -15,7 +15,7 @@ public class GenerateFieldMap : MonoBehaviour
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
     [SerializeField] MapBase mapBase; //マップデータ
-    [SerializeField] PlayerController character; //キャラクター
+    [SerializeField] FieldPlayerController character; //キャラクター
     [SerializeField] WorldMapSystem worldMapSystem;
     public int width;        // マップの幅
     public int height;       // マップの高さ
