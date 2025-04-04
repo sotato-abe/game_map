@@ -39,6 +39,7 @@ public class GenerateFieldMap : MonoBehaviour
         characterDirection = DirectionType.Top;
         width = mapBase.MapWidth;
         height = mapBase.MapHeight;
+        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height); // フィールドキャンバスのサイズを設定
         fieldData = worldMapSystem.getFieldDataByCoordinate(character.Battler.coordinate);
         GenarateMap(); // ゲーム開始時にマップ生成
         character.gameObject.transform.position = mapCenterPos;
