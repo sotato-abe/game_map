@@ -21,6 +21,7 @@ public class HitTargetPin : MonoBehaviour
 
     void Update()
     {
+        if(fieldPlayerController.canMove == false) return;
         if (Input.GetMouseButtonDown(0))
         {
             // UIをクリックした場合は無視

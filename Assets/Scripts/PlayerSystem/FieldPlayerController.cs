@@ -9,7 +9,7 @@ public class FieldPlayerController : MonoBehaviour
 {
     Animator animator;
     bool isMoving = false;
-    bool canMove = true;
+    public bool canMove = true;
     public int width; // マップの幅
     public int height; // マップの高さ
 
@@ -128,6 +128,7 @@ public class FieldPlayerController : MonoBehaviour
 
     public void MoveToTargetPin(Vector3 targetPos)
     {
+        if (canMove == false) return;
         Debug.Log("MoveToTargetPin called with targetPos: " + targetPos);
         Vector2Int target = new Vector2Int(Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y));
         if (IsWalkable(targetPos) == false) return;
@@ -242,6 +243,14 @@ public class FieldPlayerController : MonoBehaviour
             animator.SetFloat("inputY", dir.y);
             animator.SetBool("isMoving", true);
 
+            // 左右反転（横移動のときだけでOK）
+            if (dir.x != 0)
+            {
+                Vector3 scale = transform.localScale;
+                scale.x = dir.x > 0 ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+                transform.localScale = scale;
+            }
+
             while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
@@ -249,6 +258,7 @@ public class FieldPlayerController : MonoBehaviour
             }
 
             transform.position = targetPos;
+            CheckForEncount();
             yield return null;
         }
 
@@ -264,6 +274,8 @@ public class FieldPlayerController : MonoBehaviour
         {
             if (randamEncounterThreshold < encounterThreshold * 2)
             {
+                StopAllCoroutines();
+                isMoving = false;
                 OnEncount?.Invoke();
             }
         }
@@ -271,6 +283,8 @@ public class FieldPlayerController : MonoBehaviour
         {
             if (randamEncounterThreshold < encounterThreshold)
             {
+                StopAllCoroutines();
+                isMoving = false;
                 OnEncount?.Invoke();
             }
         }
