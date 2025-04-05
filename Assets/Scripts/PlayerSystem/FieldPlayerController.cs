@@ -129,7 +129,6 @@ public class FieldPlayerController : MonoBehaviour
     public void MoveToTargetPin(Vector3 targetPos)
     {
         if (canMove == false) return;
-        Debug.Log("MoveToTargetPin called with targetPos: " + targetPos);
         Vector2Int target = new Vector2Int(Mathf.RoundToInt(targetPos.x), Mathf.RoundToInt(targetPos.y));
         if (IsWalkable(targetPos) == false) return;
 
@@ -145,6 +144,7 @@ public class FieldPlayerController : MonoBehaviour
 
         Vector2Int start = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
         List<Vector2Int> path = FindPath(start, target);
+
         if (path != null && path.Count > 1)
         {
             // 前の移動を止める
@@ -254,10 +254,23 @@ public class FieldPlayerController : MonoBehaviour
             while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+
+                DirectionType entryDirection = IsEntry(targetPos);
+
+                if (entryDirection != 0)
+                {
+                    Debug.Log("Entry detected: " + entryDirection);
+                    isMoving = false;
+                    animator.SetBool("isMoving", false);
+                    ChangeField?.Invoke(entryDirection);
+                    yield break; // それ以上移動しない
+                }
+
                 yield return null;
             }
 
             transform.position = targetPos;
+
             CheckForEncount();
             yield return null;
         }
@@ -293,7 +306,7 @@ public class FieldPlayerController : MonoBehaviour
     DirectionType IsEntry(Vector3 targetPos)
     {
         // 移動先にエントリーレイヤーがあったときはその方角の位置を返す
-        if (Physics2D.OverlapCircle(targetPos, 0.2f, entryLayer))
+        if (Physics2D.OverlapCircle(targetPos, 0.4f, entryLayer))
         {
             if (targetPos.x < 1) return DirectionType.Left;  // left
             if (targetPos.x > width - 1) return DirectionType.Right;  // right

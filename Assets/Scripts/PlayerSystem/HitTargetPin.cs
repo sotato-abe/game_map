@@ -35,8 +35,6 @@ public class HitTargetPin : MonoBehaviour
 
             if (hit.collider != null)
             {
-                Debug.Log("Hit Object: " + hit.collider.gameObject.name);
-
                 // Pinを正しい位置に配置
                 if (targetPinInstance == null)
                 {
