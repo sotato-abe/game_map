@@ -21,7 +21,7 @@ public class HitTargetPin : MonoBehaviour
 
     void Update()
     {
-        if(fieldPlayerController.canMove == false) return;
+        if (!fieldPlayerController.canMove) return;
         if (Input.GetMouseButtonDown(0))
         {
             // UIをクリックした場合は無視
@@ -32,6 +32,8 @@ public class HitTargetPin : MonoBehaviour
             Vector2 rayOrigin = new Vector2(worldPoint.x, worldPoint.y);
 
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.zero);
+            // クリックした場所にGroundレイヤーが存在するかを確認し存在しなければreturn
+            if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Ground")) return;
 
             if (hit.collider != null)
             {
@@ -53,7 +55,6 @@ public class HitTargetPin : MonoBehaviour
             }
         }
     }
-
 
     private bool IsPointerOverUIObject()
     {
