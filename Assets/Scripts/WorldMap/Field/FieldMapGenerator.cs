@@ -251,12 +251,12 @@ public class FieldMapGenerator
             newPath.Add(current);
 
             bool reachedGoal = false;
+            List<Vector2Int> directions = new() { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
             while (tryCount < 1000)
             {
                 tryCount++;
 
-                List<Vector2Int> directions = new() { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
                 Shuffle(directions); // ランダム方向
 
                 bool moved = false;
@@ -273,22 +273,23 @@ public class FieldMapGenerator
                         current = next;
                         newPath.Add(current);
                         moved = true;
-                        if ( HasCrossGroundCount(next.x, next.y, map))
+                        if (HasCrossGroundCount(next.x, next.y, map))
                         {
                             reachedGoal = true;
                         }
                         break;
                     }
                 }
-                foreach (var pos in newPath)
-                {
-                    if (map[pos.x, pos.y] == (int)TileType.Base)
-                        map[pos.x, pos.y] = (int)TileType.Floor;
-                }
-
                 if (reachedGoal || !moved)
                     break;
             }
+
+            foreach (var pos in newPath)
+            {
+                if (map[pos.x, pos.y] == (int)TileType.Base)
+                    map[pos.x, pos.y] = (int)TileType.Floor;
+            }
+
         }
     }
 
