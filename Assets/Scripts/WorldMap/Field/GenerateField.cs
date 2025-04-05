@@ -27,7 +27,6 @@ public class GenerateField : MonoBehaviour
     float tileSize;          // プレファブのサイズ
     FloorTileListBase tileSet;
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
-    List<Vector2> entryPositions = new List<Vector2>(); // エントリーポイントのリスト
 
     private FieldData fieldData;
 
@@ -47,7 +46,6 @@ public class GenerateField : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            characterDirection = DirectionType.Top;
             ReloadMap(characterDirection, character.Battler.coordinate);
         }
     }
@@ -59,6 +57,7 @@ public class GenerateField : MonoBehaviour
         ClearMap(); // 現在のマップをクリア
         fieldMapGenerator.GenarateField(mapBase); // フィールドマップを生成
         renderingTileMap(); // タイルマップを描画
+        MoveCharacter();
     }
 
     // フィールド用のタイルを描画
@@ -112,6 +111,29 @@ public class GenerateField : MonoBehaviour
         }
     }
 
+    private void MoveCharacter()
+    {
+        Vector2 position = Vector2.zero; // 初期位置をゼロに設定
+        switch (characterDirection)
+        {
+            case DirectionType.Top:
+                position = new Vector2(fieldMapGenerator.topEntoryPosition.x, fieldMapGenerator.topEntoryPosition.y + 1); // 上の出入り口の位置を取得
+                break;
+            case DirectionType.Bottom:
+                position = new Vector2(fieldMapGenerator.bottomEntoryPosition.x, fieldMapGenerator.bottomEntoryPosition.y - 1); // 上の出入り口の位置を取得
+                break;
+            case DirectionType.Right:
+                position = new Vector2(fieldMapGenerator.rightEntoryPosition.x - 1, fieldMapGenerator.rightEntoryPosition.y); // 上の出入り口の位置を取得
+                break;
+            case DirectionType.Left:
+                position = new Vector2(fieldMapGenerator.leftEntoryPosition.x + 1, fieldMapGenerator.leftEntoryPosition.y); // 上の出入り口の位置を取得
+                break;
+        }
+        int x = (int)position.x;
+        int y = (int)position.y;
+        character.gameObject.transform.position = GetWorldPositionFromTile(x, y);
+    }
+
     GameObject CreateTile(string name, Vector2 position, Sprite sprite, string sortingLayer, string layerName)
     {
         GameObject obj = new GameObject(name);
@@ -134,12 +156,6 @@ public class GenerateField : MonoBehaviour
         return obj;
     }
 
-    // 座標からワールド座標に変換
-    Vector2 GetWorldPositionFromTile(int x, int y)
-    {
-        return new Vector2(x * tileSize, (height - y) * tileSize); // マップの中心を考慮して座標を計算
-    }
-
     // マップを初期化
     void ClearMap()
     {
@@ -149,5 +165,11 @@ public class GenerateField : MonoBehaviour
             Destroy(obj);
         }
         spawnedObjects.Clear(); // リストをクリア
+    }
+
+    // 座標からワールド座標に変換
+    Vector2 GetWorldPositionFromTile(int x, int y)
+    {
+        return new Vector2(x * tileSize, (height - y) * tileSize); // マップの中心を考慮して座標を計算
     }
 }

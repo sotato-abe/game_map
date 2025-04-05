@@ -11,6 +11,11 @@ public class FieldMapGenerator
     private string seed;
     private int randomFillPercent; // ランダムで埋め込む確率
     private MapBase mapBase;
+
+    public Vector2 topEntoryPosition = Vector2.zero; // 上のエントリーポイント
+    public Vector2 bottomEntoryPosition = Vector2.zero; // 上のエントリーポイント
+    public Vector2 leftEntoryPosition = Vector2.zero; // 上のエントリーポイント
+    public Vector2 rightEntoryPosition = Vector2.zero; // 上のエントリーポイント
     public bool useRandamSeed = true;
     private System.Random pseudoRandomMap;
     private System.Random pseudoRandomFloor;
@@ -51,7 +56,6 @@ public class FieldMapGenerator
         createObjectItem();
         createEntry();
         createWall();
-        // renderingTileMap(); // GenerateField側で呼び出す
     }
 
     // フィールドマップにランダムでグラウンドを追加
@@ -170,8 +174,6 @@ public class FieldMapGenerator
         int minY = int.MaxValue;
         int maxY = int.MinValue;
 
-        System.Random pseudoRandom = new System.Random(seed.GetHashCode());
-
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -186,24 +188,38 @@ public class FieldMapGenerator
             }
         }
         // 各方向の入口を生成
-        if (mapBase.OpenLeft)
-            CreateRouteForEntry(0, 1, minY, maxY, false, pseudoRandom, DirectionType.Left); // Left
-        if (mapBase.OpenRight)
-            CreateRouteForEntry(width - 1, -1, minY, maxY, false, pseudoRandom, DirectionType.Right); // Right
-        if (mapBase.OpenBottom)
-            CreateRouteForEntry(height - 1, -1, minX, maxX, true, pseudoRandom, DirectionType.Bottom); // Top
         if (mapBase.OpenTop)
-            CreateRouteForEntry(0, 1, minX, maxX, true, pseudoRandom, DirectionType.Top); // Bottom
+        {
+            CreateRouteForEntry(0, 1, minX, maxX, true, DirectionType.Top);
+        }
+        if (mapBase.OpenBottom)
+        {
+            CreateRouteForEntry(height - 1, -1, minX, maxX, true, DirectionType.Bottom);
+        }
+        if (mapBase.OpenLeft)
+        {
+            CreateRouteForEntry(0, 1, minY, maxY, false, DirectionType.Left);
+        }
+        if (mapBase.OpenRight)
+        {
+            CreateRouteForEntry(width - 1, -1, minY, maxY, false, DirectionType.Right);
+        }
     }
 
     // フィールドマップに道路を追加
-    void CreateRouteForEntry(int start, int step, int min, int max, bool isVertical, System.Random pseudoRandom, DirectionType direction)
+    void CreateRouteForEntry(int start, int step, int min, int max, bool isVertical, DirectionType direction)
     {
+        System.Random pseudoRandom = new System.Random(seed.GetHashCode());
         int entryPoint = pseudoRandom.Next(min, max + 1);
 
         if (isVertical)
         {
             map[entryPoint, start] = (int)TileType.Entry;
+            if (direction == DirectionType.Top)
+                topEntoryPosition = new Vector2(entryPoint, start);
+            else if (direction == DirectionType.Bottom)
+                bottomEntoryPosition = new Vector2(entryPoint, start);
+
             for (int y = start + step; y >= 0 && y < height; y += step)
             {
                 if (map[entryPoint, y] == (int)TileType.Base)
@@ -215,6 +231,11 @@ public class FieldMapGenerator
         else
         {
             map[start, entryPoint] = (int)TileType.Entry;
+            if (direction == DirectionType.Left)
+                leftEntoryPosition = new Vector2(start, entryPoint);
+            else if (direction == DirectionType.Right)
+                rightEntoryPosition = new Vector2(start, entryPoint);
+
             for (int x = start + step; x >= 0 && x < width; x += step)
             {
                 if (map[x, entryPoint] == (int)TileType.Base)
