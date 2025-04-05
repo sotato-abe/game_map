@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     [SerializeField] FieldInfoSystem fieldInfoSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
-    [SerializeField] GenerateFieldMap generateFieldMap;
+    [SerializeField] GenerateField generateField;
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
@@ -33,7 +33,7 @@ public class GameController : MonoBehaviour
     // フィールド移動時の方向を受け取る
     // カレント座標を更新する
     // 新しいフィールドのフィールドデータを取得する
-    // フィールドを生成する処理（generateFieldMap）に受け渡す
+    // フィールドを生成する処理（generateField）に受け渡す
     public void ChangeField(DirectionType outDirection)
     {
         DirectionType entryDirection = outDirection.GetOppositeDirection();
@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour
             playerCoordinate.col = playerCoordinate.col + 1;
         if (outDirection == DirectionType.Left)
             playerCoordinate.col = playerCoordinate.col - 1;
-        generateFieldMap.ReloadMap(entryDirection, playerCoordinate);
+        generateField.ReloadMap(entryDirection, playerCoordinate);
     }
 
     public void ReserveStart()
