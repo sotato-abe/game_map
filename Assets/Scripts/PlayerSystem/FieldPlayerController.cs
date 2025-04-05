@@ -325,7 +325,8 @@ public class FieldPlayerController : MonoBehaviour
         }
         else
         {
-            return Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
+            LayerMask obstacleLayers = blockLayer | entryLayer;
+            return Physics2D.OverlapCircle(targetPos, 0.2f, obstacleLayers) == false;
         }
     }
 
