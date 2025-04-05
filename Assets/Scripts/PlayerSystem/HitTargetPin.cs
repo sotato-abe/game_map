@@ -8,6 +8,7 @@ public class HitTargetPin : MonoBehaviour
 {
     private NavMeshAgent agent;
     [SerializeField] private TargetPin targetPinPrefab;
+    [SerializeField] FieldPlayerController fieldPlayerController;
     private TargetPin targetPinInstance;
     [SerializeField] private Canvas fieldCanvas;
     private GraphicRaycaster graphicRaycaster;
@@ -39,10 +40,12 @@ public class HitTargetPin : MonoBehaviour
                 if (targetPinInstance == null)
                 {
                     targetPinInstance = Instantiate(targetPinPrefab, new Vector3(hit.point.x, hit.point.y, 0), Quaternion.identity);
+                    fieldPlayerController.MoveToTargetPin(targetPinInstance.transform.position);
                 }
                 else
                 {
                     targetPinInstance.transform.position = new Vector3(hit.point.x, hit.point.y, 0);
+                    fieldPlayerController.MoveToTargetPin(targetPinInstance.transform.position);
                 }
             }
             else
