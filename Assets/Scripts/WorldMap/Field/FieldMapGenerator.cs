@@ -13,16 +13,17 @@ public class FieldMapGenerator
     private MapBase mapBase;
 
     public Vector2 topEntoryPosition = Vector2.zero; // 上のエントリーポイント
-    public Vector2 bottomEntoryPosition = Vector2.zero; // 上のエントリーポイント
-    public Vector2 leftEntoryPosition = Vector2.zero; // 上のエントリーポイント
-    public Vector2 rightEntoryPosition = Vector2.zero; // 上のエントリーポイント
+    public Vector2 bottomEntoryPosition = Vector2.zero; // 下のエントリーポイント
+    public Vector2 leftEntoryPosition = Vector2.zero; // 左のエントリーポイント
+    public Vector2 rightEntoryPosition = Vector2.zero; // 右のエントリーポイント
     public bool useRandamSeed = true;
+
     private System.Random pseudoRandomMap;
     private System.Random pseudoRandomFloor;
     DirectionType characterDirection;
 
-    int[,] map;             // マップデータ
-    int[,] area;            // エリアデータ
+    int[,] map;  // マップデータ
+    int[,] area; // エリアデータ
 
     public int[,] Map { get { return map; } } // マップデータの取得
     public int[,] Area { get { return area; } } // エリアデータの取得
@@ -30,7 +31,7 @@ public class FieldMapGenerator
     public void GenarateField(MapBase mapBase)
     {
         this.mapBase = mapBase;
-        this.width = mapBase.MapWidth; // マップの幅
+        this.width = mapBase.MapWidth;   // マップの幅
         this.height = mapBase.MapHeight; // マップの高さ
         this.randomFillPercent = mapBase.RandomFillPercent; // ランダムで埋め込む確率
 
@@ -53,13 +54,13 @@ public class FieldMapGenerator
         }
         margeFloor();
         createBuilding();
-        createObjectItem();
+        createObject();
         createEntry();
         createWall();
     }
 
     // フィールドマップにランダムでグラウンドを追加
-    int[,] RandamFillMap(int[,] field, System.Random seedPercent)
+    private int[,] RandamFillMap(int[,] field, System.Random seedPercent)
     {
         for (int x = 0; x < width; x++)
         {
@@ -76,7 +77,7 @@ public class FieldMapGenerator
     }
 
     //　モザイク状のフィールドマップを滑らかにしていく
-    int[,] SmoothMap(int[,] field)
+    private int[,] SmoothMap(int[,] field)
     {
         for (int x = 0; x < width; x++)
         {
@@ -95,7 +96,7 @@ public class FieldMapGenerator
     }
 
     //　指定座標の周囲のグラウンド数を取得
-    int GetSurroundingGroundCount(int gridX, int gridY, int[,] field)
+    private int GetSurroundingGroundCount(int gridX, int gridY, int[,] field)
     {
         int groundCount = 0;
         for (int neighbourX = gridX - 1; neighbourX <= gridX + 1; neighbourX++)
@@ -117,7 +118,7 @@ public class FieldMapGenerator
     }
 
     // フィールドマップにフロアを追加
-    void margeFloor()
+    private void margeFloor()
     {
         for (int y = 0; y < height; y++)
         {
@@ -130,7 +131,7 @@ public class FieldMapGenerator
     }
 
     //　フィールドマップに建物を追加
-    void createBuilding()
+    private void createBuilding()
     {
         int buildingCount = mapBase.Building;
         for (int i = 0; i < buildingCount; i++)
@@ -148,10 +149,9 @@ public class FieldMapGenerator
     }
 
     //　フィールドマップにオブジェクトを追加
-    void createObjectItem()
+    private void createObject()
     {
         int objectItemCount = mapBase.ObjectItem;
-
         for (int i = 0; i < objectItemCount; i++)
         {
             int targetX, targetY;
@@ -167,7 +167,7 @@ public class FieldMapGenerator
     }
 
     //　フィールドマップに出入り口を追加
-    void createEntry()
+    private void createEntry()
     {
         int minX = int.MaxValue;
         int maxX = int.MinValue;
@@ -187,6 +187,7 @@ public class FieldMapGenerator
                 }
             }
         }
+        
         // 各方向の入口を生成
         if (mapBase.OpenTop)
         {
@@ -207,7 +208,7 @@ public class FieldMapGenerator
     }
 
     // フィールドマップに道路を追加
-    void CreateRouteForEntry(int start, int step, int min, int max, bool isVertical, DirectionType direction)
+    private void CreateRouteForEntry(int start, int step, int min, int max, bool isVertical, DirectionType direction)
     {
         System.Random pseudoRandom = new System.Random(seed.GetHashCode());
         int entryPoint = pseudoRandom.Next(min, max + 1);
@@ -247,7 +248,7 @@ public class FieldMapGenerator
     }
 
     //　フィールドマップに縁壁とグランドの壁を追加
-    void createWall()
+    private void createWall()
     {
         for (int y = 0; y < height; y++)
         {
