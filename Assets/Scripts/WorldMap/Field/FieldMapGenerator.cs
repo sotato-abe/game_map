@@ -117,6 +117,27 @@ public class FieldMapGenerator
         return groundCount;
     }
 
+    private bool HasCrossGroundCount(int gridX, int gridY, int[,] field)
+    {
+        if (field[gridX + 1, gridY] == (int)TileType.Ground)
+        {
+            return true;
+        }
+        if (field[gridX - 1, gridY] == (int)TileType.Ground)
+        {
+            return true;
+        }
+        if (field[gridX, gridY + 1] == (int)TileType.Ground)
+        {
+            return true;
+        }
+        if (field[gridX, gridY - 1] == (int)TileType.Ground)
+        {
+            return true;
+        }
+        return false;
+    }
+
     // フィールドマップにフロアを追加
     private void margeFloor()
     {
@@ -169,79 +190,103 @@ public class FieldMapGenerator
     //　フィールドマップに出入り口を追加
     private void createEntry()
     {
-        int minX = int.MaxValue;
-        int maxX = int.MinValue;
-        int minY = int.MaxValue;
-        int maxY = int.MinValue;
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                if (map[x, y] != (int)TileType.Base)
-                {
-                    if (x < minX) minX = x;
-                    if (x > maxX) maxX = x;
-                    if (y < minY) minY = y;
-                    if (y > maxY) maxY = y;
-                }
-            }
-        }
-        
-        // 各方向の入口を生成
         if (mapBase.OpenTop)
         {
-            CreateRouteForEntry(0, 1, minX, maxX, true, DirectionType.Top);
-        }
-        if (mapBase.OpenBottom)
-        {
-            CreateRouteForEntry(height - 1, -1, minX, maxX, true, DirectionType.Bottom);
-        }
-        if (mapBase.OpenLeft)
-        {
-            CreateRouteForEntry(0, 1, minY, maxY, false, DirectionType.Left);
-        }
-        if (mapBase.OpenRight)
-        {
-            CreateRouteForEntry(width - 1, -1, minY, maxY, false, DirectionType.Right);
-        }
-    }
-
-    // フィールドマップに道路を追加
-    private void CreateRouteForEntry(int start, int step, int min, int max, bool isVertical, DirectionType direction)
-    {
-        System.Random pseudoRandom = new System.Random(seed.GetHashCode());
-        int entryPoint = pseudoRandom.Next(min, max + 1);
-
-        if (isVertical)
-        {
-            map[entryPoint, start] = (int)TileType.Entry;
-            if (direction == DirectionType.Top)
-                topEntoryPosition = new Vector2(entryPoint, start);
-            else if (direction == DirectionType.Bottom)
-                bottomEntoryPosition = new Vector2(entryPoint, start);
-
-            for (int y = start + step; y >= 0 && y < height; y += step)
-            {
-                if (map[entryPoint, y] == (int)TileType.Base)
-                    map[entryPoint, y] = (int)TileType.Ground;
-                else
-                    break;
-            }
+            int targetPoint = UnityEngine.Random.Range(1, width - 1);
+            map[targetPoint, 0] = (int)TileType.Entry;
+            topEntoryPosition = new Vector2(targetPoint, 0);
         }
         else
         {
-            map[start, entryPoint] = (int)TileType.Entry;
-            if (direction == DirectionType.Left)
-                leftEntoryPosition = new Vector2(start, entryPoint);
-            else if (direction == DirectionType.Right)
-                rightEntoryPosition = new Vector2(start, entryPoint);
+            topEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
+        }
+        if (mapBase.OpenBottom)
+        {
+            int targetPoint = UnityEngine.Random.Range(1, width - 1);
+            map[targetPoint, height - 1] = (int)TileType.Entry;
+            bottomEntoryPosition = new Vector2(targetPoint, height - 1);
+        }
+        else
+        {
+            bottomEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
+        }
+        if (mapBase.OpenLeft)
+        {
+            int targetPoint = UnityEngine.Random.Range(1, height - 1);
+            map[0, targetPoint] = (int)TileType.Entry;
+            leftEntoryPosition = new Vector2(0, targetPoint);
+        }
+        else
+        {
+            leftEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
+        }
+        if (mapBase.OpenRight)
+        {
+            int targetPoint = UnityEngine.Random.Range(1, height - 1);
+            map[width - 1, targetPoint] = (int)TileType.Entry;
+            rightEntoryPosition = new Vector2(width - 1, targetPoint);
+        }
+        else
+        {
+            rightEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
+        }
+        CreateRouteForEntry();
+    }
 
-            for (int x = start + step; x >= 0 && x < width; x += step)
+    private void CreateRouteForEntry()
+    {
+        List<Vector2Int> entries = new();
+        if (topEntoryPosition.x >= 0) entries.Add(Vector2Int.RoundToInt(topEntoryPosition));
+        if (bottomEntoryPosition.x >= 0) entries.Add(Vector2Int.RoundToInt(bottomEntoryPosition));
+        if (leftEntoryPosition.x >= 0) entries.Add(Vector2Int.RoundToInt(leftEntoryPosition));
+        if (rightEntoryPosition.x >= 0) entries.Add(Vector2Int.RoundToInt(rightEntoryPosition));
+
+        foreach (var entry in entries)
+        {
+            Vector2Int current = entry;
+            int tryCount = 0;
+
+            HashSet<Vector2Int> newPath = new(); // このルート専用のパス記録
+
+            newPath.Add(current);
+
+            bool reachedGoal = false;
+
+            while (tryCount < 1000)
             {
-                if (map[x, entryPoint] == (int)TileType.Base)
-                    map[x, entryPoint] = (int)TileType.Ground;
-                else
+                tryCount++;
+
+                List<Vector2Int> directions = new() { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+                Shuffle(directions); // ランダム方向
+
+                bool moved = false;
+
+                foreach (var dir in directions)
+                {
+                    Vector2Int next = current + dir;
+                    if (!IsInMap(next)) continue;
+                    if (newPath.Contains(next)) continue;
+
+                    // 通行可能なマスなら進む
+                    if (map[next.x, next.y] == (int)TileType.Base)
+                    {
+                        current = next;
+                        newPath.Add(current);
+                        moved = true;
+                        if ( HasCrossGroundCount(next.x, next.y, map))
+                        {
+                            reachedGoal = true;
+                        }
+                        break;
+                    }
+                }
+                foreach (var pos in newPath)
+                {
+                    if (map[pos.x, pos.y] == (int)TileType.Base)
+                        map[pos.x, pos.y] = (int)TileType.Floor;
+                }
+
+                if (reachedGoal || !moved)
                     break;
             }
         }
@@ -263,5 +308,19 @@ public class FieldMapGenerator
                 }
             }
         }
+    }
+
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int r = UnityEngine.Random.Range(0, i + 1);
+            (list[i], list[r]) = (list[r], list[i]);
+        }
+    }
+
+    private bool IsInMap(Vector2Int pos)
+    {
+        return pos.x >= 1 && pos.x < width - 1 && pos.y >= 1 && pos.y < height - 1;
     }
 }
