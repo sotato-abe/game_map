@@ -21,7 +21,6 @@ public class FieldPlayerController : MonoBehaviour
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
-    [SerializeField] PlayerBattler battler;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] float moveSpeed = 3f;
 
@@ -33,7 +32,7 @@ public class FieldPlayerController : MonoBehaviour
 
     public Coordinate currentField;
 
-    public PlayerBattler Battler { get => battler; }
+    public PlayerBattler playerBattler;
 
     private void Awake()
     {
@@ -42,9 +41,6 @@ public class FieldPlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        battler.Init();
-        playerUnit.Setup(battler);
-
         StartCoroutine(playerUnit.SetTalkMessage("start.."));
         // 仮でここで定義（後でマップ更新時に更新されるようにする）
         width = mapBase.MapWidth;

@@ -2,27 +2,29 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 //　役割：フィールドの生成を行う
 //　マップ生成：座標を受け取ると、WorldMapSystemからフィールドデータを取得
 //　フィールドデータからタイルセットを選択しフィールドの描画を行う
 //　TODO：ルート生成：フィールドデータ（roadDirection）から出入り口の方角に応じてルートを敷く
 
-public class GenerateField : MonoBehaviour
+public class FieldSystem : MonoBehaviour
 {
+    public UnityAction OnReserve;
+    public UnityAction OnEncount; // エンカウントイベント
+    FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
+
     [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // 地面と壁のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
-    [SerializeField] MapBase mapBase; //マップデータ
-    [SerializeField] FieldPlayerController character; //キャラクター
+    [SerializeField] FieldPlayerController fieldPlayerController; //キャラクター
     [SerializeField] WorldMapSystem worldMapSystem;
-    DirectionType characterDirection = DirectionType.Top; // キャラクターの方向
+    DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
 
-    FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
+    public PlayerBattler playerBattler;
 
-    Vector2 mapCenterPos;    // マップの中心座標
-    float tileSize;          // プレファブのサイズ
+    float tileSize; // プレファブのサイズ
     FloorTileListBase tileSet;
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
 
@@ -30,21 +32,63 @@ public class GenerateField : MonoBehaviour
 
     void Start()
     {
-        fieldData = worldMapSystem.getFieldDataByCoordinate(character.Battler.coordinate);
-        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定
-        fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
-        renderingTileMap(); // タイルマップを描画
-        character.gameObject.transform.position = mapCenterPos;
+
     }
 
-    public void ReloadMap(DirectionType entryDirection, Coordinate playerCoordinate)
+    public void Setup(PlayerBattler battler)
     {
-        characterDirection = entryDirection;
-        fieldData = worldMapSystem.getFieldDataByCoordinate(playerCoordinate);
-        ClearMap(); // 現在のマップをクリア
+
+        playerBattler = battler; // プレイヤーのバトラーを設定
+        fieldPlayerController.playerBattler = playerBattler; // プレイヤーのバトラーを設定
+        fieldPlayerController.OnReserve += ReserveStart;
+        fieldPlayerController.OnEncount += Encount;
+        fieldPlayerController.ChangeField += ReloadMap;
+
+        fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
+        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
         fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
         renderingTileMap(); // タイルマップを描画
-        MoveCharacter();
+        Vector2 centerPotision = new Vector2(fieldData.mapWidth * tileSize / 2, fieldData.mapHeight * tileSize / 2);
+
+        fieldPlayerController.gameObject.transform.position = centerPotision;
+    }
+
+    public void PlayerMovableSwitch(bool canMove)
+    {
+        fieldPlayerController.SetMoveFlg(canMove); // プレイヤーの移動フラグを設定
+    }
+
+    public void ReserveStart()
+    {
+        Debug.Log("Encount");
+        OnReserve?.Invoke();
+    }
+
+    public void Encount()
+    {
+        Debug.Log("Encount");
+        OnEncount?.Invoke();
+    }
+
+    public void ReloadMap(DirectionType outDirection)
+    {
+        DirectionType entryDirection = outDirection.GetOppositeDirection();
+        if (outDirection == DirectionType.Top)
+            playerBattler.coordinate.row = playerBattler.coordinate.row - 1;
+        if (outDirection == DirectionType.Bottom)
+            playerBattler.coordinate.row = playerBattler.coordinate.row + 1;
+        if (outDirection == DirectionType.Right)
+            playerBattler.coordinate.col = playerBattler.coordinate.col + 1;
+        if (outDirection == DirectionType.Left)
+            playerBattler.coordinate.col = playerBattler.coordinate.col - 1;
+
+        playerDirection = entryDirection;
+        fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate); // フィールドデータを取得
+        ClearMap(); // 現在のマップをクリア
+
+        fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
+        renderingTileMap(); // タイルマップを描画
+        ResetCharacterPosition();
     }
 
     // フィールド用のタイルを描画
@@ -52,7 +96,6 @@ public class GenerateField : MonoBehaviour
     {
         tileSet = floorTiles[(int)fieldData.floorType];
         tileSize = tileSet.Floor.bounds.size.x; // タイルサイズを取得
-        mapCenterPos = new Vector2(fieldData.mapWidth * tileSize / 2, fieldData.mapHeight * tileSize / 2); // マップの中心座標を計算
 
         for (int x = 0; x < fieldData.mapWidth; x++)
         {
@@ -98,10 +141,10 @@ public class GenerateField : MonoBehaviour
         }
     }
 
-    private void MoveCharacter()
+    private void ResetCharacterPosition()
     {
         Vector2 position = Vector2.zero; // 初期位置をゼロに設定
-        switch (characterDirection)
+        switch (playerDirection)
         {
             case DirectionType.Top:
                 position = new Vector2(fieldMapGenerator.topEntoryPosition.x, fieldMapGenerator.topEntoryPosition.y + 1); // 上の出入り口の位置を取得
@@ -118,7 +161,7 @@ public class GenerateField : MonoBehaviour
         }
         int x = (int)position.x;
         int y = (int)position.y;
-        character.gameObject.transform.position = GetWorldPositionFromTile(x, y);
+        fieldPlayerController.gameObject.transform.position = GetWorldPositionFromTile(x, y);
     }
 
     GameObject CreateTile(string name, Vector2 position, Sprite sprite, string sortingLayer, string layerName)

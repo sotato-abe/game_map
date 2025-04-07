@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] PlayerBattler playerBattler;
+    [SerializeField] PlayerUnit playerUnit;
     [SerializeField] FieldPlayerController fieldPlayerController;
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
-    [SerializeField] GenerateField generateField;
+    [SerializeField] FieldSystem fieldSystem;
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
@@ -18,34 +20,19 @@ public class GameController : MonoBehaviour
 
     Battler enemy;
 
-    private void Start()
+    private void Awake()
     {
-        fieldPlayerController.OnReserve += ReserveStart;
-        fieldPlayerController.OnEncount += BattleStart;
-        fieldPlayerController.ChangeField += ChangeField;
+        playerBattler.Init();
+        fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
+        fieldSystem.OnReserve += ReserveStart;
+        fieldSystem.OnEncount += BattleStart;
+        playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
+
+        playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
         messagePanel.AddMesageList("game start");
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
-        playerCoordinate = fieldPlayerController.Battler.coordinate;
-    }
-
-    // フィールド移動時の方向を受け取る
-    // カレント座標を更新する
-    // 新しいフィールドのフィールドデータを取得する
-    // フィールドを生成する処理（generateField）に受け渡す
-    public void ChangeField(DirectionType outDirection)
-    {
-        DirectionType entryDirection = outDirection.GetOppositeDirection();
-        if (outDirection == DirectionType.Top)
-            playerCoordinate.row = playerCoordinate.row - 1;
-        if (outDirection == DirectionType.Bottom)
-            playerCoordinate.row = playerCoordinate.row + 1;
-        if (outDirection == DirectionType.Right)
-            playerCoordinate.col = playerCoordinate.col + 1;
-        if (outDirection == DirectionType.Left)
-            playerCoordinate.col = playerCoordinate.col - 1;
-        generateField.ReloadMap(entryDirection, playerCoordinate);
     }
 
     public void ReserveStart()
@@ -73,7 +60,7 @@ public class GameController : MonoBehaviour
         reserveSystem.gameObject.SetActive(false);
         enemy = fieldInfoSystem.GetRandomEnemy();
         battleSystem.gameObject.SetActive(true);
-        battleSystem.BattleStart(fieldPlayerController.Battler, enemy);
+        battleSystem.BattleStart(playerBattler, enemy);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 

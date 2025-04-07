@@ -41,7 +41,6 @@ public class FieldMapGenerator
         }
         else
         {
-            Debug.Log("Seed: " + fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString());
             seed = fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString(); // マップの座標からシードを生成
         }
         System.Random pseudoRandomMap = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
