@@ -234,53 +234,63 @@ public class FieldMapGenerator
 
         foreach (var entry in entries)
         {
-            Vector2Int current = entry;
-            int tryCount = 0;
+            Queue<Vector2Int> queue = new Queue<Vector2Int>();
+            HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+            Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
 
-            HashSet<Vector2Int> newPath = new(); // このルート専用のパス記録
+            queue.Enqueue(entry);
+            visited.Add(entry);
 
-            newPath.Add(current);
+            Vector2Int foundTarget = Vector2Int.zero;
+            bool found = false;
 
-            bool reachedGoal = false;
-            List<Vector2Int> directions = new() { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-
-            while (tryCount < 1000)
+            // 幅優先探索でGroundを探す
+            while (queue.Count > 0)
             {
-                tryCount++;
+                Vector2Int current = queue.Dequeue();
 
-                Shuffle(directions); // ランダム方向
+                // Groundを見つけたら終わり
+                if (map[current.x, current.y] == (int)TileType.Ground)
+                {
+                    foundTarget = current;
+                    found = true;
+                    break;
+                }
 
-                bool moved = false;
+                // 隣接セル（上下左右）をチェック
+                Vector2Int[] directions = new Vector2Int[]
+                {
+            Vector2Int.up,
+            Vector2Int.down,
+            Vector2Int.left,
+            Vector2Int.right
+                };
 
                 foreach (var dir in directions)
                 {
-                    Vector2Int next = current + dir;
-                    if (!IsInMap(next)) continue;
-                    if (newPath.Contains(next)) continue;
+                    Vector2Int neighbor = current + dir;
 
-                    // 通行可能なマスなら進む
-                    if (map[next.x, next.y] == (int)TileType.Base)
+                    if (IsInMap(neighbor) && !visited.Contains(neighbor))
                     {
-                        current = next;
-                        newPath.Add(current);
-                        moved = true;
-                        if (HasCrossGroundCount(next.x, next.y, map))
-                        {
-                            reachedGoal = true;
-                        }
-                        break;
+                        visited.Add(neighbor);
+                        queue.Enqueue(neighbor);
+                        cameFrom[neighbor] = current;
                     }
                 }
-                if (reachedGoal || !moved)
-                    break;
             }
 
-            foreach (var pos in newPath)
+            if (found)
             {
-                if (map[pos.x, pos.y] == (int)TileType.Base)
-                    map[pos.x, pos.y] = (int)TileType.Floor;
-            }
+                // Entry → Ground までの経路をたどってFloorを敷く
+                Vector2Int current = foundTarget;
+                while (current != entry)
+                {
+                    if (map[current.x, current.y] != (int)TileType.Entry)
+                        map[current.x, current.y] = (int)TileType.Floor;
 
+                    current = cameFrom[current];
+                }
+            }
         }
     }
 
