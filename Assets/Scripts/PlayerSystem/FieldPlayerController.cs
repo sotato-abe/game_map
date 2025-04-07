@@ -16,7 +16,7 @@ public class FieldPlayerController : MonoBehaviour
     public int encounterThreshold = 1;
     public float distanceTraveled = 0.0f;
     private Vector3 lastPosition;
-    [SerializeField] MapBase mapBase; //マップデータ(ここもゲームコントローラーから受け取るようにする)
+    // [SerializeField] MapBase mapBase; //マップデータ(ここもゲームコントローラーから受け取るようにする)
     [SerializeField] LayerMask blockLayer;
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
@@ -43,9 +43,6 @@ public class FieldPlayerController : MonoBehaviour
     {
         StartCoroutine(playerUnit.SetTalkMessage("start.."));
         // 仮でここで定義（後でマップ更新時に更新されるようにする）
-        width = mapBase.MapWidth;
-        height = mapBase.MapHeight;
-
         lastPosition = transform.position;
     }
 
