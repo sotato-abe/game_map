@@ -16,7 +16,7 @@ public class FieldMapGenerator
     public Vector2 bottomEntoryPosition = Vector2.zero; // 下のエントリーポイント
     public Vector2 leftEntoryPosition = Vector2.zero; // 左のエントリーポイント
     public Vector2 rightEntoryPosition = Vector2.zero; // 右のエントリーポイント
-    public bool useRandamSeed = true;
+    public bool useRandamSeed = false;
 
     private System.Random pseudoRandomMap;
     private System.Random pseudoRandomFloor;
@@ -38,6 +38,11 @@ public class FieldMapGenerator
         if (useRandamSeed)
         {
             seed = Time.time.ToString(); // ランダムシードを現在の時間から生成
+        }
+        else
+        {
+            Debug.Log("Seed: " + mapBase.Coordinate.col.ToString() + mapBase.Coordinate.row.ToString());
+            seed = mapBase.Coordinate.col.ToString() + mapBase.Coordinate.row.ToString(); // マップの座標からシードを生成
         }
         System.Random pseudoRandomMap = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
         System.Random pseudoRandomFloor = new System.Random(seed.GetHashCode() - 1); // シード値に基づいた擬似乱数生成器を作成
@@ -192,7 +197,9 @@ public class FieldMapGenerator
     {
         if (mapBase.OpenTop)
         {
-            int targetPoint = UnityEngine.Random.Range(1, width - 1);
+            string entrySeed = seed + "top"; // マップの座標からシードを生成
+            System.Random prng = new System.Random(entrySeed.GetHashCode());
+            int targetPoint = prng.Next(1, width - 1);
             map[targetPoint, 0] = (int)TileType.Entry;
             topEntoryPosition = new Vector2(targetPoint, 0);
         }
@@ -202,7 +209,9 @@ public class FieldMapGenerator
         }
         if (mapBase.OpenBottom)
         {
-            int targetPoint = UnityEngine.Random.Range(1, width - 1);
+            string entrySeed = seed + "bottom"; // マップの座標からシードを生成
+            System.Random prng = new System.Random(entrySeed.GetHashCode());
+            int targetPoint = prng.Next(1, width - 1);
             map[targetPoint, height - 1] = (int)TileType.Entry;
             bottomEntoryPosition = new Vector2(targetPoint, height - 1);
         }
@@ -212,7 +221,9 @@ public class FieldMapGenerator
         }
         if (mapBase.OpenLeft)
         {
-            int targetPoint = UnityEngine.Random.Range(1, height - 1);
+            string entrySeed = seed + "left"; // マップの座標からシードを生成
+            System.Random prng = new System.Random(entrySeed.GetHashCode());
+            int targetPoint = prng.Next(1, height - 1);
             map[0, targetPoint] = (int)TileType.Entry;
             leftEntoryPosition = new Vector2(0, targetPoint);
         }
@@ -222,7 +233,9 @@ public class FieldMapGenerator
         }
         if (mapBase.OpenRight)
         {
-            int targetPoint = UnityEngine.Random.Range(1, height - 1);
+            string entrySeed = seed + "right"; // マップの座標からシードを生成
+            System.Random prng = new System.Random(entrySeed.GetHashCode());
+            int targetPoint = prng.Next(1, height - 1);
             map[width - 1, targetPoint] = (int)TileType.Entry;
             rightEntoryPosition = new Vector2(width - 1, targetPoint);
         }
