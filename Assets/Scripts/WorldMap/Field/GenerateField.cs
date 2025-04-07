@@ -17,9 +17,7 @@ public class GenerateField : MonoBehaviour
     [SerializeField] MapBase mapBase; //マップデータ
     [SerializeField] FieldPlayerController character; //キャラクター
     [SerializeField] WorldMapSystem worldMapSystem;
-    public int width;        // マップの幅
-    public int height;       // マップの高さ
-    DirectionType characterDirection;
+    DirectionType characterDirection = DirectionType.Top; // キャラクターの方向
 
     FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
 
@@ -32,22 +30,11 @@ public class GenerateField : MonoBehaviour
 
     void Start()
     {
-        characterDirection = DirectionType.Top;
-        width = mapBase.MapWidth; // マップの幅を取得
-        height = mapBase.MapHeight; // マップの高さを取得
-        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height); // フィールドキャンバスのサイズを設定
         fieldData = worldMapSystem.getFieldDataByCoordinate(character.Battler.coordinate);
-        fieldMapGenerator.GenarateField(mapBase); // フィールドマップを生成
+        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定
+        fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
         renderingTileMap(); // タイルマップを描画
         character.gameObject.transform.position = mapCenterPos;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            ReloadMap(characterDirection, character.Battler.coordinate);
-        }
     }
 
     public void ReloadMap(DirectionType entryDirection, Coordinate playerCoordinate)
@@ -55,7 +42,7 @@ public class GenerateField : MonoBehaviour
         characterDirection = entryDirection;
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerCoordinate);
         ClearMap(); // 現在のマップをクリア
-        fieldMapGenerator.GenarateField(mapBase); // フィールドマップを生成
+        fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
         renderingTileMap(); // タイルマップを描画
         MoveCharacter();
     }
@@ -65,11 +52,11 @@ public class GenerateField : MonoBehaviour
     {
         tileSet = floorTiles[(int)fieldData.floorType];
         tileSize = tileSet.Floor.bounds.size.x; // タイルサイズを取得
-        mapCenterPos = new Vector2(width * tileSize / 2, height * tileSize / 2); // マップの中心座標を計算
+        mapCenterPos = new Vector2(fieldData.mapWidth * tileSize / 2, fieldData.mapHeight * tileSize / 2); // マップの中心座標を計算
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < fieldData.mapWidth; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < fieldData.mapHeight; y++)
             {
                 Vector2 pos = GetWorldPositionFromTile(x, y); // タイルのワールド座標を計算
                 int tileType = fieldMapGenerator.Map[x, y];
@@ -170,6 +157,6 @@ public class GenerateField : MonoBehaviour
     // 座標からワールド座標に変換
     Vector2 GetWorldPositionFromTile(int x, int y)
     {
-        return new Vector2(x * tileSize, (height - y) * tileSize); // マップの中心を考慮して座標を計算
+        return new Vector2(x * tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
     }
 }

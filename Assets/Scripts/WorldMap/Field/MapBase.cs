@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class MapBase : ScriptableObject
 {
+    [SerializeField] new int id;
     [SerializeField] new string name;
     [SerializeField] int level;
     [SerializeField] int building;
@@ -20,6 +21,7 @@ public class MapBase : ScriptableObject
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
     [SerializeField] int coordinateX;
     [SerializeField] int coordinateY;
+    public int Id { get => id; }
     public string Name { get => name; }
     public int Level { get => level; }
     public int Building { get => building; }
