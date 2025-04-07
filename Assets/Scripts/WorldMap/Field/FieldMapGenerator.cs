@@ -195,55 +195,34 @@ public class FieldMapGenerator
     //　フィールドマップに出入り口を追加
     private void createEntry()
     {
-        if (mapBase.OpenTop)
-        {
-            string entrySeed = seed + "top"; // マップの座標からシードを生成
-            System.Random prng = new System.Random(entrySeed.GetHashCode());
-            int targetPoint = prng.Next(1, width - 1);
-            map[targetPoint, 0] = (int)TileType.Entry;
-            topEntoryPosition = new Vector2(targetPoint, 0);
-        }
-        else
-        {
-            topEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
-        }
-        if (mapBase.OpenBottom)
-        {
-            string entrySeed = seed + "bottom"; // マップの座標からシードを生成
-            System.Random prng = new System.Random(entrySeed.GetHashCode());
-            int targetPoint = prng.Next(1, width - 1);
-            map[targetPoint, height - 1] = (int)TileType.Entry;
-            bottomEntoryPosition = new Vector2(targetPoint, height - 1);
-        }
-        else
-        {
-            bottomEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
-        }
-        if (mapBase.OpenLeft)
-        {
-            string entrySeed = seed + "left"; // マップの座標からシードを生成
-            System.Random prng = new System.Random(entrySeed.GetHashCode());
-            int targetPoint = prng.Next(1, height - 1);
-            map[0, targetPoint] = (int)TileType.Entry;
-            leftEntoryPosition = new Vector2(0, targetPoint);
-        }
-        else
-        {
-            leftEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
-        }
-        if (mapBase.OpenRight)
-        {
-            string entrySeed = seed + "right"; // マップの座標からシードを生成
-            System.Random prng = new System.Random(entrySeed.GetHashCode());
-            int targetPoint = prng.Next(1, height - 1);
-            map[width - 1, targetPoint] = (int)TileType.Entry;
-            rightEntoryPosition = new Vector2(width - 1, targetPoint);
-        }
-        else
-        {
-            rightEntoryPosition = new Vector2(-1, -1); // 上のエントリーポイントがない場合は-1,-1に設定
-        }
+        // 各エントリーポイントの生成処理を共通関数で行う
+        topEntoryPosition = TryCreateEntry(mapBase.OpenTop, "top", width, 0, isHorizontal: true);
+        bottomEntoryPosition = TryCreateEntry(mapBase.OpenBottom, "bottom", width, height - 1, isHorizontal: true);
+        leftEntoryPosition = TryCreateEntry(mapBase.OpenLeft, "left", height, 0, isHorizontal: false);
+        rightEntoryPosition = TryCreateEntry(mapBase.OpenRight, "right", height, width - 1, isHorizontal: false);
+
         CreateRouteForEntry();
+    }
+
+    private Vector2 TryCreateEntry(bool isOpen, string direction, int length, int fixedCoord, bool isHorizontal)
+    {
+        if (!isOpen)
+            return new Vector2(-1, -1);
+
+        string entrySeed = seed + direction;
+        System.Random prng = new System.Random(entrySeed.GetHashCode());
+        int variableCoord = prng.Next(1, length - 1); // 1 ～ length - 2 の範囲でランダム生成
+
+        if (isHorizontal)
+        {
+            map[variableCoord, fixedCoord] = (int)TileType.Entry;
+            return new Vector2(variableCoord, fixedCoord);
+        }
+        else
+        {
+            map[fixedCoord, variableCoord] = (int)TileType.Entry;
+            return new Vector2(fixedCoord, variableCoord);
+        }
     }
 
     private void CreateRouteForEntry()
