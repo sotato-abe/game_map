@@ -49,8 +49,15 @@ public class FieldSystem : MonoBehaviour
         fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
         renderingTileMap(); // タイルマップを描画
         Vector2 centerPotision = new Vector2(fieldData.mapWidth * tileSize / 2, fieldData.mapHeight * tileSize / 2);
+        SetUpFieldPlayerMapSize();
 
         fieldPlayerController.gameObject.transform.position = centerPotision;
+    }
+
+    void SetUpFieldPlayerMapSize()
+    {
+        fieldPlayerController.width = fieldData.mapWidth; // フィールドの幅を設定
+        fieldPlayerController.height = fieldData.mapHeight; // フィールドの高さを設定
     }
 
     public void PlayerMovableSwitch(bool canMove)
@@ -72,8 +79,11 @@ public class FieldSystem : MonoBehaviour
 
     public void ReloadMap(DirectionType outDirection)
     {
+        ClearMap(); // 現在のマップをクリア
         DirectionType entryDirection = outDirection.GetOppositeDirection();
+
         if (outDirection == DirectionType.Top)
+            //JSONのデータが上下逆なのであえて逆にしている。
             playerBattler.coordinate.row = playerBattler.coordinate.row - 1;
         if (outDirection == DirectionType.Bottom)
             playerBattler.coordinate.row = playerBattler.coordinate.row + 1;
@@ -83,12 +93,45 @@ public class FieldSystem : MonoBehaviour
             playerBattler.coordinate.col = playerBattler.coordinate.col - 1;
 
         playerDirection = entryDirection;
+        // 出入り口の方向を設定
+        // outDirectionの反対側をopenにする。
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate); // フィールドデータを取得
-        ClearMap(); // 現在のマップをクリア
+        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
+
+        switch (entryDirection)
+        {
+            case DirectionType.Top:
+                fieldData.openTop = true;
+                break;
+            case DirectionType.Bottom:
+                fieldData.openBottom = true;
+                break;
+            case DirectionType.Right:
+                fieldData.openRight = true;
+                break;
+            case DirectionType.Left:
+                fieldData.openLeft = true;
+                break;
+        }
+        // openTop, openBottom, openRight, openLeftのtrueが1以下の場合、ランダムで一つの出入り口をtrueにする。
+        int openCount = 0;
+        if (fieldData.openTop) openCount++;
+        if (fieldData.openBottom) openCount++;
+        if (fieldData.openRight) openCount++;
+        if (fieldData.openLeft) openCount++;
+
+        if (openCount <= 1)
+        {
+            if (fieldData.openTop == false) fieldData.openTop = true;
+            if (fieldData.openBottom == false) fieldData.openBottom = true;
+            if (fieldData.openRight == false) fieldData.openRight = true;
+            if (fieldData.openLeft == false) fieldData.openLeft = true;
+        }
 
         fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
         renderingTileMap(); // タイルマップを描画
         ResetCharacterPosition();
+        SetUpFieldPlayerMapSize();
     }
 
     // フィールド用のタイルを描画
