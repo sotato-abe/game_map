@@ -10,7 +10,7 @@ public class FieldMapGenerator
     private int height;
     private string seed;
     private int randomFillPercent; // ランダムで埋め込む確率
-    private MapBase mapBase;
+    private FieldData fieldData;
 
     public Vector2 topEntoryPosition = Vector2.zero; // 上のエントリーポイント
     public Vector2 bottomEntoryPosition = Vector2.zero; // 下のエントリーポイント
@@ -28,12 +28,12 @@ public class FieldMapGenerator
     public int[,] Map { get { return map; } } // マップデータの取得
     public int[,] Area { get { return area; } } // エリアデータの取得
 
-    public void GenarateField(MapBase mapBase)
+    public void GenarateField(FieldData fieldData)
     {
-        this.mapBase = mapBase;
-        this.width = mapBase.MapWidth;   // マップの幅
-        this.height = mapBase.MapHeight; // マップの高さ
-        this.randomFillPercent = mapBase.RandomFillPercent; // ランダムで埋め込む確率
+        this.fieldData = fieldData;
+        this.width = fieldData.mapWidth;   // マップの幅
+        this.height = fieldData.mapHeight; // マップの高さ
+        this.randomFillPercent = fieldData.randomFillPercent; // ランダムで埋め込む確率
 
         if (useRandamSeed)
         {
@@ -41,8 +41,8 @@ public class FieldMapGenerator
         }
         else
         {
-            Debug.Log("Seed: " + mapBase.Coordinate.col.ToString() + mapBase.Coordinate.row.ToString());
-            seed = mapBase.Coordinate.col.ToString() + mapBase.Coordinate.row.ToString(); // マップの座標からシードを生成
+            Debug.Log("Seed: " + fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString());
+            seed = fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString(); // マップの座標からシードを生成
         }
         System.Random pseudoRandomMap = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
         System.Random pseudoRandomFloor = new System.Random(seed.GetHashCode() - 1); // シード値に基づいた擬似乱数生成器を作成
@@ -159,7 +159,7 @@ public class FieldMapGenerator
     //　フィールドマップに建物を追加
     private void createBuilding()
     {
-        int buildingCount = mapBase.Building;
+        int buildingCount = fieldData.building;
         for (int i = 0; i < buildingCount; i++)
         {
             int targetX, targetY;
@@ -177,7 +177,7 @@ public class FieldMapGenerator
     //　フィールドマップにオブジェクトを追加
     private void createObject()
     {
-        int objectItemCount = mapBase.ObjectItem;
+        int objectItemCount = fieldData.objectItem;
         for (int i = 0; i < objectItemCount; i++)
         {
             int targetX, targetY;
@@ -196,10 +196,10 @@ public class FieldMapGenerator
     private void createEntry()
     {
         // 各エントリーポイントの生成処理を共通関数で行う
-        topEntoryPosition = TryCreateEntry(mapBase.OpenTop, "top", width, 0, isHorizontal: true);
-        bottomEntoryPosition = TryCreateEntry(mapBase.OpenBottom, "bottom", width, height - 1, isHorizontal: true);
-        leftEntoryPosition = TryCreateEntry(mapBase.OpenLeft, "left", height, 0, isHorizontal: false);
-        rightEntoryPosition = TryCreateEntry(mapBase.OpenRight, "right", height, width - 1, isHorizontal: false);
+        topEntoryPosition = TryCreateEntry(fieldData.openTop, "top", width, 0, isHorizontal: true);
+        bottomEntoryPosition = TryCreateEntry(fieldData.openBottom, "bottom", width, height - 1, isHorizontal: true);
+        leftEntoryPosition = TryCreateEntry(fieldData.openLeft, "left", height, 0, isHorizontal: false);
+        rightEntoryPosition = TryCreateEntry(fieldData.openRight, "right", height, width - 1, isHorizontal: false);
 
         CreateRouteForEntry();
     }
