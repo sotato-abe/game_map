@@ -18,6 +18,7 @@ public class BattleUnit : MonoBehaviour
     public virtual void Setup(Battler battler)
     {
         Battler = battler;
+        Battler.Init();
         characterCard.SetCharacter(battler);
         statusDialog.Setup(Battler);
         SetEnegy();

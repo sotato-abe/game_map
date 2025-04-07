@@ -72,23 +72,26 @@ public class WorldMapSystem : MonoBehaviour
 
     private void FindSpot()
     {
-        MapBase mapBase = mapBaseList.Find(m => m.Coordinate.col == coordinate.col && m.Coordinate.row == coordinate.row);
+        // Findを使用して一致するMapBaseを探す
+        MapBase mapBase = mapBaseList.Find(m => m != null && m.Coordinate != null &&
+                                                m.Coordinate.col == coordinate.col && m.Coordinate.row == coordinate.row);
 
+        // mapBaseが見つかった場合
         if (mapBase != null)
         {
-            fieldData.spot = mapBase;
+            fieldData.spot = mapBase; // 見つかったSpotをフィールドデータに設定
         }
         else
         {
-            Debug.LogWarning($"該当する MapBase が見つかりませんでした");
-            fieldData.spot = null;
+            // mapBaseが見つからなかった場合、nullを設定
+            Debug.LogWarning($"該当する MapBase が見つかりませんでした。座標: row={coordinate.row}, col={coordinate.col}");
+            fieldData.spot = null; // フィールドデータにnullを設定
         }
     }
 
     private void SetMapTileSet()
     {
         FloorType floorType = (FloorType)floorData.data[coordinate.row][coordinate.col];
-
         fieldData.floorType = (int)floorType; // マップのタイルセットを取得
     }
 
