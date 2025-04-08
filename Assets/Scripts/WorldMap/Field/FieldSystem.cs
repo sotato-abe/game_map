@@ -200,7 +200,7 @@ public class FieldSystem : MonoBehaviour
         }
         int x = (int)position.x;
         int y = (int)position.y;
-        fieldPlayer.gameObject.transform.position = GetWorldPositionFromTile(x, y);
+        fieldPlayer.gameObject.transform.position = GetCharacterPositionFromCoordinate(x, y);
     }
 
     void SetUpFieldPlayerMapSize()
@@ -246,8 +246,12 @@ public class FieldSystem : MonoBehaviour
     // 座標からワールド座標に変換
     Vector2 GetWorldPositionFromTile(int x, int y)
     {
-        // return new Vector2(x * tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
         return new Vector2(x * tileSize + (tileSize / 2), (fieldData.mapHeight - y) * tileSize - (tileSize / 2)); // マップの中心を考慮して座標を計算
+    }
+
+    Vector2 GetCharacterPositionFromCoordinate(int x, int y)
+    {
+        return new Vector2(x * tileSize + tileSize, (fieldData.mapHeight - y) * tileSize ); // マップの中心を考慮して座標を計算
     }
 
     public Battler GetEnemy()
