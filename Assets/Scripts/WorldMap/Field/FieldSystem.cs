@@ -133,18 +133,18 @@ public class FieldSystem : MonoBehaviour
                 // タイルタイプごとの処理
                 if (tileType != (int)TileType.Base && tileType != (int)TileType.Wall && tileType != (int)TileType.Edge)
                 {
-                    groundObj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Floor, "MapGround", "Ground");
+                    groundObj = CreateTile($"Tile_{x}_{y}", tileSet.Floor, pos, "MapGround", "Ground");
                     if (groundObj != null)
                         groundObj.transform.SetParent(fieldCanvas.transform, false);
 
                     spawnedObjects.Add(groundObj);
                 }
                 if (tileType == (int)TileType.Floor)
-                    obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Grass, "MapFloor", "Floor");
+                    obj = CreateTile($"Tile_{x}_{y}", tileSet.Grass, pos, "MapFloor", "Floor");
                 else if (tileType == (int)TileType.Edge)
-                    obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Rock, "MapEdge", "Wall");
+                    obj = CreateTile($"Tile_{x}_{y}", tileSet.Rock, pos, "MapEdge", "Wall");
                 else if (tileType == (int)TileType.Wall)
-                    obj = CreateTile($"Tile_{x}_{y}", pos, tileSet.Tree, "MapWall", "Wall");
+                    obj = CreateTile($"Tile_{x}_{y}", tileSet.Tree, pos, "MapWall", "Wall");
                 else if (tileType == (int)TileType.Entry)
                     obj = InstantiatePrefab(entryPrefab, pos, "MapEntry", "Entry");
                 else if (tileType == (int)TileType.Building)
@@ -190,7 +190,7 @@ public class FieldSystem : MonoBehaviour
         fieldPlayer.fieldMapHeight = fieldData.mapHeight; // フィールドの高さを設定
     }
 
-    GameObject CreateTile(string name, Vector2 position, Sprite sprite, string sortingLayer, string layerName)
+    GameObject CreateTile(string name, Sprite sprite, Vector2 position, string sortingLayer, string layerName)
     {
         GameObject obj = new GameObject(name);
         SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
