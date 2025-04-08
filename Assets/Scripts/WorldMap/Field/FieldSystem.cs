@@ -79,57 +79,49 @@ public class FieldSystem : MonoBehaviour
 
     public void ReloadMap(DirectionType outDirection)
     {
-        ClearMap(); // 現在のマップをクリア
+        ClearMap(); // マップクリア
+
         DirectionType entryDirection = outDirection.GetOppositeDirection();
-
-        if (outDirection == DirectionType.Top)
-            //JSONのデータが上下逆なのであえて逆にしている。
-            playerBattler.coordinate.row = playerBattler.coordinate.row - 1;
-        if (outDirection == DirectionType.Bottom)
-            playerBattler.coordinate.row = playerBattler.coordinate.row + 1;
-        if (outDirection == DirectionType.Right)
-            playerBattler.coordinate.col = playerBattler.coordinate.col + 1;
-        if (outDirection == DirectionType.Left)
-            playerBattler.coordinate.col = playerBattler.coordinate.col - 1;
-
         playerDirection = entryDirection;
-        // 出入り口の方向を設定
-        // outDirectionの反対側をopenにする。
-        fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate); // フィールドデータを取得
-        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
 
+        // 移動処理
+        Vector2Int coord = new Vector2Int(playerBattler.coordinate.row, playerBattler.coordinate.col); // プレイヤーの座標を取得
         switch (entryDirection)
         {
-            case DirectionType.Top:
-                fieldData.openTop = true;
-                break;
-            case DirectionType.Bottom:
-                fieldData.openBottom = true;
-                break;
-            case DirectionType.Right:
-                fieldData.openRight = true;
-                break;
-            case DirectionType.Left:
-                fieldData.openLeft = true;
-                break;
+            case DirectionType.Top: coord.x++; break;
+            case DirectionType.Bottom: coord.x--; break;
+            case DirectionType.Left: coord.y++; break;
+            case DirectionType.Right: coord.y--; break;
         }
-        // openTop, openBottom, openRight, openLeftのtrueが1以下の場合、ランダムで一つの出入り口をtrueにする。
-        int openCount = 0;
-        if (fieldData.openTop) openCount++;
-        if (fieldData.openBottom) openCount++;
-        if (fieldData.openRight) openCount++;
-        if (fieldData.openLeft) openCount++;
 
+        // 範囲補正（ループマップ的に回る）
+        int maxRow = worldMapSystem.worldHeight;
+        int maxCol = worldMapSystem.worldWidth;
+        coord.x = (coord.x + maxRow) % maxRow;
+        coord.y = (coord.y + maxCol) % maxCol;
+        playerBattler.coordinate.row = coord.x;
+        playerBattler.coordinate.col = coord.y; // プレイヤーの座標を更新
+
+        // フィールドデータ取得＆Canvasサイズ変更
+        fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
+        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight);
+
+        // 出入り口方向設定
+        fieldData.openTop = entryDirection == DirectionType.Top;
+        fieldData.openBottom = entryDirection == DirectionType.Bottom;
+        fieldData.openLeft = entryDirection == DirectionType.Left;
+        fieldData.openRight = entryDirection == DirectionType.Right;
+
+        // 出入り口が1つ以下なら全部開ける
+        int openCount = (fieldData.openTop ? 1 : 0) + (fieldData.openBottom ? 1 : 0) + (fieldData.openLeft ? 1 : 0) + (fieldData.openRight ? 1 : 0);
         if (openCount <= 1)
         {
-            if (fieldData.openTop == false) fieldData.openTop = true;
-            if (fieldData.openBottom == false) fieldData.openBottom = true;
-            if (fieldData.openRight == false) fieldData.openRight = true;
-            if (fieldData.openLeft == false) fieldData.openLeft = true;
+            fieldData.openTop = fieldData.openBottom = fieldData.openLeft = fieldData.openRight = true;
         }
 
-        fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
-        renderingTileMap(); // タイルマップを描画
+        // フィールド生成＆描画
+        fieldMapGenerator.GenarateField(fieldData);
+        renderingTileMap();
         ResetCharacterPosition();
         SetUpFieldPlayerMapSize();
     }
