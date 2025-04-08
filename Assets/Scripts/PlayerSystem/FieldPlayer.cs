@@ -38,53 +38,64 @@ public class FieldPlayer : MonoBehaviour
     // フィールド上のキャラクターのモーションを制御
     void Update()
     {
-        if (isMoving == false && canMove)
+        if (canMove)
         {
+            // フィールド移動
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
             float moveDirection = Input.GetAxis("Horizontal");
 
             if (x != 0 || y != 0)
             {
-                Vector3 currentScale = transform.localScale;
-                distanceTraveled += Vector3.Distance(transform.position, lastPosition);
-                lastPosition = transform.position;
+                StopMove();
+            }
 
-                if (moveDirection > 0 && currentScale.x < 0)
+            if (isMoving == false)
+            {
+                if (x != 0 || y != 0)
                 {
-                    // 反転を元に戻す
-                    transform.localScale = new Vector3(Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
-                }
-                // 左に移動する場合
-                else if (moveDirection < 0 && currentScale.x > 0)
-                {
-                    // キャラクターを反転させる
-                    transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
-                }
-                animator.SetFloat("inputX", x);
-                animator.SetFloat("inputY", y);
-                Vector3 targetPosition = transform.position + (new Vector3(x, y, 0));
-                DirectionType outDirection = IsEntry(targetPosition);
-                if (outDirection != 0)
-                {
-                    // フィールドを移動
-                    ChangeField?.Invoke(outDirection);
+                    Vector3 currentScale = transform.localScale;
+                    distanceTraveled += Vector3.Distance(transform.position, lastPosition);
+                    lastPosition = transform.position;
+
+                    if (moveDirection > 0 && currentScale.x < 0)
+                    {
+                        // 反転を元に戻す
+                        transform.localScale = new Vector3(Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
+                    }
+                    // 左に移動する場合
+                    else if (moveDirection < 0 && currentScale.x > 0)
+                    {
+                        // キャラクターを反転させる
+                        transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
+                    }
+                    animator.SetFloat("inputX", x);
+                    animator.SetFloat("inputY", y);
+                    Vector3 targetPosition = transform.position + (new Vector3(x, y, 0));
+                    DirectionType outDirection = IsEntry(targetPosition);
+                    if (outDirection != 0)
+                    {
+                        // フィールドを移動
+                        ChangeField?.Invoke(outDirection);
+                    }
+                    else
+                    {
+                        StartCoroutine(Move(targetPosition));
+                    }
+                    animator.SetBool("isMoving", true);
                 }
                 else
                 {
-                    StartCoroutine(Move(targetPosition));
+                    animator.SetBool("isMoving", false);
                 }
-                animator.SetBool("isMoving", true);
             }
-            else
-            {
-                animator.SetBool("isMoving", false);
-            }
-        }
 
-        if (canMove && Input.GetKeyDown(KeyCode.Return))
-        {
-            OnReserve?.Invoke();
+            // バックを開く
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SetMoveFlg(false);
+                OnReserve?.Invoke();
+            }
         }
     }
 
@@ -106,7 +117,7 @@ public class FieldPlayer : MonoBehaviour
         transform.position = targetPos;
         isMoving = false;
         bool findObject = CheckForObject();
-        if (findObject)
+        if (!findObject)
         {
             CheckForEncount();
         }
@@ -119,7 +130,6 @@ public class FieldPlayer : MonoBehaviour
         if (IsWalkable(targetPos) == false) return;
 
         // 左右反転（横移動のときだけでOK）
-        // 進行方向を取得
         Vector3 dir = targetPos - transform.position;
         if (dir.x != 0)
         {
@@ -134,12 +144,7 @@ public class FieldPlayer : MonoBehaviour
         if (path != null && path.Count > 1)
         {
             // 前の移動を止める
-            if (currentMoveCoroutine != null)
-            {
-                StopCoroutine(currentMoveCoroutine);
-                isMoving = false;
-                animator.SetBool("isMoving", false);
-            }
+            StopMove();
 
             // 新しい移動を開始
             currentMoveCoroutine = StartCoroutine(MoveAlongPath(path));
@@ -258,7 +263,7 @@ public class FieldPlayer : MonoBehaviour
             transform.position = targetPos;
 
             bool findObject = CheckForObject();
-            if (findObject)
+            if (!findObject)
             {
                 CheckForEncount();
             }
@@ -267,30 +272,6 @@ public class FieldPlayer : MonoBehaviour
 
         animator.SetBool("isMoving", false);
         isMoving = false;
-    }
-
-
-    void CheckForEncount()
-    {
-        int randamEncounterThreshold = Random.Range(0, 100);
-        if (Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer))
-        {
-            if (randamEncounterThreshold < encounterThreshold * 2)
-            {
-                StopAllCoroutines();
-                isMoving = false;
-                OnEncount?.Invoke();
-            }
-        }
-        else if (Physics2D.OverlapCircle(transform.position, 0.2f, encountLayer))
-        {
-            if (randamEncounterThreshold < encounterThreshold)
-            {
-                StopAllCoroutines();
-                isMoving = false;
-                OnEncount?.Invoke();
-            }
-        }
     }
 
     // オブジェクトに接触したときの処理
@@ -305,6 +286,29 @@ public class FieldPlayer : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    void CheckForEncount()
+    {
+        Collider2D hitArea = Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer);
+        Collider2D hitEncount = Physics2D.OverlapCircle(transform.position, 0.2f, encountLayer);
+
+        int threshold = 0;
+
+        if (hitArea)
+            threshold = encounterThreshold * 2;
+        else if (hitEncount)
+            threshold = encounterThreshold;
+
+        if (threshold > 0)
+        {
+            int roll = Random.Range(0, 100);
+            if (roll < threshold)
+            {
+                SetMoveFlg(false);
+                OnEncount?.Invoke();
+            }
+        }
     }
 
     DirectionType IsEntry(Vector3 targetPos)
@@ -334,8 +338,23 @@ public class FieldPlayer : MonoBehaviour
         }
     }
 
+    void StopMove()
+    {
+        if (currentMoveCoroutine != null)
+        {
+            StopCoroutine(currentMoveCoroutine);
+            currentMoveCoroutine = null;
+            isMoving = false;
+            animator.SetBool("isMoving", false);
+        }
+    }
+
     public void SetMoveFlg(bool flg)
     {
+        if (!flg)
+        {
+            StopMove();
+        }
         canMove = flg;
     }
 }
