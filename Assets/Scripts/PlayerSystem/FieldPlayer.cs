@@ -9,6 +9,7 @@ public class FieldPlayer : MonoBehaviour
 {
     Animator animator;
     [SerializeField] LayerMask blockLayer;
+    [SerializeField] LayerMask objectLayer;
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
@@ -104,7 +105,11 @@ public class FieldPlayer : MonoBehaviour
 
         transform.position = targetPos;
         isMoving = false;
-        CheckForEncount();
+        bool findObject = CheckForObject();
+        if (findObject)
+        {
+            CheckForEncount();
+        }
     }
 
     public void MoveToTargetPin(Vector3 targetPos)
@@ -252,7 +257,11 @@ public class FieldPlayer : MonoBehaviour
 
             transform.position = targetPos;
 
-            CheckForEncount();
+            bool findObject = CheckForObject();
+            if (findObject)
+            {
+                CheckForEncount();
+            }
             yield return null;
         }
 
@@ -282,6 +291,20 @@ public class FieldPlayer : MonoBehaviour
                 OnEncount?.Invoke();
             }
         }
+    }
+
+    // オブジェクトに接触したときの処理
+    bool CheckForObject()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, objectLayer))
+        {
+            // オブジェクトに接触したときの処理をここに追加
+            StopAllCoroutines();
+            isMoving = false;
+            Debug.Log("Object detected!");
+            return true;
+        }
+        return false;
     }
 
     DirectionType IsEntry(Vector3 targetPos)
