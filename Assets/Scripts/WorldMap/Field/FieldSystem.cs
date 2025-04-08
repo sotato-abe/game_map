@@ -20,6 +20,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
+    [SerializeField] HitTargetPin hitTargetPin;
     DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
 
     public PlayerBattler playerBattler;
@@ -233,6 +234,7 @@ public class FieldSystem : MonoBehaviour
     // マップを初期化
     void ClearMap()
     {
+        hitTargetPin.RemoveTargetPin(); // ターゲットピンを削除
         // 生成されたオブジェクトを全て削除
         foreach (GameObject obj in spawnedObjects)
         {
