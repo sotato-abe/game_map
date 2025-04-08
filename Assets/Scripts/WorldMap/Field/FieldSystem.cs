@@ -7,11 +7,10 @@ using UnityEngine.Events;
 //　役割：フィールドの生成を行う
 //　マップ生成：座標を受け取ると、WorldMapSystemからフィールドデータを取得
 //　フィールドデータからタイルセットを選択しフィールドの描画を行う
-//　TODO：ルート生成：フィールドデータ（roadDirection）から出入り口の方角に応じてルートを敷く
 
 public class FieldSystem : MonoBehaviour
 {
-    public UnityAction OnReserve;
+    public UnityAction OnReserve; // リザーブイベント
     public UnityAction OnEncount; // エンカウントイベント
     FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
 
@@ -19,6 +18,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
+    [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
     DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
 
@@ -50,6 +50,15 @@ public class FieldSystem : MonoBehaviour
         SetUpFieldPlayerMapSize();
 
         fieldPlayer.gameObject.transform.position = centerPotision;
+        fieldPlayer.canEncount = fieldData.enemies != null; // エンカウントフラグを設定
+        if (fieldData.mapBase != null)
+        {
+            fieldInfoPanel.Setup(fieldData.mapBase);
+        }
+        else
+        {
+            fieldInfoPanel.gameObject.SetActive(false); // マップベースがない場合は非表示にする
+        }
     }
 
     public void ReserveStart()
@@ -89,6 +98,15 @@ public class FieldSystem : MonoBehaviour
 
         // フィールドデータ取得＆Canvasサイズ変更
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
+        if (fieldData.mapBase != null)
+        {
+            fieldInfoPanel.Setup(fieldData.mapBase);
+        }
+        else
+        {
+            fieldInfoPanel.gameObject.SetActive(false); // マップベースがない場合は非表示にする
+        }
+        fieldPlayer.canEncount = fieldData.enemies != null; // エンカウントフラグを設定
         fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight);
 
         // 出入り口方向設定
@@ -227,5 +245,15 @@ public class FieldSystem : MonoBehaviour
     Vector2 GetWorldPositionFromTile(int x, int y)
     {
         return new Vector2(x * tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
+    }
+
+    public Battler GetEnemy()
+    {
+        return fieldData.GetRundamEnemy();
+    }
+
+    public void FieldInfoPanleSwitch(bool isOpen)
+    {
+        fieldInfoPanel.gameObject.SetActive(isOpen);
     }
 }

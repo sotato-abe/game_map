@@ -9,13 +9,9 @@ public class FieldInfoPanel : MonoBehaviour
     [SerializeField] Title title;
     [SerializeField] Description description;
 
-    // Start is called before the first frame update
-    void Start()
+    public void Setup(MapBase mapBase)
     {
-    }
-
-    public void SetInfo(MapBase mapBase)
-    {
+        transform.gameObject.SetActive(true);
         StartCoroutine(title.TypeTitle(mapBase.Name));
         StartCoroutine(description.TypeDescription(mapBase.Description));
     }
