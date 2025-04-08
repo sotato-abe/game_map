@@ -8,41 +8,29 @@ using UnityEngine.Events;
 public class FieldPlayer : MonoBehaviour
 {
     Animator animator;
-    bool isMoving = false;
-    public bool canMove = true;
-    public int width; // マップの幅
-    public int height; // マップの高さ
-
-    public int encounterThreshold = 1;
-    public float distanceTraveled = 0.0f;
-    private Vector3 lastPosition;
-    // [SerializeField] MapBase mapBase; //マップデータ(ここもゲームコントローラーから受け取るようにする)
     [SerializeField] LayerMask blockLayer;
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
-    [SerializeField] BattleUnit playerUnit;
     [SerializeField] float moveSpeed = 3f;
 
     public UnityAction OnEncount;
     public UnityAction OnReserve;
+
+    bool isMoving = false;
+    public bool canMove = true;
+    public int fieldMapWidth; // マップの幅
+    public int fieldMapHeight; // マップの高さ
+    public int encounterThreshold = 1;
+    public float distanceTraveled = 0.0f;
+    private Vector3 lastPosition;
     Coroutine currentMoveCoroutine;
     public delegate void ChangeFieldDelegate(DirectionType fieldId);
     public event ChangeFieldDelegate ChangeField;
 
-    public Coordinate currentField;
-
-    public PlayerBattler playerBattler;
-
     private void Awake()
     {
         animator = GetComponent<Animator>();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(playerUnit.SetTalkMessage("start.."));
-        // 仮でここで定義（後でマップ更新時に更新されるようにする）
         lastPosition = transform.position;
     }
 
@@ -159,9 +147,9 @@ public class FieldPlayer : MonoBehaviour
         var closedList = new HashSet<Vector2Int>();
         var grid = new Dictionary<Vector2Int, Node>();
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < fieldMapWidth; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < fieldMapHeight; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
                 bool walkable = IsWalkable(new Vector3(x, y));
@@ -302,9 +290,9 @@ public class FieldPlayer : MonoBehaviour
         if (Physics2D.OverlapCircle(targetPos, 0.4f, entryLayer))
         {
             if (targetPos.x < 1) return DirectionType.Left;  // left
-            if (targetPos.x > width - 1) return DirectionType.Right;  // right
+            if (targetPos.x > fieldMapWidth - 1) return DirectionType.Right;  // right
             if (targetPos.y < 1) return DirectionType.Bottom;  // bottom
-            if (targetPos.y > height - 1) return DirectionType.Top;  // top
+            if (targetPos.y > fieldMapHeight - 1) return DirectionType.Top;  // top
         }
         return 0;
     }
@@ -312,7 +300,7 @@ public class FieldPlayer : MonoBehaviour
     bool IsWalkable(Vector3 targetPos)
     {
         // 移動先にブロックレイヤーがあったときはfalseになる
-        if (targetPos.x < 1 || targetPos.x > width || targetPos.y < 1 || targetPos.y > height)
+        if (targetPos.x < 1 || targetPos.x > fieldMapWidth || targetPos.y < 1 || targetPos.y > fieldMapHeight)
         {
             return false;
         }

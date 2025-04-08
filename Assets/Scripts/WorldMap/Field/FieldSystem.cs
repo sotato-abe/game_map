@@ -39,7 +39,6 @@ public class FieldSystem : MonoBehaviour
     {
 
         playerBattler = battler; // プレイヤーのバトラーを設定
-        fieldPlayer.playerBattler = playerBattler; // プレイヤーのバトラーを設定
         fieldPlayer.OnReserve += ReserveStart;
         fieldPlayer.OnEncount += Encount;
         fieldPlayer.ChangeField += ReloadMap;
@@ -56,8 +55,8 @@ public class FieldSystem : MonoBehaviour
 
     void SetUpFieldPlayerMapSize()
     {
-        fieldPlayer.width = fieldData.mapWidth; // フィールドの幅を設定
-        fieldPlayer.height = fieldData.mapHeight; // フィールドの高さを設定
+        fieldPlayer.fieldMapWidth = fieldData.mapWidth; // フィールドの幅を設定
+        fieldPlayer.fieldMapHeight = fieldData.mapHeight; // フィールドの高さを設定
     }
 
     public void PlayerMovableSwitch(bool canMove)
