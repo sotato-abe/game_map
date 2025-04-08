@@ -32,16 +32,15 @@ public class FieldSystem : MonoBehaviour
 
     void Start()
     {
-
+        fieldPlayer.OnReserve += ReserveStart;
+        fieldPlayer.OnEncount += Encount;
+        fieldPlayer.ChangeField += ReloadMap;
     }
 
     public void Setup(PlayerBattler battler)
     {
 
         playerBattler = battler; // プレイヤーのバトラーを設定
-        fieldPlayer.OnReserve += ReserveStart;
-        fieldPlayer.OnEncount += Encount;
-        fieldPlayer.ChangeField += ReloadMap;
 
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
         fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
@@ -51,17 +50,6 @@ public class FieldSystem : MonoBehaviour
         SetUpFieldPlayerMapSize();
 
         fieldPlayer.gameObject.transform.position = centerPotision;
-    }
-
-    void SetUpFieldPlayerMapSize()
-    {
-        fieldPlayer.fieldMapWidth = fieldData.mapWidth; // フィールドの幅を設定
-        fieldPlayer.fieldMapHeight = fieldData.mapHeight; // フィールドの高さを設定
-    }
-
-    public void PlayerMovableSwitch(bool canMove)
-    {
-        fieldPlayer.SetMoveFlg(canMove); // プレイヤーの移動フラグを設定
     }
 
     public void ReserveStart()
@@ -194,6 +182,12 @@ public class FieldSystem : MonoBehaviour
         int x = (int)position.x;
         int y = (int)position.y;
         fieldPlayer.gameObject.transform.position = GetWorldPositionFromTile(x, y);
+    }
+
+    void SetUpFieldPlayerMapSize()
+    {
+        fieldPlayer.fieldMapWidth = fieldData.mapWidth; // フィールドの幅を設定
+        fieldPlayer.fieldMapHeight = fieldData.mapHeight; // フィールドの高さを設定
     }
 
     GameObject CreateTile(string name, Vector2 position, Sprite sprite, string sortingLayer, string layerName)
