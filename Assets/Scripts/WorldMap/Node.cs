@@ -11,6 +11,8 @@ public class Node
     public Node(Vector2Int pos, bool walkable)
     {
         Position = pos;
+        G = 0;
+        H = 0;
         Walkable = walkable;
     }
 }

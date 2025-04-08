@@ -246,7 +246,8 @@ public class FieldSystem : MonoBehaviour
     // 座標からワールド座標に変換
     Vector2 GetWorldPositionFromTile(int x, int y)
     {
-        return new Vector2(x * tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
+        // return new Vector2(x * tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
+        return new Vector2(x * tileSize + (tileSize / 2), (fieldData.mapHeight - y) * tileSize - (tileSize / 2)); // マップの中心を考慮して座標を計算
     }
 
     public Battler GetEnemy()
