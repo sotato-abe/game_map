@@ -18,7 +18,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // 地面と壁のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
-    [SerializeField] FieldPlayerController fieldPlayerController; //キャラクター
+    [SerializeField] FieldPlayer fieldPlayer; //キャラクター
     [SerializeField] WorldMapSystem worldMapSystem;
     DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
 
@@ -39,10 +39,10 @@ public class FieldSystem : MonoBehaviour
     {
 
         playerBattler = battler; // プレイヤーのバトラーを設定
-        fieldPlayerController.playerBattler = playerBattler; // プレイヤーのバトラーを設定
-        fieldPlayerController.OnReserve += ReserveStart;
-        fieldPlayerController.OnEncount += Encount;
-        fieldPlayerController.ChangeField += ReloadMap;
+        fieldPlayer.playerBattler = playerBattler; // プレイヤーのバトラーを設定
+        fieldPlayer.OnReserve += ReserveStart;
+        fieldPlayer.OnEncount += Encount;
+        fieldPlayer.ChangeField += ReloadMap;
 
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
         fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
@@ -51,29 +51,27 @@ public class FieldSystem : MonoBehaviour
         Vector2 centerPotision = new Vector2(fieldData.mapWidth * tileSize / 2, fieldData.mapHeight * tileSize / 2);
         SetUpFieldPlayerMapSize();
 
-        fieldPlayerController.gameObject.transform.position = centerPotision;
+        fieldPlayer.gameObject.transform.position = centerPotision;
     }
 
     void SetUpFieldPlayerMapSize()
     {
-        fieldPlayerController.width = fieldData.mapWidth; // フィールドの幅を設定
-        fieldPlayerController.height = fieldData.mapHeight; // フィールドの高さを設定
+        fieldPlayer.width = fieldData.mapWidth; // フィールドの幅を設定
+        fieldPlayer.height = fieldData.mapHeight; // フィールドの高さを設定
     }
 
     public void PlayerMovableSwitch(bool canMove)
     {
-        fieldPlayerController.SetMoveFlg(canMove); // プレイヤーの移動フラグを設定
+        fieldPlayer.SetMoveFlg(canMove); // プレイヤーの移動フラグを設定
     }
 
     public void ReserveStart()
     {
-        Debug.Log("Encount");
         OnReserve?.Invoke();
     }
 
     public void Encount()
     {
-        Debug.Log("Encount");
         OnEncount?.Invoke();
     }
 
@@ -196,7 +194,7 @@ public class FieldSystem : MonoBehaviour
         }
         int x = (int)position.x;
         int y = (int)position.y;
-        fieldPlayerController.gameObject.transform.position = GetWorldPositionFromTile(x, y);
+        fieldPlayer.gameObject.transform.position = GetWorldPositionFromTile(x, y);
     }
 
     GameObject CreateTile(string name, Vector2 position, Sprite sprite, string sortingLayer, string layerName)

@@ -8,7 +8,7 @@ public class HitTargetPin : MonoBehaviour
 {
     private NavMeshAgent agent;
     [SerializeField] private TargetPin targetPinPrefab;
-    [SerializeField] FieldPlayerController fieldPlayerController;
+    [SerializeField] FieldPlayer fieldPlayer;
     private TargetPin targetPinInstance;
     [SerializeField] private Canvas fieldCanvas;
     private GraphicRaycaster graphicRaycaster;
@@ -21,7 +21,7 @@ public class HitTargetPin : MonoBehaviour
 
     void Update()
     {
-        if (!fieldPlayerController.canMove) return;
+        if (!fieldPlayer.canMove) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -69,7 +69,7 @@ public class HitTargetPin : MonoBehaviour
                 targetPinInstance.transform.position = pinPosition;
             }
 
-            fieldPlayerController.MoveToTargetPin(pinPosition);
+            fieldPlayer.MoveToTargetPin(pinPosition);
         }
     }
 

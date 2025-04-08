@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerBattler playerBattler;
     [SerializeField] PlayerUnit playerUnit;
-    [SerializeField] FieldPlayerController fieldPlayerController;
+    [SerializeField] FieldPlayer fieldPlayer;
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldInfoSystem fieldInfoSystem;
@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
     public void ReserveStart()
     {
         Debug.Log("ReserveStart");
-        fieldPlayerController.SetMoveFlg(false);
+        fieldPlayer.SetMoveFlg(false);
         battleSystem.gameObject.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
     public void ReserveEnd()
     {
         Debug.Log("ReserveEnd");
-        fieldPlayerController.SetMoveFlg(true);
+        fieldPlayer.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     public void BattleStart()
     {
         Debug.Log("BattleStart");
-        fieldPlayerController.SetMoveFlg(false);
+        fieldPlayer.SetMoveFlg(false);
         // fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
         enemy = fieldInfoSystem.GetRandomEnemy();
@@ -68,7 +68,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
-        fieldPlayerController.SetMoveFlg(true);
+        fieldPlayer.SetMoveFlg(true);
         // fieldInfoSystem.FieldDialogOpen();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }

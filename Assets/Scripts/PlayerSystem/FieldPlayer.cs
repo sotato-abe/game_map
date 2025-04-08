@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 // マップ上のプレイヤーの動きを制御する
 // フィールド移動を検知しゲームコントローラーに移動をリクエストする
-public class FieldPlayerController : MonoBehaviour
+public class FieldPlayer : MonoBehaviour
 {
     Animator animator;
     bool isMoving = false;
