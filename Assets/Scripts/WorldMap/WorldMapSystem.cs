@@ -14,6 +14,7 @@ public class WorldMapSystem : MonoBehaviour
     TileMapData roadData;
     TileMapData spotData;
 
+    [SerializeField] WorldMapDialog worldMapDialog; // ワールドマップ
     [SerializeField] List<MapBase> mapBaseList; // 地面と壁のプレファブ
 
     public FieldData fieldData; // フィールドデータ
@@ -66,7 +67,7 @@ public class WorldMapSystem : MonoBehaviour
         fieldData.coordinate = targetCoordinate; // フィールドデータに座標を設定
 
         FindSpot(); // フィールドデータにスポットを設定
-        if (fieldData.spot == null)
+        if (fieldData.mapBase == null)
         {
             SetMapTileSet(); // フィールドデータにタイルセットを設定
             SetRoadEntry(); // フィールドデータに出入り口を設定
@@ -78,19 +79,17 @@ public class WorldMapSystem : MonoBehaviour
     private void FindSpot()
     {
         // Findを使用して一致するMapBaseを探す
-        MapBase mapBase = mapBaseList.Find(m => m != null && m.Coordinate != null &&
-                                                m.Coordinate.col == coordinate.col && m.Coordinate.row == coordinate.row);
+        MapBase mapBase = mapBaseList.Find(m => m != null && m.Coordinate != null && m.Coordinate.col == coordinate.col && m.Coordinate.row == coordinate.row);
 
         // mapBaseが見つかった場合
         if (mapBase != null)
         {
-            fieldData.spot = mapBase; // 見つかったSpotをフィールドデータに設定
+            fieldData.mapBase = mapBase;
         }
         else
         {
-            // mapBaseが見つからなかった場合、nullを設定
             Debug.LogWarning($"該当する MapBase が見つかりませんでした。座標: row={coordinate.row}, col={coordinate.col}");
-            fieldData.spot = null; // フィールドデータにnullを設定
+            fieldData.mapBase = null; // フィールドデータにnullを設定
         }
     }
 

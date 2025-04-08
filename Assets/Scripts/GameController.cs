@@ -9,7 +9,6 @@ public class GameController : MonoBehaviour
     [SerializeField] FieldPlayer fieldPlayer;
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
-    [SerializeField] FieldInfoSystem fieldInfoSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] FieldSystem fieldSystem;
@@ -56,9 +55,8 @@ public class GameController : MonoBehaviour
     public void BattleStart()
     {
         Debug.Log("BattleStart");
-        // fieldInfoSystem.FieldDialogClose();
         reserveSystem.gameObject.SetActive(false);
-        enemy = fieldInfoSystem.GetRandomEnemy();
+        enemy = fieldSystem.GetEnemy();
         battleSystem.gameObject.SetActive(true);
         battleSystem.BattleStart(playerBattler, enemy);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
@@ -69,7 +67,6 @@ public class GameController : MonoBehaviour
         Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
         fieldPlayer.SetMoveFlg(true);
-        // fieldInfoSystem.FieldDialogOpen();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 }

@@ -21,6 +21,8 @@ public class MapBase : ScriptableObject
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
     [SerializeField] int coordinateX;
     [SerializeField] int coordinateY;
+    [SerializeField] List<Battler> enemies;
+
     public int Id { get => id; }
     public string Name { get => name; }
     public int Level { get => level; }
@@ -40,4 +42,6 @@ public class MapBase : ScriptableObject
     {
         get => new Coordinate { col = coordinateX, row = coordinateY };
     }
+
+    public List<Battler> Enemies { get => enemies; }
 }

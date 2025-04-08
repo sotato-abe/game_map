@@ -18,6 +18,7 @@ public class FieldPlayer : MonoBehaviour
     public UnityAction OnEncount;
     public UnityAction OnReserve;
 
+    public bool canEncount = false;
     bool isMoving = false;
     public bool canMove = true;
     public int fieldMapWidth; // マップの幅
@@ -119,7 +120,15 @@ public class FieldPlayer : MonoBehaviour
         bool findObject = CheckForObject();
         if (!findObject)
         {
+            // エンカウント判定
             CheckForEncount();
+        }
+        else if (findObject == false)
+        {
+            // オブジェクトに接触していない場合、エンカウント判定を行う
+            {
+                CheckForEncount();
+            }
         }
     }
 
@@ -290,6 +299,8 @@ public class FieldPlayer : MonoBehaviour
 
     void CheckForEncount()
     {
+        if(!canEncount) return; // エンカウントフラグが立っていない場合は何もしない
+
         Collider2D hitArea = Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer);
         Collider2D hitEncount = Physics2D.OverlapCircle(transform.position, 0.2f, encountLayer);
 
