@@ -83,4 +83,13 @@ public class HitTargetPin : MonoBehaviour
         graphicRaycaster.Raycast(eventData, results);
         return results.Count > 0;
     }
+
+    public void RemoveTargetPin()
+    {
+        if (targetPinInstance != null)
+        {
+            Destroy(targetPinInstance.gameObject);
+            targetPinInstance = null;
+        }
+    }
 }
