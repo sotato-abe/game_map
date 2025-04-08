@@ -73,11 +73,12 @@ public class FieldPlayer : MonoBehaviour
                     animator.SetFloat("inputX", x);
                     animator.SetFloat("inputY", y);
                     Vector3 targetPosition = transform.position + (new Vector3(x, y, 0));
-                    DirectionType outDirection = IsEntry(targetPosition);
-                    if (outDirection != 0)
+
+                    DirectionType entryDirection = IsEntry(targetPosition);
+                    if (entryDirection != 0)
                     {
                         // フィールドを移動
-                        ChangeField?.Invoke(outDirection);
+                        ChangeField?.Invoke(entryDirection);
                     }
                     else
                     {
@@ -256,12 +257,11 @@ public class FieldPlayer : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
 
                 DirectionType entryDirection = IsEntry(targetPos);
-
                 if (entryDirection != 0)
                 {
-                    Debug.Log("Entry detected: " + entryDirection);
-                    isMoving = false;
-                    animator.SetBool("isMoving", false);
+                    // Debug.Log("Entry detected: " + entryDirection);
+                    // isMoving = false;
+                    // animator.SetBool("isMoving", false);
                     ChangeField?.Invoke(entryDirection);
                     yield break; // それ以上移動しない
                 }
@@ -299,7 +299,7 @@ public class FieldPlayer : MonoBehaviour
 
     void CheckForEncount()
     {
-        if(!canEncount) return; // エンカウントフラグが立っていない場合は何もしない
+        if (!canEncount) return; // エンカウントフラグが立っていない場合は何もしない
 
         Collider2D hitArea = Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer);
         Collider2D hitEncount = Physics2D.OverlapCircle(transform.position, 0.2f, encountLayer);
@@ -327,25 +327,24 @@ public class FieldPlayer : MonoBehaviour
         // 移動先にエントリーレイヤーがあったときはその方角の位置を返す
         if (Physics2D.OverlapCircle(targetPos, 0.4f, entryLayer))
         {
-            if (targetPos.x < 1) return DirectionType.Left;  // left
-            if (targetPos.x > fieldMapWidth - 1) return DirectionType.Right;  // right
-            if (targetPos.y < 1) return DirectionType.Bottom;  // bottom
-            if (targetPos.y > fieldMapHeight - 1) return DirectionType.Top;  // top
+            if (targetPos.x < 2) return DirectionType.Left;  // left
+            if (targetPos.x > fieldMapWidth - 2) return DirectionType.Right;  // right
+            if (targetPos.y < 2) return DirectionType.Bottom;  // bottom
+            if (targetPos.y > fieldMapHeight - 2) return DirectionType.Top;  // top
         }
         return 0;
     }
 
+    // 移動先にブロックレイヤーがあったときはfalseになる
     bool IsWalkable(Vector3 targetPos)
     {
-        // 移動先にブロックレイヤーがあったときはfalseになる
         if (targetPos.x < 1 || targetPos.x > fieldMapWidth || targetPos.y < 1 || targetPos.y > fieldMapHeight)
         {
             return false;
         }
         else
         {
-            LayerMask obstacleLayers = blockLayer | entryLayer;
-            return Physics2D.OverlapCircle(targetPos, 0.2f, obstacleLayers) == false;
+            return Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
         }
     }
 
