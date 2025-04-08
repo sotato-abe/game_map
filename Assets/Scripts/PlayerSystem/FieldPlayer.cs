@@ -163,6 +163,7 @@ public class FieldPlayer : MonoBehaviour
 
     List<Vector2Int> FindPath(Vector2Int start, Vector2Int target)
     {
+        Debug.Log("FindPath");
         var openList = new List<Node>();
         var closedList = new HashSet<Vector2Int>();
         var grid = new Dictionary<Vector2Int, Node>();
@@ -201,9 +202,7 @@ public class FieldPlayer : MonoBehaviour
                 return path;
             }
 
-            foreach (Vector2Int offset in new Vector2Int[] {
-            Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right
-        })
+            foreach (Vector2Int offset in new Vector2Int[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right })
             {
                 Vector2Int neighborPos = current.Position + offset;
                 if (!grid.ContainsKey(neighborPos)) continue;
@@ -259,9 +258,6 @@ public class FieldPlayer : MonoBehaviour
                 DirectionType entryDirection = IsEntry(targetPos);
                 if (entryDirection != 0)
                 {
-                    // Debug.Log("Entry detected: " + entryDirection);
-                    // isMoving = false;
-                    // animator.SetBool("isMoving", false);
                     ChangeField?.Invoke(entryDirection);
                     yield break; // それ以上移動しない
                 }
@@ -338,13 +334,15 @@ public class FieldPlayer : MonoBehaviour
     // 移動先にブロックレイヤーがあったときはfalseになる
     bool IsWalkable(Vector3 targetPos)
     {
-        if (targetPos.x < 1 || targetPos.x > fieldMapWidth || targetPos.y < 1 || targetPos.y > fieldMapHeight)
+        if (targetPos.x < 0 || targetPos.x > fieldMapWidth || targetPos.y < 0 || targetPos.y > fieldMapHeight)
         {
             return false;
         }
         else
         {
-            return Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
+            bool isWakable = Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
+            // Debug.Log("IsWalkable: " + isWakable);
+            return isWakable;
         }
     }
 

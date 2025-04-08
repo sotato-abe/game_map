@@ -79,7 +79,6 @@ public class HitTargetPin : MonoBehaviour
         {
             position = Input.mousePosition
         };
-        Debug.Log("HitTargetPin:Pointer:" + Input.mousePosition);
         List<RaycastResult> results = new List<RaycastResult>();
         graphicRaycaster.Raycast(eventData, results);
         return results.Count > 0;
