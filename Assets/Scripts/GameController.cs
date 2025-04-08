@@ -26,7 +26,9 @@ public class GameController : MonoBehaviour
         fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
         fieldSystem.OnReserve += ReserveStart;
         fieldSystem.OnEncount += BattleStart;
+        
         playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
+        StartCoroutine(playerUnit.SetTalkMessage("start.."));
 
         playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;
