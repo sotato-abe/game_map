@@ -260,10 +260,10 @@ public class FieldMapGenerator
                 // 隣接セル（上下左右）をチェック
                 Vector2Int[] directions = new Vector2Int[]
                 {
-            Vector2Int.up,
-            Vector2Int.down,
-            Vector2Int.left,
-            Vector2Int.right
+                    Vector2Int.up,
+                    Vector2Int.down,
+                    Vector2Int.left,
+                    Vector2Int.right
                 };
 
                 foreach (var dir in directions)
