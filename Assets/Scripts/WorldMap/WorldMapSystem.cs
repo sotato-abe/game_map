@@ -18,6 +18,8 @@ public class WorldMapSystem : MonoBehaviour
 
     public FieldData fieldData; // フィールドデータ
     private Coordinate coordinate; // 座標
+    public int worldWidth; // ワールドマップの幅
+    public int worldHeight; // ワールドマップの高さ
 
     void Start()
     {
@@ -26,6 +28,9 @@ public class WorldMapSystem : MonoBehaviour
         floorData = LoadJsonMapData("FloorTileMapData");
         roadData = LoadJsonMapData("RoadTileMapData");
         spotData = LoadJsonMapData("SpotTileMapData");
+
+        worldWidth = groundData.data[0].Length; // ワールドマップの幅を取得
+        worldHeight = groundData.data.Count; // ワールドマップの高さを取得
     }
 
     private TileMapData LoadJsonMapData(string fileName)
