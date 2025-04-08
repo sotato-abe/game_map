@@ -163,17 +163,16 @@ public class FieldPlayer : MonoBehaviour
 
     List<Vector2Int> FindPath(Vector2Int start, Vector2Int target)
     {
-        Debug.Log("FindPath");
         var openList = new List<Node>();
         var closedList = new HashSet<Vector2Int>();
         var grid = new Dictionary<Vector2Int, Node>();
 
-        for (int x = 0; x < fieldMapWidth; x++)
+        for (int x = 0; x <= fieldMapWidth; x++)
         {
-            for (int y = 0; y < fieldMapHeight; y++)
+            for (int y = 0; y <= fieldMapHeight; y++)
             {
                 Vector2Int pos = new Vector2Int(x, y);
-                bool walkable = IsWalkable(new Vector3(x, y));
+                bool walkable = IsWalkable(new Vector3(x, y, 0));
                 grid[pos] = new Node(pos, walkable);
             }
         }
@@ -323,10 +322,10 @@ public class FieldPlayer : MonoBehaviour
         // 移動先にエントリーレイヤーがあったときはその方角の位置を返す
         if (Physics2D.OverlapCircle(targetPos, 0.4f, entryLayer))
         {
-            if (targetPos.x < 2) return DirectionType.Left;  // left
-            if (targetPos.x > fieldMapWidth - 2) return DirectionType.Right;  // right
-            if (targetPos.y < 2) return DirectionType.Bottom;  // bottom
-            if (targetPos.y > fieldMapHeight - 2) return DirectionType.Top;  // top
+            if (targetPos.x <= 1) return DirectionType.Left;  // left
+            if (targetPos.x >= fieldMapWidth) return DirectionType.Right;  // right
+            if (targetPos.y <= 1) return DirectionType.Bottom;  // bottom
+            if (targetPos.y >= fieldMapHeight) return DirectionType.Top;  // top
         }
         return 0;
     }
@@ -340,8 +339,7 @@ public class FieldPlayer : MonoBehaviour
         }
         else
         {
-            bool isWakable = Physics2D.OverlapCircle(targetPos, 0.2f, blockLayer) == false;
-            // Debug.Log("IsWalkable: " + isWakable);
+            bool isWakable = Physics2D.OverlapCircle(targetPos, 0f, blockLayer) == false;
             return isWakable;
         }
     }
