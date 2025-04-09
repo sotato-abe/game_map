@@ -61,25 +61,22 @@ public class FieldSystem : MonoBehaviour
     {
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
         fieldData.Init(); // フィールドデータの初期化
-        if (fieldData.mapBase != null)
-        {
-            fieldInfoPanel.Setup(fieldData.mapBase);
-        }
-        else
-        {
-            fieldInfoPanel.gameObject.SetActive(false); // マップベースがない場合は非表示にする
-        }
+        fieldInfoPanel.Setup(fieldData.mapBase);
         fieldPlayer.canEncount = fieldData.enemies.Count > 0; // エンカウントフラグを設定
         fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
     }
 
     public void ReserveStart()
     {
+        messagePanel.AddMesageList($"Bag open!!");
+
         OnReserve?.Invoke();
     }
 
     public void Encount()
     {
+        messagePanel.AddMesageList($"Battle Start!!");
+
         OnEncount?.Invoke();
     }
 
@@ -87,7 +84,7 @@ public class FieldSystem : MonoBehaviour
     {
         // 現在地のタイルタイプを取得
         BuildingBase building = ScriptableObject.CreateInstance<BuildingBase>();
-        switch(type)
+        switch (type)
         {
             case BuildingType.Kiosk:
                 building = fieldData.kiosk.Base; // キオスクの情報を取得
@@ -135,6 +132,7 @@ public class FieldSystem : MonoBehaviour
 
     public void ReloadMap(DirectionType outDirection)
     {
+        messagePanel.AddMesageList($"Field change!!");
         ClearMap(); // マップクリア
 
         DirectionType entryDirection = outDirection.GetOppositeDirection();
@@ -281,9 +279,9 @@ public class FieldSystem : MonoBehaviour
         return obj;
     }
 
-        GameObject InstantiatePrefab(GameObject prefab, Vector2 position, string sortingLayer, string layerName)
+    GameObject InstantiatePrefab(GameObject prefab, Vector2 position, string sortingLayer, string layerName)
     {
-        GameObject obj = Instantiate(prefab, position, Quaternion.identity);       
+        GameObject obj = Instantiate(prefab, position, Quaternion.identity);
         SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
         renderer.sortingLayerName = sortingLayer;
         obj.layer = LayerMask.NameToLayer(layerName);
@@ -299,7 +297,7 @@ public class FieldSystem : MonoBehaviour
         {
             building.Setup(type); // 建物のアイコンを設定
         }
-        
+
         SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
         renderer.sortingLayerName = sortingLayer;
         obj.layer = LayerMask.NameToLayer(layerName);

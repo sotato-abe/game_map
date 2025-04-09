@@ -12,8 +12,15 @@ public class FieldInfoPanel : MonoBehaviour
     public void Setup(MapBase mapBase)
     {
         transform.gameObject.SetActive(true);
-        StartCoroutine(title.TypeTitle(mapBase.Name));
-        StartCoroutine(description.TypeDescription(mapBase.Description));
+        string titleText = "Unknown Field";
+        string descriptionText = "Seaching...";
+        if (mapBase != null)
+        {
+            titleText = mapBase.Name;
+            descriptionText = mapBase.Description;
+        }
+        StartCoroutine(title.TypeTitle(titleText));
+        StartCoroutine(description.TypeDescription(descriptionText));
     }
 
     public void SetupBuilding(BuildingBase buildingBase)
