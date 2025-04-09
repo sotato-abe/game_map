@@ -9,13 +9,7 @@ public class Title : MonoBehaviour
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] Image image;
     [SerializeField] float padding = 30f;
-
-    private RectTransform backImageRectTransform;
-
-    private void Start()
-    {
-        backImageRectTransform = GetComponent<RectTransform>();
-    }
+    [SerializeField] RectTransform backImageRectTransform;
 
     public IEnumerator TypeTitle(string line)
     {
@@ -23,9 +17,9 @@ public class Title : MonoBehaviour
         foreach (char letter in line)
         {
             title.text += letter;
+            ResizePlate();
             yield return new WaitForSeconds(0f);
         }
-        ResizePlate();
     }
 
     private void ResizePlate()
