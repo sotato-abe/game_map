@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Field/BuildingBase")]
+[CreateAssetMenu(menuName = "Field/Building")]
 public class BuildingBase : ScriptableObject
 {
     [SerializeField] new string name;

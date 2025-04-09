@@ -15,7 +15,8 @@ public class FieldSystem : MonoBehaviour
 
     FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
 
-    [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab, kioskPrefab; // 地面と壁のプレファブ
+    [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // タイルのプレファブ
+    [SerializeField] GameObject kioskPrefab, cafeteriaPrefab, armsShopPrefab, laboratoryPrefab, hotelPrefab; // 建物のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
@@ -38,9 +39,9 @@ public class FieldSystem : MonoBehaviour
     {
         fieldPlayer.OnReserve += ReserveStart;
         fieldPlayer.OnEncount += Encount;
-        fieldPlayer.ChangeField += ReloadMap;
         fieldPlayer.OnGetItem += GetItem;
-        fieldPlayer.OnEntryBuilding += EntryBuilding;
+        fieldPlayer.ChangeField += ReloadMap;
+        fieldPlayer.EntryBuilding += EntryBuilding;
     }
 
     public void Setup(PlayerBattler battler)
@@ -82,9 +83,31 @@ public class FieldSystem : MonoBehaviour
         OnEncount?.Invoke();
     }
 
-    public void EntryBuilding()
+    public void EntryBuilding(BuildingType type)
     {
-        Debug.Log("EntryBuilding!!");
+        Debug.Log("FieldSystem EntryBuilding!! : " + type);
+        // 現在地のタイルタイプを取得
+        BuildingBase building = new BuildingBase(); // 建物のベースを取得
+        switch(type)
+        {
+            case BuildingType.Kiosk:
+                building = fieldData.kiosk.Base; // キオスクの情報を取得
+                break;
+            case BuildingType.Cafeteria:
+                building = fieldData.cafeteria.Base; // カフェテリアの情報を取得
+                break;
+            case BuildingType.ArmShop:
+                building = fieldData.armsShop.Base; // 武器屋の情報を取得
+                break;
+            case BuildingType.Laboratory:
+                building = fieldData.laboratory.Base; // 研究所の情報を取得
+                break;
+            case BuildingType.Hotel:
+                building = fieldData.hotel.Base; // ホテルの情報を取得
+                break;
+        }
+        fieldInfoPanel.SetupBuilding(building);
+        fieldPlayer.SetMoveFlg(true); // 移動フラグをオンにする
     }
 
 
@@ -198,10 +221,16 @@ public class FieldSystem : MonoBehaviour
                     obj = InstantiatePrefab(entryPrefab, pos, "MapEntry", "Entry");
                 else if (tileType == (int)TileType.Object)
                     obj = InstantiatePrefab(objectItemPrefab, pos, "ObjectItem", "Object");
-                else if (tileType == (int)TileType.Building)
-                    obj = InstantiatePrefab(buildingPrefab, pos, "MapBuilding", "Building");
                 else if (tileType == (int)TileType.Kiosk)
-                    obj = InstantiatePrefab(kioskPrefab, pos, "MapBuilding", "Building");
+                    obj = InstantiateBuildingPrefab(kioskPrefab, pos, "MapBuilding", "Building", BuildingType.Kiosk);
+                else if (tileType == (int)TileType.Cafeteria)
+                    obj = InstantiateBuildingPrefab(cafeteriaPrefab, pos, "MapBuilding", "Building", BuildingType.Cafeteria);
+                else if (tileType == (int)TileType.ArmsShop)
+                    obj = InstantiateBuildingPrefab(armsShopPrefab, pos, "MapBuilding", "Building", BuildingType.ArmShop);
+                else if (tileType == (int)TileType.Laboratory)
+                    obj = InstantiateBuildingPrefab(laboratoryPrefab, pos, "MapBuilding", "Building", BuildingType.Laboratory);
+                else if (tileType == (int)TileType.Hotel)
+                    obj = InstantiateBuildingPrefab(hotelPrefab, pos, "MapBuilding", "Building", BuildingType.Hotel);
 
                 if (obj != null)
                 {
@@ -253,9 +282,25 @@ public class FieldSystem : MonoBehaviour
         return obj;
     }
 
-    GameObject InstantiatePrefab(GameObject prefab, Vector2 position, string sortingLayer, string layerName)
+        GameObject InstantiatePrefab(GameObject prefab, Vector2 position, string sortingLayer, string layerName)
+    {
+        GameObject obj = Instantiate(prefab, position, Quaternion.identity);       
+        SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
+        renderer.sortingLayerName = sortingLayer;
+        obj.layer = LayerMask.NameToLayer(layerName);
+        obj.AddComponent<BoxCollider2D>();
+        return obj;
+    }
+
+    GameObject InstantiateBuildingPrefab(GameObject prefab, Vector2 position, string sortingLayer, string layerName, BuildingType type)
     {
         GameObject obj = Instantiate(prefab, position, Quaternion.identity);
+        Building building = obj.GetComponent<Building>();
+        if (type != null)
+        {
+            building.Setup(type); // 建物のアイコンを設定
+        }
+        
         SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
         renderer.sortingLayerName = sortingLayer;
         obj.layer = LayerMask.NameToLayer(layerName);
@@ -267,7 +312,7 @@ public class FieldSystem : MonoBehaviour
     void ClearMap()
     {
         hitTargetPin.RemoveTargetPin(); // ターゲットピンを削除
-        // 生成されたオブジェクトを全て削除
+                                        // 生成されたオブジェクトを全て削除
         foreach (GameObject obj in spawnedObjects)
         {
             Destroy(obj);

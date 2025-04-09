@@ -20,6 +20,10 @@ public class MapBase : ScriptableObject
     [SerializeField] int coordinateX;
     [SerializeField] int coordinateY;
     [SerializeField] Kiosk kiosk;
+    [SerializeField] Cafeteria cafeteria;
+    [SerializeField] ArmsShop armsShop;
+    [SerializeField] Laboratory laboratory;
+    [SerializeField] Hotel hotel;
     [SerializeField] List<Battler> enemies;
     [SerializeField] List<Item> items;
 
@@ -42,6 +46,10 @@ public class MapBase : ScriptableObject
     }
 
     public Kiosk Kiosk { get => kiosk; }
+    public Cafeteria Cafeteria { get => cafeteria; }
+    public ArmsShop ArmsShop { get => armsShop; }
+    public Laboratory Laboratory { get => laboratory; }
+    public Hotel Hotel { get => hotel; }
 
     public List<Battler> Enemies { get => enemies; }
     public List<Item> Items { get => items; }

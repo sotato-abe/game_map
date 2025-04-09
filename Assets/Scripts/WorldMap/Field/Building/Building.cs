@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Building
+public class Building : MonoBehaviour
 {
-    [SerializeField] BuildingBase _base;
+    public BuildingType Type = BuildingType.Building;
 
-    public BuildingBase Base { get => _base; }
-    public string Name { get => _base.Name; }
-    public Battler Owner { get => _base.Owner; }
-    public string Description { get => _base.Description; }
+    public void Setup(BuildingType type)
+    {
+        Type = type;
+    }
 }

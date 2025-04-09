@@ -19,6 +19,10 @@ public class FieldData
     public bool openBottom { get => mapBase != null ? mapBase.OpenBottom : _openBottom; set => _openBottom = value; }
 
     public Kiosk kiosk { get => mapBase != null ? mapBase.Kiosk : null; }
+    public Cafeteria cafeteria { get => mapBase != null ? mapBase.Cafeteria : null; }
+    public ArmsShop armsShop { get => mapBase != null ? mapBase.ArmsShop : null; }
+    public Laboratory laboratory { get => mapBase != null ? mapBase.Laboratory : null; }
+    public Hotel hotel { get => mapBase != null ? mapBase.Hotel : null; }
 
     public List<Battler> enemies { get => mapBase != null ? mapBase.Enemies : new List<Battler>(); }
     public List<Item> items = new List<Item>(); // アイテムリスト
