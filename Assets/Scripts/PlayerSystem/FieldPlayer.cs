@@ -19,7 +19,8 @@ public class FieldPlayer : MonoBehaviour
     public UnityAction OnEncount;
     public UnityAction OnReserve;
     public UnityAction OnGetItem;
-
+    public UnityAction ResetFieldPanel;
+    public TileType playerTileType = TileType.Base;
     public bool canEncount = false;
     bool isMoving = false;
     public bool canMove = true;
@@ -275,9 +276,18 @@ public class FieldPlayer : MonoBehaviour
         Collider2D hitBuilding = Physics2D.OverlapCircle(transform.position, 0.2f, buildingLayer);
         if (hitBuilding)
         {
+            if (playerTileType != TileType.Building)
+            {
+                playerTileType = TileType.Building;
+            }
             Building building = hitBuilding.GetComponent<Building>();
             SetMoveFlg(false);
             EntryBuilding?.Invoke(building.Type);
+        }
+        else if (playerTileType == TileType.Building)
+        {
+            playerTileType = TileType.Ground;
+            ResetFieldPanel?.Invoke();
         }
     }
 
