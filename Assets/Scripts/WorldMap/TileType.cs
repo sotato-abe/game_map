@@ -8,4 +8,5 @@ public enum TileType
     Building,
     Entry,
     Object,
+    Kiosk,
 }
