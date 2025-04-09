@@ -158,7 +158,10 @@ public class FieldMapGenerator
     //　フィールドマップに建物を追加
     private void createBuilding()
     {
-        int buildingCount = fieldData.building;
+        int buildingCount = fieldData.buildings.Count;
+
+        // TODO buildingのアイコンよってアイコンを使用
+        // TODO buildingのアイコンがない場合タイプによってアイコンを使用
         for (int i = 0; i < buildingCount; i++)
         {
             int targetX, targetY;

@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Field/MapBase")]
 public class MapBase : ScriptableObject
 {
     [SerializeField] new int id;
     [SerializeField] new string name;
     [SerializeField] int level;
-    [SerializeField] int building;
     [SerializeField] bool openTop;
     [SerializeField] bool openLeft;
     [SerializeField] bool openRight;
@@ -20,13 +19,13 @@ public class MapBase : ScriptableObject
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
     [SerializeField] int coordinateX;
     [SerializeField] int coordinateY;
+    [SerializeField] List<Building> buildings;
     [SerializeField] List<Battler> enemies;
     [SerializeField] List<Item> items;
 
     public int Id { get => id; }
     public string Name { get => name; }
     public int Level { get => level; }
-    public int Building { get => building; }
     public bool OpenTop { get => openTop; }
     public bool OpenLeft { get => openLeft; }
     public bool OpenRight { get => openRight; }
@@ -42,6 +41,7 @@ public class MapBase : ScriptableObject
         get => new Coordinate { col = coordinateX, row = coordinateY };
     }
 
+    public List<Building> Buildings { get => buildings; }
     public List<Battler> Enemies { get => enemies; }
     public List<Item> Items { get => items; }
 }
