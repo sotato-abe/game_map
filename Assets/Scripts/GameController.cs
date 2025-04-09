@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
 
     public void ReserveStart()
     {
-        Debug.Log("ReserveStart");
+        // Debug.Log("ReserveStart");
         battleSystem.gameObject.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour
 
     public void ReserveEnd()
     {
-        Debug.Log("ReserveEnd");
+        // Debug.Log("ReserveEnd");
         fieldPlayer.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour
 
     public void BattleStart()
     {
-        Debug.Log("BattleStart");
+        // Debug.Log("BattleStart");
         reserveSystem.gameObject.SetActive(false);
         enemy = fieldSystem.GetEnemy();
         battleSystem.gameObject.SetActive(true);
@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
 
     public void BattleEnd()
     {
-        Debug.Log("BattleEnd");
+        // Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);

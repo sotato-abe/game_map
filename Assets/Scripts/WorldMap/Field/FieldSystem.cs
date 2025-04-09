@@ -85,9 +85,8 @@ public class FieldSystem : MonoBehaviour
 
     public void EntryBuilding(BuildingType type)
     {
-        Debug.Log("FieldSystem EntryBuilding!! : " + type);
         // 現在地のタイルタイプを取得
-        BuildingBase building = new BuildingBase(); // 建物のベースを取得
+        BuildingBase building = ScriptableObject.CreateInstance<BuildingBase>();
         switch(type)
         {
             case BuildingType.Kiosk:

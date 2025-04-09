@@ -275,16 +275,12 @@ public class FieldPlayer : MonoBehaviour
         Collider2D hitBuilding = Physics2D.OverlapCircle(transform.position, 0.2f, buildingLayer);
         if (hitBuilding)
         {
-            // オブジェクトに接触したときの処理をここに追加
-            // 接触したBuildingの情報を取得する
             Building building = hitBuilding.GetComponent<Building>();
-            Debug.Log("Building: " + building.Type);
             SetMoveFlg(false);
             EntryBuilding?.Invoke(building.Type);
         }
     }
 
-    // オブジェクトに接触したときの処理
     void CheckForObject()
     {
         if (Physics2D.OverlapCircle(transform.position, 0.2f, objectLayer))
