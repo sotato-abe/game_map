@@ -12,6 +12,7 @@ public class FieldSystem : MonoBehaviour
 {
     public UnityAction OnReserve; // リザーブイベント
     public UnityAction OnEncount; // エンカウントイベント
+
     FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
 
     [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // 地面と壁のプレファブ
@@ -21,6 +22,8 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
     [SerializeField] HitTargetPin hitTargetPin;
+    [SerializeField] MessagePanel messagePanel;
+
     DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
 
     public PlayerBattler playerBattler;
@@ -36,22 +39,26 @@ public class FieldSystem : MonoBehaviour
         fieldPlayer.OnReserve += ReserveStart;
         fieldPlayer.OnEncount += Encount;
         fieldPlayer.ChangeField += ReloadMap;
+        fieldPlayer.OnGetItem += GetItem;
     }
 
     public void Setup(PlayerBattler battler)
     {
-
         playerBattler = battler; // プレイヤーのバトラーを設定
 
-        fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
-        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
+        SetUpField();
         fieldMapGenerator.GenarateField(fieldData); // フィールドマップを生成
         renderingTileMap(); // タイルマップを描画
         Vector2 centerPotision = new Vector2(fieldData.mapWidth * tileSize / 2, fieldData.mapHeight * tileSize / 2);
         SetUpFieldPlayerMapSize();
 
         fieldPlayer.gameObject.transform.position = centerPotision;
-        fieldPlayer.canEncount = fieldData.enemies != null; // エンカウントフラグを設定
+    }
+
+    private void SetUpField()
+    {
+        fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
+        fieldData.Init(); // フィールドデータの初期化
         if (fieldData.mapBase != null)
         {
             fieldInfoPanel.Setup(fieldData.mapBase);
@@ -60,6 +67,8 @@ public class FieldSystem : MonoBehaviour
         {
             fieldInfoPanel.gameObject.SetActive(false); // マップベースがない場合は非表示にする
         }
+        fieldPlayer.canEncount = fieldData.enemies.Count > 0; // エンカウントフラグを設定
+        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
     }
 
     public void ReserveStart()
@@ -70,6 +79,29 @@ public class FieldSystem : MonoBehaviour
     public void Encount()
     {
         OnEncount?.Invoke();
+    }
+
+    public void GetItem()
+    {
+        Item item = fieldData.GetRandomItem(); // ランダムなアイテムを取得
+        if (item == null)
+        {
+            messagePanel.AddMesageList($"box is empty!!");
+        }
+        else
+        {
+            messagePanel.AddMesageList($"{item.Base.Name} get!!");
+            playerBattler.AddItem(item); // プレイヤーのインベントリに追加
+            fieldData.items.Remove(item); // フィールドデータからアイテムを削除
+                                          // マップからアイテムのアイコンを削除
+            Vector3 pos = fieldPlayer.transform.position;
+            Collider2D hit = Physics2D.OverlapCircle(pos, 0.3f, LayerMask.GetMask("Object")); // 近くのObjectレイヤー探す
+            if (hit != null)
+            {
+                Destroy(hit.gameObject); // ヒットしたオブジェクトを削除
+            }
+        }
+        fieldPlayer.SetMoveFlg(true);
     }
 
     public void ReloadMap(DirectionType outDirection)
@@ -98,17 +130,7 @@ public class FieldSystem : MonoBehaviour
         playerBattler.coordinate.col = coord.y; // プレイヤーの座標を更新
 
         // フィールドデータ取得＆Canvasサイズ変更
-        fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
-        if (fieldData.mapBase != null)
-        {
-            fieldInfoPanel.Setup(fieldData.mapBase);
-        }
-        else
-        {
-            fieldInfoPanel.gameObject.SetActive(false); // マップベースがない場合は非表示にする
-        }
-        fieldPlayer.canEncount = fieldData.enemies != null; // エンカウントフラグを設定
-        fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight);
+        SetUpField();
 
         // 出入り口方向設定
         fieldData.openTop = entryDirection == DirectionType.Top;
@@ -251,7 +273,7 @@ public class FieldSystem : MonoBehaviour
 
     Vector2 GetCharacterPositionFromCoordinate(int x, int y)
     {
-        return new Vector2(x * tileSize + tileSize, (fieldData.mapHeight - y) * tileSize ); // マップの中心を考慮して座標を計算
+        return new Vector2(x * tileSize + tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
     }
 
     public Battler GetEnemy()

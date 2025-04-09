@@ -9,7 +9,6 @@ public class MapBase : ScriptableObject
     [SerializeField] new string name;
     [SerializeField] int level;
     [SerializeField] int building;
-    [SerializeField] int objectItem;
     [SerializeField] bool openTop;
     [SerializeField] bool openLeft;
     [SerializeField] bool openRight;
@@ -22,12 +21,12 @@ public class MapBase : ScriptableObject
     [SerializeField] int coordinateX;
     [SerializeField] int coordinateY;
     [SerializeField] List<Battler> enemies;
+    [SerializeField] List<Item> items;
 
     public int Id { get => id; }
     public string Name { get => name; }
     public int Level { get => level; }
     public int Building { get => building; }
-    public int ObjectItem { get => objectItem; }
     public bool OpenTop { get => openTop; }
     public bool OpenLeft { get => openLeft; }
     public bool OpenRight { get => openRight; }
@@ -44,4 +43,5 @@ public class MapBase : ScriptableObject
     }
 
     public List<Battler> Enemies { get => enemies; }
+    public List<Item> Items { get => items; }
 }

@@ -10,7 +10,6 @@ public class FieldData
     public int mapHeight { get => mapBase != null ? mapBase.MapHeight : 50; } // マップの高さ(初期値：50)
     public int randomFillPercent { get => mapBase != null ? mapBase.RandomFillPercent : 45; } // マップの建蔽率(初期値：45%)
     public int building { get => mapBase != null ? mapBase.Building : 3; } // 建物
-    public int objectItem { get => mapBase != null ? mapBase.ObjectItem : 3; } // アイテム
 
     private int _floorType;
     private bool _openTop, _openLeft, _openRight, _openBottom;
@@ -19,7 +18,16 @@ public class FieldData
     public bool openLeft { get => mapBase != null ? mapBase.OpenLeft : _openLeft; set => _openLeft = value; }
     public bool openRight { get => mapBase != null ? mapBase.OpenRight : _openRight; set => _openRight = value; }
     public bool openBottom { get => mapBase != null ? mapBase.OpenBottom : _openBottom; set => _openBottom = value; }
-    public List<Battler> enemies { get => mapBase != null ? mapBase.Enemies : null; }
+    public List<Battler> enemies { get => mapBase != null ? mapBase.Enemies : new List<Battler>(); }
+    public List<Item> items = new List<Item>(); // アイテムリスト
+
+    public virtual void Init()
+    {
+        if (mapBase != null)
+        {
+            items = new List<Item>(mapBase.Items);
+        }
+    }
 
     public Battler GetRundamEnemy()
     {
@@ -37,5 +45,23 @@ public class FieldData
         }
 
         return enemies[r];
+    }
+
+    public Item GetRandomItem()
+    {
+        if (items == null || items.Count == 0)
+        {
+            Debug.LogError("GetRandomItem: itemsリストが空です");
+            return null;
+        }
+
+        int r = Random.Range(0, items.Count);
+        if (items[r] == null)
+        {
+            Debug.LogError($"GetRandomItem: items[{r}] が null です");
+            return null;
+        }
+
+        return items[r];
     }
 }

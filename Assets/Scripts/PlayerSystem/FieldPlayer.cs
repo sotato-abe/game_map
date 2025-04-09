@@ -17,6 +17,7 @@ public class FieldPlayer : MonoBehaviour
 
     public UnityAction OnEncount;
     public UnityAction OnReserve;
+    public UnityAction OnGetItem;
 
     public bool canEncount = false;
     bool isMoving = false;
@@ -118,19 +119,8 @@ public class FieldPlayer : MonoBehaviour
 
         transform.position = targetPos;
         isMoving = false;
-        bool findObject = CheckForObject();
-        if (!findObject)
-        {
-            // エンカウント判定
-            CheckForEncount();
-        }
-        else if (findObject == false)
-        {
-            // オブジェクトに接触していない場合、エンカウント判定を行う
-            {
-                CheckForEncount();
-            }
-        }
+        CheckForObject();
+        CheckForEncount();
     }
 
     public void MoveToTargetPin(Vector3 targetPos)
@@ -266,11 +256,8 @@ public class FieldPlayer : MonoBehaviour
 
             transform.position = targetPos;
 
-            bool findObject = CheckForObject();
-            if (!findObject)
-            {
-                CheckForEncount();
-            }
+            CheckForObject();
+            CheckForEncount();
             yield return null;
         }
 
@@ -279,17 +266,14 @@ public class FieldPlayer : MonoBehaviour
     }
 
     // オブジェクトに接触したときの処理
-    bool CheckForObject()
+    void CheckForObject()
     {
         if (Physics2D.OverlapCircle(transform.position, 0.2f, objectLayer))
         {
             // オブジェクトに接触したときの処理をここに追加
-            StopAllCoroutines();
-            isMoving = false;
-            Debug.Log("Object detected!");
-            return true;
+            SetMoveFlg(false);
+            OnGetItem?.Invoke();
         }
-        return false;
     }
 
     void CheckForEncount()
