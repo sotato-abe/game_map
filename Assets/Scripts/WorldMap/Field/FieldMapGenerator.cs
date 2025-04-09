@@ -162,23 +162,23 @@ public class FieldMapGenerator
         seed = fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString(); // マップの座標からシードを生成
 
         // TODO buildingのアイコンがない場合タイプによってアイコンを使用
-        if (fieldData.kiosk != null) ;
+        if (fieldData.kiosk != null)
         {
             addBuilding(seed + "kiosk", (int)TileType.Kiosk);
         }
-        if (fieldData.cafeteria != null) ;
+        if (fieldData.cafeteria != null)
         {
             addBuilding(seed + "cafeteria", (int)TileType.Cafeteria);
         }
-        if (fieldData.armsShop != null) ;
+        if (fieldData.armsShop != null)
         {
             addBuilding(seed + "armsShop", (int)TileType.ArmsShop);
         }
-        if (fieldData.laboratory != null) ;
+        if (fieldData.laboratory != null)
         {
             addBuilding(seed + "laboratory", (int)TileType.Laboratory);
         }
-        if (fieldData.hotel != null) ;
+        if (fieldData.hotel != null)
         {
             addBuilding(seed + "hotel", (int)TileType.Hotel);
         }
