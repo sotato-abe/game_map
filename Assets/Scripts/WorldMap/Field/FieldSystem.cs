@@ -15,7 +15,7 @@ public class FieldSystem : MonoBehaviour
 
     FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
 
-    [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // 地面と壁のプレファブ
+    [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab, kioskPrefab; // 地面と壁のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] List<FloorTileListBase> floorTiles;
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
@@ -40,6 +40,7 @@ public class FieldSystem : MonoBehaviour
         fieldPlayer.OnEncount += Encount;
         fieldPlayer.ChangeField += ReloadMap;
         fieldPlayer.OnGetItem += GetItem;
+        fieldPlayer.OnEntryBuilding += EntryBuilding;
     }
 
     public void Setup(PlayerBattler battler)
@@ -80,6 +81,12 @@ public class FieldSystem : MonoBehaviour
     {
         OnEncount?.Invoke();
     }
+
+    public void EntryBuilding()
+    {
+        Debug.Log("EntryBuilding!!");
+    }
+
 
     public void GetItem()
     {
@@ -172,6 +179,7 @@ public class FieldSystem : MonoBehaviour
                 GameObject obj = null;
 
                 // タイルタイプごとの処理
+                // TODO buildingがアイコンを持っている場合アイコンを使用
                 if (tileType != (int)TileType.Base && tileType != (int)TileType.Wall && tileType != (int)TileType.Edge)
                 {
                     groundObj = CreateTile($"Tile_{x}_{y}", tileSet.Floor, pos, "MapGround", "Ground");
@@ -188,10 +196,12 @@ public class FieldSystem : MonoBehaviour
                     obj = CreateTile($"Tile_{x}_{y}", tileSet.Tree, pos, "MapWall", "Wall");
                 else if (tileType == (int)TileType.Entry)
                     obj = InstantiatePrefab(entryPrefab, pos, "MapEntry", "Entry");
-                else if (tileType == (int)TileType.Building)
-                    obj = InstantiatePrefab(buildingPrefab, pos, "MapBuilding", "Building");
                 else if (tileType == (int)TileType.Object)
                     obj = InstantiatePrefab(objectItemPrefab, pos, "ObjectItem", "Object");
+                else if (tileType == (int)TileType.Building)
+                    obj = InstantiatePrefab(buildingPrefab, pos, "MapBuilding", "Building");
+                else if (tileType == (int)TileType.Kiosk)
+                    obj = InstantiatePrefab(kioskPrefab, pos, "MapBuilding", "Building");
 
                 if (obj != null)
                 {

@@ -158,11 +158,9 @@ public class FieldMapGenerator
     //　フィールドマップに建物を追加
     private void createBuilding()
     {
-        int buildingCount = fieldData.buildings.Count;
 
-        // TODO buildingのアイコンよってアイコンを使用
         // TODO buildingのアイコンがない場合タイプによってアイコンを使用
-        for (int i = 0; i < buildingCount; i++)
+        if(fieldData.kiosk != null);
         {
             int targetX, targetY;
             do
@@ -172,7 +170,7 @@ public class FieldMapGenerator
             }
             while (map[targetX, targetY] != (int)TileType.Ground && map[targetX, targetY] != (int)TileType.Floor && map[targetX, targetY] != (int)TileType.Building); // Ground か area でなければ繰り返し
 
-            map[targetX, targetY] = (int)TileType.Building;
+            map[targetX, targetY] = (int)TileType.Kiosk;
         }
     }
 

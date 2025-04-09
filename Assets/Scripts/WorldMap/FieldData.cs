@@ -17,7 +17,9 @@ public class FieldData
     public bool openLeft { get => mapBase != null ? mapBase.OpenLeft : _openLeft; set => _openLeft = value; }
     public bool openRight { get => mapBase != null ? mapBase.OpenRight : _openRight; set => _openRight = value; }
     public bool openBottom { get => mapBase != null ? mapBase.OpenBottom : _openBottom; set => _openBottom = value; }
-    public List<Building> buildings { get => mapBase != null ? mapBase.Buildings : new List<Building>(); }
+
+    public Kiosk kiosk { get => mapBase != null ? mapBase.Kiosk : null; }
+
     public List<Battler> enemies { get => mapBase != null ? mapBase.Enemies : new List<Battler>(); }
     public List<Item> items = new List<Item>(); // アイテムリスト
 

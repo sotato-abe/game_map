@@ -10,6 +10,7 @@ public class FieldPlayer : MonoBehaviour
     Animator animator;
     [SerializeField] LayerMask blockLayer;
     [SerializeField] LayerMask objectLayer;
+    [SerializeField] LayerMask buildingLayer;
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
@@ -18,6 +19,7 @@ public class FieldPlayer : MonoBehaviour
     public UnityAction OnEncount;
     public UnityAction OnReserve;
     public UnityAction OnGetItem;
+    public UnityAction OnEntryBuilding;
 
     public bool canEncount = false;
     bool isMoving = false;
@@ -119,6 +121,7 @@ public class FieldPlayer : MonoBehaviour
 
         transform.position = targetPos;
         isMoving = false;
+        CheckForBuilding();
         CheckForObject();
         CheckForEncount();
     }
@@ -256,6 +259,7 @@ public class FieldPlayer : MonoBehaviour
 
             transform.position = targetPos;
 
+            CheckForBuilding();
             CheckForObject();
             CheckForEncount();
             yield return null;
@@ -263,6 +267,16 @@ public class FieldPlayer : MonoBehaviour
 
         animator.SetBool("isMoving", false);
         isMoving = false;
+    }
+
+    void CheckForBuilding()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, buildingLayer))
+        {
+            // オブジェクトに接触したときの処理をここに追加
+            SetMoveFlg(false);
+            OnEntryBuilding?.Invoke();
+        }
     }
 
     // オブジェクトに接触したときの処理
