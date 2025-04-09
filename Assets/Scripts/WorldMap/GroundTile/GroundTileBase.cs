@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Field/GroundTileBase")]
 public class GroundTileBase : ScriptableObject
 {
     [SerializeField] GroundType id;

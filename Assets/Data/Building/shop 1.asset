@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ac1cfbdb61dd941af92b1f4c83806b, type: 3}
+  m_Name: shop 1
+  m_EditorClassIdentifier: 
+  name: Sunny Slice Pizzeria
+  type: 3
+  owner:
+    _base: {fileID: 11400000, guid: 68b491635af498f4598f586f90439224, type: 2}
+    level: 1
+    soul: 0
+    Enchants: []
+  description: At Sunny Slice Pizzeria, we serve hand-tossed, stone-baked pizzas
+    with the freshest ingredients. A perfect spot to relax and enjoy great flavors!
+  icon: {fileID: -254048484, guid: dd8f2d48257b402418c9890a627ea753, type: 3}
+  items:
+  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
+  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}

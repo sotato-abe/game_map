@@ -9,7 +9,6 @@ public class FieldData
     public int mapWidth { get => mapBase != null ? mapBase.MapWidth : 50; } // マップの幅(初期値：50)
     public int mapHeight { get => mapBase != null ? mapBase.MapHeight : 50; } // マップの高さ(初期値：50)
     public int randomFillPercent { get => mapBase != null ? mapBase.RandomFillPercent : 45; } // マップの建蔽率(初期値：45%)
-    public int building { get => mapBase != null ? mapBase.Building : 3; } // 建物
 
     private int _floorType;
     private bool _openTop, _openLeft, _openRight, _openBottom;
@@ -18,6 +17,7 @@ public class FieldData
     public bool openLeft { get => mapBase != null ? mapBase.OpenLeft : _openLeft; set => _openLeft = value; }
     public bool openRight { get => mapBase != null ? mapBase.OpenRight : _openRight; set => _openRight = value; }
     public bool openBottom { get => mapBase != null ? mapBase.OpenBottom : _openBottom; set => _openBottom = value; }
+    public List<Building> buildings { get => mapBase != null ? mapBase.Buildings : new List<Building>(); }
     public List<Battler> enemies { get => mapBase != null ? mapBase.Enemies : new List<Battler>(); }
     public List<Item> items = new List<Item>(); // アイテムリスト
 
