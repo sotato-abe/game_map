@@ -5,8 +5,12 @@ public enum TileType
     Floor,
     Edge,
     Wall,
-    Building,
     Entry,
     Object,
+    Building,
     Kiosk,
+    Cafeteria,
+    ArmsShop,
+    Laboratory,
+    Hotel,
 }

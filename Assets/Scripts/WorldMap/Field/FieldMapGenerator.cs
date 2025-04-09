@@ -159,19 +159,45 @@ public class FieldMapGenerator
     private void createBuilding()
     {
 
-        // TODO buildingのアイコンがない場合タイプによってアイコンを使用
-        if(fieldData.kiosk != null);
-        {
-            int targetX, targetY;
-            do
-            {
-                targetX = UnityEngine.Random.Range(1, width - 1);
-                targetY = UnityEngine.Random.Range(1, height - 1);
-            }
-            while (map[targetX, targetY] != (int)TileType.Ground && map[targetX, targetY] != (int)TileType.Floor && map[targetX, targetY] != (int)TileType.Building); // Ground か area でなければ繰り返し
+        seed = fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString(); // マップの座標からシードを生成
 
-            map[targetX, targetY] = (int)TileType.Kiosk;
+        // TODO buildingのアイコンがない場合タイプによってアイコンを使用
+        if (fieldData.kiosk != null) ;
+        {
+            addBuilding(seed + "kiosk", (int)TileType.Kiosk);
         }
+        if (fieldData.cafeteria != null) ;
+        {
+            addBuilding(seed + "cafeteria", (int)TileType.Cafeteria);
+        }
+        if (fieldData.armsShop != null) ;
+        {
+            addBuilding(seed + "armsShop", (int)TileType.ArmsShop);
+        }
+        if (fieldData.laboratory != null) ;
+        {
+            addBuilding(seed + "laboratory", (int)TileType.Laboratory);
+        }
+        if (fieldData.hotel != null) ;
+        {
+            addBuilding(seed + "hotel", (int)TileType.Hotel);
+        }
+    }
+
+    private void addBuilding(string seed, int tileType)
+    {
+        int targetX, targetY;
+
+        System.Random randomSeed = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
+
+        do
+        {
+            targetX = randomSeed.Next(1, width - 1); // 1 ～ width - 2 の範囲でランダム生成
+            targetY = randomSeed.Next(1, height - 1); // 1 ～ height - 2 の範囲でランダム生成
+        }
+        while (map[targetX, targetY] != (int)TileType.Ground); // Groundとなるまで繰り返し
+
+        map[targetX, targetY] = tileType;
     }
 
     //　フィールドマップにオブジェクトを追加
@@ -186,7 +212,7 @@ public class FieldMapGenerator
                 targetX = UnityEngine.Random.Range(1, width - 1);
                 targetY = UnityEngine.Random.Range(1, height - 1);
             }
-            while (map[targetX, targetY] == (int)TileType.Building); // Building 以外となるまで繰り返し
+            while (map[targetX, targetY] != (int)TileType.Ground); // Groundとなるまで繰り返し
 
             map[targetX, targetY] = (int)TileType.Object;
         }

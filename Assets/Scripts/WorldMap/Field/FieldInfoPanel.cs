@@ -15,4 +15,11 @@ public class FieldInfoPanel : MonoBehaviour
         StartCoroutine(title.TypeTitle(mapBase.Name));
         StartCoroutine(description.TypeDescription(mapBase.Description));
     }
+
+    public void SetupBuilding(BuildingBase buildingBase)
+    {
+        transform.gameObject.SetActive(true);
+        StartCoroutine(title.TypeTitle(buildingBase.Name));
+        StartCoroutine(description.TypeDescription(buildingBase.Description));
+    }
 }

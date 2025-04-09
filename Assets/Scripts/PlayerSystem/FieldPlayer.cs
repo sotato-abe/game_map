@@ -19,7 +19,6 @@ public class FieldPlayer : MonoBehaviour
     public UnityAction OnEncount;
     public UnityAction OnReserve;
     public UnityAction OnGetItem;
-    public UnityAction OnEntryBuilding;
 
     public bool canEncount = false;
     bool isMoving = false;
@@ -31,7 +30,9 @@ public class FieldPlayer : MonoBehaviour
     private Vector3 lastPosition;
     Coroutine currentMoveCoroutine;
     public delegate void ChangeFieldDelegate(DirectionType fieldId);
+    public delegate void EntoryBuildingDelegate(BuildingType type);
     public event ChangeFieldDelegate ChangeField;
+    public event EntoryBuildingDelegate EntryBuilding;
 
     private void Awake()
     {
@@ -271,11 +272,15 @@ public class FieldPlayer : MonoBehaviour
 
     void CheckForBuilding()
     {
-        if (Physics2D.OverlapCircle(transform.position, 0.2f, buildingLayer))
+        Collider2D hitBuilding = Physics2D.OverlapCircle(transform.position, 0.2f, buildingLayer);
+        if (hitBuilding)
         {
             // オブジェクトに接触したときの処理をここに追加
+            // 接触したBuildingの情報を取得する
+            Building building = hitBuilding.GetComponent<Building>();
+            Debug.Log("Building: " + building.Type);
             SetMoveFlg(false);
-            OnEntryBuilding?.Invoke();
+            EntryBuilding?.Invoke(building.Type);
         }
     }
 
