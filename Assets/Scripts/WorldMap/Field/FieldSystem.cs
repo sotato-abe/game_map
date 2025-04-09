@@ -41,6 +41,7 @@ public class FieldSystem : MonoBehaviour
         fieldPlayer.OnEncount += Encount;
         fieldPlayer.OnGetItem += GetItem;
         fieldPlayer.ChangeField += ReloadMap;
+        fieldPlayer.ResetFieldPanel += ResetFieldInfoPanel;
         fieldPlayer.EntryBuilding += EntryBuilding;
     }
 
@@ -61,7 +62,7 @@ public class FieldSystem : MonoBehaviour
     {
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
         fieldData.Init(); // フィールドデータの初期化
-        fieldInfoPanel.Setup(fieldData.mapBase);
+        ResetFieldInfoPanel();
         fieldPlayer.canEncount = fieldData.enemies.Count > 0; // エンカウントフラグを設定
         fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
     }
@@ -327,6 +328,11 @@ public class FieldSystem : MonoBehaviour
     {
         return new Vector2(x * tileSize + tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
     }
+
+    private void ResetFieldInfoPanel()
+    {
+        fieldInfoPanel.Setup(fieldData.mapBase);
+    } 
 
     public Battler GetEnemy()
     {
