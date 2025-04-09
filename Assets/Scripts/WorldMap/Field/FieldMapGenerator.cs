@@ -176,7 +176,7 @@ public class FieldMapGenerator
     //　フィールドマップにオブジェクトを追加
     private void createObject()
     {
-        int objectItemCount = fieldData.objectItem;
+        int objectItemCount = fieldData.items.Count; // アイテムの数を取得
         for (int i = 0; i < objectItemCount; i++)
         {
             int targetX, targetY;
