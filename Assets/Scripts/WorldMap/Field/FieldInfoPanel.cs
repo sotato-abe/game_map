@@ -8,6 +8,7 @@ public class FieldInfoPanel : MonoBehaviour
 {
     [SerializeField] Title title;
     [SerializeField] Description description;
+    [SerializeField] FieldInfoIcon icon;
     private List<string> descriptionList = new List<string>();
 
     public void Setup(MapBase mapBase)
@@ -27,6 +28,7 @@ public class FieldInfoPanel : MonoBehaviour
     public void SetupBuilding(BuildingBase buildingBase)
     {
         transform.gameObject.SetActive(true);
+        icon.SetIconMotion(MotionType.Jump);
         StartCoroutine(title.TypeTitle(buildingBase.Name));
         StartCoroutine(description.TypeDescription(buildingBase.Description));
     }
