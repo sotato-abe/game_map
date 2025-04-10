@@ -22,8 +22,7 @@ public class StatusPanel : Panel
     [SerializeField] EnegyIcon enegyCounterPrefab;
     [SerializeField] StatusIcon statusCounterPrefab;
     [SerializeField] EnchantIcon enchantIconPrefab;
-    [SerializeField] TextMeshProUGUI levelText; // TODO 仮置き　後プレファブ化する
-    [SerializeField] TextMeshProUGUI expText; // TODO 仮置き　後プレファブ化する
+    [SerializeField] StatusLevel statusLevel;
 
     private PlayerBattler battler;
     private List<Enegy> enegyCountList = new List<Enegy>();
@@ -161,8 +160,7 @@ public class StatusPanel : Panel
 
     private void SetLevel()
     {
-        levelText.text = battler.Level.ToString() + "/100";
-        expText.text = battler.Exp.ToString() + "/100";
+        statusLevel.SetLevel(battler.Level, battler.Exp);
     }
 
     private void SetSkillPoint()
@@ -180,7 +178,6 @@ public class StatusPanel : Panel
 
     public void EnegyUp(EnegyType type)
     {
-        Debug.Log("EnegyUp: " + type);
         battler.EnegyUp(type);
         SetEnegy();
         SetSkillPoint();
@@ -188,7 +185,6 @@ public class StatusPanel : Panel
 
     public void StatusUp(StatusType type)
     {
-        Debug.Log("StatusUp: " + type);
         battler.StatusUp(type);
         SetStatus();
         SetSkillPoint();
