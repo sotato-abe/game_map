@@ -34,6 +34,7 @@ public class FieldSystem : MonoBehaviour
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
 
     private FieldData fieldData;
+    private BuildingBase currentBuildingBase;
 
     void Start()
     {
@@ -103,7 +104,11 @@ public class FieldSystem : MonoBehaviour
                 building = fieldData.hotel.Base; // ホテルの情報を取得
                 break;
         }
-        fieldInfoPanel.SetupBuilding(building);
+        if (currentBuildingBase != building)
+        {
+            fieldInfoPanel.SetupBuilding(building);
+            currentBuildingBase = building; // 現在の建物を更新
+        }
         fieldPlayer.SetMoveFlg(true); // 移動フラグをオンにする
     }
 
@@ -331,8 +336,9 @@ public class FieldSystem : MonoBehaviour
 
     private void ResetFieldInfoPanel()
     {
+        currentBuildingBase = null;
         fieldInfoPanel.Setup(fieldData.mapBase);
-    } 
+    }
 
     public Battler GetEnemy()
     {
