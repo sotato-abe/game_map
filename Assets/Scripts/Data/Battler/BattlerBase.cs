@@ -23,6 +23,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int money = 10;
     [SerializeField] int disk = 5;
     [SerializeField] int key = 5;
+    [SerializeField] int exp = 5;
 
     [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Command> runTable;
@@ -51,6 +52,7 @@ public class BattlerBase : ScriptableObject
     public int Money { get => money; }
     public int Disk { get => disk; }
     public int Key { get => key; }
+    public int Exp { get => exp; }
 
     public List<Equipment> Equipments { get => equipments; }
     public List<Item> PouchList { get => pouchList; }

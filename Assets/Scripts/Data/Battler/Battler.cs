@@ -12,7 +12,7 @@ public class Battler
 
     private float experience = 0;
     public BattlerBase Base { get => _base; }
-    public int Level { get => level; }
+    public int Level { get => level; set => level = value; }
     public int Soul { get => soul; set => soul = value; }
     public int MaxLife { get; set; }
     public int Life { get; set; }
@@ -31,6 +31,7 @@ public class Battler
     public int Money { get; set; }
     public int Disk { get; set; }
     public int Key { get; set; }
+    public int Exp { get; set; }
 
     public List<Equipment> Equipments { get; set; }
     public List<Command> RunTable { get; set; }
@@ -79,6 +80,7 @@ public class Battler
         Money = _base.Money;
         Disk = _base.Disk;
         Key = _base.Key;
+        Exp = _base.Exp;
 
         Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
         PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
