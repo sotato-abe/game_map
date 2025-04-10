@@ -95,11 +95,14 @@ public class AttackPanel : Panel
         soulCostText.SetText($"{soulCost}");
     }
 
-    private void ExecuteAttack()
+    public void ExecuteAttack()
     {
-        List<Damage> damages = ActivateEquipments();
-        attackSystem.ExecutePlayerAttack(damages);
-        CountEnegyCost();
+        if (executeFlg)
+        {
+            List<Damage> damages = ActivateEquipments();
+            attackSystem.ExecutePlayerAttack(damages);
+            CountEnegyCost();
+        }
     }
 
     public List<Damage> ActivateEquipments()

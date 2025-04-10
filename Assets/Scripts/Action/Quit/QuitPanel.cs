@@ -20,7 +20,7 @@ public class QuitPanel : Panel
         }
     }
 
-    private void Quit()
+    public void Quit()
     {
         isActive = false;
         OnActionExecute?.Invoke();
