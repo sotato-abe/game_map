@@ -273,7 +273,7 @@ public class FieldPlayer : MonoBehaviour
 
     void CheckForBuilding()
     {
-        Collider2D hitBuilding = Physics2D.OverlapCircle(transform.position, 0.2f, buildingLayer);
+        Collider2D hitBuilding = Physics2D.OverlapCircle(transform.position, 0.4f, buildingLayer);
         if (hitBuilding)
         {
             if (playerTileType != TileType.Building)

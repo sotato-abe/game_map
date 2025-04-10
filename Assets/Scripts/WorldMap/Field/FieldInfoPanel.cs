@@ -8,6 +8,7 @@ public class FieldInfoPanel : MonoBehaviour
 {
     [SerializeField] Title title;
     [SerializeField] Description description;
+    private List<string> descriptionList = new List<string>();
 
     public void Setup(MapBase mapBase)
     {
