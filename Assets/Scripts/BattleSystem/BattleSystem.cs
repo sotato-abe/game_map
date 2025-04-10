@@ -92,7 +92,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (state == BattleState.ActionSelection || state == BattleState.TurnWait)
         {
-            if(activeAction == selectAction) return;
+            if (activeAction == selectAction) return;
             activeAction = selectAction;
             SelectActiveActionIcon(selectAction);
             actionBoard.ChangeActionPanel(selectAction);
@@ -223,18 +223,18 @@ public class BattleSystem : MonoBehaviour
             {
                 resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} got {itemList}");
             }
-
-            playerUnit.Battler.Money += enemyUnit.Battler.Money;
-            playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
-
-            if (playerUnit.Battler is PlayerBattler playerBattler)
-            {
-                playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
-            }
         }
         else
         {
             resultItemMessageList.Add("No items were found on the enemy.");
+        }
+        playerUnit.Battler.Money += enemyUnit.Battler.Money;
+        playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
+
+        if (playerUnit.Battler is PlayerBattler playerBattler)
+        {
+            playerBattler.AcquisitionExp(enemyUnit.Battler.Exp); // プレイヤーの経験値を加算
+            playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
         }
 
         StartCoroutine(BattleResultView(resultItemMessageList));

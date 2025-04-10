@@ -13,6 +13,7 @@ public class StatusPanel : Panel
     [SerializeField] BattlerEnegyBar battery;
     [SerializeField] BattlerEnegyBar soul;
     [SerializeField] TextMeshProUGUI level;
+    [SerializeField] SkillPointPanel skillPointPanel;
     [SerializeField] GameObject enegyList;
     [SerializeField] GameObject statusList;
     [SerializeField] GameObject storageList;
@@ -21,8 +22,10 @@ public class StatusPanel : Panel
     [SerializeField] EnegyIcon enegyCounterPrefab;
     [SerializeField] StatusIcon statusCounterPrefab;
     [SerializeField] EnchantIcon enchantIconPrefab;
+    [SerializeField] TextMeshProUGUI levelText; // TODO 仮置き　後プレファブ化する
+    [SerializeField] TextMeshProUGUI expText; // TODO 仮置き　後プレファブ化する
 
-    private Battler battler;
+    private PlayerBattler battler;
     private List<Enegy> enegyCountList = new List<Enegy>();
 
     private void Start()
@@ -56,8 +59,19 @@ public class StatusPanel : Panel
 
     private void Setup()
     {
-        this.battler = playerUnit.Battler;
+        PlayerBattler playerBattler = playerUnit.Battler as PlayerBattler;
+        if (playerBattler != null)
+        {
+            battler = playerBattler;
+        }
+        else
+        {
+            Debug.LogError("PlayerBattler is null or not assigned!");
+            return;
+        }
         SetCharacterCard();
+        SetLevel();
+        SetSkillPoint();
         SetEnegy();
         SetStatus();
         SetEnchant();
@@ -89,6 +103,7 @@ public class StatusPanel : Panel
         {
             EnegyIcon enegyCounterObject = Instantiate(enegyCounterPrefab, enegyList.transform);
             enegyCounterObject.gameObject.SetActive(true);
+            enegyCounterObject.EnegyUp += EnegyUp;
             enegyCounterObject.SetCostIcon(enegy);
         }
     }
@@ -106,6 +121,7 @@ public class StatusPanel : Panel
 
             StatusIcon statusCounterObject = Instantiate(statusCounterPrefab, parent);
             statusCounterObject.gameObject.SetActive(true);
+            statusCounterObject.StatusUp += StatusUp;
             statusCounterObject.SetStatusIcon(status);
         }
     }
@@ -141,5 +157,40 @@ public class StatusPanel : Panel
     private void SetAbility()
     {
 
+    }
+
+    private void SetLevel()
+    {
+        levelText.text = battler.Level.ToString() + "/100";
+        expText.text = battler.Exp.ToString() + "/100";
+    }
+
+    private void SetSkillPoint()
+    {
+        if (battler.SkillPoint > 0)
+        {
+            skillPointPanel.gameObject.SetActive(true);
+            skillPointPanel.SetPoint(battler.SkillPoint);
+        }
+        else
+        {
+            skillPointPanel.gameObject.SetActive(false);
+        }
+    }
+
+    public void EnegyUp(EnegyType type)
+    {
+        Debug.Log("EnegyUp: " + type);
+        battler.EnegyUp(type);
+        SetEnegy();
+        SetSkillPoint();
+    }
+
+    public void StatusUp(StatusType type)
+    {
+        Debug.Log("StatusUp: " + type);
+        battler.StatusUp(type);
+        SetStatus();
+        SetSkillPoint();
     }
 }
