@@ -26,7 +26,7 @@ public class EscapePanel : Panel
 
     }
 
-    private void Escape()
+    public void Escape()
     {
         if (executeFlg)
         {
