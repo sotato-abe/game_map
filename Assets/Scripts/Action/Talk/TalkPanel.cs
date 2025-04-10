@@ -20,8 +20,11 @@ public class TalkPanel : Panel
         }
     }
 
-    private void TalkExecute()
+    public void TalkExecute()
     {
-        attackSystem.ExecutePlayerTalk();
+        if (executeFlg)
+        {
+            attackSystem.ExecutePlayerTalk();
+        }
     }
 }
