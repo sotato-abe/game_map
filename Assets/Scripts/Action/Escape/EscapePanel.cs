@@ -28,7 +28,10 @@ public class EscapePanel : Panel
 
     private void Escape()
     {
-        isActive = false;
-        attackSystem.ExecutePlayerEscape();
+        if (executeFlg)
+        {
+            isActive = false;
+            attackSystem.ExecutePlayerEscape();
+        }
     }
 }
