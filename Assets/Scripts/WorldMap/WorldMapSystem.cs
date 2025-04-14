@@ -16,11 +16,14 @@ public class WorldMapSystem : MonoBehaviour
 
     [SerializeField] RenderWorldMap renderWorldMap;
     [SerializeField] List<MapBase> mapBaseList; // 地面と壁のプレファブ 
+    [SerializeField] GameObject mapMapSwitch;
+    [SerializeField] WorldMapPanel worldMapPanel;
 
     public FieldData fieldData; // フィールドデータ
     private Coordinate coordinate; // 座標
     public int worldWidth; // ワールドマップの幅
     public int worldHeight; // ワールドマップの高さ
+    private bool isWorldMapShow = false; // ワールドマップの高さ
 
     void Start()
     {
@@ -122,5 +125,10 @@ public class WorldMapSystem : MonoBehaviour
         {
             fieldData.openBottom = true; // 下の出入り口
         }
+    }
+
+    private void SwitchWorldMap()
+    {
+        isWorldMapShow = !isWorldMapShow; // ワールドマップの表示状態を切り替え
     }
 }
