@@ -79,15 +79,12 @@ public class RenderWorldMap : MonoBehaviour
 
     public void ChangePlayerCoordinate(Coordinate newCoordinate)
     {
-        Debug.Log("ChangePlayerCoordinate " + newCoordinate.col + ", " + newCoordinate.row);
         if (newCoordinate == null)
         {
-            Debug.LogWarning("ChangePlayerCoordinate に null 渡された");
             return;
         }
         else if (playerCoordinate != null)
         {
-            Debug.Log("PlayerCoordinateがnullではないので、古い座標を削除します。// " + playerCoordinate.col + ", " + playerCoordinate.row + "," + newCoordinate.col + ", " + newCoordinate.row);
             var oldPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
             var currentTile = worldmap.GetTile(oldPos);
             if (currentTile == PlayerTile)
