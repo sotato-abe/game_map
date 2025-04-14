@@ -10,9 +10,9 @@ public class FieldData
     public int mapHeight { get => mapBase != null ? mapBase.MapHeight : 50; } // マップの高さ(初期値：50)
     public int randomFillPercent { get => mapBase != null ? mapBase.RandomFillPercent : 45; } // マップの建蔽率(初期値：45%)
 
-    private int _floorType;
+    private int _fieldType;
     private bool _openTop, _openLeft, _openRight, _openBottom;
-    public int floorType { get => mapBase != null ? mapBase.MapTileSet : _floorType; set => _floorType = value; }
+    public int fieldType { get => mapBase != null ? mapBase.MapTileSet : _fieldType; set => _fieldType = value; }
     public bool openTop { get => mapBase != null ? mapBase.OpenTop : _openTop; set => _openTop = value; }
     public bool openLeft { get => mapBase != null ? mapBase.OpenLeft : _openLeft; set => _openLeft = value; }
     public bool openRight { get => mapBase != null ? mapBase.OpenRight : _openRight; set => _openRight = value; }

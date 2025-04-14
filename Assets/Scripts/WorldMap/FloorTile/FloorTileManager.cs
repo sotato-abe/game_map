@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class FloorTileManager : MonoBehaviour
 {
-    [SerializeField] private List<FloorTileListBase> tileLists;
+    [SerializeField] private List<FieldTileListBase> tileLists;
 
-    public FloorTileListBase GetTileListByID(int id)
+    public FieldTileListBase GetTileListByID(int id)
     {
         foreach (var tileList in tileLists)
         {
@@ -17,14 +17,14 @@ public class FloorTileManager : MonoBehaviour
         return null;
     }
 
-    public Sprite GetTile(FloorType floorType, int tileType)
+    public Sprite GetTile(FieldType fieldType, int tileType)
     {
-        // floorType に一致する FloorTileListBase を取得
-        var floorTileList = tileLists[(int)floorType];
+        // fieldType に一致する FieldTileListBase を取得
+        var floorTileList = tileLists[(int)fieldType];
 
         if (floorTileList == null)
         {
-            Debug.LogError($"FieldTileList not found for FloorType: {floorType}");
+            Debug.LogError($"FieldTileList not found for FieldType: {fieldType}");
             return null;
         }
 
@@ -39,17 +39,17 @@ public class FloorTileManager : MonoBehaviour
         };
     }
 
-    public Sprite GetFloorTile(FloorType floorType)
+    public Sprite GetFloorTile(FieldType fieldType)
     {
-        if (floorType == 0)
+        if (fieldType == 0)
         {
             return null;
         }
 
-        var fieldTileList = tileLists[(int)floorType];
+        var fieldTileList = tileLists[(int)fieldType];
         if (fieldTileList == null)
         {
-            Debug.LogError($"FieldTileList not found for FloorType: {floorType}");
+            Debug.LogError($"FieldTileList not found for FieldType: {fieldType}");
             return null;
         }
         return fieldTileList.Floor;
