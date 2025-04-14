@@ -8,9 +8,15 @@ public class WorldMapPanel : MonoBehaviour
 {
     private bool isActive = false; // フラグを追加
 
+    private void SetActive()
+    {
+        gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
+    }
+
     public void ChangeActive()
     {
         isActive = !isActive; // フラグをトグル
         gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
+        SetActive();
     }
 }
