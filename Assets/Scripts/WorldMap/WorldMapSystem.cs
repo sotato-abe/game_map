@@ -14,8 +14,8 @@ public class WorldMapSystem : MonoBehaviour
     TileMapData roadData;
     TileMapData spotData;
 
-    [SerializeField] WorldMapDialog worldMapDialog; // ワールドマップ
-    [SerializeField] List<MapBase> mapBaseList; // 地面と壁のプレファブ
+    [SerializeField] RenderWorldMap renderWorldMap;
+    [SerializeField] List<MapBase> mapBaseList; // 地面と壁のプレファブ 
 
     public FieldData fieldData; // フィールドデータ
     private Coordinate coordinate; // 座標
@@ -32,6 +32,7 @@ public class WorldMapSystem : MonoBehaviour
 
         worldWidth = groundData.data[0].Length; // ワールドマップの幅を取得
         worldHeight = groundData.data.Count; // ワールドマップの高さを取得
+        renderWorldMap.RenderMap(); // ワールドマップを描画
     }
 
     private TileMapData LoadJsonMapData(string fileName)
@@ -95,8 +96,8 @@ public class WorldMapSystem : MonoBehaviour
 
     private void SetMapTileSet()
     {
-        FloorType floorType = (FloorType)floorData.data[coordinate.row][coordinate.col];
-        fieldData.floorType = (int)floorType; // マップのタイルセットを取得
+        FieldType fieldType = (FieldType)floorData.data[coordinate.row][coordinate.col];
+        fieldData.fieldType = (int)fieldType; // マップのタイルセットを取得
     }
 
     private void SetRoadEntry()
