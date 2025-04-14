@@ -32,6 +32,7 @@ public class WorldMapSystem : MonoBehaviour
 
         worldWidth = groundData.data[0].Length; // ワールドマップの幅を取得
         worldHeight = groundData.data.Count; // ワールドマップの高さを取得
+        renderWorldMap.SetPlayerCoordinate(coordinate); // ワールドマップを描画
         renderWorldMap.RenderMap(); // ワールドマップを描画
     }
 
