@@ -148,8 +148,8 @@ public class FieldSystem : MonoBehaviour
         Vector2Int coord = new Vector2Int(playerBattler.coordinate.row, playerBattler.coordinate.col); // プレイヤーの座標を取得
         switch (entryDirection)
         {
-            case DirectionType.Top: coord.x++; break;
-            case DirectionType.Bottom: coord.x--; break;
+            case DirectionType.Top: coord.x--; break;
+            case DirectionType.Bottom: coord.x++; break;
             case DirectionType.Left: coord.y++; break;
             case DirectionType.Right: coord.y--; break;
         }
