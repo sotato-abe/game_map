@@ -11,19 +11,17 @@ public class RenderWorldMap : MonoBehaviour
     [SerializeField] Sprite playerPositionSprite; // プレイヤーの位置を示すスプライト
     private string GroundJsonData = "GroundTileMapData";
     private string floorJsonData = "FloorTileMapData";
+    private Coordinate playerCoordinate;
+    private Tile PlayerTile;
 
-    private Coordinate playerCoordinate; // 座標
-
-    public void RenderMap()
+    private void Awake()
     {
-        // マップデータを読み込んで描画
-        RenderFloorMap();
+        worldmap.ClearAllTiles();
+        PlayerTile = ScriptableObject.CreateInstance<Tile>();
+        PlayerTile.sprite = playerPositionSprite;
+        RenderMap();
     }
 
-    public void SetPlayerCoordinate(Coordinate coordinate)
-    {
-        playerCoordinate = coordinate;
-    }
     private TileMapData LoadJsonMapData(string fileName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
@@ -47,10 +45,17 @@ public class RenderWorldMap : MonoBehaviour
         }
     }
 
-    public void RenderFloorMap()
+    public void RenderMap()
     {
+        // マップデータを読み込んで描画
         TileMapData groundmapData = LoadJsonMapData(GroundJsonData);
         TileMapData mapData = LoadJsonMapData(floorJsonData);
+
+        if (groundmapData == null || mapData == null)
+        {
+            Debug.LogError("マップデータ読み込み失敗");
+            return;
+        }
 
         for (int y = 0; y < mapData.rows; y++)
         {
@@ -68,18 +73,31 @@ public class RenderWorldMap : MonoBehaviour
                         worldmap.SetTile(new Vector3Int(x, y, 0), tile);
                     }
                 }
-                if (playerCoordinate != null)
-                {
-                    Debug.Log("mapdata:" + mapData.cols + ", " + mapData.rows);
-                    if (x == playerCoordinate.col && y == playerCoordinate.row)
-                    {
-                        Debug.Log("PlayerCoordinate: " + playerCoordinate.row + ", " + playerCoordinate.col);
-                        Tile tile = ScriptableObject.CreateInstance<Tile>();
-                        tile.sprite = playerPositionSprite;
-                        worldmap.SetTile(new Vector3Int(x, y, 1), tile);
-                    }
-                }
             }
         }
+    }
+
+    public void ChangePlayerCoordinate(Coordinate newCoordinate)
+    {
+        Debug.Log("ChangePlayerCoordinate " + newCoordinate.col + ", " + newCoordinate.row);
+        if (newCoordinate == null)
+        {
+            Debug.LogWarning("ChangePlayerCoordinate に null 渡された");
+            return;
+        }
+        else if (playerCoordinate != null)
+        {
+            Debug.Log("PlayerCoordinateがnullではないので、古い座標を削除します。// " + playerCoordinate.col + ", " + playerCoordinate.row + "," + newCoordinate.col + ", " + newCoordinate.row);
+            var oldPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
+            var currentTile = worldmap.GetTile(oldPos);
+            if (currentTile == PlayerTile)
+            {
+                worldmap.SetTile(oldPos, null);
+            }
+        }
+        // 新しい位置にPlayerTileを置く
+        playerCoordinate = new Coordinate(newCoordinate);
+        var newPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
+        worldmap.SetTile(newPos, PlayerTile);
     }
 }

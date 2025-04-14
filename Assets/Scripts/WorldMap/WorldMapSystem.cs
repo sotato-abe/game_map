@@ -32,8 +32,7 @@ public class WorldMapSystem : MonoBehaviour
 
         worldWidth = groundData.data[0].Length; // ワールドマップの幅を取得
         worldHeight = groundData.data.Count; // ワールドマップの高さを取得
-        renderWorldMap.SetPlayerCoordinate(coordinate); // ワールドマップを描画
-        renderWorldMap.RenderMap(); // ワールドマップを描画
+        renderWorldMap.ChangePlayerCoordinate(coordinate); // ワールドマップを描画
     }
 
     private TileMapData LoadJsonMapData(string fileName)
@@ -75,6 +74,9 @@ public class WorldMapSystem : MonoBehaviour
             SetRoadEntry(); // フィールドデータに出入り口を設定
         }
 
+        // TODO : 別処理を作ってそこでWorldMapの更新をする:
+        renderWorldMap.ChangePlayerCoordinate(coordinate); // ワールドマップのPlayer位置を更新
+
         return fieldData;
     }
 
@@ -90,7 +92,7 @@ public class WorldMapSystem : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"該当する MapBase が見つかりませんでした。座標: row={coordinate.row}, col={coordinate.col}");
+            // Debug.LogWarning($"該当する MapBase が見つかりませんでした。座標: row={coordinate.row}, col={coordinate.col}");
             fieldData.mapBase = null; // フィールドデータにnullを設定
         }
     }

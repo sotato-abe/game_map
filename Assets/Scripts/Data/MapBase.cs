@@ -42,7 +42,7 @@ public class MapBase : ScriptableObject
 
     public Coordinate Coordinate
     {
-        get => new Coordinate { col = coordinateX, row = coordinateY };
+        get => new Coordinate(coordinateY, coordinateX); // 引数の順番注意！
     }
 
     public Kiosk Kiosk { get => kiosk; }
