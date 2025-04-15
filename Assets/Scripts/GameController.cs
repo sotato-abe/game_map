@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] PlayerController playerController;
+    [SerializeField] PlayerBattler playerBattler;
+    [SerializeField] PlayerUnit playerUnit;
+    [SerializeField] FieldPlayer fieldPlayer;
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
-    [SerializeField] FieldInfoSystem fieldInfoSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
-    [SerializeField] GenerateFieldMap generateFieldMap;
+    [SerializeField] FieldSystem fieldSystem;
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
@@ -18,40 +19,26 @@ public class GameController : MonoBehaviour
 
     Battler enemy;
 
-    private void Start()
+    private void Awake()
     {
-        playerController.OnReserve += ReserveStart;
-        playerController.OnEncount += BattleStart;
-        playerController.ChangeField += ChangeField;
+        playerBattler.Init();
+        fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
+        fieldSystem.OnReserve += ReserveStart;
+        fieldSystem.OnEncount += BattleStart;
+        
+        playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
+        StartCoroutine(playerUnit.SetTalkMessage("start.."));
+
+        playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
         messagePanel.AddMesageList("game start");
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
-        playerCoordinate = playerController.Battler.coordinate;
-    }
-
-    // フィールド移動時の方向を受け取る
-    // カレント座標を更新する
-    // 新しいフィールドのフィールドデータを取得する
-    // フィールドを生成する処理（generateFieldMap）に受け渡す
-    public void ChangeField(DirectionType outDirection)
-    {
-        DirectionType entryDirection = outDirection.GetOppositeDirection();
-        if (outDirection == DirectionType.Top)
-            playerCoordinate.row = playerCoordinate.row - 1;
-        if (outDirection == DirectionType.Bottom)
-            playerCoordinate.row = playerCoordinate.row + 1;
-        if (outDirection == DirectionType.Right)
-            playerCoordinate.col = playerCoordinate.col + 1;
-        if (outDirection == DirectionType.Left)
-            playerCoordinate.col = playerCoordinate.col - 1;
-        generateFieldMap.ReloadMap(entryDirection, playerCoordinate);
     }
 
     public void ReserveStart()
     {
-        Debug.Log("ReserveStart");
-        playerController.SetMoveFlg(false);
+        // Debug.Log("ReserveStart");
         battleSystem.gameObject.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
@@ -59,30 +46,27 @@ public class GameController : MonoBehaviour
 
     public void ReserveEnd()
     {
-        Debug.Log("ReserveEnd");
-        playerController.SetMoveFlg(true);
+        // Debug.Log("ReserveEnd");
+        fieldPlayer.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
     public void BattleStart()
     {
-        Debug.Log("BattleStart");
-        playerController.SetMoveFlg(false);
-        // fieldInfoSystem.FieldDialogClose();
+        // Debug.Log("BattleStart");
         reserveSystem.gameObject.SetActive(false);
-        enemy = fieldInfoSystem.GetRandomEnemy();
+        enemy = fieldSystem.GetEnemy();
         battleSystem.gameObject.SetActive(true);
-        battleSystem.BattleStart(playerController.Battler, enemy);
+        battleSystem.BattleStart(playerBattler, enemy);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 
     public void BattleEnd()
     {
-        Debug.Log("BattleEnd");
+        // Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
-        playerController.SetMoveFlg(true);
-        // fieldInfoSystem.FieldDialogOpen();
+        fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 }

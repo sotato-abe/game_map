@@ -95,11 +95,14 @@ public class CommandPanel : Panel
         soulCostText.SetText($"{soulCost}");
     }
 
-    private void ExecuteCommand()
+    public void ExecuteCommand()
     {
-        List<EnchantCount> enchants = ActivateCommands();
-        attackSystem.ExecutePlayerCommand(enchants);
-        CountEnegyCost();
+        if (executeFlg)
+        {
+            List<EnchantCount> enchants = ActivateCommands();
+            attackSystem.ExecutePlayerCommand(enchants);
+            CountEnegyCost();
+        }
     }
 
     public List<EnchantCount> ActivateCommands()
