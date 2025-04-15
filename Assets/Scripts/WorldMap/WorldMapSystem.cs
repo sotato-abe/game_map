@@ -16,7 +16,6 @@ public class WorldMapSystem : MonoBehaviour
 
     [SerializeField] RenderWorldMap renderWorldMap;
     [SerializeField] List<MapBase> mapBaseList; // 地面と壁のプレファブ 
-    [SerializeField] GameObject mapMapSwitch;
     [SerializeField] WorldMapPanel worldMapPanel;
 
     public FieldData fieldData; // フィールドデータ

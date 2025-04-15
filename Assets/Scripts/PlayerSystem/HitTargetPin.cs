@@ -26,7 +26,7 @@ public class HitTargetPin : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // UIをクリックした場合は無視
-            if (IsPointerOverUIObject()) return;
+            if (EventSystem.current.IsPointerOverGameObject()) return;
 
             // マウス位置をワールド座標に変換
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
