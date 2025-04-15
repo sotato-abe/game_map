@@ -9,6 +9,7 @@ public class RenderWorldMap : MonoBehaviour
     [SerializeField] private Tilemap worldmap; // グラウンド描画用Tilemap
     [SerializeField] FloorTileList floorTileList;
     [SerializeField] Sprite playerPositionSprite; // プレイヤーの位置を示すスプライト
+    [SerializeField] WorldMapCameraManager worldMapCameraManager; // カメラ
     private string GroundJsonData = "GroundTileMapData";
     private string floorJsonData = "FloorTileMapData";
     private Coordinate playerCoordinate;
@@ -96,5 +97,8 @@ public class RenderWorldMap : MonoBehaviour
         playerCoordinate = new Coordinate(newCoordinate);
         var newPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
         worldmap.SetTile(newPos, PlayerTile);
+
+        // カメラを新しい位置に移動
+        worldMapCameraManager.TargetPlayer(newPos);
     }
 }
