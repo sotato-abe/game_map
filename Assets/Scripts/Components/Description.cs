@@ -9,9 +9,8 @@ public class Description : MonoBehaviour
     [SerializeField] TextMeshProUGUI description;
     [SerializeField] Image image;
 
-    private void Start()
-    {
-    }
+    [SerializeField] float padding = 90f;
+    [SerializeField] RectTransform backImageRectTransform;
 
     public IEnumerator TypeDescription(string line)
     {
@@ -19,7 +18,20 @@ public class Description : MonoBehaviour
         foreach (char letter in line)
         {
             description.text += letter;
+            ResizePlate();
             yield return new WaitForSeconds(0f);
         }
+    }
+
+    private void ResizePlate()
+    {
+        if (description == null || backImageRectTransform == null)
+        {
+            Debug.LogError("description または backImageRectTransform が null");
+            return;
+        }
+
+        float newHeight = description.preferredHeight + padding;
+        backImageRectTransform.sizeDelta = new Vector2(backImageRectTransform.sizeDelta.x, newHeight);
     }
 }

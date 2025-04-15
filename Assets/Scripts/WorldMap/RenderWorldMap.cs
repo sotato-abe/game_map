@@ -6,29 +6,21 @@ using Newtonsoft.Json; // Newtonsoft.Jsonを使用
 
 public class RenderWorldMap : MonoBehaviour
 {
-    [SerializeField] private Tilemap groundTilemap; // グラウンド描画用Tilemap
-    [SerializeField] private Tilemap floorTilemap; // フロア描画用Tilemap
-    [SerializeField] private Tilemap fieldTilemap; // フィールド描画用Tilemap
-    [SerializeField] private Tilemap roadTilemap; // ロード描画用Tilemap
-    [SerializeField] private Tilemap spotTilemap; // スポット描画用Tilemap
-    [SerializeField] private GroundTileManager groundTileManager;
-    [SerializeField] private FloorTileManager floorTileManager;
-    [SerializeField] private RoadTileManager roadTileManager;
-    [SerializeField] private SpotTileManager spotTileManager;
-    private string groundJsonData = "GroundTileMapData";
+    [SerializeField] private Tilemap worldmap; // グラウンド描画用Tilemap
+    [SerializeField] FloorTileList floorTileList;
+    [SerializeField] Sprite playerPositionSprite; // プレイヤーの位置を示すスプライト
+    [SerializeField] WorldMapCameraManager worldMapCameraManager; // カメラ
+    private string GroundJsonData = "GroundTileMapData";
     private string floorJsonData = "FloorTileMapData";
-    private string fieldJsonData = "FieldTileMapData";
-    private string roadJsonData = "RoadTileMapData";
-    private string spotJsonData = "SpotTileMapData";
+    private Coordinate playerCoordinate;
+    private Tile PlayerTile;
 
-    public void RenderMap()
+    private void Awake()
     {
-        // マップデータを読み込んで描画
-        RenderGroundMap();
-        RenderFloorMap();
-        RenderFieldMap();
-        RenderRoadMap();
-        RenderSpotMap();
+        worldmap.ClearAllTiles();
+        PlayerTile = ScriptableObject.CreateInstance<Tile>();
+        PlayerTile.sprite = playerPositionSprite;
+        RenderMap();
     }
 
     private TileMapData LoadJsonMapData(string fileName)
@@ -54,132 +46,59 @@ public class RenderWorldMap : MonoBehaviour
         }
     }
 
-    public void RenderGroundMap()
+    public void RenderMap()
     {
-        TileMapData mapData = LoadJsonMapData(groundJsonData);
+        // マップデータを読み込んで描画
+        TileMapData groundmapData = LoadJsonMapData(GroundJsonData);
+        TileMapData mapData = LoadJsonMapData(floorJsonData);
+
+        if (groundmapData == null || mapData == null)
+        {
+            Debug.LogError("マップデータ読み込み失敗");
+            return;
+        }
 
         for (int y = 0; y < mapData.rows; y++)
         {
             for (int x = 0; x < mapData.cols; x++)
             {
-                int tileID = mapData.data[y][x];
+                int fieldTypeID = mapData.data[y][x];
+                int groundTypeID = groundmapData.data[y][x];
 
-                // GroundTileManager または GetTile が null の場合に備えたチェック
-                GroundTileBase groundTile = groundTileManager != null ? groundTileManager.GetTile((GroundType)tileID) : null;
-
-                if (groundTile != null)
+                if (fieldTypeID != null && groundTypeID == (int)GroundType.Ground)
                 {
                     Tile tile = ScriptableObject.CreateInstance<Tile>();
-                    tile.sprite = groundTile.Sprite;
-                    groundTilemap.SetTile(new Vector3Int(x, y, 0), tile);
-                }
-            }
-        }
-    }
-
-    public void RenderFloorMap()
-    {
-        TileMapData floorData = LoadJsonMapData(floorJsonData);
-
-        for (int y = 0; y < floorData.rows; y++)
-        {
-            for (int x = 0; x < floorData.cols; x++)
-            {
-                int floorID = floorData.data[y][x];
-                // デフォルトフィールドタイプのフロアは無視する
-                if (floorID != 0)
-                {
-                    // FloorTileManager または GetTile が null の場合に備えたチェック
-                    Sprite floorSprite = floorTileManager != null ? floorTileManager.GetFloorTile((FloorType)floorID) : null;
-
-                    if (floorSprite != null)
+                    tile.sprite = floorTileList.GetFloorTypeTile((FieldType)fieldTypeID);
+                    if (tile.sprite)
                     {
-                        Tile floorTile = ScriptableObject.CreateInstance<Tile>();
-                        floorTile.sprite = floorSprite;
-                        floorTilemap.SetTile(new Vector3Int(x, y, 0), floorTile);
+                        worldmap.SetTile(new Vector3Int(x, y, 0), tile);
                     }
                 }
             }
         }
     }
 
-    public void RenderFieldMap()
+    public void ChangePlayerCoordinate(Coordinate newCoordinate)
     {
-        TileMapData fieldData = LoadJsonMapData(fieldJsonData);
-        TileMapData floorData = LoadJsonMapData(floorJsonData);
-
-        for (int y = 0; y < fieldData.rows; y++)
+        if (newCoordinate == null)
         {
-            for (int x = 0; x < fieldData.cols; x++)
+            return;
+        }
+        else if (playerCoordinate != null)
+        {
+            var oldPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
+            var currentTile = worldmap.GetTile(oldPos);
+            if (currentTile == PlayerTile)
             {
-                int fieldID = floorData.data[y][x];
-                int tileID = fieldData.data[y][x];
-                // デフォルトフィールドタイプのフロアは無視する
-                if (tileID != 0)
-                {
-                    // FloorTileManager または GetTile が null の場合に備えたチェック
-                    Sprite fieldSprite = floorTileManager != null ? floorTileManager.GetTile((FloorType)fieldID, tileID) : null;
-
-                    if (fieldSprite != null)
-                    {
-                        Tile fieldTile = ScriptableObject.CreateInstance<Tile>();
-                        fieldTile.sprite = fieldSprite;
-                        fieldTilemap.SetTile(new Vector3Int(x, y, 0), fieldTile);
-                    }
-                }
+                worldmap.SetTile(oldPos, null);
             }
         }
-    }
+        // 新しい位置にPlayerTileを置く
+        playerCoordinate = new Coordinate(newCoordinate);
+        var newPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
+        worldmap.SetTile(newPos, PlayerTile);
 
-    public void RenderRoadMap()
-    {
-        TileMapData roadData = LoadJsonMapData(roadJsonData);
-
-        for (int y = 0; y < roadData.rows; y++)
-        {
-            for (int x = 0; x < roadData.cols; x++)
-            {
-                int roadID = roadData.data[y][x];
-                // 道が敷かれていない場所は無視する
-                if (roadID != 0)
-                {
-                    // FloorTileManager または GetTile が null の場合に備えたチェック
-                    Sprite roadTile = roadTileManager != null ? roadTileManager.GetTile((DirectionType)roadID) : null;
-
-                    if (roadTile != null)
-                    {
-                        Tile tile = ScriptableObject.CreateInstance<Tile>();
-                        tile.sprite = roadTile;
-                        roadTilemap.SetTile(new Vector3Int(x, y, 0), tile);
-                    }
-                }
-            }
-        }
-    }
-
-    public void RenderSpotMap()
-    {
-        TileMapData spotData = LoadJsonMapData(spotJsonData);
-
-        for (int y = 0; y < spotData.rows; y++)
-        {
-            for (int x = 0; x < spotData.cols; x++)
-            {
-                int spotID = spotData.data[y][x];
-                // スポットが敷かれていない場所は無視する
-                if (spotID != 0)
-                {
-                    // FloorTileManager または GetTile が null の場合に備えたチェック
-                    Sprite spotTile = spotTileManager != null ? spotTileManager.GetDefaultTile() : null;
-
-                    if (spotTile != null)
-                    {
-                        Tile tile = ScriptableObject.CreateInstance<Tile>();
-                        tile.sprite = spotTile;
-                        spotTilemap.SetTile(new Vector3Int(x, y, 0), tile);
-                    }
-                }
-            }
-        }
+        // カメラを新しい位置に移動
+        worldMapCameraManager.TargetPlayer(newPos);
     }
 }

@@ -20,7 +20,7 @@ public class CameraManager : MonoBehaviour
         Vector3 cameraPos = target.transform.position; // cameraPosという変数を作り、追従する対象の位置を入れる
 
         // もし対象の横位置が0より小さい場合
-        if(target.transform.position.x < 0)
+        if (target.transform.position.x < 0)
         {
             cameraPos.x = 0; // カメラの横位置に0を入れる
         }
