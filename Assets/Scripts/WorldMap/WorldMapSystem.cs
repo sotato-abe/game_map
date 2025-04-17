@@ -24,7 +24,7 @@ public class WorldMapSystem : MonoBehaviour
     public int worldHeight; // ワールドマップの高さ
     private bool isWorldMapShow = false; // ワールドマップの高さ
 
-    void Start()
+    void Awake()
     {
         // 初期化処理
         groundData = LoadJsonMapData("GroundTileMapData");
@@ -75,6 +75,7 @@ public class WorldMapSystem : MonoBehaviour
             SetMapTileSet(); // フィールドデータにタイルセットを設定
             SetRoadEntry(); // フィールドデータに出入り口を設定
         }
+        SeachAroundGround();
 
         // TODO : 別処理を作ってそこでWorldMapの更新をする:
         renderWorldMap.ChangePlayerCoordinate(coordinate); // ワールドマップのPlayer位置を更新
@@ -124,6 +125,18 @@ public class WorldMapSystem : MonoBehaviour
         {
             fieldData.openBottom = true; // 下の出入り口
         }
+    }
+
+
+    // 周囲のGroundを取得する
+    private void SeachAroundGround()
+    {
+        bool isTopGround = groundData.data[coordinate.row + 1][coordinate.col] == (int)GroundType.Ground;
+        bool isBottomGround = groundData.data[coordinate.row - 1][coordinate.col] == (int)GroundType.Ground;
+        bool isLeftGround = groundData.data[coordinate.row][coordinate.col - 1] == (int)GroundType.Ground;
+        bool isRightGround = groundData.data[coordinate.row][coordinate.col + 1] == (int)GroundType.Ground;
+
+        fieldData.groundDirection = DirectionTypeExtensions.DirectionMarge(isTopGround, isBottomGround, isRightGround, isLeftGround);
     }
 
     private void SwitchWorldMap()
