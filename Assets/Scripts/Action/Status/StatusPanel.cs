@@ -138,7 +138,7 @@ public class StatusPanel : Panel
         return (type == StatusType.ATK || type == StatusType.TEC ||
                 type == StatusType.DEF || type == StatusType.SPD || type == StatusType.LUK)
                 ? statusList.transform
-                : (type == StatusType.MMR || type == StatusType.BAG)
+                : (type == StatusType.MMR || type == StatusType.BAG || type == StatusType.STG || type == StatusType.POC)
                 ? storageList.transform
                 : null;
     }
