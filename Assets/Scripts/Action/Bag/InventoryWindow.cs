@@ -58,10 +58,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
         if (droppedItemUnit != null)
         {
-            if (playerBattler.BagItemList.Contains(droppedItemUnit.Item))
+            if (droppedItemUnit.transform.parent == itemList.transform)
             {
-                Debug.Log("アイテムはすでにポーチに存在しています。");
-                return; // 追加しない
+                Debug.Log("バッグ内のアイテムをドロップしても何もしない");
+                return; // バッグ内のアイテムをドロップしても何もしない
             }
             if (playerBattler.BagItemList.Count >= playerBattler.Bag.val)
             {
@@ -69,8 +69,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 return; // 追加しない
             }
 
-            AddItemUnit(droppedItemUnit.Item); // バッグに追加
             OnDropItemUnitAction?.Invoke(droppedItemUnit);
+            AddItemUnit(droppedItemUnit.Item); // バッグに追加
         }
     }
 

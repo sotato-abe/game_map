@@ -52,10 +52,10 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         if (droppedItemUnit != null)
         {
             // すでにポーチに同じアイテムがあるか確認
-            if (playerBattler.PouchList.Contains(droppedItemUnit.Item))
+            if (droppedItemUnit.transform.parent == itemList.transform)
             {
-                Debug.Log("アイテムはすでにポーチに存在しています。");
-                return; // 追加しない
+                Debug.Log("ポーチ内のアイテムをドロップしても何もしない");
+                return;
             }
             if (playerBattler.PouchList.Count >= playerBattler.Pouch.val)
             {
@@ -63,8 +63,8 @@ public class PouchWindow : MonoBehaviour, IDropHandler
                 return; // 追加しない
             }
 
-            AddItemUnit(droppedItemUnit.Item); // ポーチに追加
             inventoryWindow.RemoveItem(droppedItemUnit); // バックから削除
+            AddItemUnit(droppedItemUnit.Item); // ポーチに追加
         }
     }
 
