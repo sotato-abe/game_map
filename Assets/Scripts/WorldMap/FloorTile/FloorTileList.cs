@@ -15,6 +15,7 @@ public class FloorTileList : ScriptableObject
     [SerializeField] Sprite Magma;
     [SerializeField] Sprite Pollution;
     [SerializeField] Sprite Sea;
+    [SerializeField] Sprite Ocean;
 
     public Sprite GetFloorTypeTile(FieldType type)
     {
@@ -38,8 +39,10 @@ public class FloorTileList : ScriptableObject
                 return Magma;
             case FieldType.Pollution:
                 return Pollution;
+            case FieldType.Sea:
+                return Sea;
             default:
-                return Sea; // デフォルトのタイルを返す
+                return Ocean; // デフォルトのタイルを返す
         }
     }
 }

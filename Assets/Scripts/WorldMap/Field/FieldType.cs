@@ -9,4 +9,6 @@ public enum FieldType
         Ice,            // 氷床 629
         Magma,          // マグマ 603
         Pollution,      // 汚染 437
+        Sea,        // 海 622
+        Ocean,      // 遠洋 621
 }

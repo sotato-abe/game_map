@@ -9,8 +9,9 @@ public class RenderWorldMap : MonoBehaviour
     [SerializeField] private Tilemap worldmap; // グラウンド描画用Tilemap
     [SerializeField] FloorTileList floorTileList;
     [SerializeField] Sprite playerPositionSprite; // プレイヤーの位置を示すスプライト
+    [SerializeField] Sprite seaTile; // プレイヤーの位置を示すスプライト
+    [SerializeField] Sprite oceanTile; // プレイヤーの位置を示すスプライト
     [SerializeField] WorldMapCameraManager worldMapCameraManager; // カメラ
-    private string GroundJsonData = "GroundTileMapData";
     private string floorJsonData = "FloorTileMapData";
     private Coordinate playerCoordinate;
     private Tile PlayerTile;
@@ -49,23 +50,15 @@ public class RenderWorldMap : MonoBehaviour
     public void RenderMap()
     {
         // マップデータを読み込んで描画
-        TileMapData groundmapData = LoadJsonMapData(GroundJsonData);
         TileMapData mapData = LoadJsonMapData(floorJsonData);
-
-        if (groundmapData == null || mapData == null)
-        {
-            Debug.LogError("マップデータ読み込み失敗");
-            return;
-        }
 
         for (int y = 0; y < mapData.rows; y++)
         {
             for (int x = 0; x < mapData.cols; x++)
             {
                 int fieldTypeID = mapData.data[y][x];
-                int groundTypeID = groundmapData.data[y][x];
 
-                if (fieldTypeID != null && groundTypeID == (int)GroundType.Ground)
+                if (fieldTypeID != null)
                 {
                     Tile tile = ScriptableObject.CreateInstance<Tile>();
                     tile.sprite = floorTileList.GetFloorTypeTile((FieldType)fieldTypeID);
