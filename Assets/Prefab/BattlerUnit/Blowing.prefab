@@ -90,8 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f02786094820340b0e7b1397be6a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 5192105329702170914}
-  letterPerSecond: 0
+  messageText: {fileID: 0}
+  backImageRectTransform: {fileID: 0}
 --- !u!1 &5192105329702170916
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Message
+  m_text: Run!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}
   m_sharedMaterial: {fileID: -8396312827205554169, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}

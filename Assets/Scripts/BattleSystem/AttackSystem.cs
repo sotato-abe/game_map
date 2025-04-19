@@ -23,8 +23,8 @@ public class AttackSystem : MonoBehaviour
 
     public void ExecutePlayerTalk()
     {
-        StartCoroutine(playerUnit.SetTalkMessage("hey"));
-        StartCoroutine(enemyUnit.SetTalkMessage("...  "));
+        playerUnit.SetTalkMessage("hey");
+        enemyUnit.SetTalkMessage("...  ");
 
         // TODO : Talkのアクション実装
         // 確率でクエスト開放する
@@ -39,7 +39,7 @@ public class AttackSystem : MonoBehaviour
         {
             enemyUnit.Battler.TakeDamage(damages);
             enemyUnit.UpdateEnegyUI();
-            StartCoroutine(enemyUnit.SetTalkMessage("Auch!!"));
+            enemyUnit.SetTalkMessage("Auch!!");
             enemyUnit.SetMotion(MotionType.Shake);
         }
         if (enemyUnit.Battler.Life <= 0)
@@ -106,8 +106,8 @@ public class AttackSystem : MonoBehaviour
     public void ExecutePlayerEscape()
     {
         // TODO : 逃亡時の処理を追加
-        StartCoroutine(playerUnit.SetTalkMessage("Run!"));
-        StartCoroutine(enemyUnit.SetTalkMessage("wait!!"));
+        playerUnit.SetTalkMessage("Run!");
+        enemyUnit.SetTalkMessage("wait!!");
         OnBattleEscape?.Invoke();
     }
 
@@ -137,7 +137,7 @@ public class AttackSystem : MonoBehaviour
         {
             playerUnit.SetMotion(MotionType.Shake);
             playerUnit.Battler.TakeDamage(damages);
-            StartCoroutine(playerUnit.SetTalkMessage("Dumm,"));
+            playerUnit.SetTalkMessage("Dumm,");
             playerUnit.UpdateEnegyUI();
         }
         if (playerUnit.Battler.Life <= 0)
