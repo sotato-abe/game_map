@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 using Newtonsoft.Json; // Newtonsoft.Jsonを使用
 
 // JSONのマップデータを読み込みフィールドデータを返す
-// TODO：RenderWorldMapにワールドマップの表示をリクエストする。
 public class WorldMapSystem : MonoBehaviour
 {
     TileMapData floorData;

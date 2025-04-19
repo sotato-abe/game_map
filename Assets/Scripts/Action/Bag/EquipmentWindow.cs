@@ -24,10 +24,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     private void Awake()
     {
-        if (playerBattler == null)
-        {
-            Debug.LogWarning("playerBattler is not initialized.");
-        }
         playerBattler = playerUnit.Battler;
         SetEquipmentList();
     }

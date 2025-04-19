@@ -120,7 +120,7 @@ public class AttackPanel : Panel
                 UseEnegy(equipmentUnit.Equipment);
                 foreach (var attack in equipmentUnit.Equipment.Base.AttackList)
                 {
-                    Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
+                    Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
                     // TODO : ダメージにステータスによる増減を追加（計算は仮で構築中）
                     if (attack.type == EnegyType.Life)
                     {

@@ -16,7 +16,7 @@ public class EquipmentBase : ScriptableObject
     [SerializeField] int lifeCost;
     [SerializeField] int batteryCost;
     [SerializeField] int soulCost;
-    [SerializeField] Probability probability; // TODO:１～１００のクラスにする
+    [SerializeField] Probability probability;
     [SerializeField] Sprite sprite;
     [SerializeField] string description;
     [SerializeField] private List<Enegy> attackList = new List<Enegy>();

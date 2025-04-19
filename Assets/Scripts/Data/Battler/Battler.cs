@@ -121,15 +121,15 @@ public class Battler
         {
             if (damage.AttackType == AttackType.Enegy)
             {
-                if (damage.SubType == (int)EnegyType.Life)
+                if (damage.EnegyType == EnegyType.Life)
                 {
                     Life = Life - damage.Val;
                 }
-                if (damage.SubType == (int)EnegyType.Battery)
+                if (damage.EnegyType == EnegyType.Battery)
                 {
                     Battery = Battery - damage.Val;
                 }
-                if (damage.SubType == (int)EnegyType.Soul)
+                if (damage.EnegyType == EnegyType.Soul)
                 {
                     Soul = Soul - damage.Val;
                 }
