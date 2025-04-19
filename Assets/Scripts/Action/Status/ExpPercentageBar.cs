@@ -8,10 +8,11 @@ public class ExpPercentageBar : PercentageBar
 {
     public void SetExpBar(int levelDifference, int exp)
     {
-        StartCoroutine(PlayLevelUpAnimation(levelDifference, exp));
+        currentPercentage = (float)exp / 100f;
+        StartCoroutine(PlayLevelUpAnimation(levelDifference));
     }
 
-    private IEnumerator PlayLevelUpAnimation(int levelDifference, int exp)
+    private IEnumerator PlayLevelUpAnimation(int levelDifference)
     {
         for (int i = 0; i < levelDifference; i++)
         {
@@ -20,7 +21,6 @@ public class ExpPercentageBar : PercentageBar
             yield return null;
         }
 
-        float percentage = (float)exp / 100f; // 最後のレベルのEXPバーだけ描画
-        SetBar(percentage);
+        ScrollBarImmediate();
     }
 }

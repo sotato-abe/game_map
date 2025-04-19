@@ -12,16 +12,21 @@ public class PercentageBar : MonoBehaviour
     float animationSpeed = 5f;
     Coroutine animCoroutine;
 
-    public void SetBar(float percentage)
-    {
-        percentage = Mathf.Clamp01(percentage);
+    public float currentPercentage = 0;
 
+    private void OnDisable()
+    {
+        SetBarImmediate(currentPercentage);
+    }
+
+    public void ScrollBarImmediate()
+    {
         if (animCoroutine != null)
         {
             StopCoroutine(animCoroutine);
         }
 
-        animCoroutine = StartCoroutine(CountBar(percentage));
+        animCoroutine = StartCoroutine(CountBar(currentPercentage));
     }
 
     private IEnumerator CountBar(float target)
@@ -50,5 +55,10 @@ public class PercentageBar : MonoBehaviour
     public void ResetBar()
     {
         bar.fillAmount = 0f;
+    }
+
+    public void SetBarImmediate(float percentage)
+    {
+        bar.fillAmount = Mathf.Clamp01(percentage);
     }
 }
