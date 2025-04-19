@@ -121,6 +121,20 @@ public class AttackPanel : Panel
                 foreach (var attack in equipmentUnit.Equipment.Base.AttackList)
                 {
                     Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
+                    // TODO : ダメージにステータスによる増減を追加（計算は仮で構築中）
+                    if (attack.type == EnegyType.Life)
+                    {
+                        damage.Val = Mathf.FloorToInt(damage.Val + playerBattler.Attack.val);
+                    }
+                    else if (attack.type == EnegyType.Battery)
+                    {
+                        Debug.Log("Battery Damage : 考え中");
+                    }
+                    else if (attack.type == EnegyType.Soul)
+                    {
+                        Debug.Log("Soul Damage : 考え中");
+                    }
+                    
                     damages.Add(damage);
                 }
                 equipmentUnit.SetEquipmentMotion(EquipmentUnitMotionType.Jump);
