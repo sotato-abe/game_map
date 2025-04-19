@@ -8,8 +8,6 @@ using Newtonsoft.Json; // Newtonsoft.Jsonを使用
 // TODO：RenderWorldMapにワールドマップの表示をリクエストする。
 public class WorldMapSystem : MonoBehaviour
 {
-    // GroundTileMapData:GroundTypeを使用する 遠洋：０、海：１、大地：２
-    TileMapData groundData;
     TileMapData floorData;
     TileMapData roadData;
     TileMapData spotData;
@@ -24,16 +22,14 @@ public class WorldMapSystem : MonoBehaviour
     public int worldHeight; // ワールドマップの高さ
     private bool isWorldMapShow = false; // ワールドマップの高さ
 
-    void Start()
+    void Awake()
     {
-        // 初期化処理
-        groundData = LoadJsonMapData("GroundTileMapData");
         floorData = LoadJsonMapData("FloorTileMapData");
         roadData = LoadJsonMapData("RoadTileMapData");
         spotData = LoadJsonMapData("SpotTileMapData");
 
-        worldWidth = groundData.data[0].Length; // ワールドマップの幅を取得
-        worldHeight = groundData.data.Count; // ワールドマップの高さを取得
+        worldWidth = floorData.data[0].Length; // ワールドマップの幅を取得
+        worldHeight = floorData.data.Count; // ワールドマップの高さを取得
         renderWorldMap.ChangePlayerCoordinate(coordinate); // ワールドマップを描画
     }
 
@@ -61,7 +57,6 @@ public class WorldMapSystem : MonoBehaviour
     }
 
     // 指定座標からのフィールドデータを取得する
-    // TODO：指定座標が海のとき、周りグランドがあるかを確認する。周りにグラウンドがあるときはその方向を返す。
     public FieldData getFieldDataByCoordinate(Coordinate targetCoordinate)
     {
         coordinate = targetCoordinate; // 座標を取得
@@ -75,8 +70,8 @@ public class WorldMapSystem : MonoBehaviour
             SetMapTileSet(); // フィールドデータにタイルセットを設定
             SetRoadEntry(); // フィールドデータに出入り口を設定
         }
+        SeachAroundGround();
 
-        // TODO : 別処理を作ってそこでWorldMapの更新をする:
         renderWorldMap.ChangePlayerCoordinate(coordinate); // ワールドマップのPlayer位置を更新
 
         return fieldData;
@@ -124,6 +119,32 @@ public class WorldMapSystem : MonoBehaviour
         {
             fieldData.openBottom = true; // 下の出入り口
         }
+    }
+
+
+    // 周囲のGroundを取得する
+    private void SeachAroundGround()
+    {
+        bool isTopGround = isLand(coordinate.row + 1, coordinate.col);
+        bool isBottomGround = isLand(coordinate.row - 1, coordinate.col);
+        bool isLeftGround = isLand(coordinate.row, coordinate.col - 1);
+        bool isRightGround = isLand(coordinate.row, coordinate.col + 1);
+
+        fieldData.groundDirection = DirectionTypeExtensions.DirectionMarge(isTopGround, isBottomGround, isRightGround, isLeftGround);
+    }
+
+    private bool isLand(int row, int col)
+    {
+        // 指定座標が海かどうかを確認
+        if (floorData.data[row][col] == (int)FieldType.Sea)
+        {
+            return false; // 海の場合はfalseを返す
+        }
+        else if (floorData.data[row][col] == (int)FieldType.Ocean)
+        {
+            return false; // 海の場合はfalseを返す
+        }
+        return true; // 大地の場合はtrueを返す
     }
 
     private void SwitchWorldMap()
