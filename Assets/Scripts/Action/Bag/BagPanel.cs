@@ -15,7 +15,7 @@ public class BagPanel : Panel
     [SerializeField] BattleUnit playerUnit;
 
     private List<BagCategoryIcon> categoryIconList = new List<BagCategoryIcon>();
-    private BagCategory selectedCategory = BagCategory.Pouch; // TODO：bagCategoryに変更
+    private BagCategory selectedCategory = BagCategory.Pouch;
 
     private void Start()
     {

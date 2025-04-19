@@ -127,7 +127,7 @@ public class AttackSystem : MonoBehaviour
                 UseEnegy(equipment);
                 foreach (var attack in equipment.Base.AttackList)
                 {
-                    Damage damage = new Damage(AttackType.Enegy, (int)attack.type, attack.val);
+                    Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
                     damages.Add(damage);
                 }
             }

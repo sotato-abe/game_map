@@ -10,9 +10,9 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 {
     public UnityAction OnActionExecute;
     public UnityAction<ItemUnit> OnDropItemUnitAction;
-    [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ // TODO：ItemSlotに名前変更する
-    [SerializeField] GameObject equipmentBlockPrefab;  // EquipmentBlockのプレハブ
-    [SerializeField] GameObject blockPrefab;  // blockのプレハブ
+    [SerializeField] GameObject itemUnitPrefab;
+    [SerializeField] GameObject equipmentBlockPrefab;
+    [SerializeField] GameObject blockPrefab;
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI bagRatio;
     [SerializeField] EquipmentWindow equipmentWindow;
