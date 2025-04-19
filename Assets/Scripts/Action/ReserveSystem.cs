@@ -22,10 +22,12 @@ public class ReserveSystem : MonoBehaviour
 
     void Start()
     {
+        // Reserveで表示するActionを設定
         actionList.Add(ActionType.Bag);
         actionList.Add(ActionType.Storage);
         actionList.Add(ActionType.Status);
         actionList.Add(ActionType.Quit);
+
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
         actionBoard.OnReserveExecuteAction += ReserveExecuteAction;

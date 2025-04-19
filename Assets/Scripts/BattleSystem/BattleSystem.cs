@@ -24,12 +24,18 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     private ActionType activeAction = ActionType.Talk;
     private ActionIcon selectedAction;
-    private readonly List<ActionType> actionList = new() { ActionType.Talk, ActionType.Attack, ActionType.Command, ActionType.Pouch, ActionType.Escape };
+    private readonly List<ActionType> actionList = new List<ActionType>{};
     private readonly List<ActionIcon> actionIconList = new();
 
 
     void Start()
     {
+        actionList.Add(ActionType.Talk);
+        actionList.Add(ActionType.Attack);
+        actionList.Add(ActionType.Command);
+        actionList.Add(ActionType.Pouch);
+        actionList.Add(ActionType.Escape);
+
         transform.gameObject.SetActive(true);
         enemyUnit.gameObject.SetActive(false);
 
