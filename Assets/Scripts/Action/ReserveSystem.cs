@@ -15,7 +15,7 @@ public class ReserveSystem : MonoBehaviour
 
     // ステート管理
     private ReserveState state;
-    private ActionType activeAction = ActionType.Bag;
+    public ActionType activeAction = ActionType.Bag;
     private ActionIcon selectedAction;
     private List<ActionType> actionList = new List<ActionType>();
     private List<ActionIcon> actionIconList = new List<ActionIcon>();
@@ -57,9 +57,14 @@ public class ReserveSystem : MonoBehaviour
             {
                 state = ReserveState.ActionSelected;
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ResorveEnd();
+            }
         }
     }
-    
+
     public void SetState(ReserveState targetState)
     {
         state = targetState;
@@ -82,25 +87,16 @@ public class ReserveSystem : MonoBehaviour
             actionIcon.SetAction(actionValue);
             actionIcon.OnPointerEnterAction += SelectAction;
             actionIconList.Add(actionIcon);
-            if (activeAction == actionValue)
-            {
-                actionBoard.ChangeActionPanel(actionValue);
-            }
         }
-
-        selectedAction = actionIconList.Count > 0 ? actionIconList[0] : null;
-
-        if (selectedAction)
-        {
-            selectedAction.SetActive(true);
-        }
+        SelectActiveActionIcon(activeAction);
+        actionBoard.ChangeActionPanel(activeAction);
     }
 
     private void SelectAction(ActionType selectAction)
     {
         if (state == ReserveState.ActionSelection)
         {
-            if(activeAction == selectAction) return;
+            if (activeAction == selectAction) return;
             activeAction = selectAction;
             SelectActiveActionIcon(selectAction);
             actionBoard.ChangeActionPanel(selectAction);
@@ -168,7 +164,7 @@ public class ReserveSystem : MonoBehaviour
     public void ResorveEnd()
     {
         state = ReserveState.Standby;
-        activeAction = actionList[0];
+        // activeAction = actionList[0];
         foreach (ActionIcon icon in actionIconList)
         {
             Destroy(icon.gameObject);

@@ -24,7 +24,7 @@ public class BattleSystem : MonoBehaviour
     public BattleState state;
     private ActionType activeAction = ActionType.Talk;
     private ActionIcon selectedAction;
-    private readonly List<ActionType> actionList = new List<ActionType>{};
+    private readonly List<ActionType> actionList = new List<ActionType> { };
     private readonly List<ActionIcon> actionIconList = new();
 
 
@@ -60,13 +60,8 @@ public class BattleSystem : MonoBehaviour
                 actionBoard.ChangeActionPanel(actionValue);
             }
         }
-
-        selectedAction = actionIconList.Count > 0 ? actionIconList[0] : null;
-
-        if (selectedAction)
-        {
-            selectedAction.SetActive(true);
-        }
+        SelectActiveActionIcon(activeAction);
+        actionBoard.ChangeActionPanel(activeAction);
     }
 
     public void Update()
@@ -277,7 +272,7 @@ public class BattleSystem : MonoBehaviour
     {
         actionBoard.ChangeExecuteFlg(false);
         state = BattleState.Standby;
-        activeAction = actionList[0];
+        // activeAction = actionList[0];
         turnOrderSystem.BattlerEnd();
         foreach (ActionIcon icon in actionIconList)
         {
