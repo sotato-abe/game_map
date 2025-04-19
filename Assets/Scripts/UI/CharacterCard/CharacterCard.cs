@@ -11,9 +11,23 @@ public class CharacterCard : MonoBehaviour
     [SerializeField] private Image cardImage;  // 表示用のTextMeshProUGUIフィールド
     [SerializeField] private NamePlate namePlate;  // 表示用のTextMeshProUGUIフィールド
 
+    private Vector3 originalPosition;
+
+    private void Start()
+    {
+        originalPosition = transform.localPosition;  // 元の位置を保存
+    }
+
     private void OnEnable()
     {
         SetCardMotion(MotionType.Move);
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();  // 全てのコルーチンを停止
+        transform.localPosition = originalPosition;  // 元の位置に戻す
+        transform.localRotation = Quaternion.identity;  // 元の回転に戻す
     }
 
     public void SetCharacter(Battler battler)
@@ -49,7 +63,7 @@ public class CharacterCard : MonoBehaviour
 
     private IEnumerator MoveMotion()
     {
-        Vector3 originalPosition = transform.position;
+        // Vector3 originalPosition = transform.position;
         float moveRange = 20f;  // 移動範囲
         float moveSpeed = 3f;  // 移動スピード
         float updateInterval = 5.0f; // ターゲット更新の時間間隔
@@ -73,13 +87,12 @@ public class CharacterCard : MonoBehaviour
                     Random.Range(-moveRange, moveRange),
                     0
                 );
-                targetRotation  = Quaternion.Euler(0, 0, Random.Range(0, 3));
+                targetRotation = Quaternion.Euler(0, 0, Random.Range(0, 3));
                 elapsedTime = 0f;
             }
-            // 徐々に回転を変化させる
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime);
-            // ターゲットに向かってスムーズに移動
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
 
             yield return null; // 毎フレーム実行
         }

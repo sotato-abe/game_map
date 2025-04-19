@@ -111,8 +111,14 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.Setup(enemy);
         enemyUnit.SetMotion(MotionType.Jump);
-        enemyUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
-        playerUnit.SetMessage(MessageType.Encount); // TODO : キャラクターメッセージリストから取得する。
+
+        //enemyのMessagesの中からMessageType.Encountのメッセージを取得
+        string enemyMessage = enemy.Base.Messages.Find(m => m.messageType == MessageType.Encount)?.message ?? "";
+        string playerMessage = player.Base.Messages.Find(m => m.messageType == MessageType.Encount)?.message ?? "";
+        if (enemyMessage != "")
+            enemyUnit.SetTalkMessage(enemyMessage);
+        if (playerMessage != "")
+            playerUnit.SetTalkMessage(playerMessage);
 
         attackSystem.SetBattler(playerUnit, enemyUnit);
         turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });

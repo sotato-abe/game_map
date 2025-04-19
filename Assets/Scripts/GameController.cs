@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour
         fieldSystem.OnEncount += BattleStart;
         
         playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
-        StartCoroutine(playerUnit.SetTalkMessage("start.."));
+        playerUnit.SetTalkMessage("start..");
 
         playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;
