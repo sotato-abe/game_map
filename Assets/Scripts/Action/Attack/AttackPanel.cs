@@ -16,10 +16,6 @@ public class AttackPanel : Panel
 
     private Battler playerBattler;
 
-    private int lifeCost = 0;
-    private int batteryCost = 0;
-    private int soulCost = 0;
-
     List<EquipmentUnit> equipmentUnitList = new List<EquipmentUnit>();
 
     public void Start()
@@ -65,36 +61,6 @@ public class AttackPanel : Panel
         }
     }
 
-    public void CountEnegyCost()
-    {
-        lifeCost = 0;
-        batteryCost = 0;
-        soulCost = 0;
-
-        foreach (Equipment equipment in playerBattler.Equipments)
-        {
-            var lifeCheck = playerBattler.Life > equipment.Base.LifeCost.val + lifeCost;
-            var batteryCheck = playerBattler.Battery >= equipment.Base.BatteryCost.val + batteryCost;
-            var soulCheck = playerBattler.Soul >= equipment.Base.SoulCost.val + soulCost;
-
-            if (lifeCheck && batteryCheck && soulCheck)
-            {
-                lifeCost += equipment.Base.LifeCost.val;
-                batteryCost += equipment.Base.BatteryCost.val;
-                soulCost += equipment.Base.SoulCost.val;
-            }
-        }
-
-        SetEnegyCost();
-    }
-
-    public void SetEnegyCost()
-    {
-        lifeCostText.SetText($"{lifeCost}");
-        batteryCostText.SetText($"{batteryCost}");
-        soulCostText.SetText($"{soulCost}");
-    }
-
     public void ExecuteAttack()
     {
         if (executeFlg)
@@ -134,7 +100,6 @@ public class AttackPanel : Panel
                     {
                         Debug.Log("Soul Damage : 考え中");
                     }
-                    
                     damages.Add(damage);
                 }
                 equipmentUnit.SetEquipmentMotion(EquipmentUnitMotionType.Jump);
@@ -146,10 +111,14 @@ public class AttackPanel : Panel
 
     public bool CheckEnegy(Equipment equipment)
     {
+        int life = playerBattler.Life < 0 ? 0 : playerBattler.Life;
+        int battery = playerBattler.Battery < 0 ? 0 : playerBattler.Battery;
+        int soul = playerBattler.Soul < 0 ? 0 : playerBattler.Soul;
+
         if (
-            equipment.LifeCost.val <= playerBattler.Life &&
-            equipment.BatteryCost.val <= playerBattler.Battery &&
-            equipment.SoulCost.val <= playerBattler.Soul
+            equipment.Base.LifeCost.val <= life &&
+            equipment.Base.BatteryCost.val <= battery &&
+            equipment.Base.SoulCost.val <= soul
         )
         {
             return true;
@@ -166,5 +135,27 @@ public class AttackPanel : Panel
         playerBattler.Battery -= equipment.Base.BatteryCost.val;
         playerBattler.Soul -= equipment.Base.SoulCost.val;
         playerUnit.UpdateEnegyUI();
+    }
+    
+    public void CountEnegyCost()
+    {
+        int lifeCost = 0;
+        int batteryCost = 0;
+        int soulCost = 0;
+
+        foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
+        {
+            if (CheckEnegy(equipmentUnit.Equipment))
+            {
+                lifeCost += equipmentUnit.Equipment.Base.LifeCost.val;
+                batteryCost += equipmentUnit.Equipment.Base.BatteryCost.val;
+                soulCost += equipmentUnit.Equipment.Base.SoulCost.val;
+            }
+        }
+
+        lifeCostText.SetText($"{lifeCost}");
+        batteryCostText.SetText($"{batteryCost}");
+        soulCostText.SetText($"{soulCost}");
+        Debug.Log("CountEnegyCost");
     }
 }
