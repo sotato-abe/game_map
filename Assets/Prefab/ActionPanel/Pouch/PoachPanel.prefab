@@ -265,8 +265,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 3563987030415642938}
-  dialogBackground: {fileID: 3563987029533074323}
-  itemDialog: {fileID: 3563987030041239277}
+  cursor: {fileID: 0}
+  dialog: {fileID: 0}
 --- !u!114 &3563987029533074321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217db0f3cdc59f499967e0d3bbf621f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: {fileID: 3563987029536658298}
+  namePlate: {fileID: 0}
   description: {fileID: 3563987030384165955}
   enchantList: {fileID: 3563987031343060781}
   costList: {fileID: 3563987031141779339}
@@ -958,7 +958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217db0f3cdc59f499967e0d3bbf621f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: {fileID: 3563987030715461706}
+  namePlate: {fileID: 0}
   description: {fileID: 3563987030593378598}
   enchantList: {fileID: 3563987031307167213}
   costList: {fileID: 3563987029772048131}
@@ -1086,6 +1086,7 @@ MonoBehaviour:
   image: {fileID: 3563987029861718182}
   text: {fileID: 3563987030991837348}
   enegyIconList: {fileID: 11400000, guid: 2cf861fee1c91ce4b80a73943b1c4112, type: 2}
+  enegyType: 0
 --- !u!1 &3563987029743815682
 GameObject:
   m_ObjectHideFlags: 0
@@ -1953,7 +1954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a217db0f3cdc59f499967e0d3bbf621f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: {fileID: 3563987030679329078}
+  namePlate: {fileID: 0}
   description: {fileID: 3563987030465043790}
   enchantList: {fileID: 3563987029854107195}
   costList: {fileID: 3563987030077166163}
@@ -2270,8 +2271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 3563987031111973708}
-  dialogBackground: {fileID: 3563987030175261849}
-  itemDialog: {fileID: 3563987029555038278}
+  cursor: {fileID: 0}
+  dialog: {fileID: 0}
 --- !u!114 &3563987030175261855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2443,11 +2444,11 @@ RectTransform:
   m_Father: {fileID: 3563987029552504018}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 40, y: 0}
-  m_SizeDelta: {x: 170, y: 45}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 170, y: 60}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &3563987030357236095
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2469,14 +2470,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dd78123744c42ca498b18b6969f8dc47, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7753113f1eb873d46be6397d2165308c, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3678,8 +3679,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: -20, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3563987030745649336
 CanvasRenderer:
@@ -3899,6 +3900,7 @@ MonoBehaviour:
   image: {fileID: 3563987031394040586}
   text: {fileID: 3563987029743815692}
   enegyIconList: {fileID: 11400000, guid: 2cf861fee1c91ce4b80a73943b1c4112, type: 2}
+  enegyType: 0
 --- !u!1 &3563987030907089382
 GameObject:
   m_ObjectHideFlags: 0
@@ -3993,8 +3995,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 3563987030174635701}
-  dialogBackground: {fileID: 3563987030907089379}
-  itemDialog: {fileID: 3563987029712130410}
+  cursor: {fileID: 0}
+  dialog: {fileID: 0}
 --- !u!114 &3563987030907089377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4115,14 +4117,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 14e760f9e7125b841b714c7355b62be6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c3341ca78c50bd54885b88552a5bcf3c, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4981,6 +4983,7 @@ MonoBehaviour:
   image: {fileID: 3563987030550351725}
   text: {fileID: 3563987031303687411}
   enegyIconList: {fileID: 11400000, guid: 2cf861fee1c91ce4b80a73943b1c4112, type: 2}
+  enegyType: 0
 --- !u!1 &3563987031303687409
 GameObject:
   m_ObjectHideFlags: 0

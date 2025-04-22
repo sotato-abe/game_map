@@ -17,8 +17,8 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 
     public ActionType type;
     [SerializeField] private bool isActive = false;
-    private float defaultWidth = 70f;
-    private float defaultHeight = 80f;
+    private float defaultWidth = 50f;
+    private float defaultHeight = 50f;
     private float defaultFontSize = 12f; // デフォルトのフォントサイズ
     private float activeScale = 1.5f;
     private float scaleDuration = 0.05f; // スケール変更の時間
