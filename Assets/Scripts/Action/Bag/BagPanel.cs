@@ -29,18 +29,18 @@ public class BagPanel : Panel
 
     public void Update()
     {
-        //BagCategoryを変更
-        if (Input.GetKeyDown(KeyCode.Period))
-        {
-            SelectWindow(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Comma))
-        {
-            SelectWindow(false);
-        }
 
         if (!isActive)
         {
+            //BagCategoryを変更
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SelectWindow(true);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SelectWindow(false);
+            }
             //BagPanelを有効化
             if (Input.GetKeyDown(KeyCode.Return))
             {
