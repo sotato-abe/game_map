@@ -169,8 +169,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: -20, y: -0.0000009536743}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2711939653999167676
 CanvasRenderer:
@@ -202,8 +202,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: STATUS
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}
-  m_sharedMaterial: {fileID: -8396312827205554169, guid: c20ac19a84469744a92c0f580684ac1d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a63021d3a6ec5eb4599b61a9e96450d3, type: 2}
+  m_sharedMaterial: {fileID: -6671094818185493787, guid: a63021d3a6ec5eb4599b61a9e96450d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -234,10 +234,10 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -534,7 +534,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2851456813805361244}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1598,7 +1598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bar: {fileID: 4919893965040497019}
   backImage: {fileID: 3970928602294573527}
-  fillImage: {fileID: 0}
+  currentPercentage: 0
 --- !u!1 &6378244050428923059
 GameObject:
   m_ObjectHideFlags: 0
