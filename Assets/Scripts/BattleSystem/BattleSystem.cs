@@ -14,7 +14,7 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
-    [SerializeField] MessagePanel messagePanel;
+    [SerializeField] MessagePanel2 messagePanel;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] AttackSystem attackSystem;
@@ -125,7 +125,7 @@ public class BattleSystem : MonoBehaviour
         turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
-        messagePanel.AddMesageList($"{enemy.Base.Name} is coming!!");
+        messagePanel.AddBattleMesage($"{enemy.Base.Name} is coming!!");
     }
 
     public void StartActionSelection()
@@ -251,7 +251,7 @@ public class BattleSystem : MonoBehaviour
     {
         foreach (string message in resultItemMessageList)
         {
-            messagePanel.AddMesageList(message);
+            messagePanel.AddBattleMesage(message);
         }
         yield return new WaitForSeconds(1.5f);
         BattleEnd();

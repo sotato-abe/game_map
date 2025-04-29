@@ -11,7 +11,7 @@ public class ReserveSystem : MonoBehaviour
     [SerializeField] ActionIcon actionIconPrefab;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] GameObject actionListObject;
-    [SerializeField] MessagePanel messagePanel;
+    [SerializeField] MessagePanel2 messagePanel;
 
     // ステート管理
     private ReserveState state;
