@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
-    [SerializeField] MessagePanel messagePanel;
+    [SerializeField] MessagePanel2 messagePanel;
     [SerializeField] FieldSystem fieldSystem;
 
     //　プレイヤーの現在座標を保持する変数
@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
         playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        messagePanel.AddMesageList("game start");
+        messagePanel.AddGameMessage("game start");
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
