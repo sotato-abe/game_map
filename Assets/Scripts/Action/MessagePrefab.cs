@@ -12,7 +12,7 @@ public class MessagePrefab : MonoBehaviour
 
     private int lineHeight = 30;
     private int lineWidth = 200;
-    private float padding = 30f;
+    private float padding = 0f;
 
     public void SetMessage(Message message)
     {

@@ -205,8 +205,8 @@ public class BattleSystem : MonoBehaviour
     {
         actionBoard.ChangeExecuteFlg(false);
         List<Item> targetItems = enemyUnit.Battler.PouchList;
-        List<string> resultItemMessageList = new List<string>();
-        resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} obtained ");
+        string resultItemMessageList = "";
+        resultItemMessageList = playerUnit.Battler.Base.Name + " obtained.\n";
 
         if (targetItems != null && targetItems.Count > 0)
         {
@@ -228,12 +228,12 @@ public class BattleSystem : MonoBehaviour
 
             if (itemList != "")
             {
-                resultItemMessageList.Add($"{playerUnit.Battler.Base.Name} got {itemList}");
+                resultItemMessageList += ($"result {itemList}");
             }
         }
         else
         {
-            resultItemMessageList.Add("No items were found on the enemy.");
+            resultItemMessageList += (" No items were found on the enemy.");
         }
         playerUnit.Battler.Money += enemyUnit.Battler.Money;
         playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
@@ -243,19 +243,21 @@ public class BattleSystem : MonoBehaviour
             playerBattler.AcquisitionExp(enemyUnit.Battler.Exp); // プレイヤーの経験値を加算
             playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
         }
+        messagePanel.AddBattleMesage(resultItemMessageList);
 
-        StartCoroutine(BattleResultView(resultItemMessageList));
-    }
-
-    private IEnumerator BattleResultView(List<string> resultItemMessageList)
-    {
-        foreach (string message in resultItemMessageList)
-        {
-            messagePanel.AddBattleMesage(message);
-        }
-        yield return new WaitForSeconds(1.5f);
+        // StartCoroutine(BattleResultView(resultItemMessageList));
         BattleEnd();
     }
+
+    // private IEnumerator BattleResultView(List<string> resultItemMessageList)
+    // {
+    //     foreach (string message in resultItemMessageList)
+    //     {
+    //         messagePanel.AddBattleMesage(message);
+    //     }
+    //     yield return new WaitForSeconds(1.5f);
+    //     BattleEnd();
+    // }
 
     private void BattleEscape()
     {
