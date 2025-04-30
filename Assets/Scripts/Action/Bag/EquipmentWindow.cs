@@ -30,6 +30,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log("ドロップされたアイテムを装備します。");
         EquipmentBlock droppedEquipmentBlock = eventData.pointerDrag.GetComponent<EquipmentBlock>();
 
         if (droppedEquipmentBlock != null)
