@@ -43,7 +43,6 @@ public class MessagePanel2 : MonoBehaviour
 
     public void TypeMessageList()
     {
-        Debug.Log("メッセージリストの数: " + messageList.Count);
         // messageListが100件以上なら古いものを削除
         if (messageList.Count > 100)
         {
@@ -63,7 +62,6 @@ public class MessagePanel2 : MonoBehaviour
 
             if (i < existingCount)
             {
-                Debug.Log("test1 : " + existingCount);
                 // 既存のMessagePrefabを使う
                 Transform child = transform.GetChild(i);
                 MessagePrefab prefab = child.GetComponent<MessagePrefab>();
@@ -71,7 +69,6 @@ public class MessagePanel2 : MonoBehaviour
             }
             else
             {
-                Debug.Log("メッセージの内容: " + message.sprite.name + " " + message.messageText);
                 // 新しく生成する
                 MessagePrefab newPrefab = Instantiate(messagePrefab, transform);
                 newPrefab.SetMessage(message);
