@@ -16,7 +16,7 @@ public class PouchPanel : Panel
 
     int selectedItem = 0;
 
-    private int headHeight = 40;
+    private int headHeight = 50;
     private int itemWidth = 70;
     int row = 10;
     int padding = 10;
@@ -26,7 +26,7 @@ public class PouchPanel : Panel
     private void Start()
     {
         playerBattler = playerUnit.Battler;
-        // SetPanelSize();
+        SetPanelSize();
     }
 
     private void OnEnable()
@@ -54,7 +54,7 @@ public class PouchPanel : Panel
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                SelectItem(ArrowType.Up);
+                SelectItem(ArrowType.Down);
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -62,7 +62,7 @@ public class PouchPanel : Panel
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                SelectItem(ArrowType.Down);
+                SelectItem(ArrowType.Up);
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -75,13 +75,13 @@ public class PouchPanel : Panel
         }
     }
 
-    // public void SetPanelSize()
-    // {
-    //     int width = itemWidth * row + 40;
-    //     int column = (playerBattler.Pouch.val - 1) / row + 1;
-    //     int height = itemWidth * column + headHeight;
-    //     GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
-    // }
+    public void SetPanelSize()
+    {
+        int width = itemWidth * row + 40;
+        int column = (playerBattler.Pouch.val - 1) / row + 1;
+        int height = itemWidth * column + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+    }
 
     private void SetItemUnit()
     {

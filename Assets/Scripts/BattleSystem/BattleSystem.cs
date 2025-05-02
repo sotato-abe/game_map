@@ -245,19 +245,15 @@ public class BattleSystem : MonoBehaviour
         }
         messagePanel.AddBattleMesage(resultItemMessageList);
 
-        // StartCoroutine(BattleResultView(resultItemMessageList));
-        BattleEnd();
+        StartCoroutine(BattleResultView());
     }
 
-    // private IEnumerator BattleResultView(List<string> resultItemMessageList)
-    // {
-    //     foreach (string message in resultItemMessageList)
-    //     {
-    //         messagePanel.AddBattleMesage(message);
-    //     }
-    //     yield return new WaitForSeconds(1.5f);
-    //     BattleEnd();
-    // }
+    private IEnumerator BattleResultView()
+    {
+        // TODO : バトル結果の表示処理を実装する
+        yield return new WaitForSeconds(1.5f);
+        BattleEnd();
+    }
 
     private void BattleEscape()
     {
