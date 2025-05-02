@@ -26,14 +26,14 @@ public class WorldMapPanel : MonoBehaviour
         {
             worldMapCameraManager.DownTarget(); // 下に移動
         }
-        if (isCameraRightFlg)
-        {
-            worldMapCameraManager.RightTarget(); // 右に移動
-        }
-        if (isCameraLeftFlg)
-        {
-            worldMapCameraManager.LeftTarget(); // 左に移動
-        }
+        // if (isCameraRightFlg)
+        // {
+        //     worldMapCameraManager.RightTarget(); // 右に移動
+        // }
+        // if (isCameraLeftFlg)
+        // {
+        //     worldMapCameraManager.LeftTarget(); // 左に移動
+        // }
     }
 
     private void SetActive()
