@@ -80,5 +80,6 @@ public class MessagePanel2 : MonoBehaviour
         {
             Destroy(transform.GetChild(i).gameObject);
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 }
