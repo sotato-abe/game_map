@@ -19,7 +19,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     private List<GameObject> blockList = new List<GameObject>();
     private Battler playerBattler;
 
-    private int headHeight = 20;
+    private int headHeight = 30;
     private int itemWidth = 70;
     int row = 5;
     int padding = 10;
