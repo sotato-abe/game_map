@@ -50,7 +50,7 @@ public class MessagePanel2 : MonoBehaviour
         }
 
         // 表示対象となるメッセージ（後ろから3件）
-        int startIndex = Mathf.Max(0, messageList.Count - 5);
+        int startIndex = Mathf.Max(0, messageList.Count - 7);
         int displayCount = messageList.Count - startIndex;
 
         // すでにあるMessagePrefabを取得
