@@ -104,6 +104,7 @@ public class FieldSystem : MonoBehaviour
         }
         if (currentBuildingBase != building)
         {
+            fieldInfoPanel.gameObject.SetActive(true);
             fieldInfoPanel.SetupBuilding(building);
             currentBuildingBase = building; // 現在の建物を更新
         }
@@ -335,7 +336,8 @@ public class FieldSystem : MonoBehaviour
     private void ResetFieldInfoPanel()
     {
         currentBuildingBase = null;
-        fieldInfoPanel.Setup(fieldData.mapBase);
+        fieldInfoPanel.gameObject.SetActive(false);
+        // fieldInfoPanel.Setup(fieldData.mapBase);
     }
 
     public Battler GetEnemy()
