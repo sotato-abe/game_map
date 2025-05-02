@@ -164,19 +164,19 @@ public class BattleSystem : MonoBehaviour
         switch (activeAction)
         {
             case ActionType.Talk:
-                Debug.Log("Talk を開く処理を実行");
+                Debug.Log("Talk 処理を実行");
                 break;
 
             case ActionType.Attack:
-                Debug.Log("Attack を開く処理を実行");
+                Debug.Log("Attack 処理を実行");
                 break;
 
             case ActionType.Command:
-                Debug.Log("Command を開く処理を実行");
+                Debug.Log("Command 処理を実行");
                 break;
 
             case ActionType.Escape:
-                Debug.Log("Escape を開く処理を実行");
+                Debug.Log("Escape 処理を実行");
                 break;
 
             default:

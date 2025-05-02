@@ -156,6 +156,5 @@ public class AttackPanel : Panel
         lifeCostText.SetText($"{lifeCost}");
         batteryCostText.SetText($"{batteryCost}");
         soulCostText.SetText($"{soulCost}");
-        Debug.Log("CountEnegyCost");
     }
 }
