@@ -45,7 +45,7 @@ public class AgeTimePanel : MonoBehaviour
                 ageTime = ageTime.AddSeconds(deltaTime);  // 通常速度で秒単位で進行
                 break;
             case TimeState.Fast:
-                ageTime = ageTime.AddDays(deltaTime * (365.25f / 360f));
+                ageTime = ageTime.AddDays(deltaTime * (365.25f / 90f)); // 30年45分
                 break;
         }
 
