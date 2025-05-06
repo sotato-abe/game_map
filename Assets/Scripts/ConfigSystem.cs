@@ -28,6 +28,10 @@ public class ConfigSystem : MonoBehaviour
                 OpenConfig(); // ワールドマップを表示する
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseConfig(); // ワールドマップを非表示にする
+        }
     }
 
     public void SetActive(bool isActive)
