@@ -20,13 +20,18 @@ public class WorldMapPanel : MonoBehaviour
     void Update()
     {
         if (!isActive) return; // フラグがfalseの場合は処理をスキップ
-        if (isCameraUpFlg)
+        
+        if (isCameraUpFlg || Input.GetKey(KeyCode.UpArrow))
         {
             worldMapCameraManager.UpTarget(); // 上に移動
         }
-        if (isCameraBottomFlg)
+        if (isCameraBottomFlg || Input.GetKey(KeyCode.DownArrow))
         {
             worldMapCameraManager.DownTarget(); // 下に移動
+        }
+        if (Input.inputString.Contains("@"))
+        {
+            OnCurrentPosition(); // 下に移動
         }
     }
 
