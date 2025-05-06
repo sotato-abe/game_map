@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel2 messagePanel;
     [SerializeField] FieldSystem fieldSystem;
+    [SerializeField] ConfigSystem configSystem;
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
@@ -25,6 +26,8 @@ public class GameController : MonoBehaviour
         fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
         fieldSystem.OnReserve += ReserveStart;
         fieldSystem.OnEncount += BattleStart;
+        configSystem.OnConfigOpen += ConfigStart;
+        configSystem.OnConfigClose += ConfigEnd;
         
         playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
         playerUnit.SetTalkMessage("start..");
@@ -40,6 +43,7 @@ public class GameController : MonoBehaviour
     {
         // Debug.Log("ReserveStart");
         battleSystem.gameObject.SetActive(false);
+        configSystem.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
@@ -49,6 +53,7 @@ public class GameController : MonoBehaviour
         // Debug.Log("ReserveEnd");
         fieldPlayer.SetMoveFlg(true);
         reserveSystem.gameObject.SetActive(false);
+        configSystem.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
@@ -56,6 +61,7 @@ public class GameController : MonoBehaviour
     {
         // Debug.Log("BattleStart");
         reserveSystem.gameObject.SetActive(false);
+        configSystem.SetActive(false);
         enemy = fieldSystem.GetEnemy();
         battleSystem.gameObject.SetActive(true);
         battleSystem.BattleStart(playerBattler, enemy);
@@ -66,6 +72,19 @@ public class GameController : MonoBehaviour
     {
         // Debug.Log("BattleEnd");
         battleSystem.gameObject.SetActive(false);
+        configSystem.SetActive(true);
+        fieldPlayer.SetMoveFlg(true);
+        ageTimePanel.SetTimeSpeed(TimeState.Fast);
+    }
+
+    public void ConfigStart()
+    {
+        fieldPlayer.SetMoveFlg(false);
+        ageTimePanel.SetTimeSpeed(TimeState.Live);
+    }
+
+    public void ConfigEnd()
+    {
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
