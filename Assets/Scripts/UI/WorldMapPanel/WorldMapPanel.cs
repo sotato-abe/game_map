@@ -30,16 +30,15 @@ public class WorldMapPanel : MonoBehaviour
         }
     }
 
-    private void SetActive()
+    public void SetActive(bool isActive)
     {
+        this.isActive = isActive; // フラグを設定
         gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
     }
-
     public void ChangeActive()
     {
         isActive = !isActive; // フラグをトグル
         gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
-        SetActive();
     }
 
     public void ChangeActiveFromField()

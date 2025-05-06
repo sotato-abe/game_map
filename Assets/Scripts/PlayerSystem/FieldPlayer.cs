@@ -104,11 +104,6 @@ public class FieldPlayer : MonoBehaviour
                 SetMoveFlg(false);
                 OnReserve?.Invoke();
             }
-
-            if (Input.GetKeyDown(KeyCode.M)) // Mキーでワールドマップを表示
-            {
-                worldMapPanel.ChangeActiveFromField();
-            }
         }
     }
 
