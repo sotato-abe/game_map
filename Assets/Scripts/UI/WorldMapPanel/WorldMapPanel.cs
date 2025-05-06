@@ -7,13 +7,15 @@ using TMPro;
 public class WorldMapPanel : MonoBehaviour
 {
     [SerializeField] WorldMapCameraManager worldMapCameraManager;
+    [SerializeField] AgeTimePanel ageTimePanel;
+    [SerializeField] FieldPlayer fieldPlayer;
 
     private bool isCameraUpFlg = false;
     private bool isCameraBottomFlg = false;
     private bool isCameraRightFlg = false;
     private bool isCameraLeftFlg = false;
 
-    private bool isActive = false; // フラグを追加
+    public bool isActive = false; // フラグを追加
 
     void Update()
     {
@@ -26,14 +28,6 @@ public class WorldMapPanel : MonoBehaviour
         {
             worldMapCameraManager.DownTarget(); // 下に移動
         }
-        // if (isCameraRightFlg)
-        // {
-        //     worldMapCameraManager.RightTarget(); // 右に移動
-        // }
-        // if (isCameraLeftFlg)
-        // {
-        //     worldMapCameraManager.LeftTarget(); // 左に移動
-        // }
     }
 
     private void SetActive()
@@ -46,6 +40,19 @@ public class WorldMapPanel : MonoBehaviour
         isActive = !isActive; // フラグをトグル
         gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
         SetActive();
+    }
+
+    public void ChangeActiveFromField()
+    {
+        ChangeActive();
+        if (isActive)
+        {
+            ageTimePanel.SetTimeSpeed(TimeState.Live); // 時間を止める
+        }
+        else
+        {
+            ageTimePanel.SetTimeSpeed(TimeState.Fast); // 時間を進める
+        }
     }
 
     public void OnUpStart()

@@ -26,7 +26,7 @@ public class ReserveSystem : MonoBehaviour
         actionList.Add(ActionType.Bag);
         actionList.Add(ActionType.Storage);
         actionList.Add(ActionType.Status);
-        actionList.Add(ActionType.Quit);
+        // actionList.Add(ActionType.Quit);
 
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
@@ -58,7 +58,7 @@ public class ReserveSystem : MonoBehaviour
                 state = ReserveState.ActionSelected;
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E))
             {
                 ResorveEnd();
             }
@@ -118,9 +118,9 @@ public class ReserveSystem : MonoBehaviour
                 Debug.Log("Status を開く処理を実行");
                 break;
 
-            case ActionType.Quit:
-                ResorveEnd();
-                break;
+            // case ActionType.Quit:
+            //     ResorveEnd();
+            //     break;
 
             default:
                 Debug.LogWarning("未定義のアクションが選択されました");

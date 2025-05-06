@@ -1869,6 +1869,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   moveSpeed: 7
+  worldMapPanel: {fileID: 1119025272}
   playerTileType: 0
   canEncount: 0
   canMove: 1
@@ -2984,7 +2985,6 @@ MonoBehaviour:
   renderWorldMap: {fileID: 40566795}
   mapBaseList:
   - {fileID: 11400000, guid: fe45e07fabe81034ab6cba712d26ba59, type: 2}
-  worldMapPanel: {fileID: 1119025272}
   worldWidth: 0
   worldHeight: 0
 --- !u!1 &814000237
@@ -5719,6 +5719,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1930026424}
     m_Modifications:
+    - target: {fileID: 2112056731237444162, guid: 3d50f3a24f1ed3f409599b053b37f269, type: 3}
+      propertyPath: fieldPlayer
+      value: 
+      objectReference: {fileID: 513887582}
+    - target: {fileID: 2112056731237444162, guid: 3d50f3a24f1ed3f409599b053b37f269, type: 3}
+      propertyPath: ageTimePanel
+      value: 
+      objectReference: {fileID: 59322135}
     - target: {fileID: 2112056731237444162, guid: 3d50f3a24f1ed3f409599b053b37f269, type: 3}
       propertyPath: worldMapCameraManager
       value: 
@@ -10059,10 +10067,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 6
   m_Spacing: 5
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
