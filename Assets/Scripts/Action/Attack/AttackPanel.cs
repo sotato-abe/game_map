@@ -79,6 +79,7 @@ public class AttackPanel : Panel
         {
             if (CheckEnegy(equipmentUnit.Equipment) == false)
             {
+                equipmentUnit.SetStatus(EquipmentStatus.EnegyOut);
                 continue;
             }
             if (Random.Range(0, 100) < equipmentUnit.Equipment.Base.Probability)
@@ -150,6 +151,9 @@ public class AttackPanel : Panel
                 lifeCost += equipmentUnit.Equipment.Base.LifeCost.val;
                 batteryCost += equipmentUnit.Equipment.Base.BatteryCost.val;
                 soulCost += equipmentUnit.Equipment.Base.SoulCost.val;
+            }else
+            {
+                equipmentUnit.SetStatus(EquipmentStatus.EnegyOut);
             }
         }
 

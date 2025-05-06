@@ -12,14 +12,16 @@ public class EquipmentUnit : MonoBehaviour
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon costPrefab;
     [SerializeField] EquipmentDialog equipmentDialog;
+    [SerializeField] EquipmentUnitStatus equipmentStatus;
 
     public virtual void Setup(Equipment equipment)
     {
         Equipment = equipment;
         image.sprite = Equipment.Base.Sprite;
-        SetSkill();
-        SetCost();
+        // SetSkill();
+        // SetCost();
         equipmentDialog.Setup(Equipment);
+        SetStatus(EquipmentStatus.Active);
     }
 
     public void OnPointerEnter()
@@ -125,6 +127,11 @@ public class EquipmentUnit : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, groundY, transform.position.z);
         }
+    }
+
+    public void SetStatus(EquipmentStatus status)
+    {
+        equipmentStatus.Setup(status);
     }
 
     public IEnumerator Targetfoucs(bool focusFlg)
