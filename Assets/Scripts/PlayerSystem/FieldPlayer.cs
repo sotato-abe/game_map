@@ -15,6 +15,7 @@ public class FieldPlayer : MonoBehaviour
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] float moveSpeed = 3f;
+    [SerializeField] WorldMapPanel worldMapPanel;
 
     public UnityAction OnEncount;
     public UnityAction OnReserve;
@@ -98,7 +99,7 @@ public class FieldPlayer : MonoBehaviour
             }
 
             // バックを開く
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.E) ||Input.GetKeyDown(KeyCode.Return))
             {
                 SetMoveFlg(false);
                 OnReserve?.Invoke();

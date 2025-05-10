@@ -33,6 +33,7 @@ public class Battler
     public int Key { get; set; }
     public int Exp { get; set; }
 
+    public List<Ability> AbilityList = new List<Ability>();
     public List<Equipment> Equipments { get; set; }
     public List<Command> RunTable { get; set; }
     public List<Command> DeckList { get; set; }
@@ -82,6 +83,7 @@ public class Battler
         Key = _base.Key;
         Exp = _base.Exp;
 
+        AbilityList = new List<Ability>(_base.AbilityList ?? new List<Ability>());
         Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
         PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
         BagItemList = new List<Item>(_base.BagItemList ?? new List<Item>());
@@ -121,15 +123,15 @@ public class Battler
         {
             if (damage.AttackType == AttackType.Enegy)
             {
-                if (damage.SubType == (int)EnegyType.Life)
+                if (damage.EnegyType == EnegyType.Life)
                 {
                     Life = Life - damage.Val;
                 }
-                if (damage.SubType == (int)EnegyType.Battery)
+                if (damage.EnegyType == EnegyType.Battery)
                 {
                     Battery = Battery - damage.Val;
                 }
-                if (damage.SubType == (int)EnegyType.Soul)
+                if (damage.EnegyType == EnegyType.Soul)
                 {
                     Soul = Soul - damage.Val;
                 }

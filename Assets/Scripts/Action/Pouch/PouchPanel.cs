@@ -7,7 +7,7 @@ using TMPro;
 public class PouchPanel : Panel
 {
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
-    [SerializeField] GameObject blockPrefab;  // blockのプレハブ
+    // [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] BattleUnit playerUnit;
@@ -16,7 +16,7 @@ public class PouchPanel : Panel
 
     int selectedItem = 0;
 
-    private int headHeight = 40;
+    private int headHeight = 50;
     private int itemWidth = 70;
     int row = 10;
     int padding = 10;
@@ -54,7 +54,7 @@ public class PouchPanel : Panel
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                SelectItem(ArrowType.Up);
+                SelectItem(ArrowType.Down);
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -62,7 +62,7 @@ public class PouchPanel : Panel
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                SelectItem(ArrowType.Down);
+                SelectItem(ArrowType.Up);
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -109,23 +109,23 @@ public class PouchPanel : Panel
 
             itemNum++;
         }
-        SetBlock();
+        // SetBlock();
         pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
         ArrengeItemUnits();
     }
 
-    private void SetBlock()
-    {
-        int blockNum = row - playerBattler.Pouch.val % row;
-        blockList.Clear();
+    // private void SetBlock()
+    // {
+    //     int blockNum = row - playerBattler.Pouch.val % row;
+    //     blockList.Clear();
 
-        for (int i = 0; i < blockNum; i++)
-        {
-            GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
-            blockObject.gameObject.SetActive(true);
-            blockList.Add(blockObject);
-        }
-    }
+    //     for (int i = 0; i < blockNum; i++)
+    //     {
+    //         GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
+    //         blockObject.gameObject.SetActive(true);
+    //         blockList.Add(blockObject);
+    //     }
+    // }
     //カードを整列させる
     public void ArrengeItemUnits()
     {

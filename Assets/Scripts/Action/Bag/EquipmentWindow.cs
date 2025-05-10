@@ -24,16 +24,13 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     private void Awake()
     {
-        if (playerBattler == null)
-        {
-            Debug.LogWarning("playerBattler is not initialized.");
-        }
         playerBattler = playerUnit.Battler;
         SetEquipmentList();
     }
 
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log("ドロップされたアイテムを装備します。");
         EquipmentBlock droppedEquipmentBlock = eventData.pointerDrag.GetComponent<EquipmentBlock>();
 
         if (droppedEquipmentBlock != null)

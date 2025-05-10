@@ -13,21 +13,29 @@ MonoBehaviour:
   m_Name: Enemy_03
   m_EditorClassIdentifier: 
   name: enemy4
+  sprite: {fileID: 21300000, guid: 805b567c4fca7854fa36919036060b64, type: 3}
+  birthplace: {fileID: 0}
   maxLife: 56
   maxBattery: 34
   attack: 10
-  technique: 5
   defense: 12
+  technique: 5
   speed: 5
-  sprite: {fileID: 21300000, guid: 805b567c4fca7854fa36919036060b64, type: 3}
+  luck: 0
+  memory: 5
+  storage: 10
+  pouch: 5
+  bag: 10
   money: 10
   disk: 0
   key: 0
-  birthplace: {fileID: 0}
+  exp: 5
   equipments: []
-  maxInventoryCount: 5
-  inventory:
-  - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
-  - _base: {fileID: 11400000, guid: dda4ed4931ac69543a68f3a6133d9fc8, type: 2}
-  comands: []
-  messages: []
+  runTable: []
+  deckList: []
+  storageList: []
+  pouchList: []
+  bagItemList: []
+  bagEquipmentList: []
+  messages:
+  - {fileID: 11400000, guid: f30e50f1876056e49bebec19d03e5679, type: 2}

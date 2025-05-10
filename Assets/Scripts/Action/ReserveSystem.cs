@@ -11,21 +11,23 @@ public class ReserveSystem : MonoBehaviour
     [SerializeField] ActionIcon actionIconPrefab;
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] GameObject actionListObject;
-    [SerializeField] MessagePanel messagePanel;
+    [SerializeField] MessagePanel2 messagePanel;
 
     // ステート管理
     private ReserveState state;
-    private ActionType activeAction = ActionType.Bag;
+    public ActionType activeAction = ActionType.Bag;
     private ActionIcon selectedAction;
     private List<ActionType> actionList = new List<ActionType>();
     private List<ActionIcon> actionIconList = new List<ActionIcon>();
 
     void Start()
     {
+        // Reserveで表示するActionを設定
         actionList.Add(ActionType.Bag);
         actionList.Add(ActionType.Storage);
         actionList.Add(ActionType.Status);
-        actionList.Add(ActionType.Quit);
+        // actionList.Add(ActionType.Quit);
+
         state = ReserveState.Standby;
         transform.gameObject.SetActive(false);
         actionBoard.OnReserveExecuteAction += ReserveExecuteAction;
@@ -36,14 +38,14 @@ public class ReserveSystem : MonoBehaviour
     {
         if (state == ReserveState.ActionSelection)
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
                 ActionType selectAction = actionList[index]; // 更新
                 SelectAction(selectAction);
             }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
                 index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
@@ -55,9 +57,14 @@ public class ReserveSystem : MonoBehaviour
             {
                 state = ReserveState.ActionSelected;
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E))
+            {
+                ResorveEnd();
+            }
         }
     }
-    
+
     public void SetState(ReserveState targetState)
     {
         state = targetState;
@@ -80,25 +87,16 @@ public class ReserveSystem : MonoBehaviour
             actionIcon.SetAction(actionValue);
             actionIcon.OnPointerEnterAction += SelectAction;
             actionIconList.Add(actionIcon);
-            if (activeAction == actionValue)
-            {
-                actionBoard.ChangeActionPanel(actionValue);
-            }
         }
-
-        selectedAction = actionIconList.Count > 0 ? actionIconList[0] : null;
-
-        if (selectedAction)
-        {
-            selectedAction.SetActive(true);
-        }
+        SelectActiveActionIcon(activeAction);
+        actionBoard.ChangeActionPanel(activeAction);
     }
 
     private void SelectAction(ActionType selectAction)
     {
         if (state == ReserveState.ActionSelection)
         {
-            if(activeAction == selectAction) return;
+            if (activeAction == selectAction) return;
             activeAction = selectAction;
             SelectActiveActionIcon(selectAction);
             actionBoard.ChangeActionPanel(selectAction);
@@ -120,9 +118,9 @@ public class ReserveSystem : MonoBehaviour
                 Debug.Log("Status を開く処理を実行");
                 break;
 
-            case ActionType.Quit:
-                ResorveEnd();
-                break;
+            // case ActionType.Quit:
+            //     ResorveEnd();
+            //     break;
 
             default:
                 Debug.LogWarning("未定義のアクションが選択されました");
@@ -166,7 +164,7 @@ public class ReserveSystem : MonoBehaviour
     public void ResorveEnd()
     {
         state = ReserveState.Standby;
-        activeAction = actionList[0];
+        // activeAction = actionList[0];
         foreach (ActionIcon icon in actionIconList)
         {
             Destroy(icon.gameObject);

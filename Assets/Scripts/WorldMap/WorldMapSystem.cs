@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 using Newtonsoft.Json; // Newtonsoft.Jsonを使用
 
 // JSONのマップデータを読み込みフィールドデータを返す
-// TODO：RenderWorldMapにワールドマップの表示をリクエストする。
 public class WorldMapSystem : MonoBehaviour
 {
     TileMapData floorData;
@@ -14,7 +13,6 @@ public class WorldMapSystem : MonoBehaviour
 
     [SerializeField] RenderWorldMap renderWorldMap;
     [SerializeField] List<MapBase> mapBaseList; // 地面と壁のプレファブ 
-    [SerializeField] WorldMapPanel worldMapPanel;
 
     public FieldData fieldData; // フィールドデータ
     private Coordinate coordinate; // 座標

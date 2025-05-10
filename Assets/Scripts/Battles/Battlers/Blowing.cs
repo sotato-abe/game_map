@@ -6,64 +6,72 @@ using TMPro;
 
 public class Blowing : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI text;
-    [SerializeField] float letterPerSecond;
-    private RectTransform talkPanelRectTransform;
+    [SerializeField] TextMeshProUGUI messageText;
+    [SerializeField] RectTransform backImageRectTransform;
 
-    private float baseWidth = 100f; // 基本のパネル幅
-    private float baseHeight = 40f; // 基本のパネル高さ
-    private float maxWidth = 350f; // 最大のパネルの幅
+    private float padding = 52f;
 
-    private void Awake()
+    private List<string> messageList = new List<string>();
+    private Coroutine fadeCoroutine;
+    private Coroutine messageCoroutine;
+
+    private void OnDisable()
     {
-        gameObject.SetActive(true); // オブジェクトをアクティブにする
-        if (text == null)
+        if (messageCoroutine != null)
         {
-            Debug.LogError("Text component is not assigned!");
+            messageList.Clear(); // メッセージリストをクリア
+            messageText.SetText(""); // テキストをクリア   
+            ResizePlate();
+            StopCoroutine(messageCoroutine);
+            messageCoroutine = null;
         }
+    }
 
-        // RectTransform のキャッシュを取っておく
-        talkPanelRectTransform = GetComponent<RectTransform>();
-
-        if (talkPanelRectTransform == null)
+    public void AddMesageList(string message)
+    {
+        messageList.Add(message);
+        if (messageCoroutine == null)
         {
-            Debug.LogError("RectTransform component is missing on TalkPanel!");
+            if (gameObject.activeSelf)
+            {
+                messageCoroutine = StartCoroutine(TypeMessageList());
+            }
         }
+    }
+
+    private IEnumerator TypeMessageList()
+    {
+        while (messageList.Count > 0)
+        {
+            string message = messageList[0]; // 先頭のメッセージを取得
+            yield return TypeDialog(message);
+            yield return new WaitForSeconds(2f);
+            messageList.RemoveAt(0); // タイプし終わったメッセージを削除
+        }
+        messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
+        transform.gameObject.SetActive(false); // すべてのメッセージが終了したら、オブジェクトを非アクティブにする
     }
 
     public IEnumerator TypeDialog(string line)
     {
-        text.SetText("");
-        ResizePanel(line); // テキストに合わせてパネルをリサイズ
-        transform.gameObject.SetActive(true);
+        messageText.SetText("");
         foreach (char letter in line)
         {
-            text.text += letter;
-            yield return new WaitForSeconds(letterPerSecond);
+            messageText.text += letter;
+            ResizePlate();
+            yield return new WaitForSeconds(0.03f);
         }
-        if (gameObject.activeSelf)
+    }
+
+    private void ResizePlate()
+    {
+        if (messageText == null || backImageRectTransform == null)
         {
-            StartCoroutine(CloseTypeDialog());
+            Debug.LogError("messageText または backImageRectTransform が null");
+            return;
         }
+
+        float newHeight = messageText.preferredHeight + padding;
+        backImageRectTransform.sizeDelta = new Vector2(backImageRectTransform.sizeDelta.x, newHeight);
     }
-
-    public IEnumerator CloseTypeDialog()
-    {
-        yield return new WaitForSeconds(3f);
-        transform.gameObject.SetActive(false);
-    }
-
-    private void ResizePanel(string line)
-    {
-        if (talkPanelRectTransform == null || text == null) return;
-
-        // 現在のフォントサイズとテキストの幅を計算
-        float textWidth = text.fontSize * line.Length * 0.5f; // 文字数に応じた幅
-        float panelWidth = Mathf.Min(baseWidth + textWidth, maxWidth); // 最大幅を超えないように
-        float panelHeight = baseHeight + Mathf.Ceil(textWidth / maxWidth) * text.fontSize * 1.8f; // 行数に応じて高さ増加
-
-        // サイズ適用
-        talkPanelRectTransform.sizeDelta = new Vector2(panelWidth, panelHeight);
-    }
-
 }

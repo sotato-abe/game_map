@@ -7,45 +7,56 @@ using TMPro;
 public class WorldMapPanel : MonoBehaviour
 {
     [SerializeField] WorldMapCameraManager worldMapCameraManager;
+    [SerializeField] AgeTimePanel ageTimePanel;
+    [SerializeField] FieldPlayer fieldPlayer;
 
     private bool isCameraUpFlg = false;
     private bool isCameraBottomFlg = false;
     private bool isCameraRightFlg = false;
     private bool isCameraLeftFlg = false;
 
-    private bool isActive = false; // フラグを追加
+    public bool isActive = false; // フラグを追加
 
     void Update()
     {
         if (!isActive) return; // フラグがfalseの場合は処理をスキップ
-        if (isCameraUpFlg)
+        
+        if (isCameraUpFlg || Input.GetKey(KeyCode.UpArrow))
         {
             worldMapCameraManager.UpTarget(); // 上に移動
         }
-        if (isCameraBottomFlg)
+        if (isCameraBottomFlg || Input.GetKey(KeyCode.DownArrow))
         {
             worldMapCameraManager.DownTarget(); // 下に移動
         }
-        if (isCameraRightFlg)
+        if (Input.inputString.Contains("@"))
         {
-            worldMapCameraManager.RightTarget(); // 右に移動
-        }
-        if (isCameraLeftFlg)
-        {
-            worldMapCameraManager.LeftTarget(); // 左に移動
+            OnCurrentPosition(); // 下に移動
         }
     }
 
-    private void SetActive()
+    public void SetActive(bool isActive)
     {
+        this.isActive = isActive; // フラグを設定
         gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
     }
-
     public void ChangeActive()
     {
         isActive = !isActive; // フラグをトグル
         gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
-        SetActive();
+    }
+
+    public void ChangeActiveFromField()
+    {
+        ChangeActive();
+        if (isActive)
+        {
+            ageTimePanel.SetTimeSpeed(TimeState.Live); // 時間を止める
+        }
+        else
+        {
+            ageTimePanel.SetTimeSpeed(TimeState.Fast); // 時間を進める
+        }
     }
 
     public void OnUpStart()

@@ -24,7 +24,7 @@ public class BagCategoryIcon : MonoBehaviour
 
         // 背景の透明度を変更する。
         Color bgColor = GetComponent<Image>().color;
-        bgColor.a = isActive ? 1f : 0f;
+        bgColor.a = isActive ? 0.9f : 0f;
         GetComponent<Image>().color = bgColor;
     }
 }

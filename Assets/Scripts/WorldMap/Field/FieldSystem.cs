@@ -23,7 +23,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
     [SerializeField] HitTargetPin hitTargetPin;
-    [SerializeField] MessagePanel messagePanel;
+    [SerializeField] MessagePanel2 messagePanel;
 
     DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
 
@@ -70,15 +70,13 @@ public class FieldSystem : MonoBehaviour
 
     public void ReserveStart()
     {
-        messagePanel.AddMesageList($"Bag open!!");
+        messagePanel.AddFieldMesage($"Bag open!!");
 
         OnReserve?.Invoke();
     }
 
     public void Encount()
     {
-        messagePanel.AddMesageList($"Battle Start!!");
-
         OnEncount?.Invoke();
     }
 
@@ -106,6 +104,7 @@ public class FieldSystem : MonoBehaviour
         }
         if (currentBuildingBase != building)
         {
+            fieldInfoPanel.gameObject.SetActive(true);
             fieldInfoPanel.SetupBuilding(building);
             currentBuildingBase = building; // 現在の建物を更新
         }
@@ -118,11 +117,11 @@ public class FieldSystem : MonoBehaviour
         Item item = fieldData.GetRandomItem(); // ランダムなアイテムを取得
         if (item == null)
         {
-            messagePanel.AddMesageList($"box is empty!!");
+            messagePanel.AddFieldMesage($"box is empty!!");
         }
         else
         {
-            messagePanel.AddMesageList($"{item.Base.Name} get!!");
+            messagePanel.AddFieldMesage($"{item.Base.Name} get!!");
             playerBattler.AddItem(item); // プレイヤーのインベントリに追加
             fieldData.items.Remove(item); // フィールドデータからアイテムを削除
                                           // マップからアイテムのアイコンを削除
@@ -138,7 +137,7 @@ public class FieldSystem : MonoBehaviour
 
     public void ReloadMap(DirectionType outDirection)
     {
-        messagePanel.AddMesageList($"Field change!!");
+        messagePanel.AddFieldMesage($"Field change!!");
         ClearMap(); // マップクリア
 
         DirectionType entryDirection = outDirection.GetOppositeDirection();
@@ -337,7 +336,8 @@ public class FieldSystem : MonoBehaviour
     private void ResetFieldInfoPanel()
     {
         currentBuildingBase = null;
-        fieldInfoPanel.Setup(fieldData.mapBase);
+        fieldInfoPanel.gameObject.SetActive(false);
+        // fieldInfoPanel.Setup(fieldData.mapBase);
     }
 
     public Battler GetEnemy()

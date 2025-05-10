@@ -15,7 +15,7 @@ public class WorldMapCameraManager : MonoBehaviour
     {
         currentPos = targetPos; // 現在のカメラ位置を更新
         // カメラの位置をターゲットの位置に合わせる
-        Vector3 cameraPos = new Vector3(targetPos.x + 0.5f, targetPos.y, -10); // Z軸は-10に固定
+        Vector3 cameraPos = new Vector3(20, targetPos.y, -10); // Z軸は-10に固定
         transform.position = cameraPos;
     }
 
@@ -48,27 +48,27 @@ public class WorldMapCameraManager : MonoBehaviour
         transform.position = cameraPos;
     }
 
-    public void LeftTarget()
-    {
-        // カメラの位置を左に移動
-        Vector3 cameraPos = transform.position;
-        cameraPos.x -= 0.05f; // 左に1ユニット移動
-        if (cameraPos.x < 0) // 左限を超えないように制限
-        {
-            cameraPos.x = worldWidth;
-        }
-        transform.position = cameraPos;
-    }
+    // public void LeftTarget()
+    // {
+    //     // カメラの位置を左に移動
+    //     Vector3 cameraPos = transform.position;
+    //     cameraPos.x -= 0.05f; // 左に1ユニット移動
+    //     if (cameraPos.x < 0) // 左限を超えないように制限
+    //     {
+    //         cameraPos.x = worldWidth;
+    //     }
+    //     transform.position = cameraPos;
+    // }
 
-    public void RightTarget()
-    {
-        // カメラの位置を右に移動
-        Vector3 cameraPos = transform.position;
-        cameraPos.x += 0.05f; // 右に1ユニット移動
-        if (cameraPos.x > worldWidth) // 右限を超えないように制限
-        {
-            cameraPos.x = 0;
-        }
-        transform.position = cameraPos;
-    }
+    // public void RightTarget()
+    // {
+    //     // カメラの位置を右に移動
+    //     Vector3 cameraPos = transform.position;
+    //     cameraPos.x += 0.05f; // 右に1ユニット移動
+    //     if (cameraPos.x > worldWidth) // 右限を超えないように制限
+    //     {
+    //         cameraPos.x = 0;
+    //     }
+    //     transform.position = cameraPos;
+    // }
 }

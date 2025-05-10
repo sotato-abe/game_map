@@ -17,10 +17,10 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 
     public ActionType type;
     [SerializeField] private bool isActive = false;
-    private float defaultWidth = 70f;
-    private float defaultHeight = 80f;
+    private float defaultWidth = 50f;
+    private float defaultHeight = 50f;
     private float defaultFontSize = 12f; // デフォルトのフォントサイズ
-    private float activeScale = 1.5f;
+    private float activeScale = 2.0f;
     private float scaleDuration = 0.05f; // スケール変更の時間
 
     private RectTransform rectTransform;
@@ -30,7 +30,7 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
         rectTransform = GetComponent<RectTransform>();
     }
 
-        public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData eventData)
     {
         OnPointerEnterAction?.Invoke(type);
     }
@@ -66,19 +66,23 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 
         float startFontSize = text.fontSize;
         float endFontSize = targetFontSize;
+        var layout = GetComponent<LayoutElement>();
 
         while (elapsedTime < scaleDuration)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / scaleDuration;
 
-            rectTransform.sizeDelta = Vector2.Lerp(startSize, endSize, t);
+            Vector2 currentSize = Vector2.Lerp(startSize, endSize, t);
+            rectTransform.sizeDelta = currentSize;
             text.fontSize = Mathf.Lerp(startFontSize, endFontSize, t);
+            layout.preferredHeight = currentSize.y;
 
             yield return null;
         }
 
         rectTransform.sizeDelta = endSize;
         text.fontSize = endFontSize;
+        layout.preferredHeight = targetHeight;
     }
 }
