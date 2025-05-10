@@ -164,7 +164,6 @@ public class StatusPanel : Panel
 
         foreach (Ability ability in battler.AbilityList)
         {
-            Debug.Log("Ability: " + ability.Name);
             AbilityUnit abilityObject = Instantiate(abilityPrefab, abilityList.transform);
             abilityObject.gameObject.SetActive(true);
             abilityObject.Setup(ability);
