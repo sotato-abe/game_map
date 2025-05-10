@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Ability/Ability")]
-public class Ability : ScriptableObject
+[System.Serializable]
+public class Ability
 {
-    [SerializeField] new string name;
-    [SerializeField] new string description;
+    [SerializeField] AbilityBase _base;
 
-    public string Name { get => name; }
-    public string Description { get => description; }
+    public AbilityBase Base { get => _base; }
+    public string Name { get => Base.Name; }
+    public RarityType Rarity { get => Base.Rarity; }
+    public Sprite Sprite { get => Base.Sprite; }
+    public string Description { get => Base.Description; }
 }

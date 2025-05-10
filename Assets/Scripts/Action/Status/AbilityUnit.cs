@@ -7,42 +7,36 @@ using TMPro;
 public class AbilityUnit : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI name;  // 表示用のTextMeshProUGUIフィールド
-    [SerializeField] private TextMeshProUGUI description;  // 表示用のTextMeshProUGUIフィールド
-    // private Canvas abilityCanvas;  // 表示用のTextMeshProUGUIフィールド
-    private bool isActive = false;
+    [SerializeField] AbilityDialog dialog;
 
-    private float magnificationPower = 2.0f; // ターゲットスケール
-    // void Awake()
-    // {
-    //     if (abilityCanvas == null)
-    //         abilityCanvas = GetComponent<Canvas>(); // 自分にCanvasがある場合、自動取得
-    // }
+    private bool isActive = false;
+    private float magnificationPower = 1.1f; // ターゲットスケール
+
     public virtual void Setup(Ability ability)
     {
         name.text = ability.Name;
-        description.text = ability.Description;
+        dialog.gameObject.SetActive(true);
+        dialog.Setup(ability);
     }
 
     public void OnPointerEnter()
     {
-        Debug.Log("OnPointerEnter");
-        StartCoroutine(OnPointer(true));
+        dialog.ShowDialog(true);
+        StartCoroutine(ChangeScale(true));
     }
 
     public void OnPointerExit()
     {
-        StartCoroutine(OnPointer(false));
+        dialog.ShowDialog(false);
+        StartCoroutine(ChangeScale(false));
     }
 
-    public IEnumerator OnPointer(bool focusFlg)
+    public IEnumerator ChangeScale(bool focusFlg)
     {
         float time = 0.05f;
         float currentTime = 0f;
         if (focusFlg)
         {
-            // abilityCanvas.overrideSorting = true;
-            // abilityCanvas.sortingOrder = 10;
-
             Vector3 originalScale = transform.localScale;
             Vector3 targetScale = new Vector3(magnificationPower, magnificationPower, magnificationPower);
             while (currentTime < time)
@@ -64,13 +58,6 @@ public class AbilityUnit : MonoBehaviour
                 yield return null;
             }
             transform.localScale = targetScale;
-            // abilityCanvas.sortingOrder = 0;
         }
-    }
-
-    public void SetTarget(bool activeFlg)
-    {
-        if (isActive == activeFlg) return;
-        isActive = activeFlg;
     }
 }

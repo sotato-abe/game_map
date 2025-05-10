@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu]
 public class BattlerBase : ScriptableObject
 {
-    // Start is called before the first frame update
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
     [SerializeField] MapBase birthplace;
@@ -25,6 +24,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int key = 5;
     [SerializeField] int exp = 5;
 
+    [SerializeField] List<Ability> abilityList;
     [SerializeField] List<Equipment> equipments;
     [SerializeField] List<Command> runTable;
     [SerializeField] List<Command> deckList;
@@ -54,6 +54,7 @@ public class BattlerBase : ScriptableObject
     public int Key { get => key; }
     public int Exp { get => exp; }
 
+    public List<Ability> AbilityList { get => abilityList; }
     public List<Equipment> Equipments { get => equipments; }
     public List<Item> PouchList { get => pouchList; }
     public List<Item> BagItemList { get => bagItemList; }
