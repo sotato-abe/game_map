@@ -19,6 +19,5 @@ public class AbilityDialog : Dialog
     {
         float newHeight = description.preferredHeight + padding;
         GetComponent<RectTransform>().sizeDelta = new Vector2(dialogWidth, newHeight);
-        Debug.Log("Dialog Height: " + newHeight);
     }
 }

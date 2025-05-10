@@ -269,8 +269,6 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             }
             else
             {
-                Debug.Log("targetItem" + targetItem);
-                Debug.Log("equipmentBlockList.Count" + equipmentBlockList.Count);
                 equipmentBlockList[targetItem - itemUnitList.Count].SetTarget(true);
             }
             selectedItem = targetItem;

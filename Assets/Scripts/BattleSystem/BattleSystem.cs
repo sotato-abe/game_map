@@ -22,7 +22,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] GameObject actionListObject;
 
     public BattleState state;
-    private ActionType activeAction = ActionType.Talk;
+    private ActionType activeAction = ActionType.Attack;
     private ActionIcon selectedAction;
     private readonly List<ActionType> actionList = new List<ActionType> { };
     private readonly List<ActionIcon> actionIconList = new();
@@ -30,7 +30,7 @@ public class BattleSystem : MonoBehaviour
 
     void Start()
     {
-        actionList.Add(ActionType.Talk);
+        // actionList.Add(ActionType.Talk);
         actionList.Add(ActionType.Attack);
         actionList.Add(ActionType.Command);
         actionList.Add(ActionType.Pouch);
