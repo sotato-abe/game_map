@@ -22,6 +22,7 @@ public class Dialog : MonoBehaviour
 
     public void ShowDialog(bool showFlg)
     {
+        Debug.Log("ShowDialog: " + showFlg);
         if (showFlg)
         {
             transform.gameObject.SetActive(true);

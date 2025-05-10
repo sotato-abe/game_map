@@ -21,6 +21,7 @@ public class StatusPanel : Panel
     [SerializeField] GameObject abilityList;
     [SerializeField] EnegyIcon enegyCounterPrefab;
     [SerializeField] StatusIcon statusCounterPrefab;
+    [SerializeField] AbilityUnit abilityPrefab;
     [SerializeField] EnchantIcon enchantIconPrefab;
     [SerializeField] StatusLevel statusLevel;
 
@@ -74,6 +75,7 @@ public class StatusPanel : Panel
         SetEnegy();
         SetStatus();
         SetEnchant();
+        SetAbility();
     }
 
     private void SetCharacterCard()
@@ -155,7 +157,18 @@ public class StatusPanel : Panel
 
     private void SetAbility()
     {
+        foreach (Transform child in abilityList.transform)
+        {
+            Destroy(child.gameObject);
+        }
 
+        foreach (Ability ability in battler.AbilityList)
+        {
+            Debug.Log("Ability: " + ability.Name);
+            AbilityUnit abilityObject = Instantiate(abilityPrefab, abilityList.transform);
+            abilityObject.gameObject.SetActive(true);
+            abilityObject.Setup(ability);
+        }
     }
 
     private void SetLevel()

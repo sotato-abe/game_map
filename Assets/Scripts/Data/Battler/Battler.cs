@@ -33,6 +33,7 @@ public class Battler
     public int Key { get; set; }
     public int Exp { get; set; }
 
+    public List<Ability> AbilityList = new List<Ability>();
     public List<Equipment> Equipments { get; set; }
     public List<Command> RunTable { get; set; }
     public List<Command> DeckList { get; set; }
@@ -82,6 +83,7 @@ public class Battler
         Key = _base.Key;
         Exp = _base.Exp;
 
+        AbilityList = new List<Ability>(_base.AbilityList ?? new List<Ability>());
         Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
         PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
         BagItemList = new List<Item>(_base.BagItemList ?? new List<Item>());
