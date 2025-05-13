@@ -11,6 +11,14 @@ public class EscapePanel : Panel
     [SerializeField] TextMeshProUGUI lifeCostText;
     [SerializeField] TextMeshProUGUI batteryCostText;
     [SerializeField] TextMeshProUGUI soulCostText;
+    [SerializeField] Image runningBar1;
+    [SerializeField] Image runningBar2;
+    [SerializeField] Image runningBar3;
+    [SerializeField] Image runningBar4;
+
+    [SerializeField] Color activeColor = new Color(133, 10, 240, 255);
+    [SerializeField] Color stopColor = new Color(0, 0, 0, 200);
+
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] private AttackSystem attackSystem;
     [SerializeField] BattleUnit enemyUnit;
@@ -27,7 +35,7 @@ public class EscapePanel : Panel
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                Escape();
+                StartCoroutine(Escape());
             }
         }
     }
@@ -36,6 +44,7 @@ public class EscapePanel : Panel
     {
         ProbabilityCalculation();
         CountEnegyCost();
+        RunningOff();
     }
 
     private void ProbabilityCalculation()
@@ -43,15 +52,10 @@ public class EscapePanel : Panel
         int playerSPD = playerUnit.Battler.Speed.val;
         int enemySPD = enemyUnit.Battler.Speed.val;
 
-        Debug.Log("Player SPD: " + playerSPD);
-        Debug.Log("Enemy SPD: " + enemySPD);
-
         // 逃げる確率の計算
         // 逃げる確率 = (自分の素早さ / (自分の素早さ + 相手の素早さ)) * 100
         probability = (playerSPD * 100) / (playerSPD + enemySPD);
         probabilityText.SetText(probability.ToString() + "%");
-
-        Debug.Log("Escape Probability: " + probability + "%");
     }
 
     private void CountEnegyCost()
@@ -65,7 +69,7 @@ public class EscapePanel : Panel
         soulCostText.SetText(soulCost.ToString());
     }
 
-    public void Escape()
+    private IEnumerator Escape()
     {
         if (executeFlg)
         {
@@ -73,12 +77,13 @@ public class EscapePanel : Panel
             playerUnit.Battler.Battery -= batteryCost;
             playerUnit.Battler.Soul -= soulCost;
 
+            yield return StartCoroutine(RunningCoroutine());
+
             if (Random.Range(0, 100) < probability)
             {
                 // 逃げる成功
                 attackSystem.ExecutePlayerEscape();
                 playerUnit.UpdateEnegyUI();
-                return;
             }
             else
             {
@@ -87,6 +92,43 @@ public class EscapePanel : Panel
                 playerUnit.UpdateEnegyUI();
             }
         }
+        RunningOff();
         ProbabilityCalculation();
+    }
+
+    private IEnumerator RunningCoroutine()
+    {
+        // escapeBarは0から3までのランダムな値
+        int escapeBar = Random.Range(1, 5);
+        for (int i = 0; i < escapeBar; i++)
+        {
+            if (i == 0)
+            {
+                runningBar1.color = activeColor;
+            }
+            else if (i == 1)
+            {
+                runningBar2.color = activeColor;
+            }
+            else if (i == 2)
+            {
+                runningBar3.color = activeColor;
+            }
+            else if (i == 3)
+            {
+                runningBar4.color = activeColor;
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private void RunningOff()
+    {
+        // Corutinを停止
+        StopAllCoroutines();
+        runningBar1.color = stopColor;
+        runningBar2.color = stopColor;
+        runningBar3.color = stopColor;
+        runningBar4.color = stopColor;
     }
 }
