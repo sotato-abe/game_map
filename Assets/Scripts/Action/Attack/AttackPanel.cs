@@ -18,6 +18,10 @@ public class AttackPanel : Panel
 
     List<EquipmentUnit> equipmentUnitList = new List<EquipmentUnit>();
 
+    private int headWidth = 140;
+    private int equipmentWidth = 120;
+    private int panelHeight = 150;
+
     public void Start()
     {
         playerBattler = playerUnit.Battler;
@@ -26,8 +30,16 @@ public class AttackPanel : Panel
     private void OnEnable()
     {
         playerBattler = playerUnit.Battler;
+        SetPanelSize();
         SetEquipmentList();
         CountEnegyCost();
+    }
+
+    public void SetPanelSize()
+    {
+        int row = playerBattler.Equipments.Count;
+        int width = equipmentWidth * row + headWidth;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, panelHeight);
     }
 
     public void Update()
@@ -137,7 +149,7 @@ public class AttackPanel : Panel
         playerBattler.Soul -= equipment.Base.SoulCost.val;
         playerUnit.UpdateEnegyUI();
     }
-    
+
     public void CountEnegyCost()
     {
         int lifeCost = 0;
@@ -151,7 +163,8 @@ public class AttackPanel : Panel
                 lifeCost += equipmentUnit.Equipment.Base.LifeCost.val;
                 batteryCost += equipmentUnit.Equipment.Base.BatteryCost.val;
                 soulCost += equipmentUnit.Equipment.Base.SoulCost.val;
-            }else
+            }
+            else
             {
                 equipmentUnit.SetStatus(EquipmentStatus.EnegyOut);
             }

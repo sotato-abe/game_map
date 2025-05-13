@@ -11,7 +11,9 @@ public class CommandUnit : Unit
     [SerializeField] GameObject costList;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon enegyPrefab;
+    [SerializeField] UnitStatusLayer unitStatusLayer;
     [SerializeField] CommandDialog dialog;
+
 
     public virtual void Setup(Command command)
     {
@@ -21,6 +23,7 @@ public class CommandUnit : Unit
         SetCost();
         dialog.gameObject.SetActive(true);
         dialog.Setup(Command);
+        SetStatus(UnitStatus.Active);
     }
 
     public void OnPointerEnter()
@@ -73,5 +76,10 @@ public class CommandUnit : Unit
                 enegyUnit.SetCostIcon(cost);
             }
         }
+    }
+
+    public void SetStatus(UnitStatus status)
+    {
+        unitStatusLayer.Setup(status);
     }
 }

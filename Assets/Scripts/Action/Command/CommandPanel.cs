@@ -20,6 +20,10 @@ public class CommandPanel : Panel
     private int soulCost = 0;
     List<CommandUnit> commandUnitList = new List<CommandUnit>();
 
+    private int headWidth = 145;
+    private int commandWidth = 80;
+    private int panelHeight = 150;
+
     public void Start()
     {
         playerBattler = playerUnit.Battler;
@@ -28,9 +32,11 @@ public class CommandPanel : Panel
     private void OnEnable()
     {
         playerBattler = playerUnit.Battler;
+        SetPanelSize();
         SetCommandUnit();
         CountEnegyCost();
     }
+
     public void Update()
     {
         if (executeFlg)
@@ -40,6 +46,13 @@ public class CommandPanel : Panel
                 ExecuteCommand();
             }
         }
+    }
+
+    public void SetPanelSize()
+    {
+        int row = playerBattler.RunTable.Count;
+        int width = commandWidth * row + headWidth;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, panelHeight);
     }
 
     private void SetCommandUnit()
@@ -70,17 +83,19 @@ public class CommandPanel : Panel
         batteryCost = 0;
         soulCost = 0;
 
-        foreach (Command command in playerBattler.RunTable)
+        foreach (CommandUnit commandUnit in commandUnitList)
         {
-            var lifeCheck = playerBattler.Life > command.Base.LifeCost.val + lifeCost;
-            var batteryCheck = playerBattler.Battery >= command.Base.BatteryCost.val + batteryCost;
-            var soulCheck = playerBattler.Soul >= command.Base.SoulCost.val + soulCost;
+            var lifeCheck = playerBattler.Life > commandUnit.Command.Base.LifeCost.val + lifeCost;
+            var batteryCheck = playerBattler.Battery >= commandUnit.Command.Base.BatteryCost.val + batteryCost;
+            var soulCheck = playerBattler.Soul >= commandUnit.Command.Base.SoulCost.val + soulCost;
 
             if (lifeCheck && batteryCheck && soulCheck)
             {
-                lifeCost += command.Base.LifeCost.val;
-                batteryCost += command.Base.BatteryCost.val;
-                soulCost += command.Base.SoulCost.val;
+                lifeCost += commandUnit.Command.Base.LifeCost.val;
+                batteryCost += commandUnit.Command.Base.BatteryCost.val;
+                soulCost += commandUnit.Command.Base.SoulCost.val;
+            }else{
+                commandUnit.SetStatus(UnitStatus.EnegyOut);
             }
         }
 
