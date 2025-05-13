@@ -19,10 +19,9 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     private List<GameObject> blockList = new List<GameObject>();
     private Battler playerBattler;
 
-    private int headHeight = 20;
+    private int headHeight = 10;
     private int itemWidth = 70;
     int row = 5;
-    int padding = 10;
 
     public void Start()
     {
@@ -108,8 +107,8 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         for (int i = 0; i < itemUnitList.Count; i++)
         {
             int cardHalfWidth = itemWidth / 2;
-            int xPosition = (i % row) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
+            int xPosition = (i % row) * itemWidth + cardHalfWidth;
+            int yPosition = -((i / row) * itemWidth + cardHalfWidth);
             itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
@@ -117,8 +116,8 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         for (int i = 0; i < blockList.Count; i++)
         {
             int cardHalfWidth = itemWidth / 2;
-            int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth) - padding;
+            int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth;
+            int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth);
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }

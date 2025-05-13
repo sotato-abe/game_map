@@ -16,9 +16,10 @@ public class PouchPanel : Panel
 
     int selectedItem = 0;
 
-    private int headHeight = 50;
-    private int itemWidth = 70;
-    int row = 10;
+    private int paddingHeight = 20;
+    private int paddimgWidth = 20;
+    private int itemSize = 70;
+    int maxRow = 10;
     int padding = 10;
     private List<ItemUnit> itemUnitList = new List<ItemUnit>();
     private List<GameObject> blockList = new List<GameObject>();
@@ -77,9 +78,10 @@ public class PouchPanel : Panel
 
     public void SetPanelSize()
     {
-        int width = itemWidth * row + 40;
+        int row = playerBattler.Pouch.val < maxRow ? playerBattler.Pouch.val : maxRow;
         int column = (playerBattler.Pouch.val - 1) / row + 1;
-        int height = itemWidth * column + headHeight;
+        int height = itemSize * column + paddingHeight;
+        int width = itemSize * row + paddimgWidth;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
@@ -133,18 +135,18 @@ public class PouchPanel : Panel
 
         for (int i = 0; i < itemUnitList.Count; i++)
         {
-            int cardHalfWidth = itemWidth / 2;
-            int xPosition = (i % row) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
+            int cardHalfWidth = itemSize / 2;
+            int xPosition = (i % maxRow) * itemSize + cardHalfWidth + padding;
+            int yPosition = -((i / maxRow) * itemSize + cardHalfWidth) - padding;
             itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         // 右下からブロックを配置
         for (int i = 0; i < blockList.Count; i++)
         {
-            int cardHalfWidth = itemWidth / 2;
-            int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth) - padding;
+            int cardHalfWidth = itemSize / 2;
+            int xPosition = (playerBattler.Pouch.val % maxRow + i) * itemSize + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Pouch.val / maxRow) * itemSize + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }
@@ -158,8 +160,8 @@ public class PouchPanel : Panel
             switch (type)
             {
                 case ArrowType.Up:
-                    if (selectedItem >= row)
-                        targetItem = selectedItem - row;
+                    if (selectedItem >= maxRow)
+                        targetItem = selectedItem - maxRow;
                     break;
 
                 case ArrowType.Right:
@@ -168,8 +170,8 @@ public class PouchPanel : Panel
                     break;
 
                 case ArrowType.Down:
-                    if (selectedItem <= itemUnitList.Count - row)
-                        targetItem = selectedItem + row;
+                    if (selectedItem <= itemUnitList.Count - maxRow)
+                        targetItem = selectedItem + maxRow;
                     break;
 
                 case ArrowType.Left:
