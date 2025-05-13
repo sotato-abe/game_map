@@ -10,7 +10,7 @@ public class MessagePrefab : MonoBehaviour
     [SerializeField] RectTransform backImageRectTransform;
     [SerializeField] TextMeshProUGUI text;
 
-    private int lineWidth = 200;
+    private int lineWidth = 700;
     private float padding = 0f;
 
     public void SetMessage(Message message)

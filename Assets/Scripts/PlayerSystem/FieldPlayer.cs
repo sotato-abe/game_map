@@ -15,7 +15,6 @@ public class FieldPlayer : MonoBehaviour
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
     [SerializeField] float moveSpeed = 3f;
-    [SerializeField] WorldMapPanel worldMapPanel;
 
     public UnityAction OnEncount;
     public UnityAction OnReserve;
