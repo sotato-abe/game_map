@@ -20,8 +20,8 @@ public class CommandPanel : Panel
     private int soulCost = 0;
     List<CommandUnit> commandUnitList = new List<CommandUnit>();
 
-    private int headWidth = 145;
-    private int commandWidth = 80;
+    private int headWidth = 140;
+    private int commandWidth = 90;
     private int panelHeight = 150;
 
     public void Start()

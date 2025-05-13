@@ -19,7 +19,7 @@ public class AttackPanel : Panel
     List<EquipmentUnit> equipmentUnitList = new List<EquipmentUnit>();
 
     private int headWidth = 150;
-    private int equipmentWidth = 120;
+    private int equipmentWidth = 125;
     private int panelHeight = 150;
 
     public void Start()
