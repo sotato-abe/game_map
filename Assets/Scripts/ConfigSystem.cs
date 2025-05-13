@@ -46,7 +46,7 @@ public class ConfigSystem : MonoBehaviour
         OnConfigOpen?.Invoke(); // リザーブイベントを発火
     }
 
-    private void CloseConfig()
+    public void CloseConfig()
     {
         worldMapPanel.SetActive(false); // ワールドマップパネルを非表示にする
         OnConfigClose?.Invoke(); // エンカウントイベントを発火
