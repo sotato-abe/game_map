@@ -6,7 +6,6 @@ using TMPro;
 
 public class BattlerStatusDialog : Dialog
 {
-    [SerializeField] TextMeshProUGUI battlerName;
     [SerializeField] TextMeshProUGUI attackText;
     [SerializeField] TextMeshProUGUI techniqueText;
     [SerializeField] TextMeshProUGUI defenseText;
@@ -21,7 +20,7 @@ public class BattlerStatusDialog : Dialog
 
     public virtual void Setup(Battler battler)
     {
-        battlerName.SetText(battler.Base.Name);
+        namePlate.SetName(battler.Base.Name);
         attackText.SetText(battler.Attack.val.ToString());
         techniqueText.SetText(battler.Technique.val.ToString());
         defenseText.SetText(battler.Defense.val.ToString());
