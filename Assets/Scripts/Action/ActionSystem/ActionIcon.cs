@@ -11,6 +11,7 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 {
     public UnityAction<ActionType> OnPointerEnterAction;
     [SerializeField] private Image image;
+    [SerializeField] Image backImage;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] ActionIconList actionIconList;
 
@@ -24,6 +25,9 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
     private float scaleDuration = 0.05f; // スケール変更の時間
 
     private RectTransform rectTransform;
+
+    [SerializeField] Color activeColor = new Color(133, 10, 240, 255);
+    [SerializeField] Color stopColor = new Color(0, 0, 0, 200);
 
     private void Awake()
     {
@@ -47,6 +51,14 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
     {
         if (isActive == activeFlg) return;
         isActive = activeFlg;
+        if (isActive)
+        {
+            SetColor(activeColor);
+        }
+        else
+        {
+            SetColor(stopColor);
+        }
 
         // コルーチンを開始してスムーズにサイズとフォントサイズを変更
         StopAllCoroutines();
@@ -84,5 +96,10 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
         rectTransform.sizeDelta = endSize;
         text.fontSize = endFontSize;
         layout.preferredHeight = targetHeight;
+    }
+
+    private void SetColor(Color color)
+    {
+        backImage.color = color;
     }
 }
