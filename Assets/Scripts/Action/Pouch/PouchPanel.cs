@@ -33,6 +33,7 @@ public class PouchPanel : Panel
     private void OnEnable()
     {
         playerBattler = playerUnit.Battler;
+        SetPanelSize();
         SetItemUnit();
     }
 

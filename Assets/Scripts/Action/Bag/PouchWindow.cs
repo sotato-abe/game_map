@@ -38,7 +38,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     public void SetPouchSize()
     {
-        int width = itemWidth * row + 30;
+        int width = itemWidth * row + 20;
         int column = (playerBattler.Pouch.val - 1) / row + 1;
         int height = itemWidth * column + headHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
