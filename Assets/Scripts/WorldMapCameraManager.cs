@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class WorldMapCameraManager : MonoBehaviour
 {
-
-    private int worldWidth = 40; // ワールドマップの幅
     private int worldHeight = 100; // ワールドマップの高さ
 
     private Vector3Int currentPos; // 現在のカメラ位置
@@ -47,28 +45,4 @@ public class WorldMapCameraManager : MonoBehaviour
         }
         transform.position = cameraPos;
     }
-
-    // public void LeftTarget()
-    // {
-    //     // カメラの位置を左に移動
-    //     Vector3 cameraPos = transform.position;
-    //     cameraPos.x -= 0.05f; // 左に1ユニット移動
-    //     if (cameraPos.x < 0) // 左限を超えないように制限
-    //     {
-    //         cameraPos.x = worldWidth;
-    //     }
-    //     transform.position = cameraPos;
-    // }
-
-    // public void RightTarget()
-    // {
-    //     // カメラの位置を右に移動
-    //     Vector3 cameraPos = transform.position;
-    //     cameraPos.x += 0.05f; // 右に1ユニット移動
-    //     if (cameraPos.x > worldWidth) // 右限を超えないように制限
-    //     {
-    //         cameraPos.x = 0;
-    //     }
-    //     transform.position = cameraPos;
-    // }
 }

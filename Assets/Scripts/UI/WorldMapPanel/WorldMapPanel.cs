@@ -12,8 +12,6 @@ public class WorldMapPanel : MonoBehaviour
 
     private bool isCameraUpFlg = false;
     private bool isCameraBottomFlg = false;
-    private bool isCameraRightFlg = false;
-    private bool isCameraLeftFlg = false;
 
     public bool isActive = false; // フラグを追加
 
@@ -76,22 +74,6 @@ public class WorldMapPanel : MonoBehaviour
     public void OnDownEnd()
     {
         isCameraBottomFlg = false;
-    }
-    public void OnLeftStart()
-    {
-        isCameraLeftFlg = true;
-    }
-    public void OnLeftEnd()
-    {
-        isCameraLeftFlg = false;
-    }
-    public void OnRightStart()
-    {
-        isCameraRightFlg = true;
-    }
-    public void OnRightEnd()
-    {
-        isCameraRightFlg = false;
     }
 
     public void OnCurrentPosition()

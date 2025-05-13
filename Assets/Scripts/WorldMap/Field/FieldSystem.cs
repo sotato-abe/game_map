@@ -298,10 +298,7 @@ public class FieldSystem : MonoBehaviour
     {
         GameObject obj = Instantiate(prefab, position, Quaternion.identity);
         Building building = obj.GetComponent<Building>();
-        if (type != null)
-        {
-            building.Setup(type); // 建物のアイコンを設定
-        }
+        building.Setup(type); // 建物のアイコンを設定
 
         SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
         renderer.sortingLayerName = sortingLayer;

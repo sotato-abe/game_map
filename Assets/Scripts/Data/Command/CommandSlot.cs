@@ -10,10 +10,6 @@ public class CommandSlot : Unit
     [SerializeField] Image maskImage;
     [SerializeField] CommandDialog commandDialog;
 
-    public void Start()
-    {
-    }
-
     public void Setup(Command command)
     {
         this.command = command;

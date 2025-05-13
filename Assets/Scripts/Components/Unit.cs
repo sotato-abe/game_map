@@ -10,7 +10,7 @@ public class Unit : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public UnityAction OnEndDragAction;
     private CanvasGroup canvasGroup;
 
-    public void Awake()
+    protected virtual void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
     }

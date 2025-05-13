@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class MapBase : ScriptableObject
 {
-    [SerializeField] new int id;
-    [SerializeField] new string name;
+    [SerializeField] int id;
+    [SerializeField] string mapName;
     [SerializeField] int level;
     [SerializeField] bool openTop;
     [SerializeField] bool openLeft;
@@ -28,7 +28,7 @@ public class MapBase : ScriptableObject
     [SerializeField] List<Item> items;
 
     public int Id { get => id; }
-    public string Name { get => name; }
+    public string Name { get => mapName; }
     public int Level { get => level; }
     public bool OpenTop { get => openTop; }
     public bool OpenLeft { get => openLeft; }
