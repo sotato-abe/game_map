@@ -12,7 +12,7 @@ public class EquipmentSlot : Unit
     [SerializeField] bool isBlock = false;
 
     //Setupより前に実行したい
-    private void Awake()
+    protected override void Awake()
     {
         plusIcon.gameObject.SetActive(true);
         blockIcon.gameObject.SetActive(false);
@@ -21,10 +21,7 @@ public class EquipmentSlot : Unit
             plusIcon.gameObject.SetActive(false);
             blockIcon.gameObject.SetActive(true);
         }
-        else if (equipmentType != null)
-        {
-            SetEquipmentType();
-        }
+        SetEquipmentType();
     }
 
     private void SetEquipmentType()

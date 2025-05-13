@@ -36,8 +36,6 @@ public class EnchantDatabase : MonoBehaviour
                 continue;
             }
 
-            Debug.Log($"EnchantDatabase: Found enchantData {data.name} with type {data.enchantType}");
-
             if (dataDict.ContainsKey(data.enchantType))
             {
                 Debug.LogWarning($"EnchantDatabase: Duplicate entry for {data.enchantType} found. Skipping.");
@@ -55,7 +53,6 @@ public class EnchantDatabase : MonoBehaviour
             return data;
         }
 
-        Debug.LogWarning($"EnchantDatabase: No data found for type {type}");
         return null;
     }
 }

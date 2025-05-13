@@ -10,7 +10,6 @@ public class Battler
     [SerializeField] int level = 1;
     [SerializeField] int soul = 0;
 
-    private float experience = 0;
     public BattlerBase Base { get => _base; }
     public int Level { get => level; set => level = value; }
     public int Soul { get => soul; set => soul = value; }

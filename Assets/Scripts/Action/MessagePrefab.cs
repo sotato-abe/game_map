@@ -10,7 +10,6 @@ public class MessagePrefab : MonoBehaviour
     [SerializeField] RectTransform backImageRectTransform;
     [SerializeField] TextMeshProUGUI text;
 
-    private int lineHeight = 30;
     private int lineWidth = 200;
     private float padding = 0f;
 
@@ -30,6 +29,6 @@ public class MessagePrefab : MonoBehaviour
         }
 
         float newHeight = text.preferredHeight + padding;
-        backImageRectTransform.sizeDelta = new Vector2(backImageRectTransform.sizeDelta.x, newHeight);
+        backImageRectTransform.sizeDelta = new Vector2(lineWidth, newHeight);
     }
 }

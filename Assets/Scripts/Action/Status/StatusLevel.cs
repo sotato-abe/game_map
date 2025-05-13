@@ -12,8 +12,6 @@ public class StatusLevel : MonoBehaviour
 
     private int currentLevel = 1; // 現在のレベル
     private int currentExp = 0; // 現在の経験値
-    private int maxExp = 100; // 最大経験値
-
     public void SetLevel(int level, int exp)
     {
         if (currentLevel != level)
