@@ -7,8 +7,11 @@ using UnityEngine.Events;
 public class TurnBattlerIcon : MonoBehaviour
 {
     [SerializeField] private Image iconImage;
+    [SerializeField] private Image frameImage;
     [SerializeField] private float moveSpeed = 300f;
     [SerializeField] private float targetOffsetX = -700f; // 相対的な移動距離
+    [SerializeField] Color activeColor = new Color(133, 10, 240, 255);
+    [SerializeField] Color runningColor = new Color(133, 10, 240, 255);
     private RectTransform rectTransform;
     private bool isActive = true;
     float targetX;
@@ -27,6 +30,7 @@ public class TurnBattlerIcon : MonoBehaviour
             rectTransform = GetComponent<RectTransform>(); // 確実に取得する
 
         iconImage.sprite = battlerImage;
+        frameImage.color = runningColor; // 背景を透明にする
         StartCoroutine(WaitAndMoveToLeft(0.1f)); // **0.1秒待ってから移動開始**
     }
 
@@ -64,12 +68,42 @@ public class TurnBattlerIcon : MonoBehaviour
 
         if (isActive)
         {
-            ExecuteTurn();
+            frameImage.color = activeColor;
+            OnExecute?.Invoke();
+            StartCoroutine(JumpMotion());
         }
     }
 
-    private void ExecuteTurn()
+    private IEnumerator JumpMotion()
     {
-        OnExecute?.Invoke();
+        float bounceHeight = 40f;
+        float damping = 0.5f;
+        float gravity = 5000f;
+        float groundY = transform.position.y;
+
+        while (bounceHeight >= 0.1f)
+        {
+            float verticalVelocity = Mathf.Sqrt(2 * gravity * bounceHeight);
+            bool isFalling = false;
+
+            // 上昇と下降のループ
+            while (transform.position.y >= groundY || !isFalling)
+            {
+                verticalVelocity -= gravity * Time.deltaTime;
+                transform.position += Vector3.up * verticalVelocity * Time.deltaTime;
+
+                if (transform.position.y <= groundY)
+                {
+                    isFalling = true;
+                    break;
+                }
+
+                yield return null;
+            }
+
+            bounceHeight *= damping;  // バウンドを減衰させる
+        }
+
+        transform.position = new Vector3(transform.position.x, groundY, transform.position.z);  // 最後に位置を調整
     }
 }
