@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] AgeTimePanel ageTimePanel;
-    [SerializeField] MessagePanel2 messagePanel;
+    [SerializeField] MessagePanel messagePanel;
     [SerializeField] FieldSystem fieldSystem;
     [SerializeField] ConfigSystem configSystem;
 

@@ -23,7 +23,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
     [SerializeField] HitTargetPin hitTargetPin;
-    [SerializeField] MessagePanel2 messagePanel;
+    [SerializeField] MessagePanel messagePanel;
 
     DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
 

@@ -40,7 +40,7 @@ public class ConfigSystem : MonoBehaviour
         gameObject.SetActive(isActive); // ゲームオブジェクトのアクティブ状態を変更
     }
 
-    private void OpenConfig()
+    public void OpenConfig()
     {
         worldMapPanel.SetActive(true); // ワールドマップパネルを表示する
         OnConfigOpen?.Invoke(); // リザーブイベントを発火

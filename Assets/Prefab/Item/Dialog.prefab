@@ -190,7 +190,7 @@ MonoBehaviour:
   enchantList: {fileID: 5004499351619645534}
   costList: {fileID: 4493006240285234931}
   enegyPrefab: {fileID: 8681941864015157636, guid: febade31ec9eb7f4585a9f1fd3c3a69a, type: 3}
-  costPrefab: {fileID: 2733314538566020693, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
+  costPrefab: {fileID: 2172409200630368592}
   enchantPrefab: {fileID: 2639143119339464938, guid: 1d2054bfcec3bb641b146d36c7438d84, type: 3}
 --- !u!1 &2117764651443438378
 GameObject:
@@ -356,7 +356,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8392709946988504336}
+  - {fileID: 673211306335815276}
   m_Father: {fileID: 6691366171865336330}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -770,29 +770,13 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8458407933034041411, guid: 1d2054bfcec3bb641b146d36c7438d84, type: 3}
   m_PrefabInstance: {fileID: 4062014251800673903}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &5108210729558803577
+--- !u!1001 &4308640544050800389
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 4307340184741570270}
     m_Modifications:
-    - target: {fileID: 1007542551503363040, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1007542551503363040, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1007542551503363040, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1007542551503363040, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3647044484993261929, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -881,26 +865,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogCostIcon
       objectReference: {fileID: 0}
-    - target: {fileID: 8662238926321086851, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662238926321086851, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662238926321086851, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8662238926321086851, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
---- !u!224 &8392709946988504336 stripped
+--- !u!224 &673211306335815276 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3647044484993261929, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
-  m_PrefabInstance: {fileID: 5108210729558803577}
+  m_PrefabInstance: {fileID: 4308640544050800389}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2172409200630368592 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2733314538566020693, guid: 28facdd984bc1664d94ad5103f194dd1, type: 3}
+  m_PrefabInstance: {fileID: 4308640544050800389}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075ef374865fab7478885e2b66eefd7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

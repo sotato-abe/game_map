@@ -12,9 +12,7 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
     public UnityAction<ActionType> OnPointerEnterAction;
     [SerializeField] private Image image;
     [SerializeField] Image backImage;
-    [SerializeField] private TextMeshProUGUI text;
     [SerializeField] ActionIconList actionIconList;
-
 
     public ActionType type;
     [SerializeField] private bool isActive = false;
@@ -43,8 +41,6 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
     {
         type = actionType;
         image.sprite = actionIconList.GetIcon(type);
-        string actionText = System.Enum.GetName(typeof(ActionType), type);
-        text.text = actionText;
     }
 
     public void SetActive(bool activeFlg)
@@ -76,8 +72,6 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
         Vector2 startSize = rectTransform.sizeDelta;
         Vector2 endSize = new Vector2(targetWidth, targetHeight);
 
-        float startFontSize = text.fontSize;
-        float endFontSize = targetFontSize;
         var layout = GetComponent<LayoutElement>();
 
         while (elapsedTime < scaleDuration)
@@ -87,14 +81,12 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 
             Vector2 currentSize = Vector2.Lerp(startSize, endSize, t);
             rectTransform.sizeDelta = currentSize;
-            text.fontSize = Mathf.Lerp(startFontSize, endFontSize, t);
             layout.preferredHeight = currentSize.y;
 
             yield return null;
         }
 
         rectTransform.sizeDelta = endSize;
-        text.fontSize = endFontSize;
         layout.preferredHeight = targetHeight;
     }
 

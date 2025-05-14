@@ -14,7 +14,7 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] ActionBoard actionBoard;
-    [SerializeField] MessagePanel2 messagePanel;
+    [SerializeField] MessagePanel messagePanel;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] BattleUnit enemyUnit;
     [SerializeField] AttackSystem attackSystem;

@@ -6,145 +6,80 @@ using TMPro;
 
 public class MessagePanel : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI text;
-    [SerializeField] TextMeshProUGUI logText;
-    [SerializeField] float letterPerSecond;
-    [SerializeField] Image panel;
-    [SerializeField] Image dialogBackground;
-    [SerializeField] Image logBtn;
+    [SerializeField] MessagePrefab messagePrefab;
+    [SerializeField] Sprite gameIconSprite;
+    [SerializeField] Sprite battleIconSprite;
+    [SerializeField] Sprite fieldIconSprite;
 
-    private List<string> messageList = new List<string>();
-    private List<string> messageLog = new List<string>();
-    private Coroutine fadeCoroutine;
-    private Coroutine messageCoroutine;
+    private List<Message> messageList = new List<Message>();
 
-    public void OnPointerEnter()
+    private void Awake()
     {
-        SetPanelValidity(0.9f);
+        // foreach (Transform child in transform)
+        // {
+        //     Destroy(child.gameObject);
+        // }
     }
 
-    public void OnPointerExit()
+    public void AddGameMessage(string message)
     {
-        SetPanelValidity(0.2f);
+        Message newMessage = new Message(gameIconSprite, message);
+        messageList.Add(newMessage);
+        TypeMessageList();
     }
 
-    public IEnumerator TypeDialog(string line)
+    public void AddBattleMesage(string message)
     {
-        SetPanelValidity(0.9f);
-        text.SetText("");
-        foreach (char letter in line)
+        Message newMessage = new Message(battleIconSprite, message);
+        messageList.Add(newMessage);
+        TypeMessageList();
+    }
+    public void AddFieldMesage(string message)
+    {
+        Message newMessage = new Message(fieldIconSprite, message);
+        messageList.Add(newMessage);
+        TypeMessageList();
+    }
+
+    public void TypeMessageList()
+    {
+        // messageListが100件以上なら古いものを削除
+        if (messageList.Count > 100)
         {
-            text.text += letter;
-            yield return new WaitForSeconds(letterPerSecond);
-        }
-        StartCoroutine(FadeOutAlpha());
-    }
-
-    public void AddMesageList(string message)
-    {
-        messageList.Add(message);
-        if (messageCoroutine == null)
-        {
-            messageCoroutine = StartCoroutine(TypeMessageList());
-        }
-    }
-
-    // メッセージリストのmessageをTypeしていく
-    private IEnumerator TypeMessageList()
-    {
-        while (messageList.Count > 0)
-        {
-            string message = messageList[0]; // 先頭のメッセージを取得
-            yield return TypeDialog(message);
-
-            yield return new WaitForSeconds(2f);
-
-            messageList.RemoveAt(0); // タイプし終わったメッセージを削除
+            messageList.RemoveRange(0, messageList.Count - 100);
         }
 
-        messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
-    }
+        // 表示対象となるメッセージ（後ろから3件）
+        int startIndex = Mathf.Max(0, messageList.Count - 7);
+        int displayCount = messageList.Count - startIndex;
 
-    //100件以上追加されたときは古いものから削除する機能をつけてください
-    private void AddMessageLog(string message)
-    {
-        messageLog.Add(message);
-    }
+        // すでにあるMessagePrefabを取得
+        int existingCount = transform.childCount;
 
-    private IEnumerator FadeOutAlpha()
-    {
-        yield return new WaitForSeconds(5f);
-        SetPanelValidity(0.2f);
-    }
-
-    public void SetPanelValidity(float targetAlpha, float duration = 0.5f)
-    {
-        // 既存のフェードコルーチンが動いている場合は停止
-        if (fadeCoroutine != null)
+        for (int i = 0; i < displayCount; i++)
         {
-            StopCoroutine(fadeCoroutine);
+            Message message = messageList[startIndex + i];
+
+            if (i < existingCount)
+            {
+                // 既存のMessagePrefabを使う
+                Transform child = transform.GetChild(i);
+                MessagePrefab prefab = child.GetComponent<MessagePrefab>();
+                prefab.SetMessage(message);
+            }
+            else
+            {
+                // 新しく生成する
+                MessagePrefab newPrefab = Instantiate(messagePrefab, transform);
+                newPrefab.SetMessage(message);
+            }
         }
 
-        // 新しいフェードコルーチンを開始
-        fadeCoroutine = StartCoroutine(FadeToAlpha(targetAlpha, duration));
-    }
-
-    private IEnumerator FadeToAlpha(float targetAlpha, float duration)
-    {
-        float startAlpha = dialogBackground.color.a; // 現在のアルファ値
-        float time = 0f;
-
-        while (time < duration)
+        // 余分なプレハブがあれば非表示または削除する（ここでは削除）
+        for (int i = displayCount; i < existingCount; i++)
         {
-            time += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration); // 線形補間でアルファ値を更新
-
-            Color bgColor = dialogBackground.color;
-            bgColor.a = alpha;
-            dialogBackground.color = bgColor;
-
-            Color plColor = panel.color;
-            plColor.a = alpha;
-            panel.color = plColor;
-
-            Color logBtnColor = logBtn.color;
-            logBtnColor.a = alpha;
-            logBtn.color = logBtnColor;
-
-            Color txColor = text.color;
-            txColor.a = Mathf.Clamp(alpha, 0.3f, 1f);
-            text.color = txColor;
-
-            Color logTxColor = logText.color;
-            logTxColor.a = Mathf.Clamp(alpha, 0.3f, 1f);
-            logText.color = logTxColor;
-
-            yield return null; // 次のフレームまで待機
+            Destroy(transform.GetChild(i).gameObject);
         }
-
-        // 最後に目標のアルファ値に確定
-        Color finalColor = dialogBackground.color;
-        finalColor.a = targetAlpha;
-        dialogBackground.color = finalColor;
-
-
-        Color finalPlColor = panel.color;
-        finalPlColor.a = targetAlpha;
-        panel.color = finalPlColor;
-
-        Color finallogBtnColor = logBtn.color;
-        finallogBtnColor.a = targetAlpha;
-        logBtn.color = finallogBtnColor;
-
-        Color textColor = text.color;
-        textColor.a = Mathf.Clamp(targetAlpha, 0.3f, 1f);
-        text.color = textColor;
-
-        Color logTextColor = logText.color;
-        logTextColor.a = Mathf.Clamp(targetAlpha, 0.3f, 1f);
-        logText.color = logTextColor;
-
-        // コルーチンの参照をクリア
-        fadeCoroutine = null;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 }
