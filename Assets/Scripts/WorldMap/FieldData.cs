@@ -24,8 +24,7 @@ public class FieldData
     public ArmsShop armsShop { get => mapBase != null ? mapBase.ArmsShop : null; }
     public Laboratory laboratory { get => mapBase != null ? mapBase.Laboratory : null; }
     public Hotel hotel { get => mapBase != null ? mapBase.Hotel : null; }
-
-    public List<Battler> enemies { get => mapBase != null ? mapBase.Enemies : new List<Battler>(); }
+    public List<Battler> enemies = new List<Battler>();
     public List<Item> items = new List<Item>(); // アイテムリスト
 
     public virtual void Init()
@@ -34,6 +33,23 @@ public class FieldData
         {
             items = new List<Item>(mapBase.Items);
         }
+        SetEnemy();
+    }
+
+    private void SetEnemy()
+    {
+        if (mapBase != null)
+        {
+            enemies.AddRange(mapBase.Enemies);
+        }
+        var database = FieldBattlerDatabase.Instance;
+        if (database == null)
+        {
+            Debug.LogError("FieldData.SetEnemy: FieldBattlerDatabase.Instance が null です");
+            return;
+        }
+        List<Battler> fieldEnemies = database.GetData((FieldType)fieldType)?.battlerList;
+        enemies.AddRange(fieldEnemies);
     }
 
     public Battler GetRundamEnemy()
