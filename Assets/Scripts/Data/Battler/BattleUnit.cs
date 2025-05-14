@@ -24,7 +24,7 @@ public class BattleUnit : MonoBehaviour
         SetEnegy();
     }
 
-    private void SetEnegy()
+    public void SetEnegy()
     {
         lifeBar.SetEnegy(EnegyType.Life, Battler.MaxLife, Battler.Life);
         batteryBar.SetEnegy(EnegyType.Battery, Battler.MaxBattery, Battler.Battery);
@@ -59,6 +59,11 @@ public class BattleUnit : MonoBehaviour
         lifeBar.ChangeEnegyVal(Battler.Life);
         batteryBar.ChangeEnegyVal(Battler.Battery);
         soulBar.ChangeEnegyVal(Battler.Soul);
+        statusDialog.Setup(Battler);
+    }
+
+    public void SetStatusDialog()
+    {
         statusDialog.Setup(Battler);
     }
 
