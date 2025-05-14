@@ -25,7 +25,6 @@ public class StatusPanel : Panel
     [SerializeField] EnchantIcon enchantIconPrefab;
     [SerializeField] StatusLevel statusLevel;
 
-    // private PlayerBattler battler;
     private List<Enegy> enegyCountList = new List<Enegy>();
 
     private void Start()
