@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class TurnBattler : MonoBehaviour
 {
     [SerializeField] TurnBattlerIcon turnBattlerIconPrefab;
-    [SerializeField] GameObject turnLane;
+    GameObject turnLane;
     public Battler battler;
     private List<TurnBattlerIcon> turnBattlerIconList = new List<TurnBattlerIcon>();
 
@@ -33,6 +33,11 @@ public class TurnBattler : MonoBehaviour
 
         // アイコン生成のコルーチンを開始
         generateIconCoroutine = StartCoroutine(GenerateTurnBattlerIconsRepeatedly());
+    }
+
+    public void SetLane(GameObject targetLane)
+    {
+        turnLane = targetLane;
     }
 
     public void SetActive(bool isActiveFlg)
@@ -84,6 +89,7 @@ public class TurnBattler : MonoBehaviour
     private void GenerateTurnBattlerIcon()
     {
         TurnBattlerIcon turnBattlerIcon = Instantiate(turnBattlerIconPrefab, turnLane.transform);
+        turnBattlerIcon.transform.SetAsFirstSibling();
         turnBattlerIcon.SetTurnBattlerIcon(battler.Base.Sprite);
         turnBattlerIcon.OnExecute += ExecuteTurnBattler;
         turnBattlerIconList.Add(turnBattlerIcon);
