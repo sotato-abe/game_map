@@ -49,7 +49,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     // 装備中の装備ブロックを表示。
     public void SetEquipmentList()
     {
-        Debug.Log("SetEquipmentList");
         //  装備リストを初期化
         head.ReSetSlot();
         body.ReSetSlot();
@@ -75,7 +74,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             }
         }
         SetArmEquipmentBlock();
-        Debug.Log($"Equipments: {playerBattler.Equipments.Count}");
     }
 
     // 外部から追加する際に使用する。
@@ -133,7 +131,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     private void SetArmEquipmentBlock()
     {
-        Debug.Log($"SetArmEquipmentBlock: {armEquipmentList.Count}");
         // アイテムの数が3個以上ある時に、後ろの2つ以外をバックに戻す。
         if (armEquipmentList.Count > 2)
         {
@@ -148,12 +145,10 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         switch (armEquipmentList.Count)
         {
             case 1:
-                Debug.Log($"here!1: {armEquipmentList[0].Base.Name}");
                 SetEquipmentBlock(arm1, armEquipmentList[0]);
                 arm2.ReSetSlot();
                 break;
             case 2:
-                Debug.Log("here!2");
                 SetEquipmentBlock(arm2, armEquipmentList[0]);
                 SetEquipmentBlock(arm1, armEquipmentList[1]);
                 break;
@@ -168,13 +163,11 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
         if (equipmentBlock != null)
         {
-            Debug.Log("test1");
             // 既に装備されているものを外してバッグに戻す
             equipmentBlock.Setup(equipment);
         }
         else
         {
-            Debug.Log("test2");
             // EquipmentBlock が存在しない場合のみ新規作成
             EquipmentBlock newEquipmentBlock = Instantiate(equipmentBlockPrefab, targetPosition.transform);
             newEquipmentBlock.transform.position = targetPosition.transform.position;
