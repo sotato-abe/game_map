@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 1650595872848223231}
   - component: {fileID: 3363289846603740845}
   - component: {fileID: 229138185393324918}
-  - component: {fileID: 3324893071735855384}
+  - component: {fileID: 4209149473065402462}
   m_Layer: 5
   m_Name: Status
   m_TagString: Untagged
@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
---- !u!114 &3324893071735855384
+--- !u!114 &4209149473065402462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3369850867141315402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6746da9c58bd7224c8d1b29f613b4bee, type: 3}
+  m_Script: {fileID: 11500000, guid: cbb25aae2ea6f2b46b22fa160dce8579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 4130346737774000926}
@@ -201,8 +201,8 @@ MonoBehaviour:
   stopSprite: {fileID: 21300000, guid: 997b8d8aee110ee4584756083fb01d9c, type: 3}
   brokenSprite: {fileID: 21300000, guid: d672951f56375584482bbc21d4a5429a, type: 3}
   mysterySprite: {fileID: 21300000, guid: 6b175ccb22825aa43aae028a193f69cc, type: 3}
-  activeColor: {r: 0.31764707, g: 1, b: 0, a: 0.78431374}
-  stopColor: {r: 1, g: 0, b: 0.6459122, a: 0.78431374}
+  activeColor: {r: 0.65882355, g: 1, b: 0, a: 200}
+  stopColor: {r: 255, g: 0, b: 134, a: 200}
 --- !u!1 &5442895756707987490
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,7 +566,7 @@ MonoBehaviour:
   enchantPrefab: {fileID: 1197513031629182013, guid: eba4909821cc82c4f9105f52b67899bd, type: 3}
   costPrefab: {fileID: 548780214466489696, guid: 0d35f7cf411f06f4db13079e16531d1a, type: 3}
   equipmentDialog: {fileID: 747988290815622839}
-  equipmentStatus: {fileID: 3324893071735855384}
+  unitStatusLayer: {fileID: 4209149473065402462}
 --- !u!114 &8565632496993366730
 MonoBehaviour:
   m_ObjectHideFlags: 0

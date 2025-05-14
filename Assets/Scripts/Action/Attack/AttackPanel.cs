@@ -91,7 +91,7 @@ public class AttackPanel : Panel
         {
             if (CheckEnegy(equipmentUnit.Equipment) == false)
             {
-                equipmentUnit.SetStatus(EquipmentStatus.EnegyOut);
+                equipmentUnit.SetStatus(UnitStatus.EnegyOut);
                 continue;
             }
             if (Random.Range(0, 100) < equipmentUnit.Equipment.Base.Probability)
@@ -166,7 +166,7 @@ public class AttackPanel : Panel
             }
             else
             {
-                equipmentUnit.SetStatus(EquipmentStatus.EnegyOut);
+                equipmentUnit.SetStatus(UnitStatus.EnegyOut);
             }
         }
 
