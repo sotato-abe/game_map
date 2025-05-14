@@ -9,8 +9,9 @@ using UnityEngine.EventSystems;
 public class InventoryWindow : MonoBehaviour, IDropHandler
 {
     public UnityAction OnActionExecute;
-    public UnityAction<ItemUnit> OnDropItemUnitAction;
-    [SerializeField] GameObject itemUnitPrefab;
+    public UnityAction<ItemBlock> OnDropItemBlockAction;
+    public UnityAction<EquipmentBlock> OnDropEquipmentBlockAction;
+    [SerializeField] GameObject itemBlockPrefab;
     [SerializeField] GameObject equipmentBlockPrefab;
     [SerializeField] GameObject blockPrefab;
     [SerializeField] GameObject itemList;
@@ -26,7 +27,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     int padding = 10;
     int itemNum = 0;
 
-    private List<ItemUnit> itemUnitList = new List<ItemUnit>();
+    private List<ItemBlock> itemBlockList = new List<ItemBlock>();
     private List<EquipmentBlock> equipmentBlockList = new List<EquipmentBlock>();
     private List<GameObject> blockList = new List<GameObject>();
     private int selectedItem = 0;
@@ -51,17 +52,18 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
-    // ItemUnitがドロップされたときの処理
+    // ItemBlockがドロップされたときの処理
     public void OnDrop(PointerEventData eventData)
     {
-        ItemUnit droppedItemUnit = eventData.pointerDrag.GetComponent<ItemUnit>();
+        ItemBlock droppedItemBlock = eventData.pointerDrag.GetComponent<ItemBlock>();
+        EquipmentBlock droppedEquipmentBlock = eventData.pointerDrag.GetComponent<EquipmentBlock>();
 
-        if (droppedItemUnit != null)
+        if (droppedItemBlock != null)
         {
-            if (droppedItemUnit.transform.parent == itemList.transform)
+            if (droppedItemBlock.transform.parent == itemList.transform)
             {
                 Debug.Log("バッグ内のアイテムをドロップしても何もしない");
-                return; // バッグ内のアイテムをドロップしても何もしない
+                return;
             }
             if (playerBattler.BagItemList.Count >= playerBattler.Bag.val)
             {
@@ -69,13 +71,28 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 return; // 追加しない
             }
 
-            OnDropItemUnitAction?.Invoke(droppedItemUnit);
-            AddItemUnit(droppedItemUnit.Item); // バッグに追加
+            OnDropItemBlockAction?.Invoke(droppedItemBlock);
+            AddItemBlock(droppedItemBlock.Item); // バッグに追加
+        }
+        if (droppedEquipmentBlock != null)
+        {
+            if (droppedEquipmentBlock.transform.parent == itemList.transform)
+            {
+                Debug.Log("バッグ内の装備をドロップしても何もしない");
+                return;
+            }
+            if (playerBattler.BagItemList.Count >= playerBattler.Bag.val)
+            {
+                Debug.Log("バッグがいっぱいです。");
+                return; // 追加しない
+            }
+
+            AddEquipmentBlock(droppedEquipmentBlock.Equipment); // バッグに追加
+            OnDropEquipmentBlockAction?.Invoke(droppedEquipmentBlock);
         }
     }
 
     //playerUnitのBagの数値に応じでInventoryWindowのサイズを変更
-
     public void SetItem()
     {
         foreach (Transform child in itemList.transform)
@@ -84,16 +101,16 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         }
 
         itemNum = 0;
-        SetItemUnit();
-        SetEquipmentUnit();
+        SetItemBlock();
+        SetEquipmentBlock();
         SetBlock();
-        ArrengeItemUnits();
+        ArrengeItemBlocks();
 
         if (0 < itemNum && selectedItem == 0)
         {
-            if (itemUnitList.Count > 0)
+            if (itemBlockList.Count > 0)
             {
-                itemUnitList[0].SetTarget(true);
+                itemBlockList[0].SetTarget(true);
             }
             else if (equipmentBlockList.Count > 0)
             {
@@ -102,36 +119,36 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         }
         else if (0 < itemNum && selectedItem > 0)
         {
-            if (selectedItem < itemUnitList.Count)
+            if (selectedItem < itemBlockList.Count)
             {
-                itemUnitList[selectedItem].SetTarget(true);
+                itemBlockList[selectedItem].SetTarget(true);
             }
             else
             {
-                equipmentBlockList[selectedItem - itemUnitList.Count].SetTarget(true);
+                equipmentBlockList[selectedItem - itemBlockList.Count].SetTarget(true);
             }
         }
     }
 
-    public void SetItemUnit()
+    public void SetItemBlock()
     {
         // リストをクリア
-        itemUnitList.Clear();
+        itemBlockList.Clear();
 
         foreach (Item item in playerBattler.BagItemList)
         {
             itemNum++;
 
-            GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
-            itemUnitObject.gameObject.SetActive(true);
-            ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
-            itemUnit.Setup(item);
-            itemUnit.OnEndDragAction += ArrengeItemUnits;
-            itemUnitList.Add(itemUnit);
+            GameObject itemBlockObject = Instantiate(itemBlockPrefab, itemList.transform);
+            itemBlockObject.gameObject.SetActive(true);
+            ItemBlock itemBlock = itemBlockObject.GetComponent<ItemBlock>();
+            itemBlock.Setup(item);
+            itemBlock.OnEndDragAction += ArrengeItemBlocks;
+            itemBlockList.Add(itemBlock);
         }
     }
 
-    public void SetEquipmentUnit()
+    public void SetEquipmentBlock()
     {
         // リストをクリア
         equipmentBlockList.Clear();
@@ -144,7 +161,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             equipmentBlockObject.gameObject.SetActive(true);
             EquipmentBlock equipmentBlock = equipmentBlockObject.GetComponent<EquipmentBlock>();
             equipmentBlock.Setup(equipment);
-            equipmentBlock.OnEndDragAction += ArrengeItemUnits;
+            equipmentBlock.OnEndDragAction += ArrengeItemBlocks;
             equipmentBlockList.Add(equipmentBlock);
         }
     }
@@ -164,18 +181,18 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     }
 
     //カードを整列させる
-    public void ArrengeItemUnits()
+    public void ArrengeItemBlocks()
     {
-        itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
+        itemBlockList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
         equipmentBlockList.RemoveAll(equipment => equipment == null); // 念のため Equipment も削除
 
         // ItemとEquipmentをまとめたリストを作成
         List<GameObject> combinedList = new List<GameObject>();
 
-        // itemUnitList から GameObject を追加
-        foreach (var itemUnit in itemUnitList)
+        // itemBlockList から GameObject を追加
+        foreach (var itemBlock in itemBlockList)
         {
-            combinedList.Add(itemUnit.gameObject);
+            combinedList.Add(itemBlock.gameObject);
         }
 
         // equipmentBlockList から GameObject を追加
@@ -205,18 +222,25 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         bagRatio.text = $"{itemCount}/{playerBattler.Bag.val}";
     }
 
-    public void AddItemUnit(Item item)
+    public void AddItemBlock(Item item)
     {
         playerBattler.BagItemList.Add(item);
-        SetItemUnit();
-        ArrengeItemUnits();
+        SetItemBlock();
+        ArrengeItemBlocks();
     }
 
-    public void RemoveItem(ItemUnit itemUnit)
+    public void AddEquipmentBlock(Equipment equipment)
     {
-        playerBattler.BagItemList.Remove(itemUnit.Item);
-        SetItemUnit();
-        ArrengeItemUnits();
+        playerBattler.BagEquipmentList.Add(equipment);
+        SetEquipmentBlock();
+        ArrengeItemBlocks();
+    }
+
+    public void RemoveItem(ItemBlock itemBlock)
+    {
+        playerBattler.BagItemList.Remove(itemBlock.Item);
+        SetItemBlock();
+        ArrengeItemBlocks();
     }
 
     public void RemoveEquipment(EquipmentBlock equipmentBlock)
@@ -227,7 +251,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void SelectItem(ArrowType type)
     {
-        int itemCount = itemUnitList.Count + equipmentBlockList.Count;
+        int itemCount = itemBlockList.Count + equipmentBlockList.Count;
         if (itemCount == 0)
         {
             Debug.LogWarning("No items in the list.");
@@ -254,22 +278,22 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
         if (targetItem != selectedItem) // アイテムが変わる場合のみ処理
         {
-            if (selectedItem < itemUnitList.Count)
+            if (selectedItem < itemBlockList.Count)
             {
-                itemUnitList[selectedItem].SetTarget(false);
+                itemBlockList[selectedItem].SetTarget(false);
             }
             else
             {
-                equipmentBlockList[selectedItem - itemUnitList.Count].SetTarget(false);
+                equipmentBlockList[selectedItem - itemBlockList.Count].SetTarget(false);
             }
 
-            if (targetItem < itemUnitList.Count)
+            if (targetItem < itemBlockList.Count)
             {
-                itemUnitList[targetItem].SetTarget(true);
+                itemBlockList[targetItem].SetTarget(true);
             }
             else
             {
-                equipmentBlockList[targetItem - itemUnitList.Count].SetTarget(true);
+                equipmentBlockList[targetItem - itemBlockList.Count].SetTarget(true);
             }
             selectedItem = targetItem;
         }
@@ -279,13 +303,13 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     {
         if (itemList.transform.childCount > 0)
         {
-            if (selectedItem >= 0 && selectedItem < itemUnitList.Count)
+            if (selectedItem >= 0 && selectedItem < itemBlockList.Count)
             {
                 // アイテムを使用する
-                var targetItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-                UseItemUnit(targetItemUnit);
+                var targetItemBlock = itemList.transform.GetChild(selectedItem).GetComponent<ItemBlock>();
+                UseItemBlock(targetItemBlock);
             }
-            else if (itemUnitList.Count <= selectedItem && selectedItem < itemList.transform.childCount)
+            else if (itemBlockList.Count <= selectedItem && selectedItem < itemList.transform.childCount)
             {
                 // 装備品を装備する
                 var targetEquipmentBlock = itemList.transform.GetChild(selectedItem).GetComponent<EquipmentBlock>();
@@ -309,12 +333,12 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         }
     }
 
-    private void UseItemUnit(ItemUnit itemUnit)
+    private void UseItemBlock(ItemBlock itemBlock)
     {
-        if (itemUnit != null && itemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
+        if (itemBlock != null && itemBlock.Item != null) // ItemBlock とその Item が存在するかを確認
         {
-            playerBattler.TakeRecovery(itemUnit.Item.Base.RecoveryList);
-            playerBattler.BagItemList.Remove(itemUnit.Item);
+            playerBattler.TakeRecovery(itemBlock.Item.Base.RecoveryList);
+            playerBattler.BagItemList.Remove(itemBlock.Item);
             SetItem();
             playerUnit.UpdateEnegyUI();
         }

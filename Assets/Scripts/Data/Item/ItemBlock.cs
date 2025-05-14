@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemBlock : Unit
+public class ItemBlock : Block
 {
     public Item Item { get; set; }
     [SerializeField] Image image;
@@ -12,7 +12,7 @@ public class ItemBlock : Unit
     [SerializeField] ItemDialog itemDialog;
     private bool isActive = false;
 
-    public virtual void Setup(Item item)
+    public void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;

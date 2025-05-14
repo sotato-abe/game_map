@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommandSlot : Unit
+public class CommandBlock : Block
 {
     public Command command { get; set; }
     [SerializeField] Image image;

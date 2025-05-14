@@ -6,20 +6,14 @@ using UnityEngine.UI;
 public class EquipmentUnit : MonoBehaviour
 {
     public Equipment Equipment { get; set; }
-    [SerializeField] Image image;
-    [SerializeField] GameObject skillList;
-    [SerializeField] GameObject costList;
-    [SerializeField] EnchantIcon enchantPrefab;
-    [SerializeField] EnegyIcon costPrefab;
+    [SerializeField] Image unitImage;
     [SerializeField] EquipmentDialog equipmentDialog;
     [SerializeField] UnitStatusLayer unitStatusLayer;
 
     public virtual void Setup(Equipment equipment)
     {
         Equipment = equipment;
-        image.sprite = Equipment.Base.Sprite;
-        // SetSkill();
-        // SetCost();
+        unitImage.sprite = Equipment.Base.Sprite;
         equipmentDialog.Setup(Equipment);
         SetStatus(UnitStatus.Active);
     }
@@ -34,50 +28,6 @@ public class EquipmentUnit : MonoBehaviour
     {
         equipmentDialog.ShowDialog(false);
         StartCoroutine(Targetfoucs(false));
-    }
-
-    private void SetSkill()
-    {
-        // skillList内のオブジェクトを削除
-        foreach (Transform child in skillList.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Enegy attack in Equipment.Base.AttackList)
-        {
-            EnegyIcon attackObject = Instantiate(costPrefab, skillList.transform);
-            attackObject.gameObject.SetActive(true);
-            EnegyIcon attackUnit = attackObject.GetComponent<EnegyIcon>();
-            attackUnit.SetCostIcon(attack);
-        }
-        foreach (Enchant enchant in Equipment.Base.EnchantList)
-        {
-            EnchantIcon enchantObject = Instantiate(enchantPrefab, skillList.transform);
-            enchantObject.gameObject.SetActive(true);
-            EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
-            enchantUnit.SetEnchant(enchant);
-        }
-    }
-
-    private void SetCost()
-    {
-        // costList内のオブジェクトを削除
-        foreach (Transform child in costList.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (var cost in Equipment.Base.CostList)
-        {
-            if (0 < cost.val)
-            {
-                EnegyIcon enegyObject = Instantiate(costPrefab, costList.transform);
-                enegyObject.gameObject.SetActive(true);
-                EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
-                enegyUnit.SetCostIcon(cost);
-            }
-        }
     }
 
     public void SetEquipmentMotion(EquipmentUnitMotionType motion)

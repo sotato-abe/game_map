@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquipmentSlot : Unit
+public class EquipmentSlot : MonoBehaviour
 {
     [SerializeField] Image plusIcon;
     [SerializeField] Image blockIcon;
@@ -12,7 +12,7 @@ public class EquipmentSlot : Unit
     [SerializeField] bool isBlock = false;
 
     //Setupより前に実行したい
-    protected override void Awake()
+    protected void Awake()
     {
         plusIcon.gameObject.SetActive(true);
         blockIcon.gameObject.SetActive(false);

@@ -730,7 +730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b513ebe08e9cff4490335f18f387220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemUnitPrefab: {fileID: 4469936651384665361, guid: 5175b07ddda056c43b8c5add731f1c33, type: 3}
+  itemBlockPrefab: {fileID: 4469936651384665361, guid: f20c9b0eeeae95543a58b4437a17ad7e, type: 3}
   equipmentBlockPrefab: {fileID: 490100722674860351, guid: 6c16e44d737901545be30fb23a7e40c6, type: 3}
   blockPrefab: {fileID: 4616596723818648230, guid: db0b17dc1fb86b147b1220d89a6b8d0a, type: 3}
   itemList: {fileID: 6939920270731194773}
@@ -4410,6 +4410,10 @@ PrefabInstance:
       propertyPath: inventoryWindow
       value: 
       objectReference: {fileID: 8590021868802433912}
+    - target: {fileID: 8901522732737444940, guid: 113cf74ffa3dd1348a9941c9abb04b76, type: 3}
+      propertyPath: itemBlockPrefab
+      value: 
+      objectReference: {fileID: 4469936651384665361, guid: f20c9b0eeeae95543a58b4437a17ad7e, type: 3}
     - target: {fileID: 9136841965173266943, guid: 113cf74ffa3dd1348a9941c9abb04b76, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

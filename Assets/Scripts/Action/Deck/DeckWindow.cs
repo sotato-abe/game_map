@@ -5,14 +5,14 @@ using TMPro;
 
 public class DeckWindow : MonoBehaviour, IDropHandler
 {
-    [SerializeField] CommandSlot commandPrefab;
+    [SerializeField] CommandBlock commandPrefab;
     [SerializeField] GameObject blockPrefab;
     [SerializeField] GameObject runTableArea, deckArea;
     [SerializeField] TextMeshProUGUI lifeCostTexe, batteryCostTexe, soulCostTexe, deckRatio;
     [SerializeField] StoragePanel storagePanel;
 
-    private List<CommandSlot> runTableList = new();
-    private List<CommandSlot> deckList = new();
+    private List<CommandBlock> runTableList = new();
+    private List<CommandBlock> deckList = new();
     private Battler playerBattler;
     private const int row = 5, headHeight = 155, commandWidth = 70, padding = 10;
     private const float windowWidth = 380f;
@@ -34,22 +34,22 @@ public class DeckWindow : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        CommandSlot droppedCommandSlot = eventData.pointerDrag?.GetComponent<CommandSlot>();
-        if (droppedCommandSlot == null || playerBattler == null) return;
+        CommandBlock droppedCommandBlock = eventData.pointerDrag?.GetComponent<CommandBlock>();
+        if (droppedCommandBlock == null || playerBattler == null) return;
 
         if (eventData.pointerEnter?.transform.IsChildOf(runTableArea.transform) == true)
-            HandleDrop(droppedCommandSlot, playerBattler.RunTable, playerBattler.DeckList);
+            HandleDrop(droppedCommandBlock, playerBattler.RunTable, playerBattler.DeckList);
         else if (eventData.pointerEnter?.transform.IsChildOf(deckArea.transform) == true)
-            HandleDrop(droppedCommandSlot, playerBattler.DeckList, playerBattler.RunTable);
+            HandleDrop(droppedCommandBlock, playerBattler.DeckList, playerBattler.RunTable);
     }
 
-    private void HandleDrop(CommandSlot commandSlot, List<Command> targetList, List<Command> sourceList)
+    private void HandleDrop(CommandBlock commandSlot, List<Command> targetList, List<Command> sourceList)
     {
         if (targetList.Contains(commandSlot.command) || targetList.Count >= playerBattler.Memory.val) return;
 
         targetList.Add(commandSlot.command);
         sourceList.Remove(commandSlot.command);
-        storagePanel.RemoveCommandSlot(commandSlot);
+        storagePanel.RemoveCommandBlock(commandSlot);
         UpdateDeckUI();
     }
 
@@ -61,14 +61,14 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         CountEnergyCost();
     }
 
-    private void PopulateCommandList(Transform parent, List<CommandSlot> slotList, List<Command> commands)
+    private void PopulateCommandList(Transform parent, List<CommandBlock> slotList, List<Command> commands)
     {
         slotList.Clear();
         foreach (Transform child in parent) Destroy(child.gameObject);
 
         foreach (Command command in commands)
         {
-            CommandSlot commandSlot = Instantiate(commandPrefab, parent);
+            CommandBlock commandSlot = Instantiate(commandPrefab, parent);
             commandSlot.Setup(command);
             commandSlot.OnEndDragAction += () => ArrangeCommands(slotList);
             slotList.Add(commandSlot);
@@ -96,7 +96,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         soulCostTexe.SetText(soul.ToString());
     }
 
-    private void ArrangeCommands(List<CommandSlot> slotList)
+    private void ArrangeCommands(List<CommandBlock> slotList)
     {
         slotList.RemoveAll(slot => slot == null);
         for (int i = 0; i < slotList.Count; i++)
@@ -107,7 +107,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         }
     }
 
-    public void RemoveCommand(CommandSlot commandSlot)
+    public void RemoveCommand(CommandBlock commandSlot)
     {
         playerBattler.DeckList.Remove(commandSlot.command);
         playerBattler.RunTable.Remove(commandSlot.command);

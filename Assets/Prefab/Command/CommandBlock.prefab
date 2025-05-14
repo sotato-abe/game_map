@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8103412522066827613}
   - component: {fileID: 5834717755376177}
   m_Layer: 5
-  m_Name: CommandSlot
+  m_Name: CommandBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 490100722674860351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51bc655de0c03ed4cbfd19a69abb7be5, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b16c6fb8139d0245bfb4f0bb446cb8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 9045783168362942878}
@@ -560,6 +560,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5345107863425971424, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527358243281718715, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527358243281718715, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527358243281718715, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527358243281718715, guid: d003cf8bc88bd9f4a87d3e7935502d5d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
