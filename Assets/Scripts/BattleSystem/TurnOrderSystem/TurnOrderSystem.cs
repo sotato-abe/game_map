@@ -7,6 +7,7 @@ public class TurnOrderSystem : MonoBehaviour
     [SerializeField] TurnBattler turnBattlerPrefab;
     [SerializeField] GameObject battlerList;
     [SerializeField] GameObject turnBar;
+    [SerializeField] GameObject turnLane;
     [SerializeField] BattleSystem battleSystem;
     private TurnBattler targetTurnBattler;
     private List<TurnBattler> turnBattlerList = new List<TurnBattler>();
@@ -36,6 +37,7 @@ public class TurnOrderSystem : MonoBehaviour
             TurnBattler turnBattler = Instantiate(turnBattlerPrefab, battlerList.transform);
             turnBattler.OnExecuteTurn += ExecuteTurn;
             turnBattler.SetBattler(battler);
+            turnBattler.SetLane(turnLane);
             turnBattlerList.Add(turnBattler);
         }
         SetActive(true);
