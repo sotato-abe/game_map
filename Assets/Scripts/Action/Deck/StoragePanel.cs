@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class StoragePanel : Panel, IDropHandler
 {
-    [SerializeField] CommandSlot commandPrefab;  // CommandSlotのプレハブ
+    [SerializeField] CommandBlock commandPrefab;  // CommandBlockのプレハブ
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject storageArea;
     [SerializeField] TextMeshProUGUI storageRatio;
@@ -21,7 +21,7 @@ public class StoragePanel : Panel, IDropHandler
     private int headHeight = 40;
     private int commandWidth = 70;
     int padding = 10;
-    List<CommandSlot> storageList = new List<CommandSlot>();
+    List<CommandBlock> storageList = new List<CommandBlock>();
     private List<GameObject> blockList = new List<GameObject>();
 
     public void Start()
@@ -45,14 +45,14 @@ public class StoragePanel : Panel, IDropHandler
         }
     }
 
-    // CommandSlotがドロップされたときの処理
+    // CommandBlockがドロップされたときの処理
     public void OnDrop(PointerEventData eventData)
     {
-        CommandSlot droppedCommandSlot = eventData.pointerDrag.GetComponent<CommandSlot>();
+        CommandBlock droppedCommandBlock = eventData.pointerDrag.GetComponent<CommandBlock>();
 
-        if (droppedCommandSlot != null)
+        if (droppedCommandBlock != null)
         {
-            if (playerBattler.StorageList.Contains(droppedCommandSlot.command))
+            if (playerBattler.StorageList.Contains(droppedCommandBlock.command))
             {
                 Debug.Log("コマンドはすでにデッキに存在しています。");
                 return; // 追加しない
@@ -63,8 +63,8 @@ public class StoragePanel : Panel, IDropHandler
                 return; // 追加しない
             }
 
-            AddCommandSlot(droppedCommandSlot.command); // バッグに追加
-            deckWindow.RemoveCommand(droppedCommandSlot);
+            AddCommandBlock(droppedCommandBlock.command); // バッグに追加
+            deckWindow.RemoveCommand(droppedCommandBlock);
         }
     }
 
@@ -102,7 +102,7 @@ public class StoragePanel : Panel, IDropHandler
 
         foreach (Command command in playerBattler.StorageList)
         {
-            CommandSlot commandSlot = Instantiate(commandPrefab, storageArea.transform);
+            CommandBlock commandSlot = Instantiate(commandPrefab, storageArea.transform);
             commandSlot.gameObject.SetActive(true);
             commandSlot.OnEndDragAction += ArrengeStorage; // 正しく登録
             commandSlot.Setup(command);
@@ -125,13 +125,13 @@ public class StoragePanel : Panel, IDropHandler
         }
     }
 
-    public void AddCommandSlot(Command command)
+    public void AddCommandBlock(Command command)
     {
         playerBattler.StorageList.Add(command);
         SetStorage();
     }
 
-    public void RemoveCommandSlot(CommandSlot commandSlot)
+    public void RemoveCommandBlock(CommandBlock commandSlot)
     {
         playerBattler.StorageList.Remove(commandSlot.command);
         SetStorage();

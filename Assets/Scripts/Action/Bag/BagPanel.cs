@@ -20,7 +20,8 @@ public class BagPanel : Panel
     private void Start()
     {
         ResetDialog();
-        inventoryWindow.OnDropItemUnitAction += MoveItemUnit;
+        inventoryWindow.OnDropItemBlockAction += MoveItemBlock;
+        inventoryWindow.OnDropEquipmentBlockAction += MoveEquipmentBlock;
         SetCategoryList();
     }
     private void OnEnable()
@@ -159,17 +160,13 @@ public class BagPanel : Panel
         equipmentWindow.gameObject.SetActive(false);
     }
 
-    public void MoveItemUnit(ItemUnit itemUnit)
+    public void MoveItemBlock(ItemBlock item)
     {
-        switch (selectedCategory)
-        {
-            case BagCategory.Pouch:
-                pouchWindow.RemoveItem(itemUnit);
-                break;
-            case BagCategory.Equip:
-                break;
-            case BagCategory.Tresure:
-                break;
-        }
+        pouchWindow.RemoveItem(item);
+    }
+
+    public void MoveEquipmentBlock(EquipmentBlock equipment)
+    {
+        equipmentWindow.RemoveEquipment(equipment);
     }
 }

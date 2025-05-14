@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EquipmentBlock : Unit
+public class EquipmentBlock : Block
 {
     public Equipment Equipment { get; set; }
     [SerializeField] Image image;

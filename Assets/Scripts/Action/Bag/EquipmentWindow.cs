@@ -14,7 +14,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     [SerializeField] EquipmentSlot arm2;
     [SerializeField] EquipmentSlot leg;
     [SerializeField] GameObject accessoryList;
-    [SerializeField] EquipmentBlock equipmentPrefab;
+    [SerializeField] EquipmentBlock equipmentBlockPrefab;
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] BattleUnit playerUnit;
 
@@ -35,20 +35,21 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
         if (droppedEquipmentBlock != null)
         {
-            // すでにポーチに同じアイテムがあるか確認
+            // すでに装備ウィンドウに同じアイテムがあるか確認
             if (playerBattler.Equipments.Contains(droppedEquipmentBlock.Equipment))
             {
                 Debug.Log("アイテムはすでに装備しています。");
                 return; // 追加しない
             }
-            AddEquipment(droppedEquipmentBlock.Equipment); // ポーチに追加
+            AddEquipment(droppedEquipmentBlock.Equipment); // 装備に追加
             inventoryWindow.RemoveEquipment(droppedEquipmentBlock); // バックから削除
         }
     }
 
-    // すでに装備しているアイテムを表示する。
+    // 装備中の装備ブロックを表示。
     public void SetEquipmentList()
     {
+        Debug.Log("SetEquipmentList");
         //  装備リストを初期化
         head.ReSetSlot();
         body.ReSetSlot();
@@ -64,6 +65,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             if (equipments[i].Base.Type == EquipmentType.Arm)
             {
                 armEquipmentList.Add(equipments[i]);
+
                 continue;
             }
             else
@@ -73,6 +75,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             }
         }
         SetArmEquipmentBlock();
+        Debug.Log($"Equipments: {playerBattler.Equipments.Count}");
     }
 
     // 外部から追加する際に使用する。
@@ -91,6 +94,31 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         }
     }
 
+    public void RemoveEquipment(EquipmentBlock equipmentBlock)
+    {
+        Equipment equipment = equipmentBlock.Equipment;
+        playerBattler.Equipments.Remove(equipment);
+        if (equipment.Base.Type == EquipmentType.Arm)
+        {
+            armEquipmentList.Remove(equipment);
+            SetArmEquipmentBlock();
+        }
+        else
+        {
+            EquipmentSlot slot = GetTargetSlot(equipment.Base.Type);
+            slot.ReSetSlot();
+        }
+    }
+
+    private void ClearSlot(EquipmentSlot slot)
+    {
+        EquipmentBlock existing = slot.GetComponentInChildren<EquipmentBlock>();
+        if (existing != null)
+        {
+            Destroy(existing.gameObject);
+        }
+    }
+
     private EquipmentSlot GetTargetSlot(EquipmentType type)
     {
         return type switch
@@ -105,7 +133,8 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     private void SetArmEquipmentBlock()
     {
-        // アイテムの数が2個以上ある時に、後ろの2つ以外をバックに戻す。
+        Debug.Log($"SetArmEquipmentBlock: {armEquipmentList.Count}");
+        // アイテムの数が3個以上ある時に、後ろの2つ以外をバックに戻す。
         if (armEquipmentList.Count > 2)
         {
             for (int i = 0; i < armEquipmentList.Count - 2; i++)
@@ -119,9 +148,12 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         switch (armEquipmentList.Count)
         {
             case 1:
+                Debug.Log($"here!1: {armEquipmentList[0].Base.Name}");
                 SetEquipmentBlock(arm1, armEquipmentList[0]);
+                arm2.ReSetSlot();
                 break;
             case 2:
+                Debug.Log("here!2");
                 SetEquipmentBlock(arm2, armEquipmentList[0]);
                 SetEquipmentBlock(arm1, armEquipmentList[1]);
                 break;
@@ -136,13 +168,15 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
         if (equipmentBlock != null)
         {
+            Debug.Log("test1");
             // 既に装備されているものを外してバッグに戻す
             equipmentBlock.Setup(equipment);
         }
         else
         {
+            Debug.Log("test2");
             // EquipmentBlock が存在しない場合のみ新規作成
-            EquipmentBlock newEquipmentBlock = Instantiate(equipmentPrefab, targetPosition.transform);
+            EquipmentBlock newEquipmentBlock = Instantiate(equipmentBlockPrefab, targetPosition.transform);
             newEquipmentBlock.transform.position = targetPosition.transform.position;
             newEquipmentBlock.transform.localScale = targetPosition.transform.localScale;
             newEquipmentBlock.Setup(equipment);

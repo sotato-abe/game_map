@@ -12,7 +12,6 @@ public class UnitStatusLayer : MonoBehaviour
     [SerializeField] Sprite stopSprite;
     [SerializeField] Sprite brokenSprite;
     [SerializeField] Sprite mysterySprite;
-
     [SerializeField] Color activeColor = new Color(81, 255, 0, 200);
     [SerializeField] Color stopColor = new Color(255, 0, 134, 200);
 

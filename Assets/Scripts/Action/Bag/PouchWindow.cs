@@ -8,14 +8,14 @@ using UnityEngine.EventSystems;
 
 public class PouchWindow : MonoBehaviour, IDropHandler
 {
-    [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] GameObject itemBlockPrefab;  // ItemBlockのプレハブ
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] BattleUnit playerUnit;
 
-    private List<ItemUnit> itemUnitList = new List<ItemUnit>();
+    private List<ItemBlock> itemUnitList = new List<ItemBlock>();
     private List<GameObject> blockList = new List<GameObject>();
     private Battler playerBattler;
 
@@ -32,7 +32,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     private void OnEnable()
     {
         playerBattler = playerUnit.Battler;
-        SetItemUnit();
+        SetItemBlock();
         pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
     }
 
@@ -46,12 +46,12 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        ItemUnit droppedItemUnit = eventData.pointerDrag.GetComponent<ItemUnit>();
+        ItemBlock droppedItemBlock = eventData.pointerDrag.GetComponent<ItemBlock>();
 
-        if (droppedItemUnit != null)
+        if (droppedItemBlock != null)
         {
             // すでにポーチに同じアイテムがあるか確認
-            if (droppedItemUnit.transform.parent == itemList.transform)
+            if (droppedItemBlock.transform.parent == itemList.transform)
             {
                 Debug.Log("ポーチ内のアイテムをドロップしても何もしない");
                 return;
@@ -62,12 +62,12 @@ public class PouchWindow : MonoBehaviour, IDropHandler
                 return; // 追加しない
             }
 
-            inventoryWindow.RemoveItem(droppedItemUnit); // バックから削除
-            AddItemUnit(droppedItemUnit.Item); // ポーチに追加
+            inventoryWindow.RemoveItem(droppedItemBlock); // バックから削除
+            AddItemBlock(droppedItemBlock.Item); // ポーチに追加
         }
     }
 
-    private void SetItemUnit()
+    private void SetItemBlock()
     {
         itemUnitList.Clear();
 
@@ -78,15 +78,15 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
         foreach (Item item in playerBattler.PouchList)
         {
-            GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
+            GameObject itemUnitObject = Instantiate(itemBlockPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
-            ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
+            ItemBlock itemUnit = itemUnitObject.GetComponent<ItemBlock>();
             itemUnit.Setup(item);
-            itemUnit.OnEndDragAction += ArrengeItemUnits;
+            itemUnit.OnEndDragAction += ArrengeItemBlocks;
             itemUnitList.Add(itemUnit);
         }
         SetBlock();
-        ArrengeItemUnits();
+        ArrengeItemBlocks();
     }
 
     private void SetBlock()
@@ -101,7 +101,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         }
     }
 
-    public void ArrengeItemUnits()
+    public void ArrengeItemBlocks()
     {
         itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
         for (int i = 0; i < itemUnitList.Count; i++)
@@ -122,18 +122,18 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         }
     }
 
-    public void AddItemUnit(Item item)
+    public void AddItemBlock(Item item)
     {
         playerBattler.PouchList.Add(item);
-        SetItemUnit();
+        SetItemBlock();
         pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
     }
 
-    public void RemoveItem(ItemUnit itemUnit)
+    public void RemoveItem(ItemBlock itemUnit)
     {
         itemUnitList.Remove(itemUnit);
         Destroy(itemUnit.gameObject);
-        ArrengeItemUnits();
+        ArrengeItemBlocks();
         playerBattler.PouchList.Remove(itemUnit.Item);
         pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
     }
