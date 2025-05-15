@@ -10,38 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af844d78079a0364eb4f7f78b96a8d7b, type: 3}
-  m_Name: Player
+  m_Name: ru
   m_EditorClassIdentifier: 
-  name: Sola
-  sprite: {fileID: 21300000, guid: f7da00ab0df561b40a9c8114c29ef004, type: 3}
-  birthplace: {fileID: 11400000, guid: fe45e07fabe81034ab6cba712d26ba59, type: 2}
+  name: "\u30EB\u30FC"
+  sprite: {fileID: 21300000, guid: 6b4136c198c0a584981fa24a5d447a4c, type: 3}
+  birthplace: {fileID: 0}
   maxLife: 20
   maxBattery: 10
   attack: 0
   defense: 0
-  technique: 3
-  speed: 3
+  technique: 0
+  speed: 1
   luck: 0
   memory: 5
   storage: 10
   pouch: 5
   bag: 10
   money: 10
-  disk: 0
-  key: 0
-  exp: 0
+  disk: 5
+  key: 5
+  exp: 5
   abilityList: []
   equipments:
   - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
   runTable: []
-  deckList:
-  - _base: {fileID: 11400000, guid: 0bdf0d66e2259aa449e03de672f4ddca, type: 2}
-  storageList:
-  - _base: {fileID: 11400000, guid: fb28658768236574ca2c2799ed67f836, type: 2}
+  deckList: []
+  storageList: []
   pouchList:
   - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
-  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
-  bagItemList:
-  - _base: {fileID: 11400000, guid: 3b787454939bc0448bebe75f3cd9dad6, type: 2}
+  - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
+  bagItemList: []
   bagEquipmentList: []
   messages: []

@@ -70,3 +70,12 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+
+# gitIgnore使い方
+# *.asset          ← 拡張子で全部無視
+# *.log            ← ログファイルいらね
+# Assets/Fonts/    ← フォルダごと全部無視
+# Build/           ← ビルドフォルダいらね
+# !Assets/Fonts/KeepThis.asset  ← 無視しない例外
+

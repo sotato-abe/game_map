@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af844d78079a0364eb4f7f78b96a8d7b, type: 3}
-  m_Name: Enemy 6
+  m_Name: zigzag
   m_EditorClassIdentifier: 
-  name: bobo
-  sprite: {fileID: 21300000, guid: 2d7178aeb47462d43a38b522bda972d4, type: 3}
+  name: "\u30B8\u30B0\u30B6\u30B0"
+  sprite: {fileID: 21300000, guid: 5dbd9aa453f060c489d938183193bcd5, type: 3}
   birthplace: {fileID: 0}
-  maxLife: 20
-  maxBattery: 0
+  maxLife: 30
+  maxBattery: 20
   attack: 0
   defense: 0
   technique: 0
@@ -41,6 +41,4 @@ MonoBehaviour:
   - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
   bagItemList: []
   bagEquipmentList: []
-  messages:
-  - {fileID: 11400000, guid: fe937614f99deb64b9c345e86a8717df, type: 2}
-  - {fileID: 11400000, guid: e3ce953b81e8d31418a0e618de7b30ae, type: 2}
+  messages: []

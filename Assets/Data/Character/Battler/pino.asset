@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af844d78079a0364eb4f7f78b96a8d7b, type: 3}
-  m_Name: Enemy 7
+  m_Name: pino
   m_EditorClassIdentifier: 
-  name: Soldier
-  sprite: {fileID: 21300000, guid: d98744d5b8d808f45be11960900889e7, type: 3}
+  name: "\u30D4\u30CE"
+  sprite: {fileID: 21300000, guid: 3de65ead5a83e7a4580d348956d3da00, type: 3}
   birthplace: {fileID: 0}
-  maxLife: 30
-  maxBattery: 20
+  maxLife: 20
+  maxBattery: 35
   attack: 0
   defense: 0
   technique: 0
@@ -33,7 +33,6 @@ MonoBehaviour:
   abilityList: []
   equipments:
   - _base: {fileID: 11400000, guid: ffcdbfc289589a94f92baf73a6bedc31, type: 2}
-  - _base: {fileID: 11400000, guid: 43b029d19eba7be47bf808cae9f1e8b4, type: 2}
   runTable: []
   deckList: []
   storageList: []
@@ -42,4 +41,6 @@ MonoBehaviour:
   - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
   bagItemList: []
   bagEquipmentList: []
-  messages: []
+  messages:
+  - {fileID: 11400000, guid: e3ce953b81e8d31418a0e618de7b30ae, type: 2}
+  - {fileID: 11400000, guid: fe937614f99deb64b9c345e86a8717df, type: 2}
