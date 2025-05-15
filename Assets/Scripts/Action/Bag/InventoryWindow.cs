@@ -170,7 +170,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     // Bagが8の場合、左下から2つブロックを配置する
     private void SetBlock()
     {
-        int blockNum = row - playerBattler.Bag.val % row;
+        int blockNum = (row - (playerBattler.Bag.val % row)) % row;
         blockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
