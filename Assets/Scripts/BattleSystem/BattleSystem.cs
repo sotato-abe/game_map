@@ -207,7 +207,7 @@ public class BattleSystem : MonoBehaviour
         actionBoard.ChangeExecuteFlg(false);
         List<Item> targetItems = enemyUnit.Battler.PouchList;
         string resultItemMessageList = "";
-        resultItemMessageList = playerUnit.Battler.Base.Name + " が勝利した.\n";
+        resultItemMessageList = enemyUnit.Battler.Base.Name + " に勝利した.\n";
 
         if (targetItems != null && targetItems.Count > 0)
         {
@@ -234,7 +234,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            resultItemMessageList += ("敵は何も持っていなかった.");
+            resultItemMessageList += ($"{enemyUnit.Battler.Base.Name} は何も持っていなかった.");
         }
         playerUnit.Battler.Money += enemyUnit.Battler.Money;
         playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
