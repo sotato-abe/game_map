@@ -115,7 +115,7 @@ public class StoragePanel : Panel, IDropHandler
 
     private void SetBlock()
     {
-        int blockNum = row - playerBattler.Storage.val % row;
+        int blockNum = (row - (playerBattler.Storage.val % row)) % row;        
         blockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
