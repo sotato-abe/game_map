@@ -70,7 +70,7 @@ public class FieldSystem : MonoBehaviour
 
     public void ReserveStart()
     {
-        messagePanel.AddFieldMesage($"Bag open!!");
+        messagePanel.AddFieldMesage($"バックをひらいた");
 
         OnReserve?.Invoke();
     }
@@ -117,11 +117,11 @@ public class FieldSystem : MonoBehaviour
         Item item = fieldData.GetRandomItem(); // ランダムなアイテムを取得
         if (item == null)
         {
-            messagePanel.AddFieldMesage($"box is empty!!");
+            messagePanel.AddFieldMesage($"ボックスは空だった!!");
         }
         else
         {
-            messagePanel.AddFieldMesage($"{item.Base.Name} get!!");
+            messagePanel.AddFieldMesage($"{item.Base.Name} ゲット!!");
             playerBattler.AddItem(item); // プレイヤーのインベントリに追加
             fieldData.items.Remove(item); // フィールドデータからアイテムを削除
                                           // マップからアイテムのアイコンを削除
@@ -137,7 +137,7 @@ public class FieldSystem : MonoBehaviour
 
     public void ReloadMap(DirectionType outDirection)
     {
-        messagePanel.AddFieldMesage($"Field change!!");
+        messagePanel.AddFieldMesage($"フィールドを移動した!!");
         ClearMap(); // マップクリア
 
         DirectionType entryDirection = outDirection.GetOppositeDirection();

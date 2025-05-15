@@ -6,9 +6,9 @@ using UnityEngine;
 public class BuildingBase : ScriptableObject
 {
     [SerializeField] new string name;
-    [SerializeField] Battler owner;
-    [SerializeField] string description;
     [SerializeField] Sprite icon;
+    [SerializeField] Battler owner;
+    [SerializeField, TextArea] string description;
 
     public string Name { get => name; }
     public Battler Owner { get => owner; }

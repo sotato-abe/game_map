@@ -14,6 +14,8 @@ public class TurnOrderSystem : MonoBehaviour
     private List<Battler> battlers = new List<Battler>(); // 保存用
     private bool isActive = false;
 
+    private Battler playerBattler;
+
     public void SetupBattlerTurns(List<Battler> newBattlers)
     {
         // 既存の子オブジェクトをすべて削除
@@ -28,6 +30,11 @@ public class TurnOrderSystem : MonoBehaviour
         turnBar.gameObject.SetActive(true);
         // 生成を開始
         GenerateTurnBattler();
+    }
+
+    public void SetupPlayerBattler(Battler player)
+    {
+        playerBattler = player;
     }
 
     private void GenerateTurnBattler()
@@ -73,7 +80,7 @@ public class TurnOrderSystem : MonoBehaviour
         targetTurnBattler = turnBattler;
         SetActive(false);
 
-        if (targetTurnBattler.battler.Base.Name == "Sola") // TODO: 仮の分岐ちゃんとプレイヤーと他を分ける
+        if (targetTurnBattler.battler == playerBattler) // TODO: 仮の分岐ちゃんとプレイヤーと他を分ける
         {
             Debug.Log($"プレイヤーのターン開始");
             battleSystem.StartActionSelection();
