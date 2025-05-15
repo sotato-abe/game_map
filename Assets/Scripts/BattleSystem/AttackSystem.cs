@@ -37,17 +37,22 @@ public class AttackSystem : MonoBehaviour
     {
         if (0 < damages.Count)
         {
+            string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Attack)?.message ?? "";
+            playerUnit.SetTalkMessage(playerMessage);
             enemyUnit.Battler.TakeDamage(damages);
             enemyUnit.UpdateEnegyUI();
-            enemyUnit.SetTalkMessage("Auch!!");
             enemyUnit.SetMotion(MotionType.Shake);
         }
         if (enemyUnit.Battler.Life <= 0)
         {
+            string enemyMessage = enemyUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Lose)?.message ?? "";
+            enemyUnit.SetTalkMessage(enemyMessage);
             OnBattleResult?.Invoke();
         }
         else
         {
+            string enemyMessage = enemyUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Damage)?.message ?? "";
+            enemyUnit.SetTalkMessage(enemyMessage);
             OnExecuteBattleAction?.Invoke();
         }
     }
@@ -106,9 +111,13 @@ public class AttackSystem : MonoBehaviour
     public void ExecutePlayerEscape()
     {
         // TODO : 逃亡時の処理を追加
-        playerUnit.SetTalkMessage("Run!");
-        enemyUnit.SetTalkMessage("wait!!");
+        // playerUnit.SetTalkMessage("Run!");
+        string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Escape)?.message ?? "";
+        playerUnit.SetTalkMessage(playerMessage);
+
+        enemyUnit.SetTalkMessage("まて!!");
         OnBattleEscape?.Invoke();
+
     }
 
     public void ExecuteEnemyAttack()
@@ -135,9 +144,12 @@ public class AttackSystem : MonoBehaviour
 
         if (0 < damages.Count)
         {
+            string enemyMessage = enemyUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Attack)?.message ?? "";
+            enemyUnit.SetTalkMessage(enemyMessage);
             playerUnit.SetMotion(MotionType.Shake);
             playerUnit.Battler.TakeDamage(damages);
-            playerUnit.SetTalkMessage("Dumm,");
+            string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Damage)?.message ?? "";
+            playerUnit.SetTalkMessage(playerMessage);
             playerUnit.UpdateEnegyUI();
         }
         if (playerUnit.Battler.Life <= 0)

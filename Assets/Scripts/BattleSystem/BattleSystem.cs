@@ -286,6 +286,8 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleDefeat()
     {
+        string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Lose)?.message ?? "";
+        playerUnit.SetTalkMessage(playerMessage);
         messagePanel.AddBattleMesage($"ゲームオーバー!!");
         Debug.Log("game over");
     }
