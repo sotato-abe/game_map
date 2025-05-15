@@ -9,27 +9,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d1d3cd9722d6d44b87fa8c25099155f, type: 3}
+  m_Script: {fileID: 11500000, guid: af844d78079a0364eb4f7f78b96a8d7b, type: 3}
   m_Name: Enemy 5
   m_EditorClassIdentifier: 
-  name: Soldier2
-  sprite: {fileID: 21300000, guid: d98744d5b8d808f45be11960900889e7, type: 3}
+  name: Aa
+  sprite: {fileID: 21300000, guid: 8c07afcb379a3894baeb50a293191177, type: 3}
   birthplace: {fileID: 0}
-  maxLife: 10
-  maxBattery: 5
-  attack: 2
-  defense: 2
-  technique: 3
-  speed: 3
+  maxLife: 20
+  maxBattery: 0
+  attack: 0
+  defense: 0
+  technique: 0
+  speed: 1
   luck: 0
   memory: 5
   storage: 10
   pouch: 5
   bag: 10
-  money: 5
-  disk: 0
-  key: 0
-  exp: 30
+  money: 10
+  disk: 5
+  key: 5
+  exp: 5
   abilityList: []
   equipments:
   - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
@@ -38,10 +38,9 @@ MonoBehaviour:
   storageList: []
   pouchList:
   - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
-  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
-  - _base: {fileID: 11400000, guid: dda4ed4931ac69543a68f3a6133d9fc8, type: 2}
-  - _base: {fileID: 11400000, guid: 3b787454939bc0448bebe75f3cd9dad6, type: 2}
+  - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
   bagItemList: []
   bagEquipmentList: []
   messages:
-  - {fileID: 11400000, guid: f30e50f1876056e49bebec19d03e5679, type: 2}
+  - {fileID: 11400000, guid: e3ce953b81e8d31418a0e618de7b30ae, type: 2}
+  - {fileID: 11400000, guid: fe937614f99deb64b9c345e86a8717df, type: 2}

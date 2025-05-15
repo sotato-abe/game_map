@@ -9,38 +9,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d1d3cd9722d6d44b87fa8c25099155f, type: 3}
+  m_Script: {fileID: 11500000, guid: af844d78079a0364eb4f7f78b96a8d7b, type: 3}
   m_Name: Enemy 10
   m_EditorClassIdentifier: 
-  name: Samurai
-  sprite: {fileID: 21300000, guid: 5dbd9aa453f060c489d938183193bcd5, type: 3}
+  name: Soldier
+  sprite: {fileID: 21300000, guid: 805b567c4fca7854fa36919036060b64, type: 3}
   birthplace: {fileID: 0}
-  maxLife: 20
-  maxBattery: 50
-  attack: 4
-  defense: 6
-  technique: 5
-  speed: 4
+  maxLife: 50
+  maxBattery: 30
+  attack: 0
+  defense: 0
+  technique: 0
+  speed: 1
   luck: 0
   memory: 5
   storage: 10
   pouch: 5
   bag: 10
-  money: 8
-  disk: 0
-  key: 0
-  exp: 50
+  money: 10
+  disk: 5
+  key: 5
+  exp: 5
   abilityList: []
   equipments:
-  - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
+  - _base: {fileID: 11400000, guid: ffcdbfc289589a94f92baf73a6bedc31, type: 2}
   runTable: []
   deckList: []
   storageList: []
   pouchList:
-  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
-  - _base: {fileID: 11400000, guid: dda4ed4931ac69543a68f3a6133d9fc8, type: 2}
+  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
+  - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
   bagItemList: []
   bagEquipmentList: []
-  messages:
-  - {fileID: 11400000, guid: e3ce953b81e8d31418a0e618de7b30ae, type: 2}
-  - {fileID: 11400000, guid: f30e50f1876056e49bebec19d03e5679, type: 2}
+  messages: []
