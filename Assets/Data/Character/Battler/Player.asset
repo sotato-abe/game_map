@@ -9,36 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d1d3cd9722d6d44b87fa8c25099155f, type: 3}
+  m_Script: {fileID: 11500000, guid: af844d78079a0364eb4f7f78b96a8d7b, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
   name: Sola
   sprite: {fileID: 21300000, guid: f7da00ab0df561b40a9c8114c29ef004, type: 3}
   birthplace: {fileID: 11400000, guid: fe45e07fabe81034ab6cba712d26ba59, type: 2}
-  maxLife: 30
-  maxBattery: 5
-  attack: 1
-  defense: 2
-  technique: 13
-  speed: 8
+  maxLife: 20
+  maxBattery: 10
+  attack: 0
+  defense: 0
+  technique: 3
+  speed: 3
   luck: 0
   memory: 5
-  storage: 25
-  pouch: 4
-  bag: 15
+  storage: 10
+  pouch: 5
+  bag: 10
   money: 10
-  disk: 1
-  key: 1
+  disk: 0
+  key: 0
   exp: 0
-  abilityList:
-  - _base: {fileID: 11400000, guid: 53cd9583c7791bf4bb657a39de4d8c2f, type: 2}
+  abilityList: []
   equipments:
   - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
-  - _base: {fileID: 11400000, guid: ffcdbfc289589a94f92baf73a6bedc31, type: 2}
-  runTable:
-  - _base: {fileID: 11400000, guid: 0bdf0d66e2259aa449e03de672f4ddca, type: 2}
-  - _base: {fileID: 11400000, guid: cb11b5d4d8c5087438c52d7ae464c3e3, type: 2}
-  - _base: {fileID: 11400000, guid: fb28658768236574ca2c2799ed67f836, type: 2}
+  runTable: []
   deckList:
   - _base: {fileID: 11400000, guid: 0bdf0d66e2259aa449e03de672f4ddca, type: 2}
   storageList:
@@ -46,12 +41,7 @@ MonoBehaviour:
   pouchList:
   - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
   - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
-  - _base: {fileID: 11400000, guid: 811460af88770c34299fa7f39dba81d2, type: 2}
   bagItemList:
-  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
-  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
-  bagEquipmentList:
-  - _base: {fileID: 11400000, guid: 43b029d19eba7be47bf808cae9f1e8b4, type: 2}
-  - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
-  messages:
-  - {fileID: 11400000, guid: e3ce953b81e8d31418a0e618de7b30ae, type: 2}
+  - _base: {fileID: 11400000, guid: 3b787454939bc0448bebe75f3cd9dad6, type: 2}
+  bagEquipmentList: []
+  messages: []
