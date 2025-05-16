@@ -21,7 +21,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     private Battler playerBattler;
 
-    private int headHeight = 97;
+    private int headHeight = 20;
     private int itemWidth = 70;
     int row = 10;
     int padding = 10;
