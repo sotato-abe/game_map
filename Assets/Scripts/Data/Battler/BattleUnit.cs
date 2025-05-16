@@ -54,6 +54,28 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
+    public void SetBattlerTalkMessage(MessageType messageType)
+    {
+        string battlerMessage = Battler.Base.Messages.Find(m => m.messageType == messageType)?.message ?? messageType.GetDefaultMessage();
+        SetTalkMessage(battlerMessage);
+    }
+
+    public void TakeDamage(List<Damage> damageList)
+    {
+        SetMotion(MotionType.Shake);
+        SetBattlerTalkMessage(MessageType.Damage);
+        Battler.TakeDamage(damageList);
+        UpdateEnegyUI();
+    }
+
+    public void TakeEnchant(List<Enchant> enchantList)
+    {
+        SetMotion(MotionType.Shake);
+        SetBattlerTalkMessage(MessageType.Damage);
+        Battler.TakeEnchant(enchantList);
+        UpdateEnegyUI();
+    }
+
     public virtual void UpdateEnegyUI()
     {
         lifeBar.ChangeEnegyVal(Battler.Life);

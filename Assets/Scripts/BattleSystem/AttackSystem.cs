@@ -37,22 +37,16 @@ public class AttackSystem : MonoBehaviour
     {
         if (0 < damages.Count)
         {
-            string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Attack)?.message ?? "";
-            playerUnit.SetTalkMessage(playerMessage);
-            enemyUnit.Battler.TakeDamage(damages);
-            enemyUnit.UpdateEnegyUI();
-            enemyUnit.SetMotion(MotionType.Shake);
+            playerUnit.SetBattlerTalkMessage(MessageType.Attack);
+            enemyUnit.TakeDamage(damages);
         }
         if (enemyUnit.Battler.Life <= 0)
         {
-            string enemyMessage = enemyUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Lose)?.message ?? "";
-            enemyUnit.SetTalkMessage(enemyMessage);
+            enemyUnit.SetBattlerTalkMessage(MessageType.Lose);
             OnBattleResult?.Invoke();
         }
         else
         {
-            string enemyMessage = enemyUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Damage)?.message ?? "";
-            enemyUnit.SetTalkMessage(enemyMessage);
             OnExecuteBattleAction?.Invoke();
         }
     }
@@ -83,15 +77,11 @@ public class AttackSystem : MonoBehaviour
             }
             if (playerEnchants.Count > 0)
             {
-                playerUnit.Battler.TakeEnchant(playerEnchants);
-                playerUnit.UpdateEnegyUI();
-                playerUnit.SetMotion(MotionType.Shake);
+                playerUnit.TakeEnchant(playerEnchants);
             }
             if (enemyEnchants.Count > 0)
             {
-                enemyUnit.Battler.TakeEnchant(enemyEnchants);
-                enemyUnit.UpdateEnegyUI();
-                enemyUnit.SetMotion(MotionType.Shake);
+                enemyUnit.TakeEnchant(enemyEnchants);
             }
         }
         if (playerUnit.Battler.Life <= 0)
@@ -112,9 +102,7 @@ public class AttackSystem : MonoBehaviour
     {
         // TODO : 逃亡時の処理を追加
         // playerUnit.SetTalkMessage("Run!");
-        string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Escape)?.message ?? "";
-        playerUnit.SetTalkMessage(playerMessage);
-
+        playerUnit.SetBattlerTalkMessage(MessageType.Escape);
         enemyUnit.SetTalkMessage("まて!!");
         OnBattleEscape?.Invoke();
 
@@ -144,13 +132,8 @@ public class AttackSystem : MonoBehaviour
 
         if (0 < damages.Count)
         {
-            string enemyMessage = enemyUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Attack)?.message ?? "";
-            enemyUnit.SetTalkMessage(enemyMessage);
-            playerUnit.SetMotion(MotionType.Shake);
-            playerUnit.Battler.TakeDamage(damages);
-            string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Damage)?.message ?? "";
-            playerUnit.SetTalkMessage(playerMessage);
-            playerUnit.UpdateEnegyUI();
+            enemyUnit.SetBattlerTalkMessage(MessageType.Attack);
+            playerUnit.TakeDamage(damages);
         }
         if (playerUnit.Battler.Life <= 0)
         {
