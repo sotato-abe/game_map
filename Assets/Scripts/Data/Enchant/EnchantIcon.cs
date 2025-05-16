@@ -16,6 +16,7 @@ public class EnchantIcon : Unit
     {
         val.text = enchant.Val.ToString();
         SetEnchantIcon(enchant.Type);
+        dialog.Setup(enchant);
     }
 
     public void OnPointerEnter()

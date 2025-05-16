@@ -86,6 +86,12 @@ public class BattleUnit : MonoBehaviour
         UpdateEnchantUI();
     }
 
+    public void DecreaseEnchant()
+    {
+        Battler.DecreaseEnchant();
+        UpdateEnchantUI();
+    }
+
     private void UpdateEnchantUI()
     {
         List<Enchant> enchants = Battler.Enchants;

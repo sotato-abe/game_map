@@ -30,7 +30,7 @@ public class AttackSystem : MonoBehaviour
         // 確率でクエスト開放する
         // クエストを受注するとバトルは終了する
 
-        OnExecuteBattleAction?.Invoke();
+        EndPlayerTurn();
     }
 
     public void ExecutePlayerAttack(List<Damage> damages)
@@ -47,7 +47,7 @@ public class AttackSystem : MonoBehaviour
         }
         else
         {
-            OnExecuteBattleAction?.Invoke();
+            EndPlayerTurn();
         }
     }
 
@@ -94,7 +94,7 @@ public class AttackSystem : MonoBehaviour
         }
         else
         {
-            OnExecuteBattleAction?.Invoke();
+            EndPlayerTurn();
         }
     }
 
@@ -106,6 +106,12 @@ public class AttackSystem : MonoBehaviour
         enemyUnit.SetTalkMessage("まて!!");
         OnBattleEscape?.Invoke();
 
+    }
+    
+    private void EndPlayerTurn()
+    {
+        playerUnit.DecreaseEnchant();
+        OnExecuteBattleAction?.Invoke();
     }
 
     public void ExecuteEnemyAttack()

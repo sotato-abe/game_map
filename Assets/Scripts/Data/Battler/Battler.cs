@@ -156,6 +156,18 @@ public class Battler
         }
     }
 
+    public void DecreaseEnchant()
+    {
+        foreach (Enchant enchant in Enchants)
+        {
+            enchant.Val -= 1;
+            if (enchant.Val <= 0)
+            {
+                Enchants.Remove(enchant);
+            }
+        }
+    }
+
     //　同じタイプの装備がある場合は、それを外してから追加して元の装備を返す
     // もともと装備をしていない場合はnullを返す
     public Equipment AddEquipment(Equipment equipment)
