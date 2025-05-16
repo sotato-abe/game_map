@@ -21,7 +21,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     private int headHeight = 10;
     private int itemWidth = 70;
-    int row = 5;
+    int row = 10;
 
     public void Start()
     {

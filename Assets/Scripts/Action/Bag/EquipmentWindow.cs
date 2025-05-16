@@ -170,16 +170,17 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         {
             // EquipmentBlock が存在しない場合のみ新規作成
             EquipmentBlock newEquipmentBlock = Instantiate(equipmentBlockPrefab, targetPosition.transform);
-            newEquipmentBlock.transform.position = targetPosition.transform.position;
             newEquipmentBlock.transform.localScale = targetPosition.transform.localScale;
             newEquipmentBlock.Setup(equipment);
             newEquipmentBlock.OnEndDragAction += ArrengeEquipmentBlocks;
+            targetPosition.ArrangeEquipmentBlock();
         }
     }
 
     private void ArrengeEquipmentBlocks()
     {
         // head, body, arm1, arm2, leg に追加された EquipmentBlock を整列
+        Debug.Log("整列");
         head.ArrangeEquipmentBlock();
         body.ArrangeEquipmentBlock();
         arm1.ArrangeEquipmentBlock();

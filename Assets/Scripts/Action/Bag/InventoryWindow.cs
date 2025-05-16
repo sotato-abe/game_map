@@ -239,6 +239,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void RemoveItem(ItemBlock itemBlock)
     {
         playerBattler.BagItemList.Remove(itemBlock.Item);
+        itemBlockList.Remove(itemBlock);
+        Destroy(itemBlock.gameObject);
         SetItemBlock();
         ArrengeItemBlocks();
     }

@@ -44,7 +44,17 @@ public class EquipmentSlot : MonoBehaviour
         EquipmentBlock equipmentBlock = transform.GetComponentInChildren<EquipmentBlock>();
         if (equipmentBlock != null)
         {
-            equipmentBlock.transform.position = transform.position;
+            RectTransform parentRect = GetComponent<RectTransform>();
+            RectTransform childRect = equipmentBlock.GetComponent<RectTransform>();
+            // アンカーを中央に設定（必要であれば）
+            childRect.anchorMin = new Vector2(0.5f, 0.5f);
+            childRect.anchorMax = new Vector2(0.5f, 0.5f);
+            childRect.pivot = new Vector2(0.5f, 0.5f);
+
+            // 中央揃え
+            childRect.anchoredPosition = Vector2.zero;
+
+            Debug.Log("ArrangeEquipmentBlock");
         }
     }
 }
