@@ -21,7 +21,7 @@ public class CommandDialog : Dialog
 
     private void SetEnchant(List<Enchant> enchants)
     {
-        // enchantList内のオブジェクトを削除
+        // enchantList内を初期化
         foreach (Transform child in enchantList.transform)
         {
             Destroy(child.gameObject);
@@ -40,7 +40,7 @@ public class CommandDialog : Dialog
 
     private void SetCost(List<Enegy> costs)
     {
-        // costList内のオブジェクトを削除
+        // costList内を初期化
         foreach (Transform child in costList.transform)
         {
             Destroy(child.gameObject);

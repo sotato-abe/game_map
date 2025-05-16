@@ -29,11 +29,6 @@ public class ItemDialog : Dialog
         {
             Destroy(child.gameObject);
         }
-
-        foreach (Transform child in costList.transform)
-        {
-            Destroy(child.gameObject);
-        }
     }
 
     private void SetEnegy(List<Enegy> enegys)

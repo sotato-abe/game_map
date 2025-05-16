@@ -6,8 +6,8 @@ using TMPro;
 
 public class AbilityDialog : Dialog
 {
-    int dialogWidth = 300;
-    int padding = 60;
+    private int dialogWidth = 300;
+    private int padding = 60;
     public void Setup(Ability ability)
     {
         namePlate.SetName(ability.Name);

@@ -26,21 +26,16 @@ public class BattlerStatusDialog : Dialog
         defenseText.SetText(battler.Defense.val.ToString());
         speedText.SetText(battler.Speed.val.ToString());
 
-        ResetList();
         SetEnchant(battler.Enchants);
-    }
-
-    private void ResetList()
-    {
-        // skillList内のオブジェクトを削除
-        foreach (Transform child in enchantList.transform)
-        {
-            Destroy(child.gameObject);
-        }
     }
 
     private void SetEnchant(List<Enchant> enchants)
     {
+        // enchantList内を初期化
+        foreach (Transform child in enchantList.transform)
+        {
+            Destroy(child.gameObject);
+        }
         // enchantList内にスキルを追加
         foreach (Enchant enchant in enchants)
         {
