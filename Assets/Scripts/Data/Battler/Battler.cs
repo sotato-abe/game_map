@@ -180,7 +180,7 @@ public class Battler
         {
             PouchList.Add(item);
         }
-        else if (BagItemList.Count < Bag.val)
+        else if (BagItemList.Count + Equipments.Count < Bag.val)
         {
             BagItemList.Add(item);
         }
