@@ -158,12 +158,12 @@ public class Battler
 
     public void DecreaseEnchant()
     {
-        foreach (Enchant enchant in Enchants)
+        for (int i = Enchants.Count - 1; i >= 0; i--)
         {
-            enchant.Val -= 1;
-            if (enchant.Val <= 0)
+            Enchants[i].Val -= 1;
+            if (Enchants[i].Val <= 0)
             {
-                Enchants.Remove(enchant);
+                Enchants.RemoveAt(i);
             }
         }
     }

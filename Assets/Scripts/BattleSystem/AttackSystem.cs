@@ -147,8 +147,14 @@ public class AttackSystem : MonoBehaviour
         }
         else
         {
-            OnExecuteBattleAction?.Invoke();
+            EndEnemyTurn();
         }
+    }
+
+    private void EndEnemyTurn()
+    {
+        enemyUnit.DecreaseEnchant();
+        OnExecuteBattleAction?.Invoke();
     }
 
     public bool CheckEnegy(Equipment equipment)
