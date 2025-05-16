@@ -14,6 +14,8 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] BattlerEnegyBar soulBar;
     [SerializeField] BattlerStatusDialog statusDialog;
     [SerializeField] Blowing blowing;
+    [SerializeField] EnchantIcon enchantPrefab;
+    [SerializeField] GameObject enchantList;
 
     public virtual void Setup(Battler battler)
     {
@@ -22,6 +24,7 @@ public class BattleUnit : MonoBehaviour
         characterCard.SetCharacter(battler);
         statusDialog.Setup(Battler);
         SetEnegy();
+        UpdateEnchantUI();
     }
 
     public void SetEnegy()
@@ -68,20 +71,38 @@ public class BattleUnit : MonoBehaviour
         UpdateEnegyUI();
     }
 
-    public void TakeEnchant(List<Enchant> enchantList)
-    {
-        SetMotion(MotionType.Shake);
-        SetBattlerTalkMessage(MessageType.Damage);
-        Battler.TakeEnchant(enchantList);
-        UpdateEnegyUI();
-    }
-
     public virtual void UpdateEnegyUI()
     {
         lifeBar.ChangeEnegyVal(Battler.Life);
         batteryBar.ChangeEnegyVal(Battler.Battery);
         soulBar.ChangeEnegyVal(Battler.Soul);
-        statusDialog.Setup(Battler);
+    }
+
+    public void TakeEnchant(List<Enchant> enchantList)
+    {
+        SetMotion(MotionType.Shake);
+        SetBattlerTalkMessage(MessageType.Damage);
+        Battler.TakeEnchant(enchantList);
+        UpdateEnchantUI();
+    }
+
+    private void UpdateEnchantUI()
+    {
+        List<Enchant> enchants = Battler.Enchants;
+        // enchantList内を初期化
+        foreach (Transform child in enchantList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        // enchantList内にスキルを追加
+        foreach (Enchant enchant in enchants)
+        {
+            Debug.Log("Enchant: " + enchant.Type);
+            EnchantIcon enchantObject = Instantiate(enchantPrefab, enchantList.transform);
+            enchantObject.gameObject.SetActive(true);
+            EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
+            enchantUnit.SetEnchant(enchant);
+        }
     }
 
     public void SetStatusDialog()

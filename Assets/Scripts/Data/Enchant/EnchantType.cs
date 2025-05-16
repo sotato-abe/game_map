@@ -4,7 +4,7 @@ public enum EnchantType
     Increase,       // 増強 (ATKが1アップする。)
     Firm,           // 堅固 (DEFが１アップする。)
     Adrenalin,      // アドレナリン（ATK・SPDを１上げる）
-    Curing,         // 硬化（DEFを１上げ、SPDを１下げる）
+    Curing,         // 硬化（ATKとDEFを１上げ、SPDを１下げる）
     Acceleration,   // 加速（SPDを１上げる）
     Immunity,       // 免疫（毒をのデバフを受け付けない）
     Lucky,          // 幸運（LUKを１上げる）
@@ -23,7 +23,7 @@ public enum EnchantType
     Restraint,      // 拘束（SPDを１下げる）
     Bug,            // バグ（コマンド実行時にLIFEを１失う）
     Atrophy,        // 萎縮 ATKを1ダウンする。
-    Fatigue,        // 疲労 DEFを1ダウンする。
+    Fatigue,        // 疲労 DEFを1ダウンする TODO 変更予定。
     UnLuckey,       // 不運 LUKを1ダウンする。
     Crack,          // 亀裂 ガードを1ダウンする。
     Cipher,         // 暗号 コストを5％アップする。

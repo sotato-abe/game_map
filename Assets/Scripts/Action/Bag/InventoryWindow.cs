@@ -338,8 +338,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         if (itemBlock != null && itemBlock.Item != null) // ItemBlock とその Item が存在するかを確認
         {
             playerBattler.TakeRecovery(itemBlock.Item.Base.RecoveryList);
+            playerBattler.TakeEnchant(itemBlock.Item.Base.EnchantList);
             playerBattler.BagItemList.Remove(itemBlock.Item);
             SetItem();
+            playerUnit.TakeEnchant(itemBlock.Item.Base.EnchantList);
             playerUnit.UpdateEnegyUI();
         }
         else
