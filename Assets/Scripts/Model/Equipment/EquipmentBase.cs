@@ -20,6 +20,7 @@ public class EquipmentBase : ScriptableObject
     [SerializeField] Probability probability;
     [SerializeField, TextArea] string description;
     [SerializeField] private List<Enegy> attackList = new List<Enegy>();
+    [SerializeField] private List<Enegy> recoveryList = new List<Enegy>();
     [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
     public string Name { get => name; }
