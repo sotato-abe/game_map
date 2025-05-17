@@ -81,9 +81,38 @@ public class BattleUnit : MonoBehaviour
     public void TakeEnchant(List<Enchant> enchantList)
     {
         SetMotion(MotionType.Shake);
-        SetBattlerTalkMessage(MessageType.Damage);
         Battler.TakeEnchant(enchantList);
+        EncahntMessage(enchantList);
         UpdateEnchantUI();
+    }
+
+    private void EncahntMessage(List<Enchant> enchantList)
+    {
+        int buffCount = 0;
+        foreach (Enchant enchant in enchantList)
+        {
+            EnchantData enchantData = EnchantDatabase.Instance?.GetData(enchant.Type);
+            if (enchantData.buffType == BuffType.Buff)
+            {
+                buffCount++;
+            }
+            else if (enchantData.buffType == BuffType.Debuff)
+            {
+                buffCount--;
+            }
+        }
+        if (buffCount > 0)
+        {
+            SetBattlerTalkMessage(MessageType.Recovery);
+        }
+        else if (buffCount < 0)
+        {
+            SetBattlerTalkMessage(MessageType.Damage);
+        }
+        else
+        {
+            SetTalkMessage("。。。");
+        }
     }
 
     public void DecreaseEnchant()
@@ -103,7 +132,6 @@ public class BattleUnit : MonoBehaviour
         // enchantList内にスキルを追加
         foreach (Enchant enchant in enchants)
         {
-            Debug.Log("Enchant: " + enchant.Type);
             EnchantIcon enchantObject = Instantiate(enchantPrefab, enchantList.transform);
             enchantObject.gameObject.SetActive(true);
             EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();

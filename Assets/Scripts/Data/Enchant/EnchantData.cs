@@ -8,4 +8,5 @@ public class EnchantData : ScriptableObject
     [SerializeField] public string enchantName;
     public Sprite icon;
     [TextArea] public string description;
+    public BuffType buffType = BuffType.Buff;
 }
