@@ -70,8 +70,7 @@ public class FieldSystem : MonoBehaviour
 
     public void ReserveStart()
     {
-        messagePanel.AddFieldMesage($"バックをひらいた");
-
+        messagePanel.AddMessage(MessageIconType.Bag, $"バックをひらいた");
         OnReserve?.Invoke();
     }
 
@@ -106,6 +105,7 @@ public class FieldSystem : MonoBehaviour
         {
             fieldInfoPanel.gameObject.SetActive(true);
             fieldInfoPanel.SetupBuilding(building);
+            messagePanel.AddMessage(MessageIconType.Building, $"{building.Name}");
             currentBuildingBase = building; // 現在の建物を更新
         }
         fieldPlayer.SetMoveFlg(true); // 移動フラグをオンにする
@@ -117,11 +117,11 @@ public class FieldSystem : MonoBehaviour
         Item item = fieldData.GetRandomItem(); // ランダムなアイテムを取得
         if (item == null)
         {
-            messagePanel.AddFieldMesage($"ボックスは空だった!!");
+            messagePanel.AddMessage(MessageIconType.Item, $"ボックスは空だった!!");
         }
         else
         {
-            messagePanel.AddFieldMesage($"{item.Base.Name} ゲット!!");
+            messagePanel.AddMessage(MessageIconType.Item, $"{item.Base.Name} ゲット!!");
             playerBattler.AddItem(item); // プレイヤーのインベントリに追加
             fieldData.items.Remove(item); // フィールドデータからアイテムを削除
                                           // マップからアイテムのアイコンを削除
@@ -137,7 +137,7 @@ public class FieldSystem : MonoBehaviour
 
     public void ReloadMap(DirectionType outDirection)
     {
-        messagePanel.AddFieldMesage($"フィールドを移動した!!");
+        messagePanel.AddMessage(MessageIconType.Item, $"フィールドを移動した!!");
         ClearMap(); // マップクリア
 
         DirectionType entryDirection = outDirection.GetOppositeDirection();

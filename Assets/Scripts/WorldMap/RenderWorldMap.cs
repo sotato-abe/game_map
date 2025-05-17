@@ -57,15 +57,11 @@ public class RenderWorldMap : MonoBehaviour
             for (int x = 0; x < mapData.cols; x++)
             {
                 int fieldTypeID = mapData.data[y][x];
-
-                if (fieldTypeID != null)
+                Tile tile = ScriptableObject.CreateInstance<Tile>();
+                tile.sprite = floorTileList.GetFloorTypeTile((FieldType)fieldTypeID);
+                if (tile.sprite)
                 {
-                    Tile tile = ScriptableObject.CreateInstance<Tile>();
-                    tile.sprite = floorTileList.GetFloorTypeTile((FieldType)fieldTypeID);
-                    if (tile.sprite)
-                    {
-                        worldmap.SetTile(new Vector3Int(x, y, 0), tile);
-                    }
+                    worldmap.SetTile(new Vector3Int(x, y, 0), tile);
                 }
             }
         }

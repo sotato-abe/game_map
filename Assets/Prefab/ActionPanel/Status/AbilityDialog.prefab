@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   namePlate: {fileID: 2649826758880949186}
   description: {fileID: 8822082913348658705}
+  backImageRectTransform: {fileID: 8391244058223230361}
 --- !u!1 &1373971721002447645
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,8 +129,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
-  m_SizeDelta: {x: -20, y: -40}
+  m_AnchoredPosition: {x: 0, y: -12.5}
+  m_SizeDelta: {x: -20, y: -35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &493405926302674079
 CanvasRenderer:
@@ -161,8 +162,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
-  m_sharedMaterial: {fileID: -422638099450762991, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0babf2462e58f7640928e812f38a49e8, type: 2}
+  m_sharedMaterial: {fileID: 2727446764514744688, guid: 0babf2462e58f7640928e812f38a49e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -374,7 +375,7 @@ MonoBehaviour:
   m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
-  m_sharedMaterial: {fileID: -422638099450762991, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
+  m_sharedMaterial: {fileID: 3526398151508342791, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -398,8 +399,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -478,7 +479,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 135, y: 35}
+  m_SizeDelta: {x: 155, y: 35}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8766339492800392120
 CanvasRenderer:

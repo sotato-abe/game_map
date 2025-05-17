@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EquipmentDialog : Dialog
+public class EquipmentDialog : VariableDialog
 {
     [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
@@ -22,6 +22,7 @@ public class EquipmentDialog : Dialog
         SetAttack(equipment.Base.AttackList);
         SetEnchant(equipment.Base.EnchantList);
         SetCost(equipment.Base.CostList);
+        ResizeDialog();
     }
 
     private void ResetSkillList()

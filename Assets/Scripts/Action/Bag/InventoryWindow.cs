@@ -21,7 +21,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     private Battler playerBattler;
 
-    private int headHeight = 97;
+    private int headHeight = 20;
     private int itemWidth = 70;
     int row = 10;
     int padding = 10;
@@ -239,6 +239,8 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void RemoveItem(ItemBlock itemBlock)
     {
         playerBattler.BagItemList.Remove(itemBlock.Item);
+        itemBlockList.Remove(itemBlock);
+        Destroy(itemBlock.gameObject);
         SetItemBlock();
         ArrengeItemBlocks();
     }
@@ -338,8 +340,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         if (itemBlock != null && itemBlock.Item != null) // ItemBlock とその Item が存在するかを確認
         {
             playerBattler.TakeRecovery(itemBlock.Item.Base.RecoveryList);
+            playerBattler.TakeEnchant(itemBlock.Item.Base.EnchantList);
             playerBattler.BagItemList.Remove(itemBlock.Item);
             SetItem();
+            playerUnit.TakeEnchant(itemBlock.Item.Base.EnchantList);
             playerUnit.UpdateEnegyUI();
         }
         else

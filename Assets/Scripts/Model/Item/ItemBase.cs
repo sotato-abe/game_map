@@ -9,7 +9,7 @@ public class ItemBase : ScriptableObject
     [SerializeField] RarityType rarity;
     [SerializeField] ItemType itemType;
     [SerializeField] Sprite sprite;
-    [SerializeField] string description;
+    [SerializeField, TextArea] string description;
     [SerializeField] int lifeCost;
     [SerializeField] int batteryCost;
     [SerializeField] int soulCost;

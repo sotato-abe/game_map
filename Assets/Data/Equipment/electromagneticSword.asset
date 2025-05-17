@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 241b9c6d305b7c2488bfc775555e3437, type: 3}
+  m_Name: electromagneticSword
+  m_EditorClassIdentifier: 
+  name: "\u30C7\u30F3\u30B8\u30BD\u30FC\u30C9"
+  sprite: {fileID: 21300000, guid: 04976e6db28d57241ac79ed1774cf87c, type: 3}
+  type: 2
+  life: 0
+  battery: 0
+  attack: 2
+  technique: 0
+  defense: 0
+  speed: 0
+  lifeCost: 0
+  batteryCost: 1
+  soulCost: 0
+  probability:
+    value: 100
+  description: "\u30CA\u30BE\u306E\u30AB\u30BF\u30CA"
+  attackList:
+  - type: 0
+    val: 150
+  enchantList: []

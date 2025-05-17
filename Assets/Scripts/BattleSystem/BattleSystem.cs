@@ -112,21 +112,15 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.gameObject.SetActive(true);
         enemyUnit.Setup(enemy);
         enemyUnit.SetMotion(MotionType.Jump);
-
-        //enemyのMessagesの中からMessageType.Encountのメッセージを取得
-        string enemyMessage = enemy.Base.Messages.Find(m => m.messageType == MessageType.Encount)?.message ?? "";
-        string playerMessage = player.Base.Messages.Find(m => m.messageType == MessageType.Encount)?.message ?? "";
-        if (enemyMessage != "")
-            enemyUnit.SetTalkMessage(enemyMessage);
-        if (playerMessage != "")
-            playerUnit.SetTalkMessage(playerMessage);
+        enemyUnit.SetBattlerTalkMessage(MessageType.Encount);
+        playerUnit.SetBattlerTalkMessage(MessageType.Encount);
 
         attackSystem.SetBattler(playerUnit, enemyUnit);
         turnOrderSystem.SetupPlayerBattler(player);
         turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
-        messagePanel.AddBattleMesage($"{enemy.Base.Name} があられた!!");
+        messagePanel.AddMessage(MessageIconType.Battle, $"{enemy.Base.Name} があられた!!");
     }
 
     public void StartActionSelection()
@@ -207,7 +201,7 @@ public class BattleSystem : MonoBehaviour
         actionBoard.ChangeExecuteFlg(false);
         List<Item> targetItems = enemyUnit.Battler.PouchList;
         string resultItemMessageList = "";
-        resultItemMessageList = playerUnit.Battler.Base.Name + " が勝利した.\n";
+        resultItemMessageList = enemyUnit.Battler.Base.Name + " に勝利した.\n";
 
         if (targetItems != null && targetItems.Count > 0)
         {
@@ -234,7 +228,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            resultItemMessageList += ("敵は何も持っていなかった.");
+            resultItemMessageList += ($"{enemyUnit.Battler.Base.Name} は何も持っていなかった.");
         }
         playerUnit.Battler.Money += enemyUnit.Battler.Money;
         playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
@@ -244,7 +238,7 @@ public class BattleSystem : MonoBehaviour
             playerBattler.AcquisitionExp(enemyUnit.Battler.Exp); // プレイヤーの経験値を加算
             playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
         }
-        messagePanel.AddBattleMesage(resultItemMessageList);
+        messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
 
         StartCoroutine(BattleResultView());
     }
@@ -271,7 +265,6 @@ public class BattleSystem : MonoBehaviour
     {
         actionBoard.ChangeExecuteFlg(false);
         state = BattleState.Standby;
-        // activeAction = actionList[0];
         turnOrderSystem.BattlerEnd();
         foreach (ActionIcon icon in actionIconList)
         {
@@ -286,9 +279,7 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleDefeat()
     {
-        string playerMessage = playerUnit.Battler.Base.Messages.Find(m => m.messageType == MessageType.Lose)?.message ?? "";
-        playerUnit.SetTalkMessage(playerMessage);
-        messagePanel.AddBattleMesage($"ゲームオーバー!!");
-        Debug.Log("game over");
+        playerUnit.SetBattlerTalkMessage(MessageType.Lose);
+        messagePanel.AddMessage(MessageIconType.System, "ゲームオーバー...");
     }
 }

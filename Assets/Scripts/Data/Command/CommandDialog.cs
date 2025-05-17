@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CommandDialog : Dialog
+public class CommandDialog : VariableDialog
 {
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
@@ -17,11 +17,12 @@ public class CommandDialog : Dialog
         description.text = command.Base.Description;
         SetEnchant(command.Base.EnchantList);
         SetCost(command.Base.CostList);
+        ResizeDialog();
     }
 
     private void SetEnchant(List<Enchant> enchants)
     {
-        // enchantList内のオブジェクトを削除
+        // enchantList内を初期化
         foreach (Transform child in enchantList.transform)
         {
             Destroy(child.gameObject);
@@ -40,7 +41,7 @@ public class CommandDialog : Dialog
 
     private void SetCost(List<Enegy> costs)
     {
-        // costList内のオブジェクトを削除
+        // costList内を初期化
         foreach (Transform child in costList.transform)
         {
             Destroy(child.gameObject);

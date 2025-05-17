@@ -21,7 +21,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     private int headHeight = 10;
     private int itemWidth = 70;
-    int row = 5;
+    int row = 10;
 
     public void Start()
     {
@@ -92,7 +92,6 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     private void SetBlock()
     {
         int blockNum = (row - (playerBattler.Pouch.val % row)) % row;
-        Debug.Log($"test：{blockList}");
         blockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
@@ -120,7 +119,6 @@ public class PouchWindow : MonoBehaviour, IDropHandler
             int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth;
             int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth);
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
-            Debug.Log("ttt");
         }
     }
 

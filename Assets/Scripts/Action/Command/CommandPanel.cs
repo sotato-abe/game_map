@@ -20,7 +20,7 @@ public class CommandPanel : Panel
     private int soulCost = 0;
     List<CommandUnit> commandUnitList = new List<CommandUnit>();
 
-    private int headWidth = 140;
+    private int headWidth = 145;
     private int commandWidth = 90;
     private int panelHeight = 150;
 
@@ -50,7 +50,7 @@ public class CommandPanel : Panel
 
     public void SetPanelSize()
     {
-        int row = playerBattler.RunTable.Count;
+        int row = playerBattler.Memory.val;
         int width = commandWidth * row + headWidth;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, panelHeight);
     }

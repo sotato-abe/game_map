@@ -15,7 +15,7 @@ public class MapBase : ScriptableObject
     [SerializeField] int mapTileSet;
     [SerializeField] int mapHeight;
     [SerializeField] int mapWidth;
-    [SerializeField] string description;
+    [SerializeField, TextArea] string description;
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
     [SerializeField] int coordinateX;
     [SerializeField] int coordinateY;

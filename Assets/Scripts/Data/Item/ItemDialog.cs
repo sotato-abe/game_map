@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemDialog : Dialog
+public class ItemDialog : VariableDialog
 {
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
@@ -20,17 +20,13 @@ public class ItemDialog : Dialog
         SetEnegy(item.Base.RecoveryList);
         SetEnchant(item.Base.EnchantList);
         SetCost(item.Base.CostList);
+        ResizeDialog();
     }
 
     private void ResetSkillList()
     {
         // skillList内のオブジェクトを削除
         foreach (Transform child in enchantList.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Transform child in costList.transform)
         {
             Destroy(child.gameObject);
         }

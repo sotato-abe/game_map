@@ -13,7 +13,7 @@ public class CommandBase : ScriptableObject
     [SerializeField] int batteryCost;
     [SerializeField] int soulCost;
     [SerializeField] Sprite sprite;
-    [SerializeField] string description;
+    [SerializeField, TextArea] string description;
     [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
     public string Name { get => name; }

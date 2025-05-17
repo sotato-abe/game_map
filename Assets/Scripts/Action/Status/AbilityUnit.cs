@@ -7,12 +7,14 @@ using TMPro;
 public class AbilityUnit : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI abilityName;  // 表示用のTextMeshProUGUIフィールド
+    [SerializeField] Image dialogImage;
     [SerializeField] AbilityDialog dialog;
     private float magnificationPower = 1.1f; // ターゲットスケール
 
     public virtual void Setup(Ability ability)
     {
         abilityName.text = ability.Name;
+        dialogImage.sprite = ability.Sprite;
         dialog.gameObject.SetActive(true);
         dialog.Setup(ability);
     }

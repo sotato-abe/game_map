@@ -28,6 +28,8 @@ public class FieldPlayer : MonoBehaviour
     public int fieldMapHeight; // マップの高さ
     public int encounterThreshold = 1;
     public float distanceTraveled = 0.0f;
+    private float encountCooldown = 1f; // チェック間隔（秒）
+    private float lastEncountCheckTime = -Mathf.Infinity;
     private Vector3 lastPosition;
     Coroutine currentMoveCoroutine;
     public delegate void ChangeFieldDelegate(DirectionType fieldId);
@@ -98,7 +100,7 @@ public class FieldPlayer : MonoBehaviour
             }
 
             // バックを開く
-            if (Input.GetKeyDown(KeyCode.E) ||Input.GetKeyDown(KeyCode.Return))
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return))
             {
                 SetMoveFlg(false);
                 OnReserve?.Invoke();
@@ -125,7 +127,12 @@ public class FieldPlayer : MonoBehaviour
         isMoving = false;
         CheckForBuilding();
         CheckForObject();
-        CheckForEncount();
+
+        if (Time.time - lastEncountCheckTime >= encountCooldown)
+        {
+            CheckForEncount();
+            lastEncountCheckTime = Time.time;
+        }
     }
 
     public void MoveToTargetPin(Vector3 targetPos)
@@ -263,7 +270,11 @@ public class FieldPlayer : MonoBehaviour
 
             CheckForBuilding();
             CheckForObject();
-            CheckForEncount();
+            if (Time.time - lastEncountCheckTime >= encountCooldown)
+            {
+                CheckForEncount();
+                lastEncountCheckTime = Time.time;
+            }
             yield return null;
         }
 
@@ -303,6 +314,7 @@ public class FieldPlayer : MonoBehaviour
 
     void CheckForEncount()
     {
+        Debug.Log("CheckForEncount");
         if (!canEncount) return; // エンカウントフラグが立っていない場合は何もしない
 
         Collider2D hitArea = Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer);

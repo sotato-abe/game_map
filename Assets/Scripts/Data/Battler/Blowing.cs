@@ -9,11 +9,14 @@ public class Blowing : MonoBehaviour
     [SerializeField] TextMeshProUGUI messageText;
     [SerializeField] RectTransform backImageRectTransform;
 
-    private float padding = 52f;
-
+    private float paddingHeight = 50f;
+    private float paddingWidth = 40f;
+    private float maxWidth = 250f;
+    private float blowingWidth = 250f;
     private List<string> messageList = new List<string>();
     private Coroutine fadeCoroutine;
     private Coroutine messageCoroutine;
+
 
     private void OnDisable()
     {
@@ -55,6 +58,15 @@ public class Blowing : MonoBehaviour
     public IEnumerator TypeDialog(string line)
     {
         messageText.SetText("");
+        // lineの文字数によって横幅を変える。（20文字以上ならmaxWidthでそれ以内なら。その時のサイズ）
+        if (line.Length > 15)
+        {
+            blowingWidth = maxWidth + paddingWidth;
+        }
+        else
+        {
+            blowingWidth = line.Length * 20f + paddingWidth;
+        }
         foreach (char letter in line)
         {
             messageText.text += letter;
@@ -71,7 +83,12 @@ public class Blowing : MonoBehaviour
             return;
         }
 
-        float newHeight = messageText.preferredHeight + padding;
-        backImageRectTransform.sizeDelta = new Vector2(backImageRectTransform.sizeDelta.x, newHeight);
+        // TextMeshProのTextにレイアウトを再計算させる
+        messageText.ForceMeshUpdate();
+
+        // 横幅を最大値で制限
+        // float newWidth = Mathf.Min(messageText.preferredWidth, maxWidth) + paddingWidth;
+        float newHeight = messageText.preferredHeight + paddingHeight;
+        backImageRectTransform.sizeDelta = new Vector2(blowingWidth, newHeight);
     }
 }

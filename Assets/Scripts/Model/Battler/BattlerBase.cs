@@ -22,7 +22,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int money = 10;
     [SerializeField] int disk = 0;
     [SerializeField] int key = 0;
-    [SerializeField] int exp = 0;
+    [SerializeField] int exp = 10;
 
     [SerializeField] List<Ability> abilityList;
     [SerializeField] List<Equipment> equipments;

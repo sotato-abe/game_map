@@ -156,6 +156,18 @@ public class Battler
         }
     }
 
+    public void DecreaseEnchant()
+    {
+        for (int i = Enchants.Count - 1; i >= 0; i--)
+        {
+            Enchants[i].Val -= 1;
+            if (Enchants[i].Val <= 0)
+            {
+                Enchants.RemoveAt(i);
+            }
+        }
+    }
+
     //　同じタイプの装備がある場合は、それを外してから追加して元の装備を返す
     // もともと装備をしていない場合はnullを返す
     public Equipment AddEquipment(Equipment equipment)
@@ -180,7 +192,7 @@ public class Battler
         {
             PouchList.Add(item);
         }
-        else if (BagItemList.Count < Bag.val)
+        else if (BagItemList.Count + Equipments.Count < Bag.val)
         {
             BagItemList.Add(item);
         }
