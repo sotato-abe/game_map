@@ -27,7 +27,7 @@ public class BattlerEnegyBar : MonoBehaviour
     public void ChangeEnegyVal(int enegy)
     {
         if (this == null || !gameObject.activeInHierarchy) return; // 破棄されている場合は処理しない
-
+        CountEnegyVal(enegy);
         currentEnergy = enegy;
         text.text = currentEnergy.ToString();
 
@@ -58,5 +58,55 @@ public class BattlerEnegyBar : MonoBehaviour
         enegyBar.fillAmount = targetFill;
     }
 
+    private void CountEnegyVal(int enegy)
+    {
+        int diff = enegy - currentEnergy;
+
+        if (diff == 0) return;
+
+        // 差分テキストを生成
+        GameObject diffTextObj = new GameObject("DiffText");
+        diffTextObj.transform.SetParent(this.transform);
+        diffTextObj.transform.localPosition = Vector3.zero;
+
+        TextMeshProUGUI diffText = diffTextObj.AddComponent<TextMeshProUGUI>();
+        diffText.fontSize = 24;
+        diffText.alignment = TextAlignmentOptions.Center;
+        diffText.text = (diff > 0 ? "+" : "") + diff.ToString();
+        diffText.color = diff > 0 ? Color.green : Color.red;
+        diffText.raycastTarget = false;
+
+        RectTransform rect = diffText.GetComponent<RectTransform>();
+        rect.anchoredPosition = Vector2.zero;
+        rect.sizeDelta = new Vector2(100, 30);
+        rect.localScale = Vector3.one;
+
+        Debug.Log("DiffText: " + diffText.text);
+        // 差分テキストをアニメーションで上に移動＆フェードアウト
+        StartCoroutine(FadeAndMoveText(diffText));
+    }
+
+    private IEnumerator FadeAndMoveText(TextMeshProUGUI text)
+    {
+        float duration = 1f;
+        float elapsed = 0f;
+        Vector3 startPos = text.rectTransform.anchoredPosition;
+        Vector3 endPos = startPos + new Vector3(0, 50f, 0);
+
+        Color startColor = text.color;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            text.rectTransform.anchoredPosition = Vector3.Lerp(startPos, endPos, t);
+            text.color = new Color(startColor.r, startColor.g, startColor.b, 1 - t);
+
+            yield return null;
+        }
+
+        Destroy(text.gameObject);
+    }
 }
 
