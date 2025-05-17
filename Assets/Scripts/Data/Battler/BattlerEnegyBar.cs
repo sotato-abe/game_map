@@ -10,6 +10,8 @@ public class BattlerEnegyBar : MonoBehaviour
     [SerializeField] Image enegyBar;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] EnegyIconList enegyIconList;
+    [SerializeField] private TextMeshProUGUI diffText;
+    [SerializeField] GameObject diffList;
     [SerializeField] Color plusColor;
     [SerializeField] Color minusColor;
 
@@ -24,6 +26,7 @@ public class BattlerEnegyBar : MonoBehaviour
         this.currentEnergy = currentEnergy;
         text.text = currentEnergy.ToString();
         ChangeEnegyVal(this.currentEnergy);
+        DestroyDifftext();
     }
 
     public void ChangeEnegyVal(int enegy)
@@ -67,30 +70,22 @@ public class BattlerEnegyBar : MonoBehaviour
         if (diff == 0) return;
 
         // 差分テキストを生成
-        GameObject diffTextObj = new GameObject("DiffText");
-        diffTextObj.transform.SetParent(this.transform);
-        diffTextObj.transform.localPosition = Vector3.zero;
+        TextMeshProUGUI instance = Instantiate(diffText, diffList.transform);
 
-        TextMeshProUGUI diffText = diffTextObj.AddComponent<TextMeshProUGUI>();
-        diffText.fontSize = 30;
-        diffText.alignment = TextAlignmentOptions.Center;
-        diffText.text = (diff > 0 ? "+" : "") + diff.ToString();
-        diffText.color = diff > 0 ? plusColor : minusColor;
-        diffText.raycastTarget = false;
+        instance.text = (diff > 0 ? "+" : "") + diff.ToString();
+        instance.color = diff > 0 ? plusColor : minusColor;
+        instance.raycastTarget = false;
 
-        RectTransform rect = diffText.GetComponent<RectTransform>();
+        RectTransform rect = instance.GetComponent<RectTransform>();
         rect.anchoredPosition = Vector2.zero;
-        rect.sizeDelta = new Vector2(100, 30);
         rect.localScale = Vector3.one;
-
-        Debug.Log("DiffText: " + diffText.text);
         // 差分テキストをアニメーションで上に移動＆フェードアウト
-        StartCoroutine(FadeAndMoveText(diffText));
+        StartCoroutine(FadeAndMoveText(instance));
     }
 
     private IEnumerator FadeAndMoveText(TextMeshProUGUI text)
     {
-        float duration = 1f;
+        float duration = 2f;
         float elapsed = 0f;
         Vector3 startPos = text.rectTransform.anchoredPosition;
         Vector3 endPos = startPos + new Vector3(0, 50f, 0);
@@ -109,6 +104,14 @@ public class BattlerEnegyBar : MonoBehaviour
         }
 
         Destroy(text.gameObject);
+    }
+
+    private void DestroyDifftext()
+    {
+        foreach (Transform child in diffList.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }
 
