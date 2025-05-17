@@ -120,7 +120,7 @@ public class BattleSystem : MonoBehaviour
         turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
-        messagePanel.AddBattleMesage($"{enemy.Base.Name} があられた!!");
+        messagePanel.AddMessage(MessageIconType.Battle, $"{enemy.Base.Name} があられた!!");
     }
 
     public void StartActionSelection()
@@ -238,7 +238,7 @@ public class BattleSystem : MonoBehaviour
             playerBattler.AcquisitionExp(enemyUnit.Battler.Exp); // プレイヤーの経験値を加算
             playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
         }
-        messagePanel.AddBattleMesage(resultItemMessageList);
+        messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
 
         StartCoroutine(BattleResultView());
     }
@@ -280,7 +280,6 @@ public class BattleSystem : MonoBehaviour
     public void BattleDefeat()
     {
         playerUnit.SetBattlerTalkMessage(MessageType.Lose);
-        messagePanel.AddBattleMesage($"ゲームオーバー!!");
-        Debug.Log("game over");
+        messagePanel.AddMessage(MessageIconType.System, "ゲームオーバー...");
     }
 }

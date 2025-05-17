@@ -13,6 +13,8 @@ public class MessagePanel : MonoBehaviour
 
     private List<Message> messageList = new List<Message>();
 
+    private int messageCount = 10;
+
     private void Awake()
     {
         // foreach (Transform child in transform)
@@ -21,22 +23,10 @@ public class MessagePanel : MonoBehaviour
         // }
     }
 
-    public void AddGameMessage(string message)
+    public void AddMessage(MessageIconType iconType, string message)
     {
-        Message newMessage = new Message(gameIconSprite, message);
-        messageList.Add(newMessage);
-        TypeMessageList();
-    }
-
-    public void AddBattleMesage(string message)
-    {
-        Message newMessage = new Message(battleIconSprite, message);
-        messageList.Add(newMessage);
-        TypeMessageList();
-    }
-    public void AddFieldMesage(string message)
-    {
-        Message newMessage = new Message(fieldIconSprite, message);
+        Sprite messagIcon = MessageDatabase.Instance?.GetIcon(iconType);
+        Message newMessage = new Message(messagIcon, message);
         messageList.Add(newMessage);
         TypeMessageList();
     }
@@ -50,7 +40,7 @@ public class MessagePanel : MonoBehaviour
         }
 
         // 表示対象となるメッセージ（後ろから3件）
-        int startIndex = Mathf.Max(0, messageList.Count - 7);
+        int startIndex = Mathf.Max(0, messageList.Count - messageCount);
         int displayCount = messageList.Count - startIndex;
 
         // すでにあるMessagePrefabを取得

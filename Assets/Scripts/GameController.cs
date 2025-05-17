@@ -28,14 +28,14 @@ public class GameController : MonoBehaviour
         fieldSystem.OnEncount += BattleStart;
         configSystem.OnConfigOpen += ConfigStart;
         configSystem.OnConfigClose += ConfigEnd;
-        
+
         playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
         playerUnit.SetTalkMessage("よし。。");
 
         playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;
         battleSystem.OnBattleEnd += BattleEnd;
-        messagePanel.AddGameMessage("ゲームスタート");
+        messagePanel.AddMessage(MessageIconType.System, "Hallo World");
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
