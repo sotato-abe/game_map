@@ -4,16 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemDialog : Dialog
+public class ItemDialog : VariableDialog
 {
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnegyIcon costPrefab;
     [SerializeField] EnchantIcon enchantPrefab;
-    [SerializeField] RectTransform backImageRectTransform;
-    private float paddingHeight = 110f;
-    private float dialogWidth = 300f;
 
     public void Setup(Item item)
     {
@@ -24,13 +21,6 @@ public class ItemDialog : Dialog
         SetEnchant(item.Base.EnchantList);
         SetCost(item.Base.CostList);
         ResizeDialog();
-    }
-
-    private void ResizeDialog()
-    {
-        description.ForceMeshUpdate();
-        float newHeight = description.preferredHeight + paddingHeight;
-        backImageRectTransform.sizeDelta = new Vector2(dialogWidth, newHeight);
     }
 
     private void ResetSkillList()

@@ -53,8 +53,6 @@ public class EquipmentSlot : MonoBehaviour
 
             // 中央揃え
             childRect.anchoredPosition = Vector2.zero;
-
-            Debug.Log("ArrangeEquipmentBlock");
         }
     }
 }

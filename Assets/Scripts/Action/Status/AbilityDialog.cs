@@ -4,20 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class AbilityDialog : Dialog
+public class AbilityDialog : VariableDialog
 {
-    private int dialogWidth = 300;
-    private int padding = 60;
+    protected override float PaddingHeight => 60f;
     public void Setup(Ability ability)
     {
         namePlate.SetName(ability.Name);
         description.SetText(ability.Description);
-        Invoke(nameof(ResizePlate), 0f);
-    }
-
-    private void ResizePlate()
-    {
-        float newHeight = description.preferredHeight + padding;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(dialogWidth, newHeight);
+        ResizeDialog();
     }
 }

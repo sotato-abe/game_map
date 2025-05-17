@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class EquipmentDialog : Dialog
+public class EquipmentDialog : VariableDialog
 {
     [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
@@ -12,10 +12,6 @@ public class EquipmentDialog : Dialog
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] EnegyIcon costPrefab;
-    [SerializeField] RectTransform backImageRectTransform;
-
-    private float paddingHeight = 110f;
-    private float dialogWidth = 300f;
 
     public void Setup(Equipment equipment)
     {
@@ -27,13 +23,6 @@ public class EquipmentDialog : Dialog
         SetEnchant(equipment.Base.EnchantList);
         SetCost(equipment.Base.CostList);
         ResizeDialog();
-    }
-
-    private void ResizeDialog()
-    {
-        description.ForceMeshUpdate();
-        float newHeight = description.preferredHeight + paddingHeight;
-        backImageRectTransform.sizeDelta = new Vector2(dialogWidth, newHeight);
     }
 
     private void ResetSkillList()
