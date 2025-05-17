@@ -140,6 +140,10 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
                 playerBattler.BagEquipmentList.Add(armEquipmentList[i]);
             }
             armEquipmentList.RemoveRange(0, armEquipmentList.Count - 2);
+        }else if (armEquipmentList.Count == 0)
+        {
+            arm1.ReSetSlot();
+            arm2.ReSetSlot();
         }
         //バックに残ったアイテムを装備する
         switch (armEquipmentList.Count)
