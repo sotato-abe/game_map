@@ -18,7 +18,7 @@ public class EquipmentBase : ScriptableObject
     [SerializeField] int batteryCost;
     [SerializeField] int soulCost;
     [SerializeField] Probability probability;
-    [SerializeField] string description;
+    [SerializeField, TextArea] string description;
     [SerializeField] private List<Enegy> attackList = new List<Enegy>();
     [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
