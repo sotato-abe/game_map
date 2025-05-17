@@ -10,6 +10,8 @@ public class BattlerEnegyBar : MonoBehaviour
     [SerializeField] Image enegyBar;
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] EnegyIconList enegyIconList;
+    [SerializeField] Color plusColor;
+    [SerializeField] Color minusColor;
 
     private int maxEnegy;
     private int currentEnergy;
@@ -70,10 +72,10 @@ public class BattlerEnegyBar : MonoBehaviour
         diffTextObj.transform.localPosition = Vector3.zero;
 
         TextMeshProUGUI diffText = diffTextObj.AddComponent<TextMeshProUGUI>();
-        diffText.fontSize = 24;
+        diffText.fontSize = 30;
         diffText.alignment = TextAlignmentOptions.Center;
         diffText.text = (diff > 0 ? "+" : "") + diff.ToString();
-        diffText.color = diff > 0 ? Color.green : Color.red;
+        diffText.color = diff > 0 ? plusColor : minusColor;
         diffText.raycastTarget = false;
 
         RectTransform rect = diffText.GetComponent<RectTransform>();
