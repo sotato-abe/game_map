@@ -11,12 +11,25 @@ public class CommandDialog : Dialog
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon costPrefab;
 
+    [SerializeField] RectTransform backImageRectTransform;
+
+    private float paddingHeight = 110f;
+    private float dialogWidth = 300f;
+
     public void Setup(Command command)
     {
         namePlate.SetName(command.Base.Name);
         description.text = command.Base.Description;
         SetEnchant(command.Base.EnchantList);
         SetCost(command.Base.CostList);
+        ResizeDialog();
+    }
+
+    private void ResizeDialog()
+    {
+        description.ForceMeshUpdate();
+        float newHeight = description.preferredHeight + paddingHeight;
+        backImageRectTransform.sizeDelta = new Vector2(dialogWidth, newHeight);
     }
 
     private void SetEnchant(List<Enchant> enchants)
