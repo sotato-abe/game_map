@@ -105,6 +105,7 @@ public class FieldSystem : MonoBehaviour
         {
             fieldInfoPanel.gameObject.SetActive(true);
             fieldInfoPanel.SetupBuilding(building);
+            messagePanel.AddMessage(MessageIconType.Building, $"{building.Name}");
             currentBuildingBase = building; // 現在の建物を更新
         }
         fieldPlayer.SetMoveFlg(true); // 移動フラグをオンにする
