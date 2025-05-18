@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Ishi
   m_EditorClassIdentifier: 
   id: 0
-  mapName: 
+  mapName: "\u30A4\u30B7\u306E\u753A"
   level: 1
   openTop: 1
   openLeft: 1
   openRight: 1
   openBottom: 1
-  mapTileSet: 0
+  fieldType: 1
   mapHeight: 60
   mapWidth: 100
   description: 'A member state of the Callisto Federation.
@@ -45,22 +45,14 @@ MonoBehaviour:
   enemies:
   - _base: {fileID: 11400000, guid: 68b491635af498f4598f586f90439224, type: 2}
     level: 1
-    soul: 0
+    soul: -15
     AbilityList: []
-    Enchants:
-    - type: 0
-      val: 1
-    - type: 5
-      val: 1
+    Enchants: []
   - _base: {fileID: 11400000, guid: afb95766c8c50324f8b8b130c64665e4, type: 2}
     level: 2
-    soul: 0
+    soul: -18
     AbilityList: []
-    Enchants:
-    - type: 0
-      val: 1
-    - type: 5
-      val: 1
+    Enchants: []
   items:
   - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
   - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}

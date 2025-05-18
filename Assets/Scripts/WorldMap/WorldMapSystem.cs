@@ -94,8 +94,16 @@ public class WorldMapSystem : MonoBehaviour
 
     private void SetMapTileSet()
     {
-        FieldType fieldType = (FieldType)floorData.data[coordinate.row][coordinate.col];
-        fieldData.fieldType = (int)fieldType; // マップのタイルセットを取得
+        FieldType newFieldType = FieldType.Default; // フィールドタイプを初期化
+        if (fieldData.mapBase != null)
+        {
+            newFieldType = fieldData.mapBase.FieldType;
+        }
+        else
+        {
+            newFieldType = (FieldType)floorData.data[coordinate.row][coordinate.col];
+        }
+        fieldData.fieldType = newFieldType; // マップのタイルセットを取得
     }
 
     private void SetRoadEntry()
@@ -107,7 +115,7 @@ public class WorldMapSystem : MonoBehaviour
         }
         else if (roadType == DirectionType.Left || roadType == DirectionType.TopLeft || roadType == DirectionType.RightLeft || roadType == DirectionType.BottomLeft || roadType == DirectionType.TopBottomLeft || roadType == DirectionType.Cross)
         {
-            fieldData.openLeft = true; // 左の出入り口
+            fieldData.openLeft = true; // 左の出入り口m
         }
         else if (roadType == DirectionType.Right || roadType == DirectionType.RightBottom || roadType == DirectionType.RightLeft || roadType == DirectionType.TopRight || roadType == DirectionType.TopRightLeft || roadType == DirectionType.Cross)
         {

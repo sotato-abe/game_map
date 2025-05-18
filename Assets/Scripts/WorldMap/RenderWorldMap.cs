@@ -66,14 +66,8 @@ public class RenderWorldMap : MonoBehaviour
                 {
                     worldmap.SetTile(new Vector3Int(x, y, 0), tile);
                 }
-                // cityCoordinateDataの座標が一致する時にcityTileを描画
-                if (x == 18 && y == 49)
-                {
-                    Debug.Log("City Coordinate: 18, 49 ----------------------");
-                }
                 if (cityCoordinateData.Contains(new Coordinate(y, x)))
                 {
-                    Debug.Log($"City Coordinate---------: {y}, {x}");
                     Tile cityTile = ScriptableObject.CreateInstance<Tile>();
                     cityTile.sprite = citySprite;
                     worldmap.SetTile(new Vector3Int(x, y, 0), cityTile);

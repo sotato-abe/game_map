@@ -12,7 +12,7 @@ public class MapBase : ScriptableObject
     [SerializeField] bool openLeft;
     [SerializeField] bool openRight;
     [SerializeField] bool openBottom;
-    [SerializeField] int mapTileSet;
+    [SerializeField] FieldType fieldType;
     [SerializeField] int mapHeight;
     [SerializeField] int mapWidth;
     [SerializeField, TextArea] string description;
@@ -34,7 +34,7 @@ public class MapBase : ScriptableObject
     public bool OpenLeft { get => openLeft; }
     public bool OpenRight { get => openRight; }
     public bool OpenBottom { get => openBottom; }
-    public int MapTileSet { get => mapTileSet; }
+    public FieldType FieldType { get => fieldType; }
     public int MapHeight { get => mapHeight; }
     public int MapWidth { get => mapWidth; }
     public string Description { get => description; }
