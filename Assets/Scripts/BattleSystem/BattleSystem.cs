@@ -201,7 +201,7 @@ public class BattleSystem : MonoBehaviour
         actionBoard.ChangeExecuteFlg(false);
         List<Item> targetItems = enemyUnit.Battler.PouchList;
         string resultItemMessageList = "";
-        resultItemMessageList = enemyUnit.Battler.Base.Name + " に勝利した.\n";
+        resultItemMessageList = enemyUnit.Battler.Base.Name + " に勝利した。\n";
 
         if (targetItems != null && targetItems.Count > 0)
         {
@@ -223,19 +223,34 @@ public class BattleSystem : MonoBehaviour
 
             if (itemList != "")
             {
-                resultItemMessageList += ($"{itemList}を手に入れた");
+                resultItemMessageList += ($"{itemList}を手に入れた。\n");
             }
         }
         else
         {
-            resultItemMessageList += ($"{enemyUnit.Battler.Base.Name} は何も持っていなかった.");
+            resultItemMessageList += ($"{enemyUnit.Battler.Base.Name} は何も持っていなかった。\n");
         }
-        playerUnit.Battler.Money += enemyUnit.Battler.Money;
-        playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
+
+        string prizeText = "";
+        if (enemyUnit.Battler.Money > 0)
+        {
+            prizeText += ($"ゼニ：{enemyUnit.Battler.Money} Z、");
+            playerUnit.Battler.Money += enemyUnit.Battler.Money;
+        }
+        if (enemyUnit.Battler.Disk > 0)
+        {
+            prizeText += ($"ディスク：{enemyUnit.Battler.Disk}、");
+            playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
+        }
+        if (prizeText != "")
+        {
+            resultItemMessageList += ($"{prizeText}を手に入れた。\n");
+        }
 
         if (playerUnit.Battler is PlayerBattler playerBattler)
         {
             playerBattler.AcquisitionExp(enemyUnit.Battler.Exp); // プレイヤーの経験値を加算
+            resultItemMessageList += ($"経験値を{enemyUnit.Battler.Exp}手に入れた。");
             playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
         }
         messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
