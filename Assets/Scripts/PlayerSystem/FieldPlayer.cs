@@ -102,9 +102,17 @@ public class FieldPlayer : MonoBehaviour
             // バックを開く
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return))
             {
-                SetMoveFlg(false);
-                OnReserve?.Invoke();
+                StartReserve();
             }
+        }
+    }
+
+    public void StartReserve()
+    {
+        if (canMove)
+        {
+            SetMoveFlg(false);
+            OnReserve?.Invoke();
         }
     }
 
