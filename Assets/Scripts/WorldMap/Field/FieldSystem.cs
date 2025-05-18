@@ -137,7 +137,7 @@ public class FieldSystem : MonoBehaviour
 
     public void ReloadMap(DirectionType outDirection)
     {
-        messagePanel.AddMessage(MessageIconType.Item, $"フィールドを移動した!!");
+        messagePanel.AddMessage(MessageIconType.Field, $"フィールドを移動した!!");
         ClearMap(); // マップクリア
 
         DirectionType entryDirection = outDirection.GetOppositeDirection();

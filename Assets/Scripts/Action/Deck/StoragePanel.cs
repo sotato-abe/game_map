@@ -17,10 +17,9 @@ public class StoragePanel : Panel, IDropHandler
 
     private Battler playerBattler;
 
-    int row = 10;
-    private int headHeight = 40;
+    private int headHeight = 10;
     private int commandWidth = 70;
-    int padding = 10;
+    int row = 10;
     List<CommandBlock> storageList = new List<CommandBlock>();
     private List<GameObject> blockList = new List<GameObject>();
 
@@ -86,7 +85,7 @@ public class StoragePanel : Panel, IDropHandler
 
     public void SetPanelSize()
     {
-        int width = commandWidth * row + 30;
+        int width = commandWidth * row + 20;
         int column = (playerBattler.Storage.val - 1) / row + 1;
         int height = commandWidth * column + headHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
@@ -143,16 +142,16 @@ public class StoragePanel : Panel, IDropHandler
         for (int i = 0; i < storageList.Count; i++)
         {
             int cardHalfWidth = commandWidth / 2;
-            int xPosition = (i % row) * commandWidth + cardHalfWidth + padding;
-            int yPosition = -cardHalfWidth - padding;
+            int xPosition = (i % row) * commandWidth + cardHalfWidth;
+            int yPosition = -((i / row) * commandWidth + cardHalfWidth);
             storageList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         for (int i = 0; i < blockList.Count; i++)
         {
             int cardHalfWidth = commandWidth / 2;
-            int xPosition = (playerBattler.Storage.val % row + i) * commandWidth + cardHalfWidth + padding;
-            int yPosition = -((playerBattler.Storage.val / row) * commandWidth + cardHalfWidth) - padding;
+            int xPosition = (playerBattler.Storage.val % row + i) * commandWidth + cardHalfWidth;
+            int yPosition = -((playerBattler.Storage.val / row) * commandWidth + cardHalfWidth);
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }
