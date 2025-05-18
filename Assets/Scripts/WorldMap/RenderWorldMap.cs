@@ -11,16 +11,19 @@ public class RenderWorldMap : MonoBehaviour
     [SerializeField] Sprite playerPositionSprite; // プレイヤーの位置を示すスプライト
     [SerializeField] Sprite seaTile; // プレイヤーの位置を示すスプライト
     [SerializeField] Sprite oceanTile; // プレイヤーの位置を示すスプライト
+    [SerializeField] Sprite citySprite; // プレイヤーの位置を示すスプライト
     [SerializeField] WorldMapCameraManager worldMapCameraManager; // カメラ
     private string floorJsonData = "FloorTileMapData";
     private Coordinate playerCoordinate;
     private Tile PlayerTile;
+    private List<Coordinate> cityCoordinateData; // 街の座標リスト
 
     private void Awake()
     {
         worldmap.ClearAllTiles();
         PlayerTile = ScriptableObject.CreateInstance<Tile>();
         PlayerTile.sprite = playerPositionSprite;
+        cityCoordinateData = MapDatabase.Instance?.GetMapCoordinateList();
         RenderMap();
     }
 
@@ -62,6 +65,18 @@ public class RenderWorldMap : MonoBehaviour
                 if (tile.sprite)
                 {
                     worldmap.SetTile(new Vector3Int(x, y, 0), tile);
+                }
+                // cityCoordinateDataの座標が一致する時にcityTileを描画
+                if (x == 18 && y == 49)
+                {
+                    Debug.Log("City Coordinate: 18, 49 ----------------------");
+                }
+                if (cityCoordinateData.Contains(new Coordinate(y, x)))
+                {
+                    Debug.Log($"City Coordinate---------: {y}, {x}");
+                    Tile cityTile = ScriptableObject.CreateInstance<Tile>();
+                    cityTile.sprite = citySprite;
+                    worldmap.SetTile(new Vector3Int(x, y, 0), cityTile);
                 }
             }
         }

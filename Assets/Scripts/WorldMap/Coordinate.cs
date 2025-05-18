@@ -16,4 +16,18 @@ public class Coordinate
         this.row = other.row;
         this.col = other.col;
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is Coordinate other)
+        {
+            return this.row == other.row && this.col == other.col;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return row * 31 + col;
+    }
 }

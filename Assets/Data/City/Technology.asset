@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafb253705c9dcc4ca8435b944b26af7, type: 3}
+  m_Name: Technology
+  m_EditorClassIdentifier: 
+  id: 0
+  mapName: "\u30C6\u30AF\u30CE\u30ED\u30B8\u30FC\u30B7\u30C6\u30A3\u30FC"
+  level: 1
+  openTop: 1
+  openLeft: 1
+  openRight: 1
+  openBottom: 1
+  mapTileSet: 0
+  mapHeight: 60
+  mapWidth: 100
+  description: 'A member state of the Callisto Federation.
+
+    It is located in
+    the vast desert of Tori Desert,
+
+    which connects the northern and southern
+    continents.'
+  randomFillPercent: 49
+  coordinateX: 18
+  coordinateY: 50
+  kiosk:
+    _base: {fileID: 11400000, guid: ef0570dc982d8b948be97326152d37df, type: 2}
+  cafeteria:
+    _base: {fileID: 11400000, guid: 5b9f449696e238c4eae2d864ad28a351, type: 2}
+  armsShop:
+    _base: {fileID: 11400000, guid: 580364207d9bd9345831ba006750d4fe, type: 2}
+  laboratory:
+    _base: {fileID: 11400000, guid: ed34c2e7d5d23f24ab2e47936af7c69c, type: 2}
+  hotel:
+    _base: {fileID: 11400000, guid: 3b429cd37c2429440bbb24474997c427, type: 2}
+  enemies:
+  - _base: {fileID: 11400000, guid: f30ad004893b71a43a6d715c0b948bbf, type: 2}
+    level: 1
+    soul: 0
+    AbilityList: []
+    Enchants:
+    - type: 0
+      val: 1
+    - type: 5
+      val: 1
+  items:
+  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
+  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
+  - _base: {fileID: 11400000, guid: 811460af88770c34299fa7f39dba81d2, type: 2}
