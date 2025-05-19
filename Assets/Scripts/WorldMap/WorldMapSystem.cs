@@ -22,10 +22,8 @@ public class WorldMapSystem : MonoBehaviour
     {
         floorData = LoadJsonMapData("FloorTileMapData");
         roadData = LoadJsonMapData("RoadTileMapData");
-
         worldWidth = floorData.data[0].Length; // ワールドマップの幅を取得
         worldHeight = floorData.data.Count; // ワールドマップの高さを取得
-        renderWorldMap.ChangePlayerCoordinate(coordinate); // ワールドマップを描画
     }
 
     private TileMapData LoadJsonMapData(string fileName)

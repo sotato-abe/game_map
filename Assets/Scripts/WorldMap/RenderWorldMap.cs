@@ -68,7 +68,6 @@ public class RenderWorldMap : MonoBehaviour
                 }
                 if (cityCoordinateData.Contains(new Vector2Int(x, y)))
                 {
-                    Debug.Log($"City Coordinate: {x}, {y}");
                     Tile cityTile = ScriptableObject.CreateInstance<Tile>();
                     cityTile.sprite = citySprite;
                     worldmap.SetTile(new Vector3Int(x, y, 0), cityTile);
@@ -95,6 +94,7 @@ public class RenderWorldMap : MonoBehaviour
         // 新しい位置にPlayerTileを置く
         var newPos = new Vector3Int(newCoordinate.x, newCoordinate.y, 1);
         worldmap.SetTile(newPos, PlayerTile);
+        playerCoordinate = newCoordinate;
 
         // カメラを新しい位置に移動
         worldMapCameraManager.TargetPlayer(newPos);

@@ -322,7 +322,6 @@ public class FieldPlayer : MonoBehaviour
 
     void CheckForEncount()
     {
-        Debug.Log("CheckForEncount");
         if (!canEncount) return; // エンカウントフラグが立っていない場合は何もしない
 
         Collider2D hitArea = Physics2D.OverlapCircle(transform.position, 0.2f, areaLayer);

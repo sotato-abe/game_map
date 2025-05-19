@@ -25,7 +25,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] HitTargetPin hitTargetPin;
     [SerializeField] MessagePanel messagePanel;
 
-    DirectionType playerDirection = DirectionType.Top; // キャラクターの方向
+    DirectionType playerDirection = DirectionType.None; // キャラクターの方向
 
     public PlayerBattler playerBattler;
 
@@ -55,8 +55,7 @@ public class FieldSystem : MonoBehaviour
         renderingTileMap(); // タイルマップを描画
         Vector2 centerPotision = new Vector2(fieldData.mapWidth * tileSize / 2, fieldData.mapHeight * tileSize / 2);
         SetUpFieldPlayerMapSize();
-
-        fieldPlayer.gameObject.transform.position = centerPotision;
+        ResetCharacterPosition();
     }
 
     private void SetUpField()
@@ -139,23 +138,34 @@ public class FieldSystem : MonoBehaviour
     {
         messagePanel.AddMessage(MessageIconType.Field, $"フィールドを移動した!!");
         ClearMap(); // マップクリア
-
-        DirectionType entryDirection = outDirection.GetOppositeDirection();
-        playerDirection = entryDirection;
+        playerDirection = outDirection.GetOppositeDirection();
 
         // 移動処理
-        Vector2Int coord = new Vector2Int(playerBattler.coordinate.x, playerBattler.coordinate.y); // プレイヤーの座標を取得
-        switch (entryDirection)
+        Vector2Int coord = playerBattler.coordinate; // プレイヤーの座標を取得
+
+        switch (playerDirection)
         {
-            case DirectionType.Top: coord.x--; break;
-            case DirectionType.Bottom: coord.x++; break;
-            case DirectionType.Left: coord.y++; break;
-            case DirectionType.Right: coord.y--; break;
+            case DirectionType.Top:
+                coord.y--;
+                fieldData.openTop = true;
+                break;
+            case DirectionType.Bottom:
+                coord.y++;
+                fieldData.openBottom = true;
+                break;
+            case DirectionType.Left:
+                coord.x++;
+                fieldData.openLeft = true;
+                break;
+            case DirectionType.Right:
+                coord.x--;
+                fieldData.openRight = true;
+                break;
         }
 
         // 範囲補正（ループマップ的に回る）
-        int maxRow = worldMapSystem.worldHeight;
-        int maxCol = worldMapSystem.worldWidth;
+        int maxCol = worldMapSystem.worldHeight;
+        int maxRow = worldMapSystem.worldWidth;
         coord.x = (coord.x + maxRow) % maxRow;
         coord.y = (coord.y + maxCol) % maxCol;
         playerBattler.coordinate.x = coord.x;
@@ -163,12 +173,6 @@ public class FieldSystem : MonoBehaviour
 
         // フィールドデータ取得＆Canvasサイズ変更
         SetUpField();
-
-        // 出入り口方向設定
-        fieldData.openTop = entryDirection == DirectionType.Top;
-        fieldData.openBottom = entryDirection == DirectionType.Bottom;
-        fieldData.openLeft = entryDirection == DirectionType.Left;
-        fieldData.openRight = entryDirection == DirectionType.Right;
 
         // 出入り口が1つ以下なら全部開ける
         int openCount = (fieldData.openTop ? 1 : 0) + (fieldData.openBottom ? 1 : 0) + (fieldData.openLeft ? 1 : 0) + (fieldData.openRight ? 1 : 0);
@@ -260,10 +264,24 @@ public class FieldSystem : MonoBehaviour
             case DirectionType.Left:
                 position = new Vector2(fieldMapGenerator.leftEntoryPosition.x + 1, fieldMapGenerator.leftEntoryPosition.y); // 上の出入り口の位置を取得
                 break;
+            case DirectionType.None:
+                position = getRundomFloorPosition();
+                break;
         }
-        int x = (int)position.x;
-        int y = (int)position.y;
-        fieldPlayer.gameObject.transform.position = GetCharacterPositionFromCoordinate(x, y);
+        fieldPlayer.gameObject.transform.position = GetCharacterPositionFromCoordinate((int)position.x, (int)position.y);
+    }
+
+    private Vector2 getRundomFloorPosition()
+    {
+        // フィールドのランダムな位置を取得
+        int x = UnityEngine.Random.Range(0, fieldData.mapWidth);
+        int y = UnityEngine.Random.Range(0, fieldData.mapHeight);
+        while (fieldMapGenerator.Map[x, y] != (int)TileType.Floor)
+        {
+            x = UnityEngine.Random.Range(0, fieldData.mapWidth);
+            y = UnityEngine.Random.Range(0, fieldData.mapHeight);
+        }
+        return new Vector2(x, y);
     }
 
     void SetUpFieldPlayerMapSize()

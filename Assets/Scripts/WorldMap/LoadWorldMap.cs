@@ -55,7 +55,6 @@ public class LoadWorldMap : MonoBehaviour
                 {
                     Tile tile = fieldTileMap.GetTile<Tile>(position);
                     string tileName = tile.sprite.name;
-                    Debug.Log($"TileName : {tileName}");
                     if (tileName == Default.name)
                         tileType = 0;
                     else if (tileName == Desert.name)

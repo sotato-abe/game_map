@@ -221,16 +221,10 @@ public class FieldMapGenerator
     //　フィールドマップに出入り口を追加
     private void createEntry()
     {
-        // 各エントリーポイントの生成処理を共通関数で行う
-        bool topOpen = fieldData.groundDirection.hasDirection(DirectionType.Top) && fieldData.openTop;
-        bool bottomOpen = fieldData.groundDirection.hasDirection(DirectionType.Bottom) && fieldData.openBottom;
-        bool leftOpen = fieldData.groundDirection.hasDirection(DirectionType.Left) && fieldData.openLeft;
-        bool rightOpen = fieldData.groundDirection.hasDirection(DirectionType.Right) && fieldData.openRight;
-
-        topEntoryPosition = TryCreateEntry(topOpen, "top", width, 0, isHorizontal: true);
-        bottomEntoryPosition = TryCreateEntry(bottomOpen, "bottom", width, height - 1, isHorizontal: true);
-        leftEntoryPosition = TryCreateEntry(leftOpen, "left", height, 0, isHorizontal: false);
-        rightEntoryPosition = TryCreateEntry(rightOpen, "right", height, width - 1, isHorizontal: false);
+        topEntoryPosition = TryCreateEntry(fieldData.openTop, "top", width, 0, true);
+        bottomEntoryPosition = TryCreateEntry(fieldData.openBottom, "bottom", width, height - 1, true);
+        leftEntoryPosition = TryCreateEntry(fieldData.openLeft, "left", height, 0, false);
+        rightEntoryPosition = TryCreateEntry(fieldData.openRight, "right", height, width - 1, false);
 
         CreateRouteForEntry();
     }

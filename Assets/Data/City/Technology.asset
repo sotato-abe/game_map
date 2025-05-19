@@ -30,8 +30,7 @@ MonoBehaviour:
     which connects the northern and southern
     continents.'
   randomFillPercent: 49
-  coordinateX: 17
-  coordinateY: 49
+  coordinate: {x: 16, y: 50}
   kiosk:
     _base: {fileID: 11400000, guid: ef0570dc982d8b948be97326152d37df, type: 2}
   cafeteria:
@@ -52,6 +51,7 @@ MonoBehaviour:
       val: 1
     - type: 5
       val: 1
+    coordinate: {x: 0, y: 0}
   items:
   - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
   - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
