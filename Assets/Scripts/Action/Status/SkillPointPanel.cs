@@ -8,7 +8,7 @@ public class SkillPointPanel : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] RectTransform backImageRectTransform;
-    private float padding = 60f;
+    private float padding = 40f;
 
     public void SetPoint(int skillPoint)
     {
