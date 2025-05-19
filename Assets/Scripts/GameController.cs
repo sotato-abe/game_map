@@ -74,6 +74,7 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(false);
         configSystem.SetActive(true);
         fieldPlayer.SetMoveFlg(true);
+        fieldSystem.RemoveEnemy();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 

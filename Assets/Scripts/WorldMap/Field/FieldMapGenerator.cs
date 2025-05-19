@@ -121,27 +121,6 @@ public class FieldMapGenerator
         return groundCount;
     }
 
-    private bool HasCrossGroundCount(int gridX, int gridY, int[,] field)
-    {
-        if (field[gridX + 1, gridY] == (int)TileType.Ground)
-        {
-            return true;
-        }
-        if (field[gridX - 1, gridY] == (int)TileType.Ground)
-        {
-            return true;
-        }
-        if (field[gridX, gridY + 1] == (int)TileType.Ground)
-        {
-            return true;
-        }
-        if (field[gridX, gridY - 1] == (int)TileType.Ground)
-        {
-            return true;
-        }
-        return false;
-    }
-
     // フィールドマップにフロアを追加
     private void margeFloor()
     {

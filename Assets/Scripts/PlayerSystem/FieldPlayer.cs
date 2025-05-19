@@ -30,7 +30,7 @@ public class FieldPlayer : MonoBehaviour
     public float distanceTraveled = 0.0f;
     private float encountCooldown = 1f; // チェック間隔（秒）
     private float lastEncountCheckTime = -Mathf.Infinity;
-    private Vector3 lastPosition;
+    public Vector3 lastPosition;
     Coroutine currentMoveCoroutine;
     public delegate void ChangeFieldDelegate(DirectionType fieldId);
     public delegate void EntoryBuildingDelegate(BuildingType type);
