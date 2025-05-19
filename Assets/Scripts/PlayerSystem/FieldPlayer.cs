@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 // マップ上のプレイヤーの動きを制御する
 // フィールド移動を検知しゲームコントローラーに移動をリクエストする
-public class FieldPlayer : MonoBehaviour
+public class FieldPlayer : FieldCharacter
 {
-    Animator animator;
+    Animator playerAnimator;
     [SerializeField] LayerMask blockLayer;
     [SerializeField] LayerMask objectLayer;
     [SerializeField] LayerMask buildingLayer;
@@ -37,10 +37,16 @@ public class FieldPlayer : MonoBehaviour
     public event ChangeFieldDelegate ChangeField;
     public event EntoryBuildingDelegate EntryBuilding;
 
-    private void Awake()
+    protected override void Awake()
     {
-        animator = GetComponent<Animator>();
+        base.Awake();
+        playerAnimator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
         lastPosition = transform.position;
+        Debug.Log($"FieldPlayer Awake : {lastPosition}");
     }
 
     // フィールド上のキャラクターのモーションを制御
@@ -77,8 +83,8 @@ public class FieldPlayer : MonoBehaviour
                         // キャラクターを反転させる
                         transform.localScale = new Vector3(-Mathf.Abs(currentScale.x), currentScale.y, currentScale.z);
                     }
-                    animator.SetFloat("inputX", x);
-                    animator.SetFloat("inputY", y);
+                    playerAnimator.SetFloat("inputX", x);
+                    playerAnimator.SetFloat("inputY", y);
                     Vector3 targetPosition = transform.position + (new Vector3(x, y, 0));
 
                     DirectionType entryDirection = IsEntry(targetPosition);
@@ -91,11 +97,11 @@ public class FieldPlayer : MonoBehaviour
                     {
                         StartCoroutine(Move(targetPosition));
                     }
-                    animator.SetBool("isMoving", true);
+                    playerAnimator.SetBool("isMoving", true);
                 }
                 else
                 {
-                    animator.SetBool("isMoving", false);
+                    playerAnimator.SetBool("isMoving", false);
                 }
             }
 
@@ -248,9 +254,9 @@ public class FieldPlayer : MonoBehaviour
             Vector3 dir = (targetPos - currentPos).normalized;
 
             // アニメーターの向き設定
-            animator.SetFloat("inputX", dir.x);
-            animator.SetFloat("inputY", dir.y);
-            animator.SetBool("isMoving", true);
+            playerAnimator.SetFloat("inputX", dir.x);
+            playerAnimator.SetFloat("inputY", dir.y);
+            playerAnimator.SetBool("isMoving", true);
 
             // 左右反転（横移動のときだけでOK）
             if (dir.x != 0)
@@ -286,7 +292,7 @@ public class FieldPlayer : MonoBehaviour
             yield return null;
         }
 
-        animator.SetBool("isMoving", false);
+        playerAnimator.SetBool("isMoving", false);
         isMoving = false;
     }
 
@@ -379,7 +385,7 @@ public class FieldPlayer : MonoBehaviour
             StopCoroutine(currentMoveCoroutine);
             currentMoveCoroutine = null;
             isMoving = false;
-            animator.SetBool("isMoving", false);
+            playerAnimator.SetBool("isMoving", false);
         }
     }
 

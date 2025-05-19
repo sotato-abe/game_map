@@ -6,19 +6,16 @@ using UnityEngine.Events;
 // FieldCharacter の基本的な動きを定義するクラス
 public class FieldCharacter : MonoBehaviour
 {
-    Animator animator;
+    [SerializeField] public Animator animator;
+    public Animator Animator => animator;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        animator = GetComponent<Animator>();
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
     }
 
-    private void OnEnable()
-    {
-        StartCoroutine(JumpMotion());
-    }
-
-    private IEnumerator JumpMotion()
+    public IEnumerator JumpMotion()
     {
         float bounceHeight = 1.5f;
         float damping = 0.7f;
