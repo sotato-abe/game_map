@@ -41,13 +41,7 @@ public class FieldData
         {
             enemies.AddRange(mapBase.Enemies);
         }
-        var database = FieldBattlerDatabase.Instance;
-        if (database == null)
-        {
-            Debug.LogError("FieldData.SetEnemy: FieldBattlerDatabase.Instance が null です");
-            return;
-        }
-        List<Battler> fieldEnemies = database.GetData((FieldType)fieldType)?.battlerList;
+        List<Battler> fieldEnemies = FieldBaseDatabase.Instance.GetBattlerList((FieldType)fieldType);
         enemies.AddRange(fieldEnemies);
     }
 

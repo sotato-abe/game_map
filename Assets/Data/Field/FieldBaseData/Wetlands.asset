@@ -9,13 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7daef3c39fe75f34c9e8086691526be4, type: 3}
-  m_Name: Sea
+  m_Script: {fileID: 11500000, guid: 6f1c97a1e71c4b048afcdacead4b9c17, type: 3}
+  m_Name: Wetlands
   m_EditorClassIdentifier: 
-  fieldType: 9
+  fieldType: 4
   battlerList:
-  - _base: {fileID: 11400000, guid: 91bc0cf004b1f834cb3b23127d2f5354, type: 2}
+  - _base: {fileID: 11400000, guid: e521e1d1fde4d094ba9634c8574ffdbb, type: 2}
     level: 0
     soul: 0
     AbilityList: []
     Enchants: []
+    coordinate: {x: 0, y: 0}
+  itemList: []
+  tileList: {fileID: 11400000, guid: a9e11bccb4dec4d4db59f4d577daaaf8, type: 2}

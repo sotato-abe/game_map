@@ -9,13 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7daef3c39fe75f34c9e8086691526be4, type: 3}
-  m_Name: Ocean
+  m_Script: {fileID: 11500000, guid: 6f1c97a1e71c4b048afcdacead4b9c17, type: 3}
+  m_Name: Default
   m_EditorClassIdentifier: 
-  fieldType: 10
+  fieldType: 0
   battlerList:
-  - _base: {fileID: 11400000, guid: afb95766c8c50324f8b8b130c64665e4, type: 2}
+  - _base: {fileID: 11400000, guid: 15e79c113273c954fae697997e034433, type: 2}
     level: 0
     soul: 0
     AbilityList: []
     Enchants: []
+    coordinate: {x: 0, y: 0}
+  itemList: []
+  tileList: {fileID: 11400000, guid: f4c345e76f4cb5247aba1fac062dbe75, type: 2}

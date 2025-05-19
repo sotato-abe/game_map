@@ -17,7 +17,6 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] GameObject entryPrefab, buildingPrefab, objectItemPrefab; // タイルのプレファブ
     [SerializeField] GameObject kioskPrefab, cafeteriaPrefab, armsShopPrefab, laboratoryPrefab, hotelPrefab; // 建物のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
-    [SerializeField] List<FieldTileListBase> FieldTileLists;
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
@@ -25,9 +24,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] MessagePanel messagePanel;
 
     DirectionType playerDirection = DirectionType.None; // キャラクターの方向
-
     public PlayerBattler playerBattler;
-
     float tileSize; // プレファブのサイズ
     FieldTileListBase tileSet;
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
@@ -190,7 +187,7 @@ public class FieldSystem : MonoBehaviour
     // フィールド用のタイルを描画
     void renderingTileMap()
     {
-        tileSet = FieldTileLists[(int)fieldData.fieldType];
+        tileSet = FieldBaseDatabase.Instance.GetTileList(fieldData.fieldType);
         tileSize = tileSet.Floor.bounds.size.x; // タイルサイズを取得
 
         for (int x = 0; x < fieldData.mapWidth; x++)
