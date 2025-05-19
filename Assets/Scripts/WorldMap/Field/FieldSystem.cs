@@ -1,5 +1,4 @@
 using System.Collections;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -114,7 +113,8 @@ public class FieldSystem : MonoBehaviour
     public void GetItem()
     {
         Item item = fieldData.GetRandomItem(); // ランダムなアイテムを取得
-        if (item == null)
+        int getProbability = 20;
+        if (item == null || Random.Range(0, 100) < getProbability)
         {
             messagePanel.AddMessage(MessageIconType.Item, $"ボックスは空だった!!");
         }
@@ -122,14 +122,13 @@ public class FieldSystem : MonoBehaviour
         {
             messagePanel.AddMessage(MessageIconType.Item, $"{item.Base.Name} ゲット!!");
             playerBattler.AddItem(item); // プレイヤーのインベントリに追加
-            fieldData.items.Remove(item); // フィールドデータからアイテムを削除
-                                          // マップからアイテムのアイコンを削除
-            Vector3 pos = fieldPlayer.transform.position;
-            Collider2D hit = Physics2D.OverlapCircle(pos, 0.3f, LayerMask.GetMask("Object")); // 近くのObjectレイヤー探す
-            if (hit != null)
-            {
-                Destroy(hit.gameObject); // ヒットしたオブジェクトを削除
-            }
+            fieldData.items.Remove(item); // フィールドからアイテムを削除
+        }
+        Vector3 pos = fieldPlayer.transform.position;
+        Collider2D hit = Physics2D.OverlapCircle(pos, 0.3f, LayerMask.GetMask("Object")); // 近くのObjectレイヤー探す
+        if (hit != null)
+        {
+            Destroy(hit.gameObject); // ヒットしたオブジェクトを削除
         }
         fieldPlayer.SetMoveFlg(true);
     }
