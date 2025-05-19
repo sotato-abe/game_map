@@ -46,7 +46,6 @@ public class FieldPlayer : FieldCharacter
     private void Start()
     {
         lastPosition = transform.position;
-        Debug.Log($"FieldPlayer Awake : {lastPosition}");
     }
 
     // フィールド上のキャラクターのモーションを制御

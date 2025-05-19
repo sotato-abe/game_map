@@ -80,8 +80,6 @@ public class FieldSystem : MonoBehaviour
     public void appearanceEnemy()
     {
         Vector3 targetPos = GetRundomArroundFloorPosition();
-        // 敵を生成
-        Debug.Log($"敵を生成: {targetPos}");
         FieldEnemy enemy = Instantiate(fieldEnemy, targetPos, Quaternion.identity, fieldCanvas.transform);
         fieldEnemies.Add(enemy); // 生成した敵をリストに追加
     }
