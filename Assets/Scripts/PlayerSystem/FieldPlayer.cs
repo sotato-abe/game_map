@@ -171,7 +171,7 @@ public class FieldPlayer : MonoBehaviour
         }
     }
 
-    List<Vector2Int> FindPath(Vector2Int start, Vector2Int target)
+    private List<Vector2Int> FindPath(Vector2Int start, Vector2Int target)
     {
         var openList = new List<Node>();
         var closedList = new HashSet<Vector2Int>();

@@ -12,7 +12,6 @@ public class WorldMapSystem : MonoBehaviour
     TileMapData spotData;
 
     [SerializeField] RenderWorldMap renderWorldMap;
-    [SerializeField] List<MapBase> mapBaseList; // 地面と壁のプレファブ 
 
     public FieldData fieldData; // フィールドデータ
     private Coordinate coordinate; // 座標
@@ -78,7 +77,7 @@ public class WorldMapSystem : MonoBehaviour
     private void FindSpot()
     {
         // Findを使用して一致するMapBaseを探す
-        MapBase mapBase = mapBaseList.Find(m => m != null && m.Coordinate != null && m.Coordinate.col == coordinate.col && m.Coordinate.row == coordinate.row);
+        MapBase mapBase = MapDatabase.Instance?.GetData(coordinate); // フィールドデータを取得
 
         // mapBaseが見つかった場合
         if (mapBase != null)
