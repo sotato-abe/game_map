@@ -41,7 +41,7 @@ public class Battler
     public List<Item> BagItemList { get; set; }
     public List<Equipment> BagEquipmentList { get; set; }
     public List<Enchant> Enchants = new List<Enchant>();
-    public Coordinate coordinate;
+    public Vector2Int coordinate;
 
     public List<Status> StatusList => new List<Status>
     {

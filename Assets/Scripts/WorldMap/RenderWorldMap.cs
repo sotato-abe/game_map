@@ -14,9 +14,9 @@ public class RenderWorldMap : MonoBehaviour
     [SerializeField] Sprite citySprite; // プレイヤーの位置を示すスプライト
     [SerializeField] WorldMapCameraManager worldMapCameraManager; // カメラ
     private string floorJsonData = "FloorTileMapData";
-    private Coordinate playerCoordinate;
+    private Vector2Int playerCoordinate;
     private Tile PlayerTile;
-    private List<Coordinate> cityCoordinateData; // 街の座標リスト
+    private List<Vector2Int> cityCoordinateData; // 街の座標リスト
 
     private void Awake()
     {
@@ -66,8 +66,9 @@ public class RenderWorldMap : MonoBehaviour
                 {
                     worldmap.SetTile(new Vector3Int(x, y, 0), tile);
                 }
-                if (cityCoordinateData.Contains(new Coordinate(y, x)))
+                if (cityCoordinateData.Contains(new Vector2Int(x, y)))
                 {
+                    Debug.Log($"City Coordinate: {x}, {y}");
                     Tile cityTile = ScriptableObject.CreateInstance<Tile>();
                     cityTile.sprite = citySprite;
                     worldmap.SetTile(new Vector3Int(x, y, 0), cityTile);
@@ -76,7 +77,7 @@ public class RenderWorldMap : MonoBehaviour
         }
     }
 
-    public void ChangePlayerCoordinate(Coordinate newCoordinate)
+    public void ChangePlayerCoordinate(Vector2Int newCoordinate)
     {
         if (newCoordinate == null)
         {
@@ -84,7 +85,7 @@ public class RenderWorldMap : MonoBehaviour
         }
         else if (playerCoordinate != null)
         {
-            var oldPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
+            var oldPos = new Vector3Int(playerCoordinate.x, playerCoordinate.y, 1);
             var currentTile = worldmap.GetTile(oldPos);
             if (currentTile == PlayerTile)
             {
@@ -92,8 +93,7 @@ public class RenderWorldMap : MonoBehaviour
             }
         }
         // 新しい位置にPlayerTileを置く
-        playerCoordinate = new Coordinate(newCoordinate);
-        var newPos = new Vector3Int(playerCoordinate.col, playerCoordinate.row, 1);
+        var newPos = new Vector3Int(newCoordinate.x, newCoordinate.y, 1);
         worldmap.SetTile(newPos, PlayerTile);
 
         // カメラを新しい位置に移動

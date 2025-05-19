@@ -17,8 +17,7 @@ public class MapBase : ScriptableObject
     [SerializeField] int mapWidth;
     [SerializeField, TextArea] string description;
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
-    [SerializeField] int coordinateX;
-    [SerializeField] int coordinateY;
+    [SerializeField] Vector2Int coordinate;
     [SerializeField] Kiosk kiosk;
     [SerializeField] Cafeteria cafeteria;
     [SerializeField] ArmsShop armsShop;
@@ -30,21 +29,16 @@ public class MapBase : ScriptableObject
     public int Id { get => id; }
     public string Name { get => mapName; }
     public int Level { get => level; }
-    public bool OpenTop { get => openTop; }
-    public bool OpenLeft { get => openLeft; }
-    public bool OpenRight { get => openRight; }
-    public bool OpenBottom { get => openBottom; }
+    public bool OpenTop { get => openTop; } // TODO いらないかも
+    public bool OpenLeft { get => openLeft; } // TODO いらないかも
+    public bool OpenRight { get => openRight; } // TODO いらないかも
+    public bool OpenBottom { get => openBottom; } // TODO いらないかも
     public FieldType FieldType { get => fieldType; }
     public int MapHeight { get => mapHeight; }
     public int MapWidth { get => mapWidth; }
     public string Description { get => description; }
     public int RandomFillPercent { get => randomFillPercent; }
-
-    public Coordinate Coordinate
-    {
-        get => new Coordinate(coordinateY, coordinateX); // 引数の順番注意！
-    }
-
+    public Vector2Int Coordinate { get => coordinate; }
     public Kiosk Kiosk { get => kiosk; }
     public Cafeteria Cafeteria { get => cafeteria; }
     public ArmsShop ArmsShop { get => armsShop; }

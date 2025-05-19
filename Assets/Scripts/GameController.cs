@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
-    public Coordinate playerCoordinate;
+    public Vector2Int playerCoordinate;
 
     Battler enemy;
 

@@ -144,7 +144,7 @@ public class FieldSystem : MonoBehaviour
         playerDirection = entryDirection;
 
         // 移動処理
-        Vector2Int coord = new Vector2Int(playerBattler.coordinate.row, playerBattler.coordinate.col); // プレイヤーの座標を取得
+        Vector2Int coord = new Vector2Int(playerBattler.coordinate.x, playerBattler.coordinate.y); // プレイヤーの座標を取得
         switch (entryDirection)
         {
             case DirectionType.Top: coord.x--; break;
@@ -158,8 +158,8 @@ public class FieldSystem : MonoBehaviour
         int maxCol = worldMapSystem.worldWidth;
         coord.x = (coord.x + maxRow) % maxRow;
         coord.y = (coord.y + maxCol) % maxCol;
-        playerBattler.coordinate.row = coord.x;
-        playerBattler.coordinate.col = coord.y; // プレイヤーの座標を更新
+        playerBattler.coordinate.x = coord.x;
+        playerBattler.coordinate.y = coord.y; // プレイヤーの座標を更新
 
         // フィールドデータ取得＆Canvasサイズ変更
         SetUpField();

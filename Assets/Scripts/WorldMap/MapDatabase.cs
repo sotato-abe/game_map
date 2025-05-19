@@ -11,7 +11,7 @@ public class MapDatabase : MonoBehaviour
 
     public List<MapBase> mapDataList;
 
-    private Dictionary<Coordinate, MapBase> coordinateDict;
+    private Dictionary<Vector2Int, MapBase> coordinateDict;
 
 
     private void Awake()
@@ -28,7 +28,7 @@ public class MapDatabase : MonoBehaviour
 
     private void Initialize()
     {
-        coordinateDict = new Dictionary<Coordinate, MapBase>();
+        coordinateDict = new Dictionary<Vector2Int, MapBase>();
 
         foreach (var data in mapDataList)
         {
@@ -48,7 +48,7 @@ public class MapDatabase : MonoBehaviour
         }
     }
 
-    public MapBase GetData(Coordinate coordinate)
+    public MapBase GetData(Vector2Int coordinate)
     {
         if (coordinateDict != null && coordinateDict.TryGetValue(coordinate, out var data))
         {
@@ -58,9 +58,9 @@ public class MapDatabase : MonoBehaviour
         return null;
     }
 
-    public List<Coordinate> GetMapCoordinateList()
+    public List<Vector2Int> GetMapCoordinateList()
     {
-        List<Coordinate> coordinateList = new List<Coordinate>();
+        List<Vector2Int> coordinateList = new List<Vector2Int>();
 
         foreach (var data in mapDataList)
         {

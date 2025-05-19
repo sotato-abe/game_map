@@ -41,7 +41,7 @@ public class FieldMapGenerator
         }
         else
         {
-            seed = fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString(); // マップの座標からシードを生成
+            seed = fieldData.coordinate.y.ToString() + fieldData.coordinate.x.ToString(); // マップの座標からシードを生成
         }
         System.Random pseudoRandomMap = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
         System.Random pseudoRandomFloor = new System.Random(seed.GetHashCode() - 1); // シード値に基づいた擬似乱数生成器を作成
@@ -159,7 +159,7 @@ public class FieldMapGenerator
     private void createBuilding()
     {
 
-        seed = fieldData.coordinate.col.ToString() + fieldData.coordinate.row.ToString(); // マップの座標からシードを生成
+        seed = fieldData.coordinate.y.ToString() + fieldData.coordinate.x.ToString(); // マップの座標からシードを生成
 
         // TODO buildingのアイコンがない場合タイプによってアイコンを使用
         if (fieldData.kiosk != null)

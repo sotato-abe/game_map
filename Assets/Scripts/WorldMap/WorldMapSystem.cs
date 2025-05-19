@@ -9,12 +9,11 @@ public class WorldMapSystem : MonoBehaviour
 {
     TileMapData floorData;
     TileMapData roadData;
-    TileMapData spotData;
 
     [SerializeField] RenderWorldMap renderWorldMap;
 
     public FieldData fieldData; // フィールドデータ
-    private Coordinate coordinate; // 座標
+    private Vector2Int coordinate; // 座標
     public int worldWidth; // ワールドマップの幅
     public int worldHeight; // ワールドマップの高さ
     private bool isWorldMapShow = false; // ワールドマップの高さ
@@ -23,7 +22,6 @@ public class WorldMapSystem : MonoBehaviour
     {
         floorData = LoadJsonMapData("FloorTileMapData");
         roadData = LoadJsonMapData("RoadTileMapData");
-        spotData = LoadJsonMapData("SpotTileMapData");
 
         worldWidth = floorData.data[0].Length; // ワールドマップの幅を取得
         worldHeight = floorData.data.Count; // ワールドマップの高さを取得
@@ -54,41 +52,31 @@ public class WorldMapSystem : MonoBehaviour
     }
 
     // 指定座標からのフィールドデータを取得する
-    public FieldData getFieldDataByCoordinate(Coordinate targetCoordinate)
+    public FieldData getFieldDataByCoordinate(Vector2Int targetCoordinate)
     {
         coordinate = targetCoordinate; // 座標を取得
 
         fieldData = new FieldData(); // フィールドデータを初期化
         fieldData.coordinate = targetCoordinate; // フィールドデータに座標を設定
-
-        FindSpot(); // フィールドデータにスポットを設定
-        if (fieldData.mapBase == null)
-        {
-            SetMapTileSet(); // フィールドデータにタイルセットを設定
-            SetRoadEntry(); // フィールドデータに出入り口を設定
-        }
-        SeachAroundGround();
-
-        renderWorldMap.ChangePlayerCoordinate(coordinate); // ワールドマップのPlayer位置を更新
-
-        return fieldData;
-    }
-
-    private void FindSpot()
-    {
-        // Findを使用して一致するMapBaseを探す
+        fieldData.fieldType = (FieldType)floorData.data[targetCoordinate.y][targetCoordinate.x]; // フィールドデータにタイルセットを設定
+        fieldData.groundDirection = SeachAroundGround();
         MapBase mapBase = MapDatabase.Instance?.GetData(coordinate); // フィールドデータを取得
 
         // mapBaseが見つかった場合
         if (mapBase != null)
         {
             fieldData.mapBase = mapBase;
+            fieldData.fieldType = fieldData.mapBase.FieldType;
         }
         else
         {
-            // Debug.LogWarning($"該当する MapBase が見つかりませんでした。座標: row={coordinate.row}, col={coordinate.col}");
+            // Debug.LogWarning($"該当する MapBase が見つかりませんでした。座標: row={coordinate.y}, col={coordinate.x}");
             fieldData.mapBase = null; // フィールドデータにnullを設定
         }
+        SetRoadEntry(); // フィールドデータに出入り口を設定
+        renderWorldMap.ChangePlayerCoordinate(coordinate); // TODO : 処理の呼び出し元を変更 ワールドマップのPlayer位置を更新
+
+        return fieldData;
     }
 
     private void SetMapTileSet()
@@ -100,45 +88,32 @@ public class WorldMapSystem : MonoBehaviour
         }
         else
         {
-            newFieldType = (FieldType)floorData.data[coordinate.row][coordinate.col];
+            newFieldType = (FieldType)floorData.data[coordinate.y][coordinate.x];
         }
         fieldData.fieldType = newFieldType; // マップのタイルセットを取得
     }
 
     private void SetRoadEntry()
     {
-        DirectionType roadType = (DirectionType)roadData.data[coordinate.row][coordinate.col];
-        if (roadType == DirectionType.Top || roadType == DirectionType.TopLeft || roadType == DirectionType.TopRight || roadType == DirectionType.TopBottom || roadType == DirectionType.TopRightBottom || roadType == DirectionType.TopRightLeft || roadType == DirectionType.Cross)
-        {
-            fieldData.openTop = true; // 上の出入り口
-        }
-        else if (roadType == DirectionType.Left || roadType == DirectionType.TopLeft || roadType == DirectionType.RightLeft || roadType == DirectionType.BottomLeft || roadType == DirectionType.TopBottomLeft || roadType == DirectionType.Cross)
-        {
-            fieldData.openLeft = true; // 左の出入り口m
-        }
-        else if (roadType == DirectionType.Right || roadType == DirectionType.RightBottom || roadType == DirectionType.RightLeft || roadType == DirectionType.TopRight || roadType == DirectionType.TopRightLeft || roadType == DirectionType.Cross)
-        {
-            fieldData.openRight = true; // 右の出入り口
-        }
-        else if (roadType == DirectionType.Bottom || roadType == DirectionType.BottomLeft || roadType == DirectionType.RightBottom || roadType == DirectionType.TopBottom || roadType == DirectionType.TopRightBottom || roadType == DirectionType.Cross)
-        {
-            fieldData.openBottom = true; // 下の出入り口
-        }
+        DirectionType roadType = (DirectionType)roadData.data[coordinate.y][coordinate.x];
+        fieldData.openTop = roadType.IsContainCrossDirection(DirectionType.Top); // 上の出入り口
+        fieldData.openLeft = roadType.IsContainCrossDirection(DirectionType.Left); // 左の出入り口
+        fieldData.openRight = roadType.IsContainCrossDirection(DirectionType.Right); // 右の出入り口
+        fieldData.openBottom = roadType.IsContainCrossDirection(DirectionType.Bottom); // 下の出入り口
     }
-
 
     // 周囲のGroundを取得する
-    private void SeachAroundGround()
+    private DirectionType SeachAroundGround()
     {
-        bool isTopGround = isLand(coordinate.row + 1, coordinate.col);
-        bool isBottomGround = isLand(coordinate.row - 1, coordinate.col);
-        bool isLeftGround = isLand(coordinate.row, coordinate.col - 1);
-        bool isRightGround = isLand(coordinate.row, coordinate.col + 1);
+        bool isTopGround = isLand(coordinate.x + 1, coordinate.y);
+        bool isBottomGround = isLand(coordinate.x - 1, coordinate.y);
+        bool isLeftGround = isLand(coordinate.x, coordinate.y - 1);
+        bool isRightGround = isLand(coordinate.x, coordinate.y + 1);
 
-        fieldData.groundDirection = DirectionTypeExtensions.DirectionMarge(isTopGround, isBottomGround, isRightGround, isLeftGround);
+        return DirectionTypeExtensions.DirectionMarge(isTopGround, isBottomGround, isRightGround, isLeftGround);
     }
 
-    private bool isLand(int row, int col)
+    private bool isLand(int col, int row)
     {
         // 指定座標が海かどうかを確認
         if (floorData.data[row][col] == (int)FieldType.Sea)

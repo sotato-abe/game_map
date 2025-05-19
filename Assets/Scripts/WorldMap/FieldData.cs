@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FieldData
 {
-    public Coordinate coordinate; // 座標
+    public Vector2Int coordinate; // 座標
     public MapBase mapBase = null; // マップデータ
     public DirectionType groundDirection = DirectionType.None; // 進行方向
     public int mapWidth { get => mapBase != null ? mapBase.MapWidth : 50; } // マップの幅(初期値：50)

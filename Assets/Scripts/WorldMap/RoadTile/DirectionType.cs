@@ -70,4 +70,37 @@ public static class DirectionTypeExtensions
     {
         return (self & target) == target;
     }
+
+    public static bool IsContainCrossDirection(this DirectionType self, DirectionType target)
+    {
+        if (target == DirectionType.Top)
+        {
+            if (self == DirectionType.Top || self == DirectionType.TopLeft || self == DirectionType.TopRight || self == DirectionType.TopBottom || self == DirectionType.TopRightBottom || self == DirectionType.TopRightLeft || self == DirectionType.Cross)
+            {
+                return true;
+            }
+        }
+        else if (target == DirectionType.Right)
+        {
+            if (self == DirectionType.Left || self == DirectionType.TopLeft || self == DirectionType.RightLeft || self == DirectionType.BottomLeft || self == DirectionType.TopBottomLeft || self == DirectionType.Cross)
+            {
+                return true;
+            }
+        }
+        else if (target == DirectionType.Bottom)
+        {
+            if (self == DirectionType.Right || self == DirectionType.RightBottom || self == DirectionType.RightLeft || self == DirectionType.TopRight || self == DirectionType.TopRightLeft || self == DirectionType.Cross)
+            {
+                return true;
+            }
+        }
+        else if (target == DirectionType.Left)
+        {
+            if (self == DirectionType.Bottom || self == DirectionType.BottomLeft || self == DirectionType.RightBottom || self == DirectionType.TopBottom || self == DirectionType.TopRightBottom || self == DirectionType.Cross)
+            {
+                return true;
+            }
+        }
+        return false; // どの条件にも一致しない場合
+    }
 }
