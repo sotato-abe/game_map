@@ -27,17 +27,14 @@ public class PlayerBattler : Battler
     public void AcquisitionExp(int exp)
     {
         Exp += exp;
-        if (Exp >= 100)
-        {
-            LevelUp();
-        }
-    }
 
-    public void LevelUp()
-    {
-        Exp -= 100;
-        Level++;
-        SkillPoint++;
+        int level = Exp / 100;
+        if (level > 0)
+        {
+            Exp -= level * 100;
+            Level += level;
+            SkillPoint += level;
+        }
     }
 
     public void EnegyUp(EnegyType type)
