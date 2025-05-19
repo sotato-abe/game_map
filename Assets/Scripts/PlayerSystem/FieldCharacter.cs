@@ -49,6 +49,6 @@ public class FieldCharacter : MonoBehaviour
         }
 
         transform.position = new Vector3(transform.position.x, groundY, transform.position.z);  // 最後に位置を調整
-        animator.SetBool("isMoving", true);
+        // animator.SetBool("isMoving", true);
     }
 }
