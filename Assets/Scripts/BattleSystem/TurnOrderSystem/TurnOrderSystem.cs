@@ -26,7 +26,7 @@ public class TurnOrderSystem : MonoBehaviour
         turnBattlerList.Clear();
 
         // バトラー情報を保存
-        battlers = new List<Battler>(newBattlers);
+        battlers = newBattlers;
         turnBar.gameObject.SetActive(true);
         // 生成を開始
         GenerateTurnBattler();
