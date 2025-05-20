@@ -18,9 +18,9 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] GameObject kioskPrefab, cafeteriaPrefab, armsShopPrefab, laboratoryPrefab, hotelPrefab; // 建物のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
-    [SerializeField] FieldEnemy fieldEnemy; //キャラクター
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
+    [SerializeField] FieldCharacterSystem fieldCharacterSystem; // フィールドプレイヤーマップサイズ
     [SerializeField] HitTargetPin hitTargetPin;
     [SerializeField] MessagePanel messagePanel;
 
@@ -29,7 +29,6 @@ public class FieldSystem : MonoBehaviour
     float tileSize; // プレファブのサイズ
     FieldTileListBase tileSet;
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
-    List<FieldEnemy> fieldEnemies = new List<FieldEnemy>(); // フィールドの敵リスト
 
     private FieldData fieldData;
     private BuildingBase currentBuildingBase;
@@ -73,25 +72,13 @@ public class FieldSystem : MonoBehaviour
 
     public void Encount()
     {
-        appearanceEnemy();
+        fieldCharacterSystem.appearanceEnemy();
         OnEncount?.Invoke();
-    }
-
-    public void appearanceEnemy()
-    {
-        Vector3 targetPos = GetRundomArroundFloorPosition();
-        FieldEnemy enemy = Instantiate(fieldEnemy, targetPos, Quaternion.identity, fieldCanvas.transform);
-        fieldEnemies.Add(enemy); // 生成した敵をリストに追加
     }
 
     public void RemoveEnemy()
     {
-        // 敵を削除
-        foreach (FieldEnemy enemy in fieldEnemies)
-        {
-            Destroy(enemy.gameObject); // 敵を削除
-        }
-        fieldEnemies.Clear(); // リストをクリア
+        fieldCharacterSystem.RemoveEnemy(); // 敵を削除
     }
 
     public void EntryBuilding(BuildingType type)
@@ -298,27 +285,6 @@ public class FieldSystem : MonoBehaviour
             y = UnityEngine.Random.Range(0, fieldData.mapHeight);
         }
         return new Vector2(x, y);
-    }
-
-    // FieldPlayerの周囲のFloorがある位置を取得
-    private Vector3 GetRundomArroundFloorPosition(int range = 1)
-    {
-        // フィールドのランダムな位置を取得
-        Vector3 pos = fieldPlayer.transform.position;
-        // 0 は除外、-range ~ rangeの範囲でランダムな座標を取得
-        int x = 0;
-        int y = 0;
-
-        // (0,0) 以外になるまでランダムに取得
-        while (x == 0 && y == 0)
-        {
-            x = Random.Range(-range, range + 1); // 上限は含まれないので +1
-            y = Random.Range(-range, range + 1);
-        }
-
-        Vector3 targetPos = new Vector3(pos.x + x, pos.y + y, 0); // プレイヤーの位置にランダムなオフセットを加算
-
-        return targetPos;
     }
 
     void SetUpFieldPlayerMapSize()
