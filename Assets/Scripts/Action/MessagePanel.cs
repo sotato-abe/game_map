@@ -13,15 +13,7 @@ public class MessagePanel : MonoBehaviour
 
     private List<Message> messageList = new List<Message>();
 
-    private int messageCount = 10;
-
-    private void Awake()
-    {
-        // foreach (Transform child in transform)
-        // {
-        //     Destroy(child.gameObject);
-        // }
-    }
+    private int messageCount = 7;
 
     public void AddMessage(MessageIconType iconType, string message)
     {
