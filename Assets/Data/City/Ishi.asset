@@ -16,7 +16,7 @@ MonoBehaviour:
   mapName: "\u30A4\u30B7\u306E\u753A"
   level: 1
   openTop: 1
-  openLeft: 1
+  openLeft: 0
   openRight: 1
   openBottom: 1
   fieldType: 1
@@ -24,9 +24,7 @@ MonoBehaviour:
   mapWidth: 100
   description: "\u30AB\u30EA\u30B9\u30C8\u9023\u90A6\u306E\u52A0\u76DF\u56FD\u3002\n\u5E83\u5927\u306A\u30C8\u30EA\u7802\u6F20\u306B\u4F4D\u7F6E\u3059\u308B\u3001\n\u5317\u5927\u9678\u3068\u5357\u5927\u9678\u3092\u7D50\u3076\u5E83\u5927\u306A\u30C8\u30EA\u7802\u6F20\u306B\u4F4D\u7F6E\u3059\u308B\u3002"
   randomFillPercent: 45
-  coordinateX: 16
-  coordinateY: 49
-  coordinate: {x: 16, y: 49}
+  coordinate: {x: 20, y: 49}
   kiosk:
     _base: {fileID: 11400000, guid: ef0570dc982d8b948be97326152d37df, type: 2}
   cafeteria:
@@ -40,14 +38,16 @@ MonoBehaviour:
   enemies:
   - _base: {fileID: 11400000, guid: 68b491635af498f4598f586f90439224, type: 2}
     level: 1
-    soul: -15
+    soul: -18
     AbilityList: []
     Enchants: []
+    coordinate: {x: 0, y: 0}
   - _base: {fileID: 11400000, guid: afb95766c8c50324f8b8b130c64665e4, type: 2}
     level: 2
     soul: -18
     AbilityList: []
     Enchants: []
+    coordinate: {x: 0, y: 0}
   items:
   - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
   - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}

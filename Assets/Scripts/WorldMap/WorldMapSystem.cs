@@ -26,6 +26,7 @@ public class WorldMapSystem : MonoBehaviour
         worldHeight = floorData.data.Count; // ワールドマップの高さを取得
     }
 
+    /// Jsonのマップデータを読み込む
     private TileMapData LoadJsonMapData(string fileName)
     {
         string filePath = Path.Combine(Application.persistentDataPath, fileName + ".json");
@@ -49,7 +50,7 @@ public class WorldMapSystem : MonoBehaviour
         }
     }
 
-    // 指定座標からのフィールドデータを取得する
+    // 指定座標からフィールドデータを返却する
     public FieldData getFieldDataByCoordinate(Vector2Int targetCoordinate)
     {
         coordinate = targetCoordinate; // 座標を取得
@@ -57,41 +58,24 @@ public class WorldMapSystem : MonoBehaviour
         fieldData = new FieldData(); // フィールドデータを初期化
         fieldData.coordinate = targetCoordinate; // フィールドデータに座標を設定
         fieldData.fieldType = (FieldType)floorData.data[targetCoordinate.y][targetCoordinate.x]; // フィールドデータにタイルセットを設定
-        fieldData.groundDirection = SeachAroundGround();
-        MapBase mapBase = MapDatabase.Instance?.GetData(coordinate); // フィールドデータを取得
-
-        // mapBaseが見つかった場合
-        if (mapBase != null)
-        {
-            fieldData.mapBase = mapBase;
-            fieldData.fieldType = fieldData.mapBase.FieldType;
-        }
-        else
-        {
-            // Debug.LogWarning($"該当する MapBase が見つかりませんでした。座標: row={coordinate.y}, col={coordinate.x}");
-            fieldData.mapBase = null; // フィールドデータにnullを設定
-        }
-        SetRoadEntry(); // フィールドデータに出入り口を設定
+        MapBase mapBase = MapDatabase.Instance?.GetDataByCoordinate(coordinate); // フィールドデータを取得
+        SetRoadEntryByAroundGround(targetCoordinate); // フィールドデータに出入り口を設定
         renderWorldMap.ChangePlayerCoordinate(coordinate); // TODO : 処理の呼び出し元を変更 ワールドマップのPlayer位置を更新
 
         return fieldData;
     }
 
-    private void SetMapTileSet()
+    // 周囲のGroundを取得して、Groundがある方向に出入り口を設定する
+    private void SetRoadEntryByAroundGround(Vector2Int targetCoordinate)
     {
-        FieldType newFieldType = FieldType.Default; // フィールドタイプを初期化
-        if (fieldData.mapBase != null)
-        {
-            newFieldType = fieldData.mapBase.FieldType;
-        }
-        else
-        {
-            newFieldType = (FieldType)floorData.data[coordinate.y][coordinate.x];
-        }
-        fieldData.fieldType = newFieldType; // マップのタイルセットを取得
+        fieldData.openTop = isLand(targetCoordinate.x + 1, targetCoordinate.y); // 上の出入り口
+        fieldData.openBottom = isLand(targetCoordinate.x - 1, targetCoordinate.y); // 下の出入り口
+        fieldData.openLeft = isLand(targetCoordinate.x, targetCoordinate.y - 1); // 左の出入り口
+        fieldData.openRight = isLand(targetCoordinate.x, targetCoordinate.y + 1); // 右の出入り口
     }
 
-    private void SetRoadEntry()
+    //Roadマップを読み込んで、出入り口を設定（現在未使用中）
+    private void SetRoadEntryByRoadMap()
     {
         DirectionType roadType = (DirectionType)roadData.data[coordinate.y][coordinate.x];
         fieldData.openTop = roadType.IsContainCrossDirection(DirectionType.Top); // 上の出入り口
@@ -100,25 +84,12 @@ public class WorldMapSystem : MonoBehaviour
         fieldData.openBottom = roadType.IsContainCrossDirection(DirectionType.Bottom); // 下の出入り口
     }
 
-    // 周囲のGroundを取得する
-    private DirectionType SeachAroundGround()
+    private bool isLand(int x, int y)
     {
-        bool isTopGround = isLand(coordinate.x + 1, coordinate.y);
-        bool isBottomGround = isLand(coordinate.x - 1, coordinate.y);
-        bool isLeftGround = isLand(coordinate.x, coordinate.y - 1);
-        bool isRightGround = isLand(coordinate.x, coordinate.y + 1);
-
-        return DirectionTypeExtensions.DirectionMarge(isTopGround, isBottomGround, isRightGround, isLeftGround);
-    }
-
-    private bool isLand(int col, int row)
-    {
+        int col = x % worldWidth; // x座標をワールドマップの幅で割った余りを取得
+        int row = y % worldHeight; // y座標をワールドマップの高さで割った余りを取得
         // 指定座標が海かどうかを確認
-        if (floorData.data[row][col] == (int)FieldType.Sea)
-        {
-            return false; // 海の場合はfalseを返す
-        }
-        else if (floorData.data[row][col] == (int)FieldType.Ocean)
+        if (floorData.data[row][col] == (int)FieldType.Ocean)
         {
             return false; // 海の場合はfalseを返す
         }

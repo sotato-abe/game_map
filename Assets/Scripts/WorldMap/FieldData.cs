@@ -6,18 +6,12 @@ public class FieldData
 {
     public Vector2Int coordinate; // 座標
     public MapBase mapBase = null; // マップデータ
-    public DirectionType groundDirection = DirectionType.None; // 進行方向
     public int mapWidth { get => mapBase != null ? mapBase.MapWidth : 50; } // マップの幅(初期値：50)
     public int mapHeight { get => mapBase != null ? mapBase.MapHeight : 50; } // マップの高さ(初期値：50)
     public int randomFillPercent { get => mapBase != null ? mapBase.RandomFillPercent : 45; } // マップの建蔽率(初期値：45%)
     private FieldType _fieldType;
-    private bool _openTop, _openLeft, _openRight, _openBottom;
     public FieldType fieldType { get => mapBase != null ? mapBase.FieldType : _fieldType; set => _fieldType = value; }
-    public bool openTop { get => mapBase != null ? mapBase.OpenTop : _openTop; set => _openTop = value; }
-    public bool openLeft { get => mapBase != null ? mapBase.OpenLeft : _openLeft; set => _openLeft = value; }
-    public bool openRight { get => mapBase != null ? mapBase.OpenRight : _openRight; set => _openRight = value; }
-    public bool openBottom { get => mapBase != null ? mapBase.OpenBottom : _openBottom; set => _openBottom = value; }
-
+    public bool openTop, openLeft, openRight, openBottom;
     public Kiosk kiosk { get => mapBase != null ? mapBase.Kiosk : null; }
     public Cafeteria cafeteria { get => mapBase != null ? mapBase.Cafeteria : null; }
     public ArmsShop armsShop { get => mapBase != null ? mapBase.ArmsShop : null; }

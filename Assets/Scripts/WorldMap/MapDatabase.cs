@@ -48,7 +48,7 @@ public class MapDatabase : MonoBehaviour
         }
     }
 
-    public MapBase GetData(Vector2Int coordinate)
+    public MapBase GetDataByCoordinate(Vector2Int coordinate)
     {
         if (coordinateDict != null && coordinateDict.TryGetValue(coordinate, out var data))
         {

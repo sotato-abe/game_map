@@ -204,7 +204,6 @@ public class FieldMapGenerator
         bottomEntoryPosition = TryCreateEntry(fieldData.openBottom, "bottom", width, height - 1, true);
         leftEntoryPosition = TryCreateEntry(fieldData.openLeft, "left", height, 0, false);
         rightEntoryPosition = TryCreateEntry(fieldData.openRight, "right", height, width - 1, false);
-
         CreateRouteForEntry();
     }
 

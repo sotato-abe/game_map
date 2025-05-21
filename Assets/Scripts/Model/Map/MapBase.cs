@@ -8,10 +8,6 @@ public class MapBase : ScriptableObject
     [SerializeField] int id;
     [SerializeField] string mapName;
     [SerializeField] int level;
-    [SerializeField] bool openTop;
-    [SerializeField] bool openLeft;
-    [SerializeField] bool openRight;
-    [SerializeField] bool openBottom;
     [SerializeField] FieldType fieldType;
     [SerializeField] int mapHeight;
     [SerializeField] int mapWidth;
@@ -29,10 +25,6 @@ public class MapBase : ScriptableObject
     public int Id { get => id; }
     public string Name { get => mapName; }
     public int Level { get => level; }
-    public bool OpenTop { get => openTop; } // TODO いらないかも
-    public bool OpenLeft { get => openLeft; } // TODO いらないかも
-    public bool OpenRight { get => openRight; } // TODO いらないかも
-    public bool OpenBottom { get => openBottom; } // TODO いらないかも
     public FieldType FieldType { get => fieldType; }
     public int MapHeight { get => mapHeight; }
     public int MapWidth { get => mapWidth; }
