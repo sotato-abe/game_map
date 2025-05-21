@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu]
 public class EquipmentBase : ItemBase
 {
-    public override ItemType itemType => ItemType.Equipment;
     [SerializeField] EquipmentType equipmentType;
     [SerializeField] int life;
     [SerializeField] int battery;

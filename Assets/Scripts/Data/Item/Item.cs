@@ -7,14 +7,7 @@ public class Item
 {
     [SerializeField] ItemBase _base;
 
+    public virtual ItemType itemType => ItemType.Consumable;
+
     public ItemBase Base { get => _base; }
-
-    public int Life { get; set; }
-    public int Battery { get; set; }
-
-    public void Init()
-    {
-        Life = Life;
-        Battery = Battery;
-    }
 }
