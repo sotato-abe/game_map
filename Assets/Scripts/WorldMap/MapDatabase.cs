@@ -9,9 +9,9 @@ public class MapDatabase : MonoBehaviour
 {
     public static MapDatabase Instance { get; private set; }
 
-    public List<MapBase> mapDataList;
+    public List<FieldBase> mapDataList;
 
-    private Dictionary<Vector2Int, MapBase> coordinateDict;
+    private Dictionary<Vector2Int, FieldBase> coordinateDict;
 
 
     private void Awake()
@@ -28,13 +28,13 @@ public class MapDatabase : MonoBehaviour
 
     private void Initialize()
     {
-        coordinateDict = new Dictionary<Vector2Int, MapBase>();
+        coordinateDict = new Dictionary<Vector2Int, FieldBase>();
 
         foreach (var data in mapDataList)
         {
             if (data == null)
             {
-                Debug.LogWarning("MapDatabase: Null MapBase found in list.");
+                Debug.LogWarning("MapDatabase: Null FieldBase found in list.");
                 continue;
             }
 
@@ -48,7 +48,7 @@ public class MapDatabase : MonoBehaviour
         }
     }
 
-    public MapBase GetDataByCoordinate(Vector2Int coordinate)
+    public FieldBase GetDataByCoordinate(Vector2Int coordinate)
     {
         if (coordinateDict != null && coordinateDict.TryGetValue(coordinate, out var data))
         {
@@ -66,7 +66,7 @@ public class MapDatabase : MonoBehaviour
         {
             if (data == null)
             {
-                Debug.LogWarning("MapDatabase: Null MapBase found in list.");
+                Debug.LogWarning("MapDatabase: Null FieldBase found in list.");
                 continue;
             }
 

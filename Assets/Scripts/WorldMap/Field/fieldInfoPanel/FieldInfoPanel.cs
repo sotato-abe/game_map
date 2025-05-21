@@ -11,15 +11,15 @@ public class FieldInfoPanel : MonoBehaviour
     [SerializeField] FieldInfoIcon icon;
     private List<string> descriptionList = new List<string>();
 
-    public void Setup(MapBase mapBase)
+    public void Setup(FieldBase fieldBase)
     {
         transform.gameObject.SetActive(true);
         string titleText = "Unknown Field";
         string descriptionText = "Seaching...";
-        if (mapBase != null)
+        if (fieldBase != null)
         {
-            titleText = mapBase.Name;
-            descriptionText = mapBase.Description;
+            titleText = fieldBase.Name;
+            descriptionText = fieldBase.Description;
         }
         StartCoroutine(title.TypeTitle(titleText));
         StartCoroutine(description.TypeDescription(descriptionText));

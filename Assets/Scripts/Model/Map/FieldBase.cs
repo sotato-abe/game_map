@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class MapBase : ScriptableObject
+public class FieldBase : ScriptableObject
 {
     [SerializeField] int id;
     [SerializeField] string mapName;
     [SerializeField] int level;
     [SerializeField] FieldType fieldType;
-    [SerializeField] int mapHeight;
-    [SerializeField] int mapWidth;
+    [SerializeField] int mapHeight = 50;
+    [SerializeField] int mapWidth = 50;
     [SerializeField, TextArea] string description;
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
     [SerializeField] Vector2Int coordinate;
-    [SerializeField] List<Battler> enemies;
     [SerializeField] List<Item> items;
+    [SerializeField] List<Battler> enemies;
     [SerializeField] List<BuildingBase> buildings;
 
     public int Id { get => id; }

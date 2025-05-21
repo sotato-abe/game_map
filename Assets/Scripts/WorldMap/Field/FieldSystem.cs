@@ -339,7 +339,7 @@ public class FieldSystem : MonoBehaviour
     {
         currentBuildingBase = null;
         fieldInfoPanel.gameObject.SetActive(false);
-        // fieldInfoPanel.Setup(fieldData.mapBase);
+        // fieldInfoPanel.Setup(fieldData.fieldBase);
     }
 
     public Battler GetEnemy()

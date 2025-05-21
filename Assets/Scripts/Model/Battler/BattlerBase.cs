@@ -8,7 +8,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
     [SerializeField, TextArea] string description;
-    [SerializeField] MapBase birthplace;
+    [SerializeField] FieldBase birthplace;
     [SerializeField] int maxLife = 10;
     [SerializeField] int maxBattery = 5;
     [SerializeField] int attack = 1;
@@ -65,5 +65,5 @@ public class BattlerBase : ScriptableObject
     public List<Command> DeckList { get => deckList; }
     public List<Command> StorageList { get => storageList; }
     public List<TalkMessage> Messages { get => messages; }
-    public MapBase Birthplace { get => birthplace; }
+    public FieldBase Birthplace { get => birthplace; }
 }
