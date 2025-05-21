@@ -10,24 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 241b9c6d305b7c2488bfc775555e3437, type: 3}
-  m_Name: cudgel
+  m_Name: gun
   m_EditorClassIdentifier: 
-  name: "\u6728\u306E\u30DC\u30A6"
-  sprite: {fileID: 21300000, guid: 46030c18b29456d48ad4053dd41a8537, type: 3}
+  name: "\u30A8\u30A2\u30AC\u30F3"
+  rarity: 1
+  sprite: {fileID: 21300000, guid: 994f6c4fab3b0d840ab870a704397a33, type: 3}
+  description: "\u304A\u3082\u3061\u3083\u306E\u9283\u3001\u3042\u305F\u308B\u3068\u305D\u3053\u305D\u3053\u30A4\u30BF\u30A4"
+  probability: 50
+  lifeCost: 0
+  batteryCost: 3
+  soulCost: 0
+  attackList:
+  - type: 0
+    val: 8
+  recoveryList: []
+  enchantList:
+  - type: 0
+    val: 2
   type: 2
   life: 0
   battery: 0
-  attack: 1
+  attack: 2
   technique: 0
   defense: 0
   speed: 0
-  lifeCost: 1
-  batteryCost: 0
-  soulCost: 0
-  probability:
-    value: 90
-  description: "\u307F\u3061\u3070\u305F\u306B\u3088\u304F\u304A\u3061\u3066\u3044\u308B\u3002\u7121\u3044\u3088\u308A\u30DE\u30B7\u3002"
-  attackList:
-  - type: 0
-    val: 3
-  enchantList: []

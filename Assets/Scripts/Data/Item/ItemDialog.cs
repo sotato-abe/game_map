@@ -6,6 +6,7 @@ using TMPro;
 
 public class ItemDialog : VariableDialog
 {
+    [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnegyIcon enegyPrefab;
@@ -16,6 +17,7 @@ public class ItemDialog : VariableDialog
     {
         namePlate.SetName(item.Base.Name);
         description.text = item.Base.Description;
+        probability.SetText(item.Base.Probability.Value.ToString() + "%");
         ResetSkillList();
         SetEnegy(item.Base.RecoveryList);
         SetEnchant(item.Base.EnchantList);

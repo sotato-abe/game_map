@@ -13,7 +13,18 @@ MonoBehaviour:
   m_Name: electromagneticSword
   m_EditorClassIdentifier: 
   name: "\u30C7\u30F3\u30B8\u30BD\u30FC\u30C9"
+  rarity: 4
   sprite: {fileID: 21300000, guid: 04976e6db28d57241ac79ed1774cf87c, type: 3}
+  description: "\u30CA\u30BE\u306E\u30AB\u30BF\u30CA"
+  probability: 100
+  lifeCost: 0
+  batteryCost: 1
+  soulCost: 0
+  attackList:
+  - type: 0
+    val: 150
+  recoveryList: []
+  enchantList: []
   type: 2
   life: 0
   battery: 0
@@ -21,13 +32,3 @@ MonoBehaviour:
   technique: 0
   defense: 0
   speed: 0
-  lifeCost: 0
-  batteryCost: 1
-  soulCost: 0
-  probability:
-    value: 100
-  description: "\u30CA\u30BE\u306E\u30AB\u30BF\u30CA"
-  attackList:
-  - type: 0
-    val: 150
-  enchantList: []
