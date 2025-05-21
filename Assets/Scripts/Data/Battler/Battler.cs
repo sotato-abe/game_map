@@ -172,7 +172,7 @@ public class Battler
     // もともと装備をしていない場合はnullを返す
     public Equipment AddEquipment(Equipment equipment)
     {
-        Equipment existingEquipment = Equipments.Find(e => e.Base.Type == equipment.Base.Type);
+        Equipment existingEquipment = Equipments.Find(e => e.Base.EquipmentType == equipment.Base.EquipmentType);
         if (existingEquipment != null)
         {
             Equipments.Remove(existingEquipment);

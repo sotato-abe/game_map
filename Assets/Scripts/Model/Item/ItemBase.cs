@@ -7,7 +7,7 @@ public class ItemBase : ScriptableObject
 {
     [SerializeField] new string name;
     [SerializeField] RarityType rarity;
-    public virtual ItemType itemType => ItemType.Consumables;
+    public virtual ItemType itemType => ItemType.Consumable;
     [SerializeField] Sprite sprite;
     [SerializeField, TextArea] string description;
     [SerializeField] int probability = 100;

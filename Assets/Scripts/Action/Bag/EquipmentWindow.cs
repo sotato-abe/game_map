@@ -61,7 +61,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
         for (int i = 0; i < equipments.Count; i++)
         {
-            if (equipments[i].Base.Type == EquipmentType.Arm)
+            if (equipments[i].Base.EquipmentType == EquipmentType.Arm)
             {
                 armEquipmentList.Add(equipments[i]);
 
@@ -69,7 +69,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             }
             else
             {
-                EquipmentSlot slot = GetTargetSlot(equipments[i].Base.Type);
+                EquipmentSlot slot = GetTargetSlot(equipments[i].Base.EquipmentType);
                 SetEquipmentBlock(slot, equipments[i]);
             }
         }
@@ -80,14 +80,14 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     public void AddEquipment(Equipment equipment)
     {
         playerBattler.Equipments.Add(equipment);
-        if (equipment.Base.Type == EquipmentType.Arm)
+        if (equipment.Base.EquipmentType == EquipmentType.Arm)
         {
             armEquipmentList.Add(equipment);
             SetArmEquipmentBlock();
         }
         else
         {
-            EquipmentSlot slot = GetTargetSlot(equipment.Base.Type);
+            EquipmentSlot slot = GetTargetSlot(equipment.Base.EquipmentType);
             SetEquipmentBlock(slot, equipment);
         }
     }
@@ -96,14 +96,14 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     {
         Equipment equipment = equipmentBlock.Equipment;
         playerBattler.Equipments.Remove(equipment);
-        if (equipment.Base.Type == EquipmentType.Arm)
+        if (equipment.Base.EquipmentType == EquipmentType.Arm)
         {
             armEquipmentList.Remove(equipment);
             SetArmEquipmentBlock();
         }
         else
         {
-            EquipmentSlot slot = GetTargetSlot(equipment.Base.Type);
+            EquipmentSlot slot = GetTargetSlot(equipment.Base.EquipmentType);
             slot.ReSetSlot();
         }
     }

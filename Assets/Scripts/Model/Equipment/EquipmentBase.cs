@@ -6,7 +6,7 @@ using UnityEngine;
 public class EquipmentBase : ItemBase
 {
     public override ItemType itemType => ItemType.Equipment;
-    [SerializeField] EquipmentType type;
+    [SerializeField] EquipmentType equipmentType;
     [SerializeField] int life;
     [SerializeField] int battery;
     [SerializeField] int attack;
@@ -14,7 +14,7 @@ public class EquipmentBase : ItemBase
     [SerializeField] int defense;
     [SerializeField] int speed;
 
-    public EquipmentType Type { get => type; }
+    public EquipmentType EquipmentType { get => equipmentType; }
     public int Life { get => life; }
     public int Battery { get => battery; }
     public int Attack { get => attack; }
