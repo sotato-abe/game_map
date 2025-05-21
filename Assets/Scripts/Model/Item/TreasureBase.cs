@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class ConsumablesBase : ItemBase
+[CreateAssetMenu(menuName = "Item/Treasure")]
+public class TreasureBase : ItemBase
 {
 }
