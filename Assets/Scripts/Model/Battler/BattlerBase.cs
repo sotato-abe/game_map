@@ -7,6 +7,7 @@ public class BattlerBase : ScriptableObject
 {
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
+    [SerializeField, TextArea] string description;
     [SerializeField] MapBase birthplace;
     [SerializeField] int maxLife = 10;
     [SerializeField] int maxBattery = 5;
@@ -36,6 +37,7 @@ public class BattlerBase : ScriptableObject
 
     public string Name { get => name; }
     public Sprite Sprite { get => sprite; }
+    public string Description { get => description; }
     public int MaxLife { get => maxLife; }
     public int MaxBattery { get => maxBattery; }
 

@@ -14,6 +14,7 @@ public class StatusPanel : Panel
     [SerializeField] BattlerEnegyBar soul;
     [SerializeField] TextMeshProUGUI level;
     [SerializeField] SkillPointPanel skillPointPanel;
+    [SerializeField] TextMeshProUGUI description;
     [SerializeField] GameObject enegyList;
     [SerializeField] GameObject statusList;
     [SerializeField] GameObject storageList;
@@ -25,6 +26,8 @@ public class StatusPanel : Panel
     [SerializeField] EnchantIcon enchantIconPrefab;
     [SerializeField] StatusLevel statusLevel;
 
+    int Width = 750;
+    int PaddingHeight = 250;
     private List<Enegy> enegyCountList = new List<Enegy>();
 
     private void Start()
@@ -65,6 +68,14 @@ public class StatusPanel : Panel
         SetStatus();
         SetEnchant();
         SetAbility();
+        description.text = playerUnit.Battler.Base.Description;
+        ResizePanel();
+    }
+
+    private void ResizePanel()
+    {
+        float panelHeight = description.preferredHeight + PaddingHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(Width, panelHeight);
     }
 
     private void SetCharacterCard()

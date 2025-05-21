@@ -281,8 +281,16 @@ public class FieldPlayer : FieldCharacter
 
             transform.position = targetPos;
 
-            CheckForBuilding();
-            CheckForObject();
+            bool isBuildingEvent = CheckForBuilding();
+            if (isBuildingEvent)
+            {
+                yield break; // 建物に入ったら移動を終了
+            }
+            bool isObjectEvent = CheckForObject();
+            if (isObjectEvent)
+            {
+                yield break; // オブジェクトに接触したら移動を終了
+            }
             if (Time.time - lastEncountCheckTime >= encountCooldown)
             {
                 CheckForEncount();
@@ -295,7 +303,7 @@ public class FieldPlayer : FieldCharacter
         isMoving = false;
     }
 
-    void CheckForBuilding()
+    private bool CheckForBuilding()
     {
         Collider2D hitBuilding = Physics2D.OverlapCircle(transform.position, 0.4f, buildingLayer);
         if (hitBuilding)
@@ -307,21 +315,32 @@ public class FieldPlayer : FieldCharacter
             Building building = hitBuilding.GetComponent<Building>();
             SetMoveFlg(false);
             EntryBuilding?.Invoke(building.Type);
+            return true;
         }
         else if (playerTileType == TileType.Building)
         {
             playerTileType = TileType.Ground;
             ResetFieldPanel?.Invoke();
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
-    void CheckForObject()
+    private bool CheckForObject()
     {
         if (Physics2D.OverlapCircle(transform.position, 0.2f, objectLayer))
         {
             // オブジェクトに接触したときの処理をここに追加
             SetMoveFlg(false);
             OnGetItem?.Invoke();
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
