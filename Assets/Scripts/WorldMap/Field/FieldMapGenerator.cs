@@ -137,46 +137,21 @@ public class FieldMapGenerator
     //　フィールドマップに建物を追加
     private void createBuilding()
     {
-
-        seed = fieldData.coordinate.y.ToString() + fieldData.coordinate.x.ToString(); // マップの座標からシードを生成
-
-        // TODO buildingのアイコンがない場合タイプによってアイコンを使用
-        if (fieldData.kiosk != null)
+        for (int i = 0; i < fieldData.Buildings.Count; i++)
         {
-            addBuilding(seed + "kiosk", (int)TileType.Kiosk);
-        }
-        if (fieldData.cafeteria != null)
-        {
-            addBuilding(seed + "cafeteria", (int)TileType.Cafeteria);
-        }
-        if (fieldData.armsShop != null)
-        {
-            addBuilding(seed + "armsShop", (int)TileType.ArmsShop);
-        }
-        if (fieldData.laboratory != null)
-        {
-            addBuilding(seed + "laboratory", (int)TileType.Laboratory);
-        }
-        if (fieldData.hotel != null)
-        {
-            addBuilding(seed + "hotel", (int)TileType.Hotel);
-        }
-    }
+            BuildingType buildingType = fieldData.Buildings[i].type;
+            System.Random randomSeed = new System.Random((int)buildingType); // シード値に基づいた擬似乱数生成器を作成
+            int targetX, targetY;
 
-    private void addBuilding(string seed, int tileType)
-    {
-        int targetX, targetY;
+            do
+            {
+                targetX = randomSeed.Next(1, width - 1); // 1 ～ width - 2 の範囲でランダム生成
+                targetY = randomSeed.Next(1, height - 1); // 1 ～ height - 2 の範囲でランダム生成
+            }
+            while (map[targetX, targetY] != (int)TileType.Ground); // Groundとなるまで繰り返し
 
-        System.Random randomSeed = new System.Random(seed.GetHashCode()); // シード値に基づいた擬似乱数生成器を作成
-
-        do
-        {
-            targetX = randomSeed.Next(1, width - 1); // 1 ～ width - 2 の範囲でランダム生成
-            targetY = randomSeed.Next(1, height - 1); // 1 ～ height - 2 の範囲でランダム生成
+            map[targetX, targetY] = (int)buildingType.ConverTileType();
         }
-        while (map[targetX, targetY] != (int)TileType.Ground); // Groundとなるまで繰り返し
-
-        map[targetX, targetY] = tileType;
     }
 
     //　フィールドマップにオブジェクトを追加

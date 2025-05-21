@@ -6,4 +6,5 @@ using UnityEngine;
 public class LaboratoryBase : BuildingBase
 {
     // TODO 内容はこれから決める
+    public override BuildingType type => BuildingType.Laboratory;
 }

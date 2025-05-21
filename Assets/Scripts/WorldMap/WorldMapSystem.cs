@@ -58,7 +58,7 @@ public class WorldMapSystem : MonoBehaviour
         fieldData = new FieldData(); // フィールドデータを初期化
         fieldData.coordinate = targetCoordinate; // フィールドデータに座標を設定
         fieldData.fieldType = (FieldType)floorData.data[targetCoordinate.y][targetCoordinate.x]; // フィールドデータにタイルセットを設定
-        MapBase mapBase = MapDatabase.Instance?.GetDataByCoordinate(coordinate); // フィールドデータを取得
+        fieldData.mapBase = MapDatabase.Instance?.GetDataByCoordinate(coordinate); // フィールドデータを取得
         SetRoadEntryByAroundGround(targetCoordinate); // フィールドデータに出入り口を設定
         renderWorldMap.ChangePlayerCoordinate(coordinate); // TODO : 処理の呼び出し元を変更 ワールドマップのPlayer位置を更新
 
@@ -74,7 +74,7 @@ public class WorldMapSystem : MonoBehaviour
         fieldData.openRight = isLand(targetCoordinate.x, targetCoordinate.y + 1); // 右の出入り口
     }
 
-    //Roadマップを読み込んで、出入り口を設定（現在未使用中）
+    // Roadマップを読み込んで、出入り口を設定（TODO：現在未使用中：ロードマップをレンダリングした時に追加する）
     private void SetRoadEntryByRoadMap()
     {
         DirectionType roadType = (DirectionType)roadData.data[coordinate.y][coordinate.x];

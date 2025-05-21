@@ -85,24 +85,8 @@ public class FieldSystem : MonoBehaviour
     {
         // 現在地のタイルタイプを取得
         BuildingBase building = ScriptableObject.CreateInstance<BuildingBase>();
-        switch (type)
-        {
-            case BuildingType.Kiosk:
-                building = fieldData.kiosk.Base; // キオスクの情報を取得
-                break;
-            case BuildingType.Cafeteria:
-                building = fieldData.cafeteria.Base; // カフェテリアの情報を取得
-                break;
-            case BuildingType.ArmShop:
-                building = fieldData.armsShop.Base; // 武器屋の情報を取得
-                break;
-            case BuildingType.Laboratory:
-                building = fieldData.laboratory.Base; // 研究所の情報を取得
-                break;
-            case BuildingType.Hotel:
-                building = fieldData.hotel.Base; // ホテルの情報を取得
-                break;
-        }
+        // TODO : 今の実装だと複数同じタイプがある時に一つ目のBuildingしか取得できないので、エントリーした建物を取得するように修正する
+        building = fieldData.Buildings.Find(b => b.type == type);
         if (currentBuildingBase != building)
         {
             fieldInfoPanel.gameObject.SetActive(true);
@@ -235,7 +219,7 @@ public class FieldSystem : MonoBehaviour
                 else if (tileType == (int)TileType.Cafeteria)
                     obj = InstantiateBuildingPrefab(cafeteriaPrefab, pos, "MapBuilding", "Building", BuildingType.Cafeteria);
                 else if (tileType == (int)TileType.ArmsShop)
-                    obj = InstantiateBuildingPrefab(armsShopPrefab, pos, "MapBuilding", "Building", BuildingType.ArmShop);
+                    obj = InstantiateBuildingPrefab(armsShopPrefab, pos, "MapBuilding", "Building", BuildingType.ArmsShop);
                 else if (tileType == (int)TileType.Laboratory)
                     obj = InstantiateBuildingPrefab(laboratoryPrefab, pos, "MapBuilding", "Building", BuildingType.Laboratory);
                 else if (tileType == (int)TileType.Hotel)

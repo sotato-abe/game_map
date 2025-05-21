@@ -14,13 +14,9 @@ public class MapBase : ScriptableObject
     [SerializeField, TextArea] string description;
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
     [SerializeField] Vector2Int coordinate;
-    [SerializeField] Kiosk kiosk;
-    [SerializeField] Cafeteria cafeteria;
-    [SerializeField] ArmsShop armsShop;
-    [SerializeField] Laboratory laboratory;
-    [SerializeField] Hotel hotel;
     [SerializeField] List<Battler> enemies;
     [SerializeField] List<Item> items;
+    [SerializeField] List<BuildingBase> buildings;
 
     public int Id { get => id; }
     public string Name { get => mapName; }
@@ -31,12 +27,8 @@ public class MapBase : ScriptableObject
     public string Description { get => description; }
     public int RandomFillPercent { get => randomFillPercent; }
     public Vector2Int Coordinate { get => coordinate; }
-    public Kiosk Kiosk { get => kiosk; }
-    public Cafeteria Cafeteria { get => cafeteria; }
-    public ArmsShop ArmsShop { get => armsShop; }
-    public Laboratory Laboratory { get => laboratory; }
-    public Hotel Hotel { get => hotel; }
 
     public List<Battler> Enemies { get => enemies; }
     public List<Item> Items { get => items; }
+    public List<BuildingBase> Buildings { get => buildings; }
 }
