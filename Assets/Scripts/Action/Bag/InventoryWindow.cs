@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 public class InventoryWindow : MonoBehaviour, IDropHandler
 {
     public UnityAction OnActionExecute;
-    public UnityAction<ItemBlock> OnDropItemBlockAction;
     public UnityAction<EquipmentBlock> OnDropEquipmentBlockAction;
     [SerializeField] GameObject itemBlockPrefab;
     [SerializeField] GameObject blockPrefab;
@@ -72,7 +71,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 // 装備Windowからドロップされた場合
                 if (playerBattler.EquipmentList.Contains(equipment))
                 {
-                    equipmentWindow.RemoveItem(droppedItemBlock);
+                    equipmentWindow.RemoveItem(droppedItemBlock.Item);
                 }
             }
             else if (droppedItemBlock.Item is Consumable consumable)
@@ -80,10 +79,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 // ポーチWindowからドロップされた場合
                 if (playerBattler.PouchList.Contains(consumable))
                 {
-                    pouchWindow.RemoveItem(droppedItemBlock);
+                    pouchWindow.RemoveItem(droppedItemBlock.Item);
                 }
             }
-            AddItemBlock(droppedItemBlock.Item); // バッグに追加
+            AddItem(droppedItemBlock.Item); // バッグに追加
         }
     }
 
@@ -93,6 +92,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         foreach (Transform child in itemList.transform)
         {
             Destroy(child.gameObject);
+        }
+        if (playerBattler.BagItemList.Count <= selectedItem)
+        {
+            selectedItem = playerBattler.BagItemList.Count - 1;
         }
 
         SetBagItemBlock();
@@ -106,6 +109,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         itemBlockList.Clear();
         itemBlockList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
 
+        int itemNum = 0;
         foreach (Item item in playerBattler.BagItemList)
         {
             GameObject itemBlockObject = Instantiate(itemBlockPrefab, itemList.transform);
@@ -114,11 +118,19 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             itemBlock.Setup(item);
             itemBlock.OnEndDragAction += ArrengeItemBlocks;
             itemBlockList.Add(itemBlock);
+
+            if (itemNum == selectedItem)
+            {
+                itemBlock.SetTarget(true);
+            }
+            else
+            {
+                itemBlock.SetTarget(false);
+            }
+            itemNum++;
         }
     }
 
-    // Bagの数値に応じてパネルの左下からブロックを配置する
-    // Bagが8の場合、左下から2つブロックを配置する
     private void SetBlockingBlock()
     {
         int blockNum = (row - (playerBattler.Bag.val % row)) % row;
@@ -155,15 +167,15 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         bagRatio.text = $"{itemCount}/{playerBattler.Bag.val}";
     }
 
-    public void AddItemBlock(Item item)
+    public void AddItem(Item item)
     {
         playerBattler.BagItemList.Add(item);
         SetBlock();
     }
 
-    public void RemoveItem(ItemBlock itemBlock)
+    public void RemoveItem(Item item)
     {
-        playerBattler.BagItemList.Remove(itemBlock.Item);
+        playerBattler.BagItemList.Remove(item);
         SetBlock();
     }
 
@@ -204,68 +216,31 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void UseItem()
     {
-        if (itemList.transform.childCount > 0)
+        if (itemBlockList.Count > 0)
         {
-            // TODO:後でまとめて修正
-            // if (selectedItem >= 0 && selectedItem < itemBlockList.Count)
-            // {
-            //     // アイテムを使用する
-            //     var targetItemBlock = itemList.transform.GetChild(selectedItem).GetComponent<ItemBlock>();
-            //     UseItemBlock(targetItemBlock);
-            // }
-            // else if (itemBlockList.Count <= selectedItem && selectedItem < itemList.transform.childCount)
-            // {
-            //     // 装備品を装備する
-            //     var targetEquipmentBlock = itemList.transform.GetChild(selectedItem).GetComponent<EquipmentBlock>();
-            //     UseEquipmentUnit(targetEquipmentBlock);
-            // }
-            // else
-            // {
-            //     Debug.LogWarning("Selected item is out of bounds.");
-            // }
-            // int itemCount = playerBattler.BagItemList.Count + playerBattler.BagEquipmentList.Count;
-            // if (selectedItem >= itemCount)
-            // {
-            //     selectedItem = itemCount - 1;
-            // }
-            // SetBlock();
-            playerUnit.UpdateEnegyUI();
+            if (itemBlockList[selectedItem].Item is Consumable consumable)
+            {
+                playerBattler.TakeRecovery(consumable.ConsumableBase.RecoveryList);
+                playerBattler.TakeEnchant(consumable.ConsumableBase.EnchantList);
+                playerBattler.BagItemList.Remove(consumable);
+                playerUnit.TakeEnchant(consumable.ConsumableBase.EnchantList);
+                playerUnit.UpdateEnegyUI();
+                SetBlock();
+            }
+            else if (itemBlockList[selectedItem].Item is Equipment)
+            {
+                // 装備品を装備する
+                equipmentWindow.AddItem(itemBlockList[selectedItem].Item);
+                SetBlock();
+            }
+            else
+            {
+                Debug.LogWarning("選択中のアイテムは使用できません。");
+            }
         }
         else
         {
-            Debug.LogWarning("Selected item is out of bounds.");
+            Debug.LogWarning("使用できるアイテムがありません。");
         }
     }
-
-    private void UseItemBlock(ItemBlock itemBlock)
-    {
-        if (itemBlock != null && itemBlock.Item != null) // ItemBlock とその Item が存在するかを確認
-        {
-            // TODO:後でまとめて修正
-            // playerBattler.TakeRecovery(itemBlock.Item.Base.RecoveryList);
-            // playerBattler.TakeEnchant(itemBlock.Item.Base.EnchantList);
-            // playerBattler.BagItemList.Remove(itemBlock.Item);
-            // SetBlock();
-            // playerUnit.TakeEnchant(itemBlock.Item.Base.EnchantList);
-            playerUnit.UpdateEnegyUI();
-        }
-        else
-        {
-            Debug.LogWarning($"No item found to use.{selectedItem}");
-        }
-    }
-
-    // private void UseEquipmentUnit(EquipmentBlock targetEquipmentBlock)
-    // {
-    //     if (targetEquipmentBlock != null && targetEquipmentBlock.Equipment != null)
-    //     {
-    //         string name = targetEquipmentBlock.Equipment.Base.Name;
-    //         playerBattler.BagEquipmentList.Remove(targetEquipmentBlock.Equipment);
-    //         equipmentWindow.AddEquipment(targetEquipmentBlock.Equipment);
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("No equipment found to use.");
-    //     }
-    // }
 }

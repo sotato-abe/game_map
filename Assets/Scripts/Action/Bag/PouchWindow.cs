@@ -8,15 +8,15 @@ using UnityEngine.EventSystems;
 
 public class PouchWindow : MonoBehaviour, IDropHandler
 {
-    [SerializeField] GameObject itemBlockPrefab;  // ItemBlockのプレハブ
+    [SerializeField] ItemBlock itemBlockPrefab;  // ItemBlockのプレハブ
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] BattleUnit playerUnit;
 
-    private List<ItemBlock> itemUnitList = new List<ItemBlock>();
-    private List<GameObject> blockList = new List<GameObject>();
+    private List<ItemBlock> itemBlockList = new List<ItemBlock>();
+    private List<GameObject> blockingBlockList = new List<GameObject>();
     private Battler playerBattler;
 
     private int headHeight = 10;
@@ -32,16 +32,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     private void OnEnable()
     {
         playerBattler = playerUnit.Battler;
-        SetItemBlock();
-        pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
-    }
-
-    public void SetPouchSize()
-    {
-        int width = itemWidth * row + 20;
-        int column = (playerBattler.Pouch.val - 1) / row + 1;
-        int height = itemWidth * column + headHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+        SetPouchList();
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -56,22 +47,21 @@ public class PouchWindow : MonoBehaviour, IDropHandler
                 Debug.Log("ポーチのアイテムです。");
                 return;
             }
-            if (playerBattler.PouchList.Count >= playerBattler.Pouch.val)
-            {
-                Debug.Log("ポーチがいっぱいです。");
-                return; // 追加しない
-            }
-            if (playerBattler.BagItemList.Contains(droppedItemBlock.Item))
-            {
-                inventoryWindow.RemoveItem(droppedItemBlock);
-            }
-            AddItemBlock(droppedItemBlock.Item); // ポーチに追加
+            AddItem(droppedItemBlock.Item); // ポーチに追加
         }
     }
 
-    private void SetItemBlock()
+    public void SetPouchSize()
     {
-        itemUnitList.Clear();
+        int width = itemWidth * row + 20;
+        int column = (playerBattler.Pouch.val - 1) / row + 1;
+        int height = itemWidth * column + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+    }
+
+    private void SetPouchList()
+    {
+        itemBlockList.Clear();
 
         foreach (Transform child in itemList.transform)
         {
@@ -80,69 +70,74 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
         foreach (Consumable consumable in playerBattler.PouchList)
         {
-            GameObject itemUnitObject = Instantiate(itemBlockPrefab, itemList.transform);
-            itemUnitObject.gameObject.SetActive(true);
-            ItemBlock itemUnit = itemUnitObject.GetComponent<ItemBlock>();
-            Item item = consumable;
-            itemUnit.Setup(item);
-            itemUnit.OnEndDragAction += ArrengeItemBlocks;
-            itemUnitList.Add(itemUnit);
+            ItemBlock itemBlock = Instantiate(itemBlockPrefab, itemList.transform);
+            itemBlock.gameObject.SetActive(true);
+            itemBlock.Setup(consumable);
+            itemBlock.OnEndDragAction += ArrengeItemBlocks;
+            itemBlockList.Add(itemBlock);
         }
-        SetBlock();
+        SetBlockingBlock();
         ArrengeItemBlocks();
+        pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
     }
 
-    private void SetBlock()
+    private void SetBlockingBlock()
     {
         int blockNum = (row - (playerBattler.Pouch.val % row)) % row;
-        blockList.Clear();
+        blockingBlockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
             GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
             blockObject.gameObject.SetActive(true);
-            blockList.Add(blockObject);
+            blockingBlockList.Add(blockObject);
         }
     }
 
     public void ArrengeItemBlocks()
     {
-        itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
-        for (int i = 0; i < itemUnitList.Count; i++)
+        itemBlockList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
+        for (int i = 0; i < itemBlockList.Count; i++)
         {
             int cardHalfWidth = itemWidth / 2;
             int xPosition = (i % row) * itemWidth + cardHalfWidth;
             int yPosition = -((i / row) * itemWidth + cardHalfWidth);
-            itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+            itemBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         // 右下からブロックを配置
-        for (int i = 0; i < blockList.Count; i++)
+        for (int i = 0; i < blockingBlockList.Count; i++)
         {
             int cardHalfWidth = itemWidth / 2;
             int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth;
             int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth);
-            blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+            blockingBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }
 
-    public void AddItemBlock(Item item)
+    public void AddItem(Item item)
     {
         if (item is Consumable consumable)
         {
+            if (playerBattler.PouchList.Count >= playerBattler.Pouch.val)
+            {
+                Debug.Log("ポーチがいっぱいです。");
+                return; // 追加しない
+            }
+            if (playerBattler.BagItemList.Contains(item))
+            {
+                inventoryWindow.RemoveItem(item);
+            }
             playerBattler.PouchList.Add(consumable);
-            SetItemBlock();
-            pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
+            SetPouchList();
         }
     }
 
-    public void RemoveItem(ItemBlock itemUnit)
+    public void RemoveItem(Item item)
     {
-        if (itemUnit.Item is Consumable consumable)
+        if (item is Consumable consumable)
         {
-            itemUnitList.Remove(itemUnit);
-            Destroy(itemUnit.gameObject);
-            ArrengeItemBlocks();
             playerBattler.PouchList.Remove(consumable);
+            SetPouchList();
             pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
         }
     }

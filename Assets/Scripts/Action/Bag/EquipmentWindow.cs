@@ -44,11 +44,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
                 Debug.Log("アイテムはすでに装備しています。");
                 return; // 追加しない
             }
-            if (playerBattler.BagItemList.Contains(droppedItemBlock.Item))
-            {
-                inventoryWindow.RemoveItem(droppedItemBlock);
-            }
-            AddEquipment(equipment); // 装備に追加
+            AddItem(equipment); // 装備に追加
         }
     }
 
@@ -80,60 +76,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             }
         }
         SetArmItemBlock();
-    }
-
-    // 外部から追加する際に使用する。
-    public void AddEquipment(Item item)
-    {
-        if (item is Equipment equipment)
-        {
-            playerBattler.EquipmentList.Add(equipment);
-            if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
-            {
-                armEquipmentList.Add(equipment);
-                SetArmItemBlock();
-            }
-            else if (equipment.EquipmentBase.EquipmentType == EquipmentType.Accessory)
-            {
-                accessoryEquipmentList.Add(equipment);
-                SetAccessoryItemBlock();
-            }
-            else
-            {
-                EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
-                SetItemBlock(slot, equipment);
-            }
-        }
-    }
-
-    public void RemoveItem(ItemBlock equipmentBlock)
-    {
-        Equipment equipment = equipmentBlock.Item as Equipment;
-        playerBattler.EquipmentList.Remove(equipment);
-        if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
-        {
-            armEquipmentList.Remove(equipment);
-            SetArmItemBlock();
-        }
-        else if (equipment.EquipmentBase.EquipmentType == EquipmentType.Accessory)
-        {
-            accessoryEquipmentList.Remove(equipment);
-            SetAccessoryItemBlock();
-        }
-        else
-        {
-            EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
-            slot.ReSetSlot();
-        }
-    }
-
-    private void ClearSlot(EquipmentSlot slot)
-    {
-        ItemBlock existing = slot.GetComponentInChildren<ItemBlock>();
-        if (existing != null)
-        {
-            Destroy(existing.gameObject);
-        }
     }
 
     private EquipmentSlot GetTargetSlot(EquipmentType type)
@@ -224,7 +166,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         }
     }
 
-
     private void SetItemBlock(EquipmentSlot targetPosition, Item item)
     {
         // ItemBlock がすでに存在するか確認
@@ -258,5 +199,60 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         accessory1.ArrangeItemBlock();
         accessory2.ArrangeItemBlock();
         accessory3.ArrangeItemBlock();
+    }
+
+    // 外部から追加する際に使用する。
+    public void AddItem(Item item)
+    {
+        if (item is Equipment equipment)
+        {
+            playerBattler.EquipmentList.Add(equipment);
+
+            // 装備のタイプごとに処理を分ける
+            if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
+            {
+                armEquipmentList.Add(equipment);
+                SetArmItemBlock();
+            }
+            else if (equipment.EquipmentBase.EquipmentType == EquipmentType.Accessory)
+            {
+                accessoryEquipmentList.Add(equipment);
+                SetAccessoryItemBlock();
+            }
+            else
+            {
+                EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
+                SetItemBlock(slot, equipment);
+            }
+
+            // バックから装備した場合元を外す
+            if (playerBattler.BagItemList.Contains(item))
+            {
+                inventoryWindow.RemoveItem(item);
+            }
+        }
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (item is Equipment equipment)
+        {
+            playerBattler.EquipmentList.Remove(equipment);
+            if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
+            {
+                armEquipmentList.Remove(equipment);
+                SetArmItemBlock();
+            }
+            else if (equipment.EquipmentBase.EquipmentType == EquipmentType.Accessory)
+            {
+                accessoryEquipmentList.Remove(equipment);
+                SetAccessoryItemBlock();
+            }
+            else
+            {
+                EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
+                slot.ReSetSlot();
+            }
+        }
     }
 }
