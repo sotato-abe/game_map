@@ -31,21 +31,21 @@ public class EquipmentSlot : MonoBehaviour
 
     public void ReSetSlot()
     {
-        //自身にアタッチされているEquipmentBlockを削除
-        EquipmentBlock equipmentBlock = transform.GetComponentInChildren<EquipmentBlock>();
-        if (equipmentBlock != null)
+        //自身にアタッチされているItemBlockを削除
+        ItemBlock itemBlock = transform.GetComponentInChildren<ItemBlock>();
+        if (itemBlock != null)
         {
-            Destroy(equipmentBlock.gameObject);
+            Destroy(itemBlock.gameObject);
         }
     }
 
-    public void ArrangeEquipmentBlock()
+    public void ArrangeItemBlock()
     {
-        EquipmentBlock equipmentBlock = transform.GetComponentInChildren<EquipmentBlock>();
-        if (equipmentBlock != null)
+        ItemBlock itemBlock = transform.GetComponentInChildren<ItemBlock>();
+        if (itemBlock != null)
         {
             RectTransform parentRect = GetComponent<RectTransform>();
-            RectTransform childRect = equipmentBlock.GetComponent<RectTransform>();
+            RectTransform childRect = itemBlock.GetComponent<RectTransform>();
             // アンカーを中央に設定（必要であれば）
             childRect.anchorMin = new Vector2(0.5f, 0.5f);
             childRect.anchorMax = new Vector2(0.5f, 0.5f);

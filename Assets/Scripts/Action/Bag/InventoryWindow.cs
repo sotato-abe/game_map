@@ -16,6 +16,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI bagRatio;
     [SerializeField] EquipmentWindow equipmentWindow;
+    [SerializeField] PouchWindow pouchWindow;
     [SerializeField] BattleUnit playerUnit;
 
     private Battler playerBattler;
@@ -38,7 +39,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     private void OnEnable()
     {
         playerBattler = playerUnit.Battler;
-        SetItem();
+        SetBlock();
     }
 
     public void SetPanelSize()
@@ -58,7 +59,6 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         {
             if (droppedItemBlock.transform.parent == itemList.transform)
             {
-                Debug.Log("バッグ内のアイテムをドロップしても何もしない");
                 return;
             }
             if (playerBattler.BagItemList.Count >= playerBattler.Bag.val)
@@ -67,28 +67,44 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 return; // 追加しない
             }
 
-            OnDropItemBlockAction?.Invoke(droppedItemBlock);
+            if (droppedItemBlock.Item is Equipment equipment)
+            {
+                // 装備Windowからドロップされた場合
+                if (playerBattler.EquipmentList.Contains(equipment))
+                {
+                    equipmentWindow.RemoveItem(droppedItemBlock);
+                }
+            }
+            else if (droppedItemBlock.Item is Consumable consumable)
+            {
+                // ポーチWindowからドロップされた場合
+                if (playerBattler.PouchList.Contains(consumable))
+                {
+                    pouchWindow.RemoveItem(droppedItemBlock);
+                }
+            }
             AddItemBlock(droppedItemBlock.Item); // バッグに追加
         }
     }
 
     //playerUnitのBagの数値に応じでInventoryWindowのサイズを変更
-    public void SetItem()
+    public void SetBlock()
     {
         foreach (Transform child in itemList.transform)
         {
             Destroy(child.gameObject);
         }
 
-        CreateBlockBagItemList();
+        SetBagItemBlock();
         SetBlockingBlock();
         ArrengeItemBlocks();
     }
 
-    public void CreateBlockBagItemList()
+    public void SetBagItemBlock()
     {
         // リストをクリア
         itemBlockList.Clear();
+        itemBlockList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
 
         foreach (Item item in playerBattler.BagItemList)
         {
@@ -118,8 +134,6 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     //カードを整列させる
     public void ArrengeItemBlocks()
     {
-        itemBlockList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
-
         // まとめたリストで描画処理
         for (int i = 0; i < itemBlockList.Count; i++)
         {
@@ -144,30 +158,13 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     public void AddItemBlock(Item item)
     {
         playerBattler.BagItemList.Add(item);
-        CreateBlockBagItemList();
-        ArrengeItemBlocks();
-    }
-
-    public void AddEquipmentBlock(Equipment equipment)
-    {
-        playerBattler.BagItemList.Add(equipment);
-        // SetEquipmentBlock();
-        ArrengeItemBlocks();
+        SetBlock();
     }
 
     public void RemoveItem(ItemBlock itemBlock)
     {
         playerBattler.BagItemList.Remove(itemBlock.Item);
-        itemBlockList.Remove(itemBlock);
-        Destroy(itemBlock.gameObject);
-        CreateBlockBagItemList();
-        ArrengeItemBlocks();
-    }
-
-    public void RemoveEquipment(EquipmentBlock equipmentBlock)
-    {
-        playerBattler.BagItemList.Remove(equipmentBlock.Equipment);
-        SetItem();
+        SetBlock();
     }
 
     public void SelectItem(ArrowType type)
@@ -231,7 +228,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             // {
             //     selectedItem = itemCount - 1;
             // }
-            // SetItem();
+            // SetBlock();
             playerUnit.UpdateEnegyUI();
         }
         else
@@ -248,7 +245,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             // playerBattler.TakeRecovery(itemBlock.Item.Base.RecoveryList);
             // playerBattler.TakeEnchant(itemBlock.Item.Base.EnchantList);
             // playerBattler.BagItemList.Remove(itemBlock.Item);
-            // SetItem();
+            // SetBlock();
             // playerUnit.TakeEnchant(itemBlock.Item.Base.EnchantList);
             playerUnit.UpdateEnegyUI();
         }

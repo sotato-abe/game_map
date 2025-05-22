@@ -48,12 +48,12 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     {
         ItemBlock droppedItemBlock = eventData.pointerDrag.GetComponent<ItemBlock>();
 
-        if (droppedItemBlock != null)
+        if (droppedItemBlock.Item is Consumable consumable)
         {
-            // すでにポーチに同じアイテムがあるか確認
+            // すでにポーチウィンドウに同じアイテムがあるか確認
             if (droppedItemBlock.transform.parent == itemList.transform)
             {
-                Debug.Log("ポーチ内のアイテムをドロップしても何もしない");
+                Debug.Log("ポーチのアイテムです。");
                 return;
             }
             if (playerBattler.PouchList.Count >= playerBattler.Pouch.val)
@@ -61,8 +61,10 @@ public class PouchWindow : MonoBehaviour, IDropHandler
                 Debug.Log("ポーチがいっぱいです。");
                 return; // 追加しない
             }
-
-            inventoryWindow.RemoveItem(droppedItemBlock); // バックから削除
+            if (playerBattler.BagItemList.Contains(droppedItemBlock.Item))
+            {
+                inventoryWindow.RemoveItem(droppedItemBlock);
+            }
             AddItemBlock(droppedItemBlock.Item); // ポーチに追加
         }
     }

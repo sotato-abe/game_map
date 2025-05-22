@@ -13,12 +13,16 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     [SerializeField] EquipmentSlot arm1;
     [SerializeField] EquipmentSlot arm2;
     [SerializeField] EquipmentSlot leg;
+    [SerializeField] EquipmentSlot accessory1;
+    [SerializeField] EquipmentSlot accessory2;
+    [SerializeField] EquipmentSlot accessory3;
     [SerializeField] GameObject accessoryList;
-    [SerializeField] EquipmentBlock equipmentBlockPrefab;
+    [SerializeField] ItemBlock itemBlockPrefab;
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] BattleUnit playerUnit;
 
-    List<Equipment> armEquipmentList = new List<Equipment>();
+    List<Item> armEquipmentList = new List<Item>();
+    List<Item> accessoryEquipmentList = new List<Item>();
 
     private Battler playerBattler;
 
@@ -30,19 +34,21 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("ドロップされたアイテムを装備します。");
-        EquipmentBlock droppedEquipmentBlock = eventData.pointerDrag.GetComponent<EquipmentBlock>();
+        ItemBlock droppedItemBlock = eventData.pointerDrag.GetComponent<ItemBlock>();
 
-        if (droppedEquipmentBlock != null)
+        if (droppedItemBlock.Item is Equipment equipment)
         {
             // すでに装備ウィンドウに同じアイテムがあるか確認
-            if (playerBattler.EquipmentList.Contains(droppedEquipmentBlock.Equipment))
+            if (playerBattler.EquipmentList.Contains(equipment))
             {
                 Debug.Log("アイテムはすでに装備しています。");
                 return; // 追加しない
             }
-            AddEquipment(droppedEquipmentBlock.Equipment); // 装備に追加
-            inventoryWindow.RemoveEquipment(droppedEquipmentBlock); // バックから削除
+            if (playerBattler.BagItemList.Contains(droppedItemBlock.Item))
+            {
+                inventoryWindow.RemoveItem(droppedItemBlock);
+            }
+            AddEquipment(equipment); // 装備に追加
         }
     }
 
@@ -70,36 +76,49 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             else
             {
                 EquipmentSlot slot = GetTargetSlot(equipments[i].EquipmentBase.EquipmentType);
-                SetEquipmentBlock(slot, equipments[i]);
+                SetItemBlock(slot, equipments[i]);
             }
         }
-        SetArmEquipmentBlock();
+        SetArmItemBlock();
     }
 
     // 外部から追加する際に使用する。
-    public void AddEquipment(Equipment equipment)
+    public void AddEquipment(Item item)
     {
-        playerBattler.EquipmentList.Add(equipment);
-        if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
+        if (item is Equipment equipment)
         {
-            armEquipmentList.Add(equipment);
-            SetArmEquipmentBlock();
-        }
-        else
-        {
-            EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
-            SetEquipmentBlock(slot, equipment);
+            playerBattler.EquipmentList.Add(equipment);
+            if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
+            {
+                armEquipmentList.Add(equipment);
+                SetArmItemBlock();
+            }
+            else if (equipment.EquipmentBase.EquipmentType == EquipmentType.Accessory)
+            {
+                accessoryEquipmentList.Add(equipment);
+                SetAccessoryItemBlock();
+            }
+            else
+            {
+                EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
+                SetItemBlock(slot, equipment);
+            }
         }
     }
 
-    public void RemoveEquipment(EquipmentBlock equipmentBlock)
+    public void RemoveItem(ItemBlock equipmentBlock)
     {
-        Equipment equipment = equipmentBlock.Equipment;
+        Equipment equipment = equipmentBlock.Item as Equipment;
         playerBattler.EquipmentList.Remove(equipment);
         if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
         {
             armEquipmentList.Remove(equipment);
-            SetArmEquipmentBlock();
+            SetArmItemBlock();
+        }
+        else if (equipment.EquipmentBase.EquipmentType == EquipmentType.Accessory)
+        {
+            accessoryEquipmentList.Remove(equipment);
+            SetAccessoryItemBlock();
         }
         else
         {
@@ -110,7 +129,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     private void ClearSlot(EquipmentSlot slot)
     {
-        EquipmentBlock existing = slot.GetComponentInChildren<EquipmentBlock>();
+        ItemBlock existing = slot.GetComponentInChildren<ItemBlock>();
         if (existing != null)
         {
             Destroy(existing.gameObject);
@@ -129,18 +148,22 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         };
     }
 
-    private void SetArmEquipmentBlock()
+    private void SetArmItemBlock()
     {
         // アイテムの数が3個以上ある時に、後ろの2つ以外をバックに戻す。
         if (armEquipmentList.Count > 2)
         {
             for (int i = 0; i < armEquipmentList.Count - 2; i++)
             {
-                playerBattler.EquipmentList.Remove(armEquipmentList[i]);
-                playerBattler.BagItemList.Add(armEquipmentList[i]);
+                if (armEquipmentList[i] is Equipment equipment)
+                {
+                    playerBattler.BagItemList.Add(armEquipmentList[i]);
+                    playerBattler.EquipmentList.Remove(equipment);
+                }
             }
             armEquipmentList.RemoveRange(0, armEquipmentList.Count - 2);
-        }else if (armEquipmentList.Count == 0)
+        }
+        else if (armEquipmentList.Count == 0)
         {
             arm1.ReSetSlot();
             arm2.ReSetSlot();
@@ -149,46 +172,91 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         switch (armEquipmentList.Count)
         {
             case 1:
-                SetEquipmentBlock(arm1, armEquipmentList[0]);
+                SetItemBlock(arm1, armEquipmentList[0]);
                 arm2.ReSetSlot();
                 break;
             case 2:
-                SetEquipmentBlock(arm2, armEquipmentList[0]);
-                SetEquipmentBlock(arm1, armEquipmentList[1]);
+                SetItemBlock(arm2, armEquipmentList[0]);
+                SetItemBlock(arm1, armEquipmentList[1]);
+                break;
+        }
+    }
+
+    private void SetAccessoryItemBlock()
+    {
+        // アイテムの数が3個以上ある時に、後ろの2つ以外をバックに戻す。
+        if (accessoryEquipmentList.Count > 3)
+        {
+            for (int i = 0; i < accessoryEquipmentList.Count - 2; i++)
+            {
+                if (accessoryEquipmentList[i] is Equipment equipment)
+                {
+                    playerBattler.BagItemList.Add(accessoryEquipmentList[i]);
+                    playerBattler.EquipmentList.Remove(equipment);
+                }
+            }
+            accessoryEquipmentList.RemoveRange(0, accessoryEquipmentList.Count - 3);
+        }
+        else if (accessoryEquipmentList.Count == 0)
+        {
+            accessory1.ReSetSlot();
+            accessory2.ReSetSlot();
+            accessory3.ReSetSlot();
+        }
+        //バックに残ったアイテムを装備する
+        switch (accessoryEquipmentList.Count)
+        {
+            case 1:
+                SetItemBlock(accessory1, accessoryEquipmentList[0]);
+                accessory2.ReSetSlot();
+                accessory3.ReSetSlot();
+                break;
+            case 2:
+                SetItemBlock(accessory1, accessoryEquipmentList[0]);
+                SetItemBlock(accessory2, accessoryEquipmentList[1]);
+                accessory3.ReSetSlot();
+                break;
+            case 3:
+                SetItemBlock(accessory1, accessoryEquipmentList[0]);
+                SetItemBlock(accessory2, accessoryEquipmentList[1]);
+                SetItemBlock(accessory3, accessoryEquipmentList[2]);
                 break;
         }
     }
 
 
-    private void SetEquipmentBlock(EquipmentSlot targetPosition, Equipment equipment)
+    private void SetItemBlock(EquipmentSlot targetPosition, Item item)
     {
-        // EquipmentBlock がすでに存在するか確認
-        EquipmentBlock equipmentBlock = targetPosition.GetComponentInChildren<EquipmentBlock>();
+        // ItemBlock がすでに存在するか確認
+        ItemBlock itemBlock = targetPosition.GetComponentInChildren<ItemBlock>();
 
-        if (equipmentBlock != null)
+        if (itemBlock != null)
         {
             // 既に装備されているものを外してバッグに戻す
-            equipmentBlock.Setup(equipment);
+            itemBlock.Setup(item);
         }
         else
         {
-            // EquipmentBlock が存在しない場合のみ新規作成
-            EquipmentBlock newEquipmentBlock = Instantiate(equipmentBlockPrefab, targetPosition.transform);
-            newEquipmentBlock.transform.localScale = targetPosition.transform.localScale;
-            newEquipmentBlock.Setup(equipment);
-            newEquipmentBlock.OnEndDragAction += ArrengeEquipmentBlocks;
-            targetPosition.ArrangeEquipmentBlock();
+            // ItemBlock が存在しない場合のみ新規作成
+            ItemBlock newItemBlock = Instantiate(itemBlockPrefab, targetPosition.transform);
+            newItemBlock.transform.localScale = targetPosition.transform.localScale;
+            newItemBlock.Setup(item);
+            newItemBlock.OnEndDragAction += ArrengeItemBlocks;
+            targetPosition.ArrangeItemBlock();
         }
     }
 
-    private void ArrengeEquipmentBlocks()
+    private void ArrengeItemBlocks()
     {
-        // head, body, arm1, arm2, leg に追加された EquipmentBlock を整列
+        // head, body, arm1, arm2, leg に追加された ItemBlock を整列
         Debug.Log("整列");
-        head.ArrangeEquipmentBlock();
-        body.ArrangeEquipmentBlock();
-        arm1.ArrangeEquipmentBlock();
-        arm2.ArrangeEquipmentBlock();
-        leg.ArrangeEquipmentBlock();
+        head.ArrangeItemBlock();
+        body.ArrangeItemBlock();
+        arm1.ArrangeItemBlock();
+        arm2.ArrangeItemBlock();
+        leg.ArrangeItemBlock();
+        accessory1.ArrangeItemBlock();
+        accessory2.ArrangeItemBlock();
+        accessory3.ArrangeItemBlock();
     }
 }
