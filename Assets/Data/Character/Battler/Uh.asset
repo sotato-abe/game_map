@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: "\u30A6\u30FC"
   sprite: {fileID: 21300000, guid: 88d93ddac52ca88459104e5a82489554, type: 3}
+  description: 
   birthplace: {fileID: 0}
   maxLife: 50
   maxBattery: 20
@@ -31,20 +32,16 @@ MonoBehaviour:
   key: 5
   exp: 65
   abilityList: []
-  equipments:
-  - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
+  equipmentList: []
   runTable: []
   deckList: []
   storageList: []
   pouchList:
-  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
-  - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
-  bagItemList: []
+  - _base: {fileID: 11400000, guid: df6d84d209dab2e45ae4eb5a89fc2220, type: 2}
+    count: 1
+  - _base: {fileID: 11400000, guid: 41b67b484254e284286b7abdcd1ebc1d, type: 2}
+    count: 1
+  bagConsumableList: []
   bagEquipmentList: []
-  messages:
-  - {fileID: 11400000, guid: c6b18409e29f8e347be7b5dc4a41a84e, type: 2}
-  - {fileID: 11400000, guid: fe937614f99deb64b9c345e86a8717df, type: 2}
-  - {fileID: 11400000, guid: f30e50f1876056e49bebec19d03e5679, type: 2}
-  - {fileID: 11400000, guid: e3ce953b81e8d31418a0e618de7b30ae, type: 2}
-  - {fileID: 11400000, guid: 1846a5677580f3e4280e356ac36e23eb, type: 2}
-  - {fileID: 11400000, guid: 27d3d1d6d9434f14981eec4724b4d57b, type: 2}
+  bagTreasureList: []
+  messageList: []

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: cocozi
   sprite: {fileID: 21300000, guid: 6299760229ce35e4f958c63a73bf04b2, type: 3}
+  description: 
   birthplace: {fileID: 0}
   maxLife: 10
   maxBattery: 5
@@ -31,18 +32,14 @@ MonoBehaviour:
   key: 5
   exp: 5
   abilityList: []
-  equipments:
-  - _base: {fileID: 11400000, guid: 43b029d19eba7be47bf808cae9f1e8b4, type: 2}
+  equipmentList: []
   runTable: []
   deckList: []
   storageList: []
   pouchList:
-  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
-  - _base: {fileID: 11400000, guid: 517e4124fdfc6844fb5cc2584baf12f3, type: 2}
-  - _base: {fileID: 11400000, guid: 3b787454939bc0448bebe75f3cd9dad6, type: 2}
-  bagItemList:
-  - _base: {fileID: 0}
+  - _base: {fileID: 11400000, guid: 385ac8025b9fb2240a818569ab610db9, type: 2}
+    count: 1
+  bagConsumableList: []
   bagEquipmentList: []
-  messages:
-  - {fileID: 11400000, guid: a0f9021e111685e46a34d08584bf5333, type: 2}
-  - {fileID: 11400000, guid: 2264d2cc347b44d41aadb1ed8789df89, type: 2}
+  bagTreasureList: []
+  messageList: []
