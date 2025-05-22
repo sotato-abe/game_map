@@ -71,6 +71,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 // 装備Windowからドロップされた場合
                 if (playerBattler.EquipmentList.Contains(equipment))
                 {
+                    AddItem(droppedItemBlock.Item); // バッグに追加
                     equipmentWindow.RemoveItem(droppedItemBlock.Item);
                 }
             }
@@ -79,10 +80,10 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
                 // ポーチWindowからドロップされた場合
                 if (playerBattler.PouchList.Contains(consumable))
                 {
+                    AddItem(droppedItemBlock.Item); // バッグに追加
                     pouchWindow.RemoveItem(droppedItemBlock.Item);
                 }
             }
-            AddItem(droppedItemBlock.Item); // バッグに追加
         }
     }
 
