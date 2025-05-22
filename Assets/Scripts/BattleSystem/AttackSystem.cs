@@ -69,7 +69,7 @@ public class AttackSystem : MonoBehaviour
                 }
 
                 // 相手へのエンチャント
-                if (enchantCount.Target == TargetType.Opponent || enchantCount.Target == TargetType.Enemy || enchantCount.Target == TargetType.All)
+                if (enchantCount.Target == TargetType.Enemy || enchantCount.Target == TargetType.EnemyAll || enchantCount.Target == TargetType.All)
                 {
                     Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
                     enemyEnchants.Add(enchant);
