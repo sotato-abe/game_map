@@ -76,11 +76,12 @@ public class PouchWindow : MonoBehaviour, IDropHandler
             Destroy(child.gameObject);
         }
 
-        foreach (Item item in playerBattler.PouchList)
+        foreach (Consumable consumable in playerBattler.PouchList)
         {
             GameObject itemUnitObject = Instantiate(itemBlockPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
             ItemBlock itemUnit = itemUnitObject.GetComponent<ItemBlock>();
+            Item item = consumable;
             itemUnit.Setup(item);
             itemUnit.OnEndDragAction += ArrengeItemBlocks;
             itemUnitList.Add(itemUnit);
@@ -124,17 +125,23 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     public void AddItemBlock(Item item)
     {
-        playerBattler.PouchList.Add(item);
-        SetItemBlock();
-        pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
+        if (item is Consumable consumable)
+        {
+            playerBattler.PouchList.Add(consumable);
+            SetItemBlock();
+            pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
+        }
     }
 
     public void RemoveItem(ItemBlock itemUnit)
     {
-        itemUnitList.Remove(itemUnit);
-        Destroy(itemUnit.gameObject);
-        ArrengeItemBlocks();
-        playerBattler.PouchList.Remove(itemUnit.Item);
-        pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
+        if (itemUnit.Item is Consumable consumable)
+        {
+            itemUnitList.Remove(itemUnit);
+            Destroy(itemUnit.gameObject);
+            ArrengeItemBlocks();
+            playerBattler.PouchList.Remove(consumable);
+            pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
+        }
     }
 }

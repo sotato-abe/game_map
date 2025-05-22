@@ -59,7 +59,7 @@ public class BattleUnit : MonoBehaviour
 
     public void SetBattlerTalkMessage(MessageType messageType)
     {
-        string battlerMessage = Battler.Base.Messages.Find(m => m.messageType == messageType)?.message ?? messageType.GetDefaultMessage();
+        string battlerMessage = Battler.Base.MessageList.Find(m => m.messageType == messageType)?.message ?? messageType.GetDefaultMessage();
         SetTalkMessage(battlerMessage);
     }
 

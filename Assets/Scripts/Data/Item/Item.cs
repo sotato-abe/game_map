@@ -5,9 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class Item
 {
-    [SerializeField] ItemBase _base;
-
     public virtual ItemType itemType => ItemType.Consumable;
-
-    public ItemBase Base { get => _base; }
+    public virtual ItemBase Base => null;
 }

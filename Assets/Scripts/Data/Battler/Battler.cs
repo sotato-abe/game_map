@@ -33,13 +33,15 @@ public class Battler
     public int Exp { get; set; }
 
     public List<Ability> AbilityList = new List<Ability>();
-    public List<Equipment> Equipments { get; set; }
+    public List<Equipment> EquipmentList { get; set; }
     public List<Command> RunTable { get; set; }
     public List<Command> DeckList { get; set; }
     public List<Command> StorageList { get; set; }
-    public List<Item> PouchList { get; set; }
+    public List<Consumable> PouchList { get; set; }
     public List<Item> BagItemList { get; set; }
-    public List<Equipment> BagEquipmentList { get; set; }
+    // public List<Consumable> BagConsumableList { get; set; }
+    // public List<Equipment> BagEquipmentList { get; set; }
+    // public List<Treasure> BagTreasureList { get; set; }
     public List<Enchant> Enchants = new List<Enchant>();
     public Vector2Int coordinate;
 
@@ -83,10 +85,16 @@ public class Battler
         Exp = _base.Exp;
 
         AbilityList = new List<Ability>(_base.AbilityList ?? new List<Ability>());
-        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
-        PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
-        BagItemList = new List<Item>(_base.BagItemList ?? new List<Item>());
-        BagEquipmentList = new List<Equipment>(_base.BagEquipmentList ?? new List<Equipment>());
+        EquipmentList = new List<Equipment>(_base.EquipmentList ?? new List<Equipment>());
+        PouchList = new List<Consumable>(_base.PouchList ?? new List<Consumable>());
+        // BagConsumableList = new List<Consumable>(_base.BagConsumableList ?? new List<Consumable>());
+        // BagEquipmentList = new List<Equipment>(_base.BagEquipmentList ?? new List<Equipment>());
+        // BagTreasureList = new List<Treasure>(_base.BagTreasureList ?? new List<Treasure>());
+        BagItemList = new List<Item>();
+        BagItemList.AddRange(_base.BagConsumableList);
+        BagItemList.AddRange(_base.BagEquipmentList);
+        BagItemList.AddRange(_base.BagTreasureList);
+        
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
         DeckList = new List<Command>(_base.DeckList ?? new List<Command>());
         StorageList = new List<Command>(_base.StorageList ?? new List<Command>());
@@ -172,29 +180,62 @@ public class Battler
     // もともと装備をしていない場合はnullを返す
     public Equipment AddEquipment(Equipment equipment)
     {
-        Equipment existingEquipment = Equipments.Find(e => e.Base.EquipmentType == equipment.Base.EquipmentType);
+        Equipment existingEquipment = EquipmentList.Find(e => e.EquipmentBase.EquipmentType == equipment.EquipmentBase.EquipmentType);
         if (existingEquipment != null)
         {
-            Equipments.Remove(existingEquipment);
-            Equipments.Add(equipment);
+            EquipmentList.Remove(existingEquipment);
+            EquipmentList.Add(equipment);
             return existingEquipment;
         }
         else
         {
-            Equipments.Add(equipment);
+            EquipmentList.Add(equipment);
             return null;
         }
     }
 
     public bool AddItem(Item item)
     {
-        if (PouchList.Count < Pouch.val)
+
+        if (item is Consumable consumable)
         {
-            PouchList.Add(item);
+            if (PouchList.Count < Pouch.val)
+            {
+                PouchList.Add(consumable);
+            }
+            else if (BagItemList.Count < Bag.val)
+            {
+                BagItemList.Add(consumable);
+            }
+            else
+            {
+                Debug.Log("Pouch & Bag is full.");
+                return false;
+            }
         }
-        else if (BagItemList.Count + Equipments.Count < Bag.val)
+        else if (item is Equipment equipment)
         {
-            BagItemList.Add(item);
+            if (BagItemList.Count < Bag.val)
+            {
+                BagItemList.Add(equipment);
+            }
+            else
+            {
+                Debug.Log("Bag is full.");
+                return false;
+            }
+        }
+        else if (item is Treasure treasure)
+        {
+            if (BagItemList.Count < Bag.val)
+            {
+                BagItemList.Add(treasure);
+            }
+            else
+            {
+                Debug.Log("Bag is full.");
+                return false;
+            }
         }
         else
         {
@@ -204,10 +245,11 @@ public class Battler
         return true;
     }
 
-    public void AddEquipmentToEquipments(Equipment equipment)
+    public void AddEquipmentToBag(Equipment equipment)
     {
         // プレイヤーのインベントリにアイテムを追加する処理
-        Equipments.Add(equipment); // Bag はプレイヤーのインベントリリスト
+        EquipmentList.Add(equipment); // Bag はプレイヤーのインベントリリスト
+        BagItemList.Add(equipment); // Bag はプレイヤーのインベントリリスト
     }
 
     public void AddCommandToDeck(Command command)

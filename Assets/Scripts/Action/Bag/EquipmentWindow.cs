@@ -36,7 +36,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         if (droppedEquipmentBlock != null)
         {
             // すでに装備ウィンドウに同じアイテムがあるか確認
-            if (playerBattler.Equipments.Contains(droppedEquipmentBlock.Equipment))
+            if (playerBattler.EquipmentList.Contains(droppedEquipmentBlock.Equipment))
             {
                 Debug.Log("アイテムはすでに装備しています。");
                 return; // 追加しない
@@ -57,11 +57,11 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         leg.ReSetSlot();
         armEquipmentList.Clear();
 
-        List<Equipment> equipments = playerBattler.Equipments;
+        List<Equipment> equipments = playerBattler.EquipmentList;
 
         for (int i = 0; i < equipments.Count; i++)
         {
-            if (equipments[i].Base.EquipmentType == EquipmentType.Arm)
+            if (equipments[i].EquipmentBase.EquipmentType == EquipmentType.Arm)
             {
                 armEquipmentList.Add(equipments[i]);
 
@@ -69,7 +69,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             }
             else
             {
-                EquipmentSlot slot = GetTargetSlot(equipments[i].Base.EquipmentType);
+                EquipmentSlot slot = GetTargetSlot(equipments[i].EquipmentBase.EquipmentType);
                 SetEquipmentBlock(slot, equipments[i]);
             }
         }
@@ -79,15 +79,15 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     // 外部から追加する際に使用する。
     public void AddEquipment(Equipment equipment)
     {
-        playerBattler.Equipments.Add(equipment);
-        if (equipment.Base.EquipmentType == EquipmentType.Arm)
+        playerBattler.EquipmentList.Add(equipment);
+        if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
         {
             armEquipmentList.Add(equipment);
             SetArmEquipmentBlock();
         }
         else
         {
-            EquipmentSlot slot = GetTargetSlot(equipment.Base.EquipmentType);
+            EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
             SetEquipmentBlock(slot, equipment);
         }
     }
@@ -95,15 +95,15 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     public void RemoveEquipment(EquipmentBlock equipmentBlock)
     {
         Equipment equipment = equipmentBlock.Equipment;
-        playerBattler.Equipments.Remove(equipment);
-        if (equipment.Base.EquipmentType == EquipmentType.Arm)
+        playerBattler.EquipmentList.Remove(equipment);
+        if (equipment.EquipmentBase.EquipmentType == EquipmentType.Arm)
         {
             armEquipmentList.Remove(equipment);
             SetArmEquipmentBlock();
         }
         else
         {
-            EquipmentSlot slot = GetTargetSlot(equipment.Base.EquipmentType);
+            EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
             slot.ReSetSlot();
         }
     }
@@ -136,8 +136,8 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         {
             for (int i = 0; i < armEquipmentList.Count - 2; i++)
             {
-                playerBattler.Equipments.Remove(armEquipmentList[i]);
-                playerBattler.BagEquipmentList.Add(armEquipmentList[i]);
+                playerBattler.EquipmentList.Remove(armEquipmentList[i]);
+                playerBattler.BagItemList.Add(armEquipmentList[i]);
             }
             armEquipmentList.RemoveRange(0, armEquipmentList.Count - 2);
         }else if (armEquipmentList.Count == 0)

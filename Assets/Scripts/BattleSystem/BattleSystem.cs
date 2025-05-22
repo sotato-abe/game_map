@@ -199,16 +199,16 @@ public class BattleSystem : MonoBehaviour
     public void BattleResult()
     {
         actionBoard.ChangeExecuteFlg(false);
-        List<Item> targetItems = enemyUnit.Battler.PouchList;
+        List<Consumable> targetItems = enemyUnit.Battler.PouchList;
         string resultItemMessageList = "";
         resultItemMessageList = enemyUnit.Battler.Base.Name + " に勝利した。\n";
 
         if (targetItems != null && targetItems.Count > 0)
         {
             string itemList = "";
-            List<Item> awardedItems = new List<Item>();
+            List<Consumable> awardedItems = new List<Consumable>();
 
-            foreach (Item item in targetItems)
+            foreach (Consumable item in targetItems)
             {
                 // TODO：アイテムのレア度によって取得確率を変える
                 if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())

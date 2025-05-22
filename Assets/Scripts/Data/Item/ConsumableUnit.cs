@@ -4,30 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemUnit : Unit
+public class ConsumableUnit : Unit
 {
-    public Item Item { get; set; }
+    public Consumable Consumable { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image cursor;
-    [SerializeField] ConsumableDialog dialog;
+    // [SerializeField] ConsumableDialog dialog;
     private bool isActive = false;
 
-    public virtual void Setup(Item item)
+    public virtual void Setup(Consumable consumable)
     {
-        Item = item;
-        image.sprite = Item.Base.Sprite;
-        dialog.Setup(Item);
+        Consumable = consumable;
+        image.sprite = Consumable.Base.Sprite;
+        // dialog.Setup(Consumable);
     }
 
     public void OnPointerEnter()
     {
-        dialog.ShowDialog(true);
+        // dialog.ShowDialog(true);
         StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
-        dialog.ShowDialog(false);
+        // dialog.ShowDialog(false);
         StartCoroutine(OnPointer(false));
     }
 

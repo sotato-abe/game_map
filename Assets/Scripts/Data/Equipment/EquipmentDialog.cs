@@ -13,16 +13,19 @@ public class EquipmentDialog : VariableDialog
     [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] EnegyIcon costPrefab;
 
-    public void Setup(Equipment equipment)
+    public void Setup(Item item)
     {
-        namePlate.SetName(equipment.Base.Name);
-        description.text = equipment.Base.Description;
-        probability.SetText(equipment.Base.Probability.Value.ToString() + "%");
-        ResetSkillList();
-        SetAttack(equipment.Base.AttackList);
-        SetEnchant(equipment.Base.EnchantList);
-        SetCost(equipment.Base.CostList);
-        ResizeDialog();
+        if(item is Equipment equipment)
+        {
+            namePlate.SetName(equipment.EquipmentBase.Name);
+            description.text = equipment.EquipmentBase.Description;
+            probability.SetText(equipment.EquipmentBase.Probability.Value.ToString() + "%");
+            ResetSkillList();
+            SetAttack(equipment.EquipmentBase.AttackList);
+            SetEnchant(equipment.EquipmentBase.EnchantList);
+            SetCost(equipment.EquipmentBase.CostList);
+            ResizeDialog();
+        }
     }
 
     private void ResetSkillList()

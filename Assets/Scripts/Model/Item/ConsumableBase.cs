@@ -5,4 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item/Consumable")]
 public class ConsumableBase : ItemBase
 {
+    [SerializeField] int probability = 100;
+    [SerializeField] int lifeCost;
+    [SerializeField] int batteryCost;
+    [SerializeField] int soulCost;
+    [SerializeField] private List<Enegy> attackList = new List<Enegy>();
+    [SerializeField] private List<Enegy> recoveryList = new List<Enegy>();
+    [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
+
+
+    public Probability Probability { get => probability; }
+    public Enegy LifeCost => new Enegy(EnegyType.Life, lifeCost);
+    public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
+    public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
+    public List<Enegy> CostList => new List<Enegy> { LifeCost, BatteryCost, SoulCost, };
+    public List<Enegy> AttackList { get => attackList; }
+    public List<Enegy> RecoveryList { get => recoveryList; }
+    public List<Enchant> EnchantList { get => enchantList; }
 }

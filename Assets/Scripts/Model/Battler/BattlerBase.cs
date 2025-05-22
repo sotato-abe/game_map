@@ -26,14 +26,15 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int exp = 10;
 
     [SerializeField] List<Ability> abilityList;
-    [SerializeField] List<Equipment> equipments;
+    [SerializeField] List<Equipment> equipmentList;
     [SerializeField] List<Command> runTable;
     [SerializeField] List<Command> deckList;
     [SerializeField] List<Command> storageList;
-    [SerializeField] List<Item> pouchList;
-    [SerializeField] List<Item> bagItemList;
+    [SerializeField] List<Consumable> pouchList;
+    [SerializeField] List<Consumable> bagConsumableList;
     [SerializeField] List<Equipment> bagEquipmentList;
-    [SerializeField] List<TalkMessage> messages;
+    [SerializeField] List<Treasure> bagTreasureList;
+    [SerializeField] List<TalkMessage> messageList;
 
     public string Name { get => name; }
     public Sprite Sprite { get => sprite; }
@@ -57,13 +58,14 @@ public class BattlerBase : ScriptableObject
     public int Exp { get => exp; }
 
     public List<Ability> AbilityList { get => abilityList; }
-    public List<Equipment> Equipments { get => equipments; }
-    public List<Item> PouchList { get => pouchList; }
-    public List<Item> BagItemList { get => bagItemList; }
+    public List<Equipment> EquipmentList { get => equipmentList; }
+    public List<Consumable> PouchList { get => pouchList; }
+    public List<Consumable> BagConsumableList { get => bagConsumableList; }
     public List<Equipment> BagEquipmentList { get => bagEquipmentList; }
+    public List<Treasure> BagTreasureList { get => bagTreasureList; }
     public List<Command> RunTable { get => runTable; }
     public List<Command> DeckList { get => deckList; }
     public List<Command> StorageList { get => storageList; }
-    public List<TalkMessage> Messages { get => messages; }
+    public List<TalkMessage> MessageList { get => messageList; }
     public FieldBase Birthplace { get => birthplace; }
 }

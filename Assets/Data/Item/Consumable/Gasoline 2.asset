@@ -9,17 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f5695568e4d2dc45867ecb1fe9fe10f, type: 3}
-  m_Name: Gasoline
+  m_Script: {fileID: 11500000, guid: fa8bcf16c5065f94bb999b5e48c60d4d, type: 3}
+  m_Name: Gasoline 2
   m_EditorClassIdentifier: 
   name: "\u30AC\u30BD\u30EA\u30F3"
-  rarity: 0
+  rarity: 1
   sprite: {fileID: 1380518283, guid: ca6b786c80ee42d4092d6e3d481ecf04, type: 3}
-  description: "\u6614\u306E\u30AD\u30AB\u30A4\u3092\u52D5\u304B\u3059\u306E\u306B\u4F7F\u308F\u308C\u308B\u3002"
+  description: "\u706B\u3092\u3064\u3051\u305F\u308A\u3001\n\u6614\u306E\u30AD\u30AB\u30A4\u3092\u52D5\u304B\u3059\u306E\u306B\u4F7F\u308F\u308C\u308B\u3002"
   probability: 100
   lifeCost: 0
   batteryCost: 0
   soulCost: 0
-  attackList: []
+  weight: 0
+  attackList:
+  - type: 0
+    val: 30
   recoveryList: []
   enchantList: []

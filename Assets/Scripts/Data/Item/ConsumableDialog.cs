@@ -4,25 +4,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemDialog : VariableDialog
+public class ConsumableDialog : VariableDialog
 {
     [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
     [SerializeField] EnegyIcon enegyPrefab;
-    [SerializeField] EnegyIcon costPrefab;
     [SerializeField] EnchantIcon enchantPrefab;
+    [SerializeField] EnegyIcon costPrefab;
 
     public void Setup(Item item)
     {
-        namePlate.SetName(item.Base.Name);
-        description.text = item.Base.Description;
-        probability.SetText(item.Base.Probability.Value.ToString() + "%");
-        ResetSkillList();
-        SetEnegy(item.Base.RecoveryList);
-        SetEnchant(item.Base.EnchantList);
-        SetCost(item.Base.CostList);
-        ResizeDialog();
+        if (item is Consumable consumable)
+        {
+            namePlate.SetName(item.Base.Name);
+            description.text = item.Base.Description;
+            probability.SetText(consumable.ConsumableBase.Probability.Value.ToString() + "%");
+            ResetSkillList();
+            SetEnegy(consumable.ConsumableBase.RecoveryList);
+            SetEnchant(consumable.ConsumableBase.EnchantList);
+            SetCost(consumable.ConsumableBase.CostList);
+            ResizeDialog();
+        }
     }
 
     private void ResetSkillList()

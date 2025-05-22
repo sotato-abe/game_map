@@ -7,7 +7,7 @@ using TMPro;
 public class PouchPanel : Panel
 {
     [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
-    // [SerializeField] GameObject blockPrefab;  // blockのプレハブ
+    [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] BattleUnit playerUnit;
@@ -96,9 +96,10 @@ public class PouchPanel : Panel
 
         int itemNum = 0;
 
-        foreach (var item in playerBattler.PouchList)
+        foreach (var consumable in playerBattler.PouchList)
         {
             // ItemUnitのインスタンスを生成
+            Item item = consumable;
             GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
@@ -117,18 +118,18 @@ public class PouchPanel : Panel
         ArrengeItemUnits();
     }
 
-    // private void SetBlock()
-    // {
-    //     int blockNum = row - playerBattler.Pouch.val % row;
-    //     blockList.Clear();
+    private void SetBlock()
+    {
+        int blockNum = maxRow - (playerBattler.Pouch.val % maxRow);
+        blockList.Clear();
 
-    //     for (int i = 0; i < blockNum; i++)
-    //     {
-    //         GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
-    //         blockObject.gameObject.SetActive(true);
-    //         blockList.Add(blockObject);
-    //     }
-    // }
+        for (int i = 0; i < blockNum; i++)
+        {
+            GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
+            blockObject.gameObject.SetActive(true);
+            blockList.Add(blockObject);
+        }
+    }
     //カードを整列させる
     public void ArrengeItemUnits()
     {
@@ -208,18 +209,25 @@ public class PouchPanel : Panel
                 if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
                 {
                     isActive = false;
-                    playerBattler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    playerBattler.PouchList.Remove(targetItemUnit.Item);
+                    // playerBattler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
+                    if (targetItemUnit.Item is Consumable consumable)
+                    {
+                        playerBattler.PouchList.Remove(consumable);
 
-                    selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
+                        selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
 
-                    var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-                    selectedItemUnit.SetTarget(false);
+                        var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
+                        selectedItemUnit.SetTarget(false);
 
-                    SetItemUnit();
-                    playerUnit.UpdateEnegyUI();
+                        SetItemUnit();
+                        playerUnit.UpdateEnegyUI();
 
-                    OnActionExecute?.Invoke();
+                        OnActionExecute?.Invoke();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Selected item is not a consumable.");
+                    }
                 }
                 else
                 {

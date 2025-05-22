@@ -118,17 +118,17 @@ public class AttackSystem : MonoBehaviour
     {
         List<Damage> damages = new List<Damage>();
 
-        foreach (Equipment equipment in enemyUnit.Battler.Equipments)
+        foreach (Equipment equipment in enemyUnit.Battler.EquipmentList)
         {
             if (CheckEnegy(equipment) == false)
             {
                 continue;
             }
 
-            if (Random.Range(0, 100) < equipment.Base.Probability)
+            if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
             {
                 UseEnegy(equipment);
-                foreach (var attack in equipment.Base.AttackList)
+                foreach (var attack in equipment.EquipmentBase.AttackList)
                 {
                     Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
                     damages.Add(damage);
@@ -160,9 +160,9 @@ public class AttackSystem : MonoBehaviour
     public bool CheckEnegy(Equipment equipment)
     {
         if (
-            equipment.Base.LifeCost.val <= enemyUnit.Battler.Life &&
-            equipment.Base.BatteryCost.val <= enemyUnit.Battler.Battery &&
-            equipment.Base.SoulCost.val <= enemyUnit.Battler.Soul
+            equipment.EquipmentBase.LifeCost.val <= enemyUnit.Battler.Life &&
+            equipment.EquipmentBase.BatteryCost.val <= enemyUnit.Battler.Battery &&
+            equipment.EquipmentBase.SoulCost.val <= enemyUnit.Battler.Soul
         )
         {
             return true;
@@ -175,9 +175,9 @@ public class AttackSystem : MonoBehaviour
 
     public void UseEnegy(Equipment equipment)
     {
-        enemyUnit.Battler.Life -= equipment.Base.LifeCost.val;
-        enemyUnit.Battler.Battery -= equipment.Base.BatteryCost.val;
-        enemyUnit.Battler.Soul -= equipment.Base.SoulCost.val;
+        enemyUnit.Battler.Life -= equipment.EquipmentBase.LifeCost.val;
+        enemyUnit.Battler.Battery -= equipment.EquipmentBase.BatteryCost.val;
+        enemyUnit.Battler.Soul -= equipment.EquipmentBase.SoulCost.val;
         enemyUnit.UpdateEnegyUI();
     }
 }
