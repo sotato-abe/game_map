@@ -14,7 +14,9 @@ public class FieldBase : ScriptableObject
     [SerializeField, TextArea] string description;
     [SerializeField] int randomFillPercent = 45; // マップの建蔽率
     [SerializeField] Vector2Int coordinate;
-    [SerializeField] List<Item> items;
+    [SerializeField] List<Consumable> consumables;
+    [SerializeField] List<Equipment> equipments;
+    [SerializeField] List<Treasure> treasures;
     [SerializeField] List<Battler> enemies;
     [SerializeField] List<BuildingBase> buildings;
 
@@ -29,6 +31,8 @@ public class FieldBase : ScriptableObject
     public Vector2Int Coordinate { get => coordinate; }
 
     public List<Battler> Enemies { get => enemies; }
-    public List<Item> Items { get => items; }
+    public List<Consumable> Consumables { get => consumables; }
+    public List<Equipment> Equipments { get => equipments; }
+    public List<Treasure> Treasures { get => treasures; }
     public List<BuildingBase> Buildings { get => buildings; }
 }

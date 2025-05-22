@@ -39,9 +39,6 @@ public class Battler
     public List<Command> StorageList { get; set; }
     public List<Consumable> PouchList { get; set; }
     public List<Item> BagItemList { get; set; }
-    // public List<Consumable> BagConsumableList { get; set; }
-    // public List<Equipment> BagEquipmentList { get; set; }
-    // public List<Treasure> BagTreasureList { get; set; }
     public List<Enchant> Enchants = new List<Enchant>();
     public Vector2Int coordinate;
 
@@ -87,9 +84,7 @@ public class Battler
         AbilityList = new List<Ability>(_base.AbilityList ?? new List<Ability>());
         EquipmentList = new List<Equipment>(_base.EquipmentList ?? new List<Equipment>());
         PouchList = new List<Consumable>(_base.PouchList ?? new List<Consumable>());
-        // BagConsumableList = new List<Consumable>(_base.BagConsumableList ?? new List<Consumable>());
-        // BagEquipmentList = new List<Equipment>(_base.BagEquipmentList ?? new List<Equipment>());
-        // BagTreasureList = new List<Treasure>(_base.BagTreasureList ?? new List<Treasure>());
+
         BagItemList = new List<Item>();
         BagItemList.AddRange(_base.BagConsumableList);
         BagItemList.AddRange(_base.BagEquipmentList);

@@ -24,9 +24,12 @@ public class FieldData
 
     private void SetItem()
     {
+        items.Clear();
         if (fieldBase != null)
         {
-            items.AddRange(fieldBase.Items);
+            items.AddRange(fieldBase.Consumables);
+            items.AddRange(fieldBase.Equipments);
+            items.AddRange(fieldBase.Treasures);
         }
         List<Item> fieldItems = FieldBaseDatabase.Instance.GetItemList((FieldType)fieldType);
         items.AddRange(fieldItems);

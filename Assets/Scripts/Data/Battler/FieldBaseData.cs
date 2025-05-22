@@ -6,6 +6,8 @@ public class FieldBaseData : ScriptableObject
 {
     public FieldType fieldType;
     public List<Battler> battlerList;
-    public List<Item> itemList;
-    public FieldTileListBase tileList;    
+    public List<Consumable> consumables;
+    public List<Equipment> equipments;
+    public List<Treasure> treasures;
+    public FieldTileListBase tileList;
 }

@@ -61,7 +61,11 @@ public class FieldBaseDatabase : MonoBehaviour
     {
         if (dataDict != null && dataDict.TryGetValue(type, out var data))
         {
-            return data.itemList;
+            List<Item> itemList = new List<Item>();
+            itemList.AddRange(data.consumables);
+            itemList.AddRange(data.equipments);
+            itemList.AddRange(data.treasures);
+            return itemList;
         }
 
         return null;
