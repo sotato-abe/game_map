@@ -12,4 +12,6 @@ public class Equipment : Item
     public override ItemBase Base => _base; // EquipmentBase は ItemBase を継承している前提
     public EquipmentBase EquipmentBase => _base;
     public int Level => level;
+
+    public Attack Attack { get; private set; }
 }

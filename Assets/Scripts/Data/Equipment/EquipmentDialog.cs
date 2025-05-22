@@ -21,7 +21,7 @@ public class EquipmentDialog : VariableDialog
             description.text = equipment.EquipmentBase.Description;
             probability.SetText(equipment.EquipmentBase.Probability.Value.ToString() + "%");
             ResetSkillList();
-            SetAttack(equipment.EquipmentBase.AttackList);
+            // SetAttack(equipment.EquipmentBase.AttackList);
             SetEnchant(equipment.EquipmentBase.EnchantList);
             SetCost(equipment.EquipmentBase.CostList);
             ResizeDialog();

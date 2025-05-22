@@ -1,10 +1,10 @@
 public enum EnchantType
 {
     // バフ
-    Power,          // パワー (ATKが1アップする。)
+    Power,          // パワー (POWが1アップする。)
     Guard,          // ガード (DEFが１アップする。)
-    Adrenalin,      // アドレナリン（ATK・SPDを１上げる）
-    Curing,         // 脱力（ATKとDEFを１上げ、SPDを１下げる）
+    Adrenalin,      // アドレナリン（POW・SPDを１上げる）
+    Curing,         // 脱力（POWとDEFを１上げ、SPDを１下げる）
     Acceleration,   // 加速（SPDを１上げる）
     Vaccine,       // ワクチン（毒をのデバフを受け付けない）
     Lucky,          // 幸運（LUKを１上げる）
@@ -22,7 +22,7 @@ public enum EnchantType
     Paralysis,      // こんらん（ターゲット指定がランダムになる（自分も含まれる））
     Restraint,      // 拘束（SPDを１下げる）
     Bug,            // バグ（コマンド実行時にLIFEを１失う）
-    Atrophy,        // イシュク ATKが1ダウンする。
+    Atrophy,        // イシュク POWが1ダウンする。
     Fatigue,        // 疲労 DEFを1ダウンする TODO 変更予定。
     UnLuckey,       // 不運 LUKを1ダウンする。
     Crack,          // 亀裂 ガードを1ダウンする。
@@ -33,7 +33,7 @@ public enum EnchantType
 
     // 両方
     HellFire,       // 業火 (ターン開始時にLIFEを１失う。物理攻撃を受けたときに攻撃者に火傷を付与する。)
-    Indignation,    // 憤怒 (ATKを20%アップさせ、確率を30％下げる（下限は5%）)
+    Indignation,    // 憤怒 (POWを20%アップさせ、確率を30％下げる（下限は5%）)
     Petrifaction,   // 石化 (ダメージを受けない、そのかわり行動で。)
     Sleep,          // 睡眠 (1ターン行動できないが、ターン終了後にLIFEを5％回復する。攻撃されると解除される。)
 }

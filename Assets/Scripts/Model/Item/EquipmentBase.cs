@@ -8,7 +8,7 @@ public class EquipmentBase : ItemBase
     [SerializeField] EquipmentType equipmentType;
     [SerializeField] int life;
     [SerializeField] int battery;
-    [SerializeField] int attack;
+    [SerializeField] int power;
     [SerializeField] int technique;
     [SerializeField] int defense;
     [SerializeField] int speed;
@@ -18,14 +18,16 @@ public class EquipmentBase : ItemBase
     [SerializeField] int lifeCost;
     [SerializeField] int batteryCost;
     [SerializeField] int soulCost;
-    [SerializeField] private List<Enegy> attackList = new List<Enegy>();
+
+    [SerializeField] TargetType targetType;
+    [SerializeField] private List<Enegy> damageList = new List<Enegy>();
     [SerializeField] private List<Enegy> recoveryList = new List<Enegy>();
     [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
     public EquipmentType EquipmentType { get => equipmentType; }
     public int Life { get => life; }
     public int Battery { get => battery; }
-    public int Attack { get => attack; }
+    public int Power { get => power; }
     public int Technique { get => technique; }
     public int Defense { get => defense; }
     public int Speed { get => speed; }
@@ -36,7 +38,7 @@ public class EquipmentBase : ItemBase
     public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
     public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
     public List<Enegy> CostList => new List<Enegy> { LifeCost, BatteryCost, SoulCost, };
-    public List<Enegy> AttackList { get => attackList; }
+    public List<Enegy> DamageList { get => damageList; }
     public List<Enegy> RecoveryList { get => recoveryList; }
     public List<Enchant> EnchantList { get => enchantList; }
 }

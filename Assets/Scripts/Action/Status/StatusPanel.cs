@@ -139,7 +139,7 @@ public class StatusPanel : Panel
 
     private Transform GetTargetParent(StatusType type)
     {
-        return (type == StatusType.ATK || type == StatusType.TEC ||
+        return (type == StatusType.POW || type == StatusType.TEC ||
                 type == StatusType.DEF || type == StatusType.SPD || type == StatusType.LUK)
                 ? statusList.transform
                 : (type == StatusType.MMR || type == StatusType.BAG || type == StatusType.STG || type == StatusType.POC)

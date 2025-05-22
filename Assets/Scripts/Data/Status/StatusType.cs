@@ -1,6 +1,6 @@
 public enum StatusType
 {
-    ATK, // アタック
+    POW, // アタック
     DEF, // ディフェンス
     TEC, // テクニック
     SPD, // スピード

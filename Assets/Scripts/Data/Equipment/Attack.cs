@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class Attack
 {
-    List<Enegy> DamageList;
-    List<Enegy> RecoveryList;
-    List<Enchant> EnchantList;
-    TargetType Target = TargetType.Enemy;
+    public List<Enegy> DamageList { get; set; } = new List<Enegy>();
+    public List<Enegy> RecoveryList { get; set; } = new List<Enegy>();
+    public List<Enchant> EnchantList { get; set; } = new List<Enchant>();
+    public TargetType Target { get; set; } = TargetType.Enemy;
 }
 

@@ -18,7 +18,7 @@ public class Battler
     public int MaxBattery { get; set; }
     public int Battery { get; set; }
 
-    public Status Attack { get; set; }
+    public Status Power { get; set; }
     public Status Technique { get; set; }
     public Status Defense { get; set; }
     public Status Speed { get; set; }
@@ -44,7 +44,7 @@ public class Battler
 
     public List<Status> StatusList => new List<Status>
     {
-        Attack,
+        Power,
         Technique,
         Defense,
         Speed,
@@ -67,7 +67,7 @@ public class Battler
         Life = MaxLife;
         MaxBattery = _base.MaxBattery;
         Battery = MaxBattery;
-        Attack = _base.Attack;
+        Power = _base.Power;
         Technique = _base.Technique;
         Defense = _base.Defense;
         Speed = _base.Speed;
@@ -121,24 +121,24 @@ public class Battler
     // ライフを割り切るときにfalseを返す（isAlive）
     public void TakeDamage(List<Damage> damageList)
     {
-        foreach (Damage damage in damageList)
-        {
-            if (damage.AttackType == AttackType.Enegy)
-            {
-                if (damage.EnegyType == EnegyType.Life)
-                {
-                    Life = Life - damage.Val;
-                }
-                if (damage.EnegyType == EnegyType.Battery)
-                {
-                    Battery = Battery - damage.Val;
-                }
-                if (damage.EnegyType == EnegyType.Soul)
-                {
-                    Soul = Soul - damage.Val;
-                }
-            }
-        }
+        // foreach (Damage damage in damageList)
+        // {
+        //     if (damage.AttackType == AttackType.Enegy)
+        //     {
+        //         if (damage.EnegyType == EnegyType.Life)
+        //         {
+        //             Life = Life - damage.Val;
+        //         }
+        //         if (damage.EnegyType == EnegyType.Battery)
+        //         {
+        //             Battery = Battery - damage.Val;
+        //         }
+        //         if (damage.EnegyType == EnegyType.Soul)
+        //         {
+        //             Soul = Soul - damage.Val;
+        //         }
+        //     }
+        // }
     }
 
     public void TakeEnchant(List<Enchant> enchantList)

@@ -127,12 +127,12 @@ public class AttackSystem : MonoBehaviour
 
             if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
             {
-                UseEnegy(equipment);
-                foreach (var attack in equipment.EquipmentBase.AttackList)
-                {
-                    Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
-                    damages.Add(damage);
-                }
+                // UseEnegy(equipment);
+                // foreach (var attack in equipment.EquipmentBase.AttackList)
+                // {
+                //     Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
+                //     damages.Add(damage);
+                // }
             }
         }
 

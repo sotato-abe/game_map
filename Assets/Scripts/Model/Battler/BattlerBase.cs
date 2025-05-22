@@ -11,7 +11,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] FieldBase birthplace;
     [SerializeField] int maxLife = 10;
     [SerializeField] int maxBattery = 5;
-    [SerializeField] int attack = 1;
+    [SerializeField] int power = 1;
     [SerializeField] int defense = 1;
     [SerializeField] int technique = 1;
     [SerializeField] int speed = 1;
@@ -42,7 +42,7 @@ public class BattlerBase : ScriptableObject
     public int MaxLife { get => maxLife; }
     public int MaxBattery { get => maxBattery; }
 
-    public Status Attack => new Status(StatusType.ATK, attack);
+    public Status Power => new Status(StatusType.POW, power);
     public Status Technique => new Status(StatusType.TEC, technique);
     public Status Defense => new Status(StatusType.DEF, defense);
     public Status Speed => new Status(StatusType.SPD, speed);
