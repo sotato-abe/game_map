@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewBattlerData", menuName = "Field/FieldBaseData")]
+[CreateAssetMenu(fileName = "NewFieldBaseData", menuName = "Field/FieldBaseData")]
 public class FieldBaseData : ScriptableObject
 {
     public FieldType fieldType;
@@ -10,4 +10,5 @@ public class FieldBaseData : ScriptableObject
     public List<Equipment> equipments;
     public List<Treasure> treasures;
     public FieldTileListBase tileList;
+    public List<BattlerGroup> battlerGroups = new List<BattlerGroup>();
 }

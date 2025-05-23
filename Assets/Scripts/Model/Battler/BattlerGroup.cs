@@ -6,4 +6,9 @@ using UnityEngine;
 public class BattlerGroup : ScriptableObject
 {
     [SerializeField] List<Battler> BattlerList;
+
+    public List<Battler> GetBattlerList()
+    {
+        return BattlerList;
+    }
 }

@@ -81,6 +81,16 @@ public class FieldBaseDatabase : MonoBehaviour
         return null;
     }
 
+    public List<BattlerGroup> GetBattlerGroupList(FieldType type)
+    {
+        if (dataDict != null && dataDict.TryGetValue(type, out var data))
+        {
+            return data.battlerGroups;
+        }
+
+        return null;
+    }
+
     public FieldTileListBase GetTileList(FieldType type)
     {
         if (dataDict != null && dataDict.TryGetValue(type, out var data))

@@ -66,8 +66,10 @@ public class GameController : MonoBehaviour
         reserveSystem.gameObject.SetActive(false);
         configSystem.SetActive(false);
         enemy = fieldSystem.GetEnemy();
+        List<Battler> enemyGroup = fieldSystem.GetEnemyGruop();
         battleSystem.gameObject.SetActive(true);
-        battleSystem.BattleStart(playerUnit.Battler, enemy);
+        // battleSystem.BattleStart(enemy);
+        battleSystem.SetBattle(enemyGroup);
         rightUnit.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
         messagePanel.SetActive(false);

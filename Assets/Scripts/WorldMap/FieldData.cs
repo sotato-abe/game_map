@@ -41,9 +41,12 @@ public class FieldData
         if (fieldBase != null)
         {
             enemies.AddRange(fieldBase.Enemies);
+            enemyGroups.AddRange(fieldBase.EnemyGroups);
         }
         List<Battler> fieldEnemies = FieldBaseDatabase.Instance.GetBattlerList((FieldType)fieldType);
         enemies.AddRange(fieldEnemies);
+        List<BattlerGroup> fieldEnemyGroup = FieldBaseDatabase.Instance.GetBattlerGroupList((FieldType)fieldType);
+        enemyGroups.AddRange(fieldEnemyGroup);
     }
 
     public Item GetRandomItem()
@@ -80,5 +83,23 @@ public class FieldData
         }
 
         return enemies[r];
+    }
+
+    public List<Battler> GetRundamEnemyGroup()
+    {
+        if (enemyGroups == null || enemyGroups.Count == 0)
+        {
+            Debug.LogError("GetRandomEnemyGroup: enemiesリストが空です");
+            return null;
+        }
+
+        int r = Random.Range(0, enemyGroups.Count);
+        if (enemyGroups[r] == null)
+        {
+            Debug.LogError($"GetRandomEnemyGroup: enemies[{r}] が null です");
+            return null;
+        }
+
+        return enemyGroups[r].GetBattlerList();
     }
 }

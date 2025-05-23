@@ -19,6 +19,7 @@ public class FieldBase : ScriptableObject
     [SerializeField] List<Treasure> treasures;
     [SerializeField] List<Battler> enemies;
     [SerializeField] List<BuildingBase> buildings;
+    [SerializeField] List<BattlerGroup> enemyGroups = new List<BattlerGroup>();
 
     public int Id { get => id; }
     public string Name { get => mapName; }
@@ -35,4 +36,5 @@ public class FieldBase : ScriptableObject
     public List<Equipment> Equipments { get => equipments; }
     public List<Treasure> Treasures { get => treasures; }
     public List<BuildingBase> Buildings { get => buildings; }
+    public List<BattlerGroup> EnemyGroups { get => enemyGroups; }
 }

@@ -340,10 +340,20 @@ public class FieldSystem : MonoBehaviour
         fieldInfoPanel.gameObject.SetActive(false);
         // fieldInfoPanel.Setup(fieldData.fieldBase);
     }
-
     public Battler GetEnemy()
     {
         return fieldData.GetRundamEnemy();
+    }
+
+    public List<Battler> GetEnemyGruop()
+    {
+        List<Battler> enemyGroup = fieldData.GetRundamEnemyGroup();
+        if (enemyGroup == null)
+        {
+            Debug.LogError("GetEnemy: enemyGroupがnullです");
+            return null;
+        }
+        return enemyGroup;
     }
 
     public void FieldInfoPanleSwitch(bool isOpen)

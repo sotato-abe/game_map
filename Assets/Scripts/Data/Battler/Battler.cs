@@ -130,11 +130,6 @@ public class Battler
             damageList.AddRange(attack.DamageList);
             recoveryList.AddRange(attack.RecoveryList);
             enchantList.AddRange(attack.EnchantList);
-
-            Debug.Log($"attack: {attack.Target}");
-            Debug.Log($"damageList: {attack.DamageList.Count}");
-            Debug.Log($"recoveryList: {attack.RecoveryList.Count}");
-            Debug.Log($"enchantList: {attack.EnchantList.Count}");
         }
         TakeEnegy(damageList, true);
         TakeRecovery(recoveryList);

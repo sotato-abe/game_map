@@ -32,9 +32,30 @@ public class TurnOrderSystem : MonoBehaviour
         GenerateTurnBattler();
     }
 
+    public void ReSetTurnOrderSystem()
+    {
+        // 既存の子オブジェクトをすべて削除
+        foreach (Transform child in battlerList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        turnBattlerList.Clear();
+        turnBar.gameObject.SetActive(true);
+    }
+
     public void SetupPlayerBattler(Battler player)
     {
         playerBattler = player;
+        SetTurnBattler(playerBattler);
+    }
+
+    public void SetTurnBattler(Battler battler)
+    {
+        TurnBattler turnBattler = Instantiate(turnBattlerPrefab, battlerList.transform);
+        turnBattler.OnExecuteTurn += ExecuteTurn;
+        turnBattler.SetBattler(battler);
+        turnBattler.SetLane(turnLane);
+        turnBattlerList.Add(turnBattler);
     }
 
     private void GenerateTurnBattler()

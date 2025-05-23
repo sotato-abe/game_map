@@ -1206,7 +1206,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 600, y: 40}
-  m_SizeDelta: {x: 510, y: 300}
+  m_SizeDelta: {x: 650, y: 300}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &225038490
 MonoBehaviour:
@@ -1226,9 +1226,9 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 5
-  m_Spacing: -80
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_Spacing: -40
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -9341,10 +9341,14 @@ MonoBehaviour:
   actionBoard: {fileID: 1987657846}
   messagePanel: {fileID: 1685434740}
   playerUnit: {fileID: 1055977297}
+  allyUnitPrefab: {fileID: 2428576714935050543, guid: f408a883362f2b44cb50602fea2c4d70, type: 3}
   enemyUnit: {fileID: 1145119341}
+  enemyUnitPrefab: {fileID: 7852485535879243533, guid: 824457a14ae28404d8e7aba0e0e93753, type: 3}
   attackSystem: {fileID: 1883646491}
   actionIconPrefab: {fileID: 7113342901746470244, guid: 57ca0d3da03c85045b6a8bae1df615f2, type: 3}
   actionListObject: {fileID: 2031663355}
+  leftGroupPanel: {fileID: 497177301}
+  rightGroupPanel: {fileID: 225038488}
   state: 0
 --- !u!1 &1629055076
 GameObject:
@@ -11251,6 +11255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPanel: {fileID: 598288762}
+  messagePanel: {fileID: 1685434740}
 --- !u!224 &1883646492
 RectTransform:
   m_ObjectHideFlags: 0

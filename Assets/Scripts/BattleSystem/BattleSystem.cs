@@ -16,16 +16,23 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] ActionBoard actionBoard;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] BattleUnit playerUnit;
+    [SerializeField] BattleUnit allyUnitPrefab;
     [SerializeField] BattleUnit enemyUnit;
+    [SerializeField] BattleUnit enemyUnitPrefab;
     [SerializeField] AttackSystem attackSystem;
     [SerializeField] ActionIcon actionIconPrefab;
     [SerializeField] GameObject actionListObject;
+    [SerializeField] GameObject leftGroupPanel;
+    [SerializeField] GameObject rightGroupPanel;
 
     public BattleState state;
     private ActionType activeAction = ActionType.Attack;
     private ActionIcon selectedAction;
     private readonly List<ActionType> actionList = new List<ActionType> { };
     private readonly List<ActionIcon> actionIconList = new();
+
+    private List<BattleUnit> allyUnitList = new List<BattleUnit>();
+    private List<BattleUnit> enemyUnitList = new List<BattleUnit>();
 
 
     void Start()
@@ -100,26 +107,48 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    public void BattleStart(Battler player, Battler enemy)
+    public void SetBattle(List<Battler> enemies)
     {
         state = BattleState.TurnWait;
         SetActionList();
-        SetupBattlers(player, enemy);
-    }
-
-    public void SetupBattlers(Battler player, Battler enemy)
-    {
-        enemyUnit.gameObject.SetActive(true);
-        enemyUnit.Setup(enemy);
-        enemyUnit.SetMotion(MotionType.Jump);
-        enemyUnit.SetBattlerTalkMessage(MessageType.Encount);
+        turnOrderSystem.ReSetTurnOrderSystem();
+        turnOrderSystem.SetupPlayerBattler(playerUnit.Battler);
         playerUnit.SetBattlerTalkMessage(MessageType.Encount);
-
-        attackSystem.SetBattler(playerUnit, enemyUnit);
-        turnOrderSystem.SetupPlayerBattler(player);
-        turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
+        foreach (Transform child in rightGroupPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Battler enemy in enemies)
+        {
+            turnOrderSystem.SetTurnBattler(enemy);
+            SetBattlerUnit(enemy, false);
+        }
+        // attackSystem.SetBattler(playerUnit, enemyUnit);
+        attackSystem.SetPlayerBattler(playerUnit);
+        attackSystem.SetEnemyBattlers(enemyUnitList);
+        turnOrderSystem.SetActive(true);
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
+    }
+
+    public void SetBattlerUnit(Battler battler, bool isAlly)
+    {
+        if (isAlly)
+        {
+            BattleUnit battlerUnit = Instantiate(allyUnitPrefab, leftGroupPanel.transform);
+            battlerUnit.Setup(battler);
+            enemyUnit.SetMotion(MotionType.Jump);
+            battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
+            allyUnitList.Add(battlerUnit);
+        }
+        else
+        {
+            BattleUnit enemyUnit = Instantiate(enemyUnitPrefab, rightGroupPanel.transform);
+            enemyUnit.Setup(battler);
+            enemyUnit.SetMotion(MotionType.Jump);
+            enemyUnit.SetBattlerTalkMessage(MessageType.Encount);
+            enemyUnitList.Add(enemyUnit);
+        }
     }
 
     public void StartActionSelection()
@@ -195,75 +224,6 @@ public class BattleSystem : MonoBehaviour
         attackSystem.ExecuteEnemyAttack();
     }
 
-    public void BattleResult()
-    {
-        actionBoard.ChangeExecuteFlg(false);
-        List<Consumable> targetItems = enemyUnit.Battler.PouchList;
-        string resultItemMessageList = "";
-        resultItemMessageList = enemyUnit.Battler.Base.Name + " に勝利した。\n";
-
-        if (targetItems != null && targetItems.Count > 0)
-        {
-            string itemList = "";
-            List<Consumable> awardedItems = new List<Consumable>();
-
-            foreach (Consumable item in targetItems)
-            {
-                // TODO：アイテムのレア度によって取得確率を変える
-                if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
-                {
-                    bool success = playerUnit.Battler.AddItem(item); // プレイヤーのインベントリに追加
-                    if (success)
-                    {
-                        itemList += $"{item.Base.Name},";
-                    }
-                }
-            }
-
-            if (itemList != "")
-            {
-                resultItemMessageList += ($"{itemList}を手に入れた。\n");
-            }
-        }
-        else
-        {
-            resultItemMessageList += ($"{enemyUnit.Battler.Base.Name} は何も持っていなかった。\n");
-        }
-
-        string prizeText = "";
-        if (enemyUnit.Battler.Money > 0)
-        {
-            prizeText += ($"ゼニ：{enemyUnit.Battler.Money} Z、");
-            playerUnit.Battler.Money += enemyUnit.Battler.Money;
-        }
-        if (enemyUnit.Battler.Disk > 0)
-        {
-            prizeText += ($"ディスク：{enemyUnit.Battler.Disk}、");
-            playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
-        }
-        if (prizeText != "")
-        {
-            resultItemMessageList += ($"{prizeText}を手に入れた。\n");
-        }
-
-        if (playerUnit.Battler is PlayerBattler playerBattler)
-        {
-            playerBattler.AcquisitionExp(enemyUnit.Battler.Exp); // プレイヤーの経験値を加算
-            resultItemMessageList += ($"経験値を{enemyUnit.Battler.Exp}手に入れた。");
-            playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
-        }
-        messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
-
-        StartCoroutine(BattleResultView());
-    }
-
-    private IEnumerator BattleResultView()
-    {
-        // TODO : バトル結果の表示処理を実装する
-        yield return new WaitForSeconds(1.5f);
-        BattleEnd();
-    }
-
     private void BattleEscape()
     {
         StartCoroutine(EscapeResultView());
@@ -272,6 +232,13 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator EscapeResultView()
     {
         yield return new WaitForSeconds(1.5f);
+        BattleEnd();
+    }
+
+    // TODO : リワード移動したしこの処理をスキップしてもいいかも。
+    public void BattleResult()
+    {
+        actionBoard.ChangeExecuteFlg(false);
         BattleEnd();
     }
 
@@ -286,8 +253,8 @@ public class BattleSystem : MonoBehaviour
         }
         actionIconList.Clear();
         actionBoard.ClosePanel();
-        enemyUnit.gameObject.SetActive(false);
         playerUnit.SetMotion(MotionType.Move);
+        enemyUnitList.Clear();
         OnBattleEnd?.Invoke();
     }
 
