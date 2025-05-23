@@ -63,12 +63,13 @@ public class BattleUnit : MonoBehaviour
         SetTalkMessage(battlerMessage);
     }
 
-    public void TakeDamage(List<Damage> damageList)
+    public void TakeAttack(List<Attack> attacks)
     {
         SetMotion(MotionType.Shake);
         SetBattlerTalkMessage(MessageType.Damage);
-        Battler.TakeDamage(damageList);
+        Battler.TakeAttack(attacks);
         UpdateEnegyUI();
+        UpdateEnchantUI();
     }
 
     public virtual void UpdateEnegyUI()

@@ -33,12 +33,12 @@ public class AttackSystem : MonoBehaviour
         EndPlayerTurn();
     }
 
-    public void ExecutePlayerAttack(List<Damage> damages)
+    public void ExecutePlayerAttack(List<Attack> attacks)
     {
-        if (0 < damages.Count)
+        if (0 < attacks.Count)
         {
             playerUnit.SetBattlerTalkMessage(MessageType.Attack);
-            enemyUnit.TakeDamage(damages);
+            enemyUnit.TakeAttack(attacks);
         }
         if (enemyUnit.Battler.Life <= 0)
         {
@@ -101,13 +101,12 @@ public class AttackSystem : MonoBehaviour
     public void ExecutePlayerEscape()
     {
         // TODO : 逃亡時の処理を追加
-        // playerUnit.SetTalkMessage("Run!");
         playerUnit.SetBattlerTalkMessage(MessageType.Escape);
         enemyUnit.SetTalkMessage("まて!!");
         OnBattleEscape?.Invoke();
 
     }
-    
+
     private void EndPlayerTurn()
     {
         playerUnit.DecreaseEnchant();
@@ -116,7 +115,7 @@ public class AttackSystem : MonoBehaviour
 
     public void ExecuteEnemyAttack()
     {
-        List<Damage> damages = new List<Damage>();
+        List<Attack> attacks = new List<Attack>();
 
         foreach (Equipment equipment in enemyUnit.Battler.EquipmentList)
         {
@@ -127,19 +126,16 @@ public class AttackSystem : MonoBehaviour
 
             if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
             {
-                // UseEnegy(equipment);
-                // foreach (var attack in equipment.EquipmentBase.AttackList)
-                // {
-                //     Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
-                //     damages.Add(damage);
-                // }
+                // エネジーを消費する
+                UseEnegy(equipment);
+                attacks.Add(equipment.Attack);
             }
         }
 
-        if (0 < damages.Count)
+        if (0 < attacks.Count)
         {
             enemyUnit.SetBattlerTalkMessage(MessageType.Attack);
-            playerUnit.TakeDamage(damages);
+            playerUnit.TakeAttack(attacks);
         }
         if (playerUnit.Battler.Life <= 0)
         {
@@ -147,30 +143,21 @@ public class AttackSystem : MonoBehaviour
         }
         else
         {
-            EndEnemyTurn();
+            enemyUnit.DecreaseEnchant();
+            OnExecuteBattleAction?.Invoke();
         }
-    }
-
-    private void EndEnemyTurn()
-    {
-        enemyUnit.DecreaseEnchant();
-        OnExecuteBattleAction?.Invoke();
     }
 
     public bool CheckEnegy(Equipment equipment)
     {
-        if (
-            equipment.EquipmentBase.LifeCost.val <= enemyUnit.Battler.Life &&
-            equipment.EquipmentBase.BatteryCost.val <= enemyUnit.Battler.Battery &&
-            equipment.EquipmentBase.SoulCost.val <= enemyUnit.Battler.Soul
-        )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        int life = Mathf.Max(0, enemyUnit.Battler.Life);
+        int battery = Mathf.Max(0, enemyUnit.Battler.Battery);
+        int soul = Mathf.Max(0, enemyUnit.Battler.Soul);
+
+        return
+            equipment.EquipmentBase.LifeCost.val <= life &&
+            equipment.EquipmentBase.BatteryCost.val <= battery &&
+            equipment.EquipmentBase.SoulCost.val <= soul;
     }
 
     public void UseEnegy(Equipment equipment)

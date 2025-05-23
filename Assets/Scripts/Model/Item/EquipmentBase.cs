@@ -38,6 +38,8 @@ public class EquipmentBase : ItemBase
     public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
     public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
     public List<Enegy> CostList => new List<Enegy> { LifeCost, BatteryCost, SoulCost, };
+    
+    public TargetType TargetType { get => targetType; }
     public List<Enegy> DamageList { get => damageList; }
     public List<Enegy> RecoveryList { get => recoveryList; }
     public List<Enchant> EnchantList { get => enchantList; }

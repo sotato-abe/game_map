@@ -16,19 +16,24 @@ MonoBehaviour:
   rarity: 4
   sprite: {fileID: 21300000, guid: 04976e6db28d57241ac79ed1774cf87c, type: 3}
   description: "\u30CA\u30BE\u306E\u30AB\u30BF\u30CA"
+  weight: 0
+  equipmentType: 2
+  life: 0
+  battery: 0
+  power: 0
+  technique: 0
+  defense: 0
+  speed: 0
+  luck: 0
   probability: 100
   lifeCost: 0
   batteryCost: 1
   soulCost: 0
-  attackList:
+  targetType: 0
+  damageList:
   - type: 0
     val: 150
+  - type: 1
+    val: 10
   recoveryList: []
   enchantList: []
-  equipmentType: 2
-  life: 0
-  battery: 0
-  attack: 2
-  technique: 0
-  defense: 0
-  speed: 0

@@ -13,5 +13,10 @@ public class Equipment : Item
     public EquipmentBase EquipmentBase => _base;
     public int Level => level;
 
-    public Attack Attack { get; private set; }
+    public Attack Attack => new Attack(
+        _base.TargetType,
+        new List<Enegy>(_base.DamageList),
+        new List<Enegy>(_base.RecoveryList),
+        new List<Enchant>(_base.EnchantList)
+    );
 }

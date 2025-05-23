@@ -15,13 +15,14 @@ public class EquipmentDialog : VariableDialog
 
     public void Setup(Item item)
     {
-        if(item is Equipment equipment)
+        if (item is Equipment equipment)
         {
             namePlate.SetName(equipment.EquipmentBase.Name);
             description.text = equipment.EquipmentBase.Description;
             probability.SetText(equipment.EquipmentBase.Probability.Value.ToString() + "%");
             ResetSkillList();
-            // SetAttack(equipment.EquipmentBase.AttackList);
+            SetEnegy(equipment.EquipmentBase.DamageList, true);
+            SetEnegy(equipment.EquipmentBase.RecoveryList, false);
             SetEnchant(equipment.EquipmentBase.EnchantList);
             SetCost(equipment.EquipmentBase.CostList);
             ResizeDialog();
@@ -37,15 +38,16 @@ public class EquipmentDialog : VariableDialog
         }
     }
 
-    private void SetAttack(List<Enegy> attacks)
+    private void SetEnegy(List<Enegy> enegies, bool isDamage)
     {
         // attackList内に攻撃力を追加
-        foreach (var attack in attacks)
+        foreach (var enegy in enegies)
         {
-            EnegyIcon attackObject = Instantiate(enegyPrefab, enchantList.transform);
-            attackObject.gameObject.SetActive(true);
-            EnegyIcon attackUnit = attackObject.GetComponent<EnegyIcon>();
-            attackUnit.SetCostIcon(attack);
+            EnegyIcon enegyObject = Instantiate(enegyPrefab, enchantList.transform);
+            enegyObject.gameObject.SetActive(true);
+            EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
+            enegyUnit.SetCostIcon(enegy);
+            enegyUnit.SetColor(isDamage);
         }
     }
 
@@ -57,7 +59,6 @@ public class EquipmentDialog : VariableDialog
             EnchantIcon enchantObject = Instantiate(enchantIcon, enchantList.transform);
             enchantObject.gameObject.SetActive(true);
             EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
-
             enchantUnit.SetEnchant(enchant);
         }
     }

@@ -89,7 +89,7 @@ public class Battler
         BagItemList.AddRange(_base.BagConsumableList);
         BagItemList.AddRange(_base.BagEquipmentList);
         BagItemList.AddRange(_base.BagTreasureList);
-        
+
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
         DeckList = new List<Command>(_base.DeckList ?? new List<Command>());
         StorageList = new List<Command>(_base.StorageList ?? new List<Command>());
@@ -119,26 +119,50 @@ public class Battler
     }
 
     // ライフを割り切るときにfalseを返す（isAlive）
-    public void TakeDamage(List<Damage> damageList)
+    public void TakeAttack(List<Attack> attacks)
     {
-        // foreach (Damage damage in damageList)
-        // {
-        //     if (damage.AttackType == AttackType.Enegy)
-        //     {
-        //         if (damage.EnegyType == EnegyType.Life)
-        //         {
-        //             Life = Life - damage.Val;
-        //         }
-        //         if (damage.EnegyType == EnegyType.Battery)
-        //         {
-        //             Battery = Battery - damage.Val;
-        //         }
-        //         if (damage.EnegyType == EnegyType.Soul)
-        //         {
-        //             Soul = Soul - damage.Val;
-        //         }
-        //     }
-        // }
+        // attacksをDamageList、RecoveryList、EnchantListでまとめる
+        List<Enegy> damageList = new List<Enegy>();
+        List<Enegy> recoveryList = new List<Enegy>();
+        List<Enchant> enchantList = new List<Enchant>();
+        foreach (Attack attack in attacks)
+        {
+            damageList.AddRange(attack.DamageList);
+            recoveryList.AddRange(attack.RecoveryList);
+            enchantList.AddRange(attack.EnchantList);
+
+            Debug.Log($"attack: {attack.Target}");
+            Debug.Log($"damageList: {attack.DamageList.Count}");
+            Debug.Log($"recoveryList: {attack.RecoveryList.Count}");
+            Debug.Log($"enchantList: {attack.EnchantList.Count}");
+        }
+        TakeEnegy(damageList, true);
+        TakeRecovery(recoveryList);
+        TakeEnchant(enchantList);
+    }
+
+    private void TakeEnegy(List<Enegy> enegryList, bool isDown)
+    {
+        int operatorVal = isDown ? -1 : 1;
+        foreach (Enegy enegry in enegryList)
+        {
+            if (enegry.type == EnegyType.Life)
+            {
+                Life += operatorVal * enegry.val;
+                Life = Mathf.Min(Life, MaxLife);
+            }
+            if (enegry.type == EnegyType.Battery)
+            {
+                Battery += operatorVal * enegry.val;
+                Battery = Mathf.Min(Battery, MaxBattery);
+
+            }
+            if (enegry.type == EnegyType.Soul)
+            {
+                Soul += operatorVal * enegry.val;
+                Soul = Mathf.Min(Soul, 100);
+            }
+        }
     }
 
     public void TakeEnchant(List<Enchant> enchantList)
@@ -168,24 +192,6 @@ public class Battler
             {
                 Enchants.RemoveAt(i);
             }
-        }
-    }
-
-    //　同じタイプの装備がある場合は、それを外してから追加して元の装備を返す
-    // もともと装備をしていない場合はnullを返す
-    public Equipment AddEquipment(Equipment equipment)
-    {
-        Equipment existingEquipment = EquipmentList.Find(e => e.EquipmentBase.EquipmentType == equipment.EquipmentBase.EquipmentType);
-        if (existingEquipment != null)
-        {
-            EquipmentList.Remove(existingEquipment);
-            EquipmentList.Add(equipment);
-            return existingEquipment;
-        }
-        else
-        {
-            EquipmentList.Add(equipment);
-            return null;
         }
     }
 
@@ -238,18 +244,5 @@ public class Battler
             return false;
         }
         return true;
-    }
-
-    public void AddEquipmentToBag(Equipment equipment)
-    {
-        // プレイヤーのインベントリにアイテムを追加する処理
-        EquipmentList.Add(equipment); // Bag はプレイヤーのインベントリリスト
-        BagItemList.Add(equipment); // Bag はプレイヤーのインベントリリスト
-    }
-
-    public void AddCommandToDeck(Command command)
-    {
-        // プレイヤーのインベントリにアイテムを追加する処理
-        DeckList.Add(command); // Bag はプレイヤーのインベントリリスト
     }
 }
