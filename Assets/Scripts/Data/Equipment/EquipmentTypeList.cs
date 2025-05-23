@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Equipment/EquipmentTypeList")]
+[CreateAssetMenu(menuName = "Type/EquipmentType")]
 public class EquipmentTypeList : ScriptableObject
 {
     [System.Serializable]

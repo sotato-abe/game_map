@@ -14,6 +14,7 @@ public class FieldData
     public bool openTop, openLeft, openRight, openBottom;
     public List<Item> items = new List<Item>();
     public List<Battler> enemies = new List<Battler>();
+    public List<BattlerGroup> enemyGroups = new List<BattlerGroup>();
     public List<BuildingBase> Buildings { get => fieldBase != null ? fieldBase.Buildings : new List<BuildingBase>(); }
 
     public virtual void Init()

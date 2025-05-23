@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "NewFieldBase", menuName = "Field/FieldBase")]
 public class FieldBase : ScriptableObject
 {
     [SerializeField] int id;
