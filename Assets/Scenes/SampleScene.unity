@@ -1179,6 +1179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 225038489}
   - component: {fileID: 225038490}
+  - component: {fileID: 225038491}
   m_Layer: 5
   m_Name: RightUnit
   m_TagString: Untagged
@@ -1204,7 +1205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -40, y: 40}
+  m_AnchoredPosition: {x: 600, y: 40}
   m_SizeDelta: {x: 510, y: 300}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &225038490
@@ -1233,6 +1234,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &225038491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225038488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68c050ec8f0a4114a971e51b999becfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 225038489}
+  activePosition: {x: -40, y: 40, z: 0}
+  inactivePosition: {x: 600, y: 40, z: 0}
+  isActive: 0
 --- !u!1 &230999964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2630,6 +2647,22 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 3526398151508342791, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
+    - target: {fileID: 4971732226369790019, guid: ee22e090b89b6274c8326957a32bd1cd, type: 3}
+      propertyPath: activePosition.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971732226369790019, guid: ee22e090b89b6274c8326957a32bd1cd, type: 3}
+      propertyPath: activePosition.y
+      value: -170
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971732226369790019, guid: ee22e090b89b6274c8326957a32bd1cd, type: 3}
+      propertyPath: inactivePosition.x
+      value: -800
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971732226369790019, guid: ee22e090b89b6274c8326957a32bd1cd, type: 3}
+      propertyPath: inactivePosition.y
+      value: -170
+      objectReference: {fileID: 0}
     - target: {fileID: 5119310272316963322, guid: ee22e090b89b6274c8326957a32bd1cd, type: 3}
       propertyPath: FieldIconSprite
       value: 
@@ -8078,6 +8111,7 @@ MonoBehaviour:
   messagePanel: {fileID: 1685434740}
   fieldSystem: {fileID: 1297574419}
   configSystem: {fileID: 1754231586}
+  rightUnit: {fileID: 225038491}
   playerCoordinate: {x: 0, y: 0}
 --- !u!4 &1384630402
 Transform:
