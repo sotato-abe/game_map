@@ -16,13 +16,16 @@ MonoBehaviour:
   rarity: 1
   sprite: {fileID: 1380518283, guid: ca6b786c80ee42d4092d6e3d481ecf04, type: 3}
   description: "\u706B\u3092\u3064\u3051\u305F\u308A\u3001\n\u6614\u306E\u30AD\u30AB\u30A4\u3092\u52D5\u304B\u3059\u306E\u306B\u4F7F\u308F\u308C\u308B\u3002"
+  weight: 0
   probability: 100
   lifeCost: 0
   batteryCost: 0
   soulCost: 0
-  weight: 0
-  attackList:
+  targetType: 3
+  damageList:
   - type: 0
-    val: 30
+    val: 20
   recoveryList: []
-  enchantList: []
+  enchantList:
+  - type: 12
+    val: 3

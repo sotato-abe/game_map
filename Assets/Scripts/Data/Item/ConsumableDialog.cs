@@ -12,6 +12,7 @@ public class ConsumableDialog : VariableDialog
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon costPrefab;
+    [SerializeField] Image targetImage;
 
     public void Setup(Item item)
     {
@@ -21,9 +22,12 @@ public class ConsumableDialog : VariableDialog
             description.text = item.Base.Description;
             probability.SetText(consumable.ConsumableBase.Probability.Value.ToString() + "%");
             ResetSkillList();
-            SetEnegy(consumable.ConsumableBase.RecoveryList);
+            SetEnegy(consumable.ConsumableBase.DamageList, true);
+            SetEnegy(consumable.ConsumableBase.RecoveryList, false);
             SetEnchant(consumable.ConsumableBase.EnchantList);
-            SetCost(consumable.ConsumableBase.CostList);
+            SetCost(consumable.CostList);
+            TargetData targetData = TargetDatabase.Instance?.GetData(consumable.Attack.Target);
+            targetImage.sprite = targetData.icon;
             ResizeDialog();
         }
     }
@@ -37,15 +41,15 @@ public class ConsumableDialog : VariableDialog
         }
     }
 
-    private void SetEnegy(List<Enegy> enegys)
+    private void SetEnegy(List<Enegy> enegies, bool isDamage)
     {
-        // AttackList内にエネルギーを追加
-        foreach (var enegy in enegys)
+        foreach (var enegy in enegies)
         {
             EnegyIcon enegyObject = Instantiate(enegyPrefab, enchantList.transform);
             enegyObject.gameObject.SetActive(true);
             EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
             enegyUnit.SetCostIcon(enegy);
+            enegyUnit.SetColor(isDamage);
         }
     }
 

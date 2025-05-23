@@ -9,7 +9,9 @@ public class ConsumableBase : ItemBase
     [SerializeField] int lifeCost;
     [SerializeField] int batteryCost;
     [SerializeField] int soulCost;
-    [SerializeField] private List<Enegy> attackList = new List<Enegy>();
+
+    [SerializeField] TargetType targetType;
+    [SerializeField] private List<Enegy> damageList = new List<Enegy>();
     [SerializeField] private List<Enegy> recoveryList = new List<Enegy>();
     [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
 
@@ -18,8 +20,9 @@ public class ConsumableBase : ItemBase
     public Enegy LifeCost => new Enegy(EnegyType.Life, lifeCost);
     public Enegy BatteryCost => new Enegy(EnegyType.Battery, batteryCost);
     public Enegy SoulCost => new Enegy(EnegyType.Soul, soulCost);
-    public List<Enegy> CostList => new List<Enegy> { LifeCost, BatteryCost, SoulCost, };
-    public List<Enegy> AttackList { get => attackList; }
+    
+    public TargetType TargetType { get => targetType; }
+    public List<Enegy> DamageList { get => damageList; }
     public List<Enegy> RecoveryList { get => recoveryList; }
     public List<Enchant> EnchantList { get => enchantList; }
 }
