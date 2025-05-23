@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
         configSystem.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
+        messagePanel.SetActive(false);
     }
 
     public void ReserveEnd()
@@ -55,6 +56,7 @@ public class GameController : MonoBehaviour
         reserveSystem.gameObject.SetActive(false);
         configSystem.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        messagePanel.SetActive(true);
     }
 
     public void BattleStart()
@@ -66,6 +68,7 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         battleSystem.BattleStart(playerUnit.Battler, enemy);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
+        messagePanel.SetActive(false);
     }
 
     public void BattleEnd()
@@ -76,17 +79,20 @@ public class GameController : MonoBehaviour
         fieldPlayer.SetMoveFlg(true);
         fieldSystem.RemoveEnemy();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        messagePanel.SetActive(true);
     }
 
     public void ConfigStart()
     {
         fieldPlayer.SetMoveFlg(false);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
+        messagePanel.SetActive(false);
     }
 
     public void ConfigEnd()
     {
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        messagePanel.SetActive(true);
     }
 }

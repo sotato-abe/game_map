@@ -120,7 +120,6 @@ public class BattleSystem : MonoBehaviour
         turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
         actionBoard.gameObject.SetActive(true);
         actionBoard.SetEventType(EventType.Battle);
-        messagePanel.AddMessage(MessageIconType.Battle, $"{enemy.Base.Name} があられた!!");
     }
 
     public void StartActionSelection()

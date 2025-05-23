@@ -10,10 +10,13 @@ public class MessagePanel : MonoBehaviour
     [SerializeField] Sprite gameIconSprite;
     [SerializeField] Sprite battleIconSprite;
     [SerializeField] Sprite fieldIconSprite;
+    public RectTransform rectTransform;
 
     private List<Message> messageList = new List<Message>();
 
     private int messageCount = 7;
+
+    public bool isActive = false;
 
     public void AddMessage(MessageIconType iconType, string message)
     {
@@ -21,6 +24,36 @@ public class MessagePanel : MonoBehaviour
         Message newMessage = new Message(messagIcon, message);
         messageList.Add(newMessage);
         TypeMessageList();
+    }
+
+    public void SetActive(bool activeFlg)
+    {
+        if (isActive == activeFlg) return;
+        isActive = activeFlg;
+        if (isActive)
+        {
+            StartCoroutine(SlidePanel(new Vector3(50, -170, 0)));
+        }
+        else
+        {
+            StartCoroutine(SlidePanel(new Vector3(-800, -170, 0)));
+        }
+    }
+
+    private IEnumerator SlidePanel(Vector3 targetPosition)
+    {
+        Vector3 startPosition = rectTransform.anchoredPosition;
+        float elapsedTime = 0f;
+        float duration = 0.2f;
+
+        while (elapsedTime < duration)
+        {
+            rectTransform.anchoredPosition = Vector3.Lerp(startPosition, targetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = targetPosition;
     }
 
     public void TypeMessageList()
