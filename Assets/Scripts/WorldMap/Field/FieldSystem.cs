@@ -66,7 +66,6 @@ public class FieldSystem : MonoBehaviour
 
     public void ReserveStart()
     {
-        messagePanel.AddMessage(MessageIconType.Bag, $"バックをひらいた");
         OnReserve?.Invoke();
     }
 

@@ -7,9 +7,6 @@ using TMPro;
 public class MessagePanel : SlidePanel
 {
     [SerializeField] MessagePrefab messagePrefab;
-    [SerializeField] Sprite gameIconSprite;
-    [SerializeField] Sprite battleIconSprite;
-    [SerializeField] Sprite fieldIconSprite;
     private List<Message> messageList = new List<Message>();
 
     private int messageCount = 7;
