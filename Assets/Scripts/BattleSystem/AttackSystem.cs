@@ -12,7 +12,8 @@ public class AttackSystem : MonoBehaviour
     public UnityAction OnBattleEscape;
     private BattleUnit playerUnit;
     private BattleUnit enemyUnit;
-    private List<BattleUnit> enemyUnits;
+    private List<BattleUnit> enemyUnits = new List<BattleUnit>();
+    private List<BattleUnit> allyUnits = new List<BattleUnit>();
 
     [SerializeField] private AttackPanel attackPanel;
     [SerializeField] private EscapePanel escapePanel;
@@ -27,7 +28,9 @@ public class AttackSystem : MonoBehaviour
 
     public void SetPlayerBattler(BattleUnit playerUnit)
     {
+        allyUnits.Clear();
         this.playerUnit = playerUnit;
+        allyUnits.Add(playerUnit);
     }
 
     public void SetEnemyBattlers(List<BattleUnit> enemyUnits)
@@ -63,27 +66,72 @@ public class AttackSystem : MonoBehaviour
         if (0 < attacks.Count)
         {
             playerUnit.SetBattlerTalkMessage(MessageType.Attack);
-            enemyUnits[0].TakeAttack(attacks);
+            // TODO : Battlerのステータスを参照して、攻撃の値を変更する     
+            // TODO : attacksをtarget毎に分ける
+            foreach (Attack attack in attacks)
+            {
+                if (attack.Target == TargetType.Enemy)
+                {
+                    Debug.Log("Enemy");
+                    enemyUnits[0].TakeAttack(attack);
+                }
+                else if (attack.Target == TargetType.EnemyAll)
+                {
+                    Debug.Log("EnemyAll");
+                    // TODO : 右全体にアタックする場合の処理
+                    foreach (BattleUnit enemyUnit in enemyUnits)
+                    {
+                        enemyUnit.TakeAttack(attack);
+                    }
+                }
+                else if (attack.Target == TargetType.Own)
+                {
+                    Debug.Log("Own");
+                    // TODO : 自身にアタックする場合の処理
+                    playerUnit.TakeAttack(attack);
+                }
+                else if (attack.Target == TargetType.Ally)
+                {
+                    Debug.Log("Ally");
+                    // TODO : 左全体にアタックする場合の処理
+                    foreach (BattleUnit allyUnit in allyUnits)
+                    {
+                        allyUnit.TakeAttack(attack);
+                    }
+                }
+                else
+                {
+                    Debug.Log("All");
+                    // TODO : 全体にアタックする場合の処理
+                    foreach (BattleUnit enemyUnit in enemyUnits)
+                    {
+                        enemyUnit.TakeAttack(attack);
+                    }
+                    foreach (BattleUnit allyUnit in allyUnits)
+                    {
+                        allyUnit.TakeAttack(attack);
+                    }
+                }
+            }
         }
-        if (enemyUnits[0].Battler.Life <= 0)
+        for (int i = enemyUnits.Count - 1; i >= 0; i--)
         {
-            GetReward(enemyUnits[0].Battler);
-            enemyUnits[0].SetBattlerTalkMessage(MessageType.Lose);
-            turnOrderSystem.RemoveTurnBattler(enemyUnits[0].Battler);
-            Destroy(enemyUnits[0].gameObject); // TODO : 最後のモーションをさせる
-            enemyUnits.RemoveAt(0);
-
-            if (enemyUnits.Count == 0)
+            BattleUnit enemyUnit = enemyUnits[i];
+            if (enemyUnit.Battler.Life <= 0)
             {
-                Debug.Log($"全滅させた");
-                playerUnit.SetTalkMessage("かった!!");
-                OnBattleResult?.Invoke();
-            }
-            else
-            {
-                SetEnemyListToPanel();
+                GetReward(enemyUnit.Battler);
+                enemyUnit.SetBattlerTalkMessage(MessageType.Lose);
+                turnOrderSystem.RemoveTurnBattler(enemyUnit.Battler);
+                enemyUnits.RemoveAt(i);
+                Destroy(enemyUnit.gameObject); // TODO : 最後のモーションをさせる
             }
         }
+        if (enemyUnits.Count == 0)
+        {
+            playerUnit.SetBattlerTalkMessage(MessageType.Win);
+            OnBattleResult?.Invoke();
+        }
+        SetEnemyListToPanel();
         EndPlayerTurn();
     }
 
@@ -183,7 +231,51 @@ public class AttackSystem : MonoBehaviour
         if (0 < attacks.Count)
         {
             enemyUnits[0].SetBattlerTalkMessage(MessageType.Attack);
-            playerUnit.TakeAttack(attacks);
+            foreach (Attack attack in attacks)
+            {
+                if (attack.Target == TargetType.Enemy)
+                {
+                    Debug.Log("Enemy");
+                    playerUnit.TakeAttack(attack);
+                }
+                else if (attack.Target == TargetType.EnemyAll)
+                {
+                    Debug.Log("EnemyAll");
+                    // TODO : 右全体にアタックする場合の処理
+                    foreach (BattleUnit batleUnit in allyUnits)
+                    {
+                        batleUnit.TakeAttack(attack);
+                    }
+                }
+                else if (attack.Target == TargetType.Own)
+                {
+                    Debug.Log("Own");
+                    // TODO : 自身にアタックする場合の処理
+                    enemyUnits[0].TakeAttack(attack);
+                }
+                else if (attack.Target == TargetType.Ally)
+                {
+                    Debug.Log("Ally");
+                    // TODO : 左全体にアタックする場合の処理
+                    foreach (BattleUnit battleUnit in enemyUnits)
+                    {
+                        battleUnit.TakeAttack(attack);
+                    }
+                }
+                else
+                {
+                    Debug.Log("All");
+                    // TODO : 全体にアタックする場合の処理
+                    foreach (BattleUnit enemyUnit in enemyUnits)
+                    {
+                        enemyUnit.TakeAttack(attack);
+                    }
+                    foreach (BattleUnit allyUnit in allyUnits)
+                    {
+                        allyUnit.TakeAttack(attack);
+                    }
+                }
+            }
         }
         if (playerUnit.Battler.Life <= 0)
         {

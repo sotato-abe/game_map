@@ -18,7 +18,7 @@ MonoBehaviour:
   birthplace: {fileID: 0}
   maxLife: 30
   maxBattery: 10
-  attack: 3
+  power: 1
   defense: 0
   technique: 0
   speed: 1
@@ -32,7 +32,9 @@ MonoBehaviour:
   key: 5
   exp: 35
   abilityList: []
-  equipmentList: []
+  equipmentList:
+  - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
+    level: 0
   runTable: []
   deckList: []
   storageList: []

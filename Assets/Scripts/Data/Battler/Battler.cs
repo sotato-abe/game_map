@@ -99,44 +99,15 @@ public class Battler
             coordinate = _base.Birthplace.Coordinate;
     }
 
-    public void TakeRecovery(List<Enegy> recoveryList)
-    {
-        foreach (Enegy recovery in recoveryList)
-        {
-            if (recovery.type == EnegyType.Life)
-            {
-                Life = Mathf.Min(Life + recovery.val, MaxLife);
-            }
-            if (recovery.type == EnegyType.Battery)
-            {
-                Battery = Mathf.Min(Battery + recovery.val, MaxBattery);
-            }
-            if (recovery.type == EnegyType.Soul)
-            {
-                Soul = Soul + recovery.val;
-            }
-        }
-    }
-
     // ライフを割り切るときにfalseを返す（isAlive）
-    public void TakeAttack(List<Attack> attacks)
+    public void TakeAttack(Attack attack)
     {
-        // attacksをDamageList、RecoveryList、EnchantListでまとめる
-        List<Enegy> damageList = new List<Enegy>();
-        List<Enegy> recoveryList = new List<Enegy>();
-        List<Enchant> enchantList = new List<Enchant>();
-        foreach (Attack attack in attacks)
-        {
-            damageList.AddRange(attack.DamageList);
-            recoveryList.AddRange(attack.RecoveryList);
-            enchantList.AddRange(attack.EnchantList);
-        }
-        TakeEnegy(damageList, true);
-        TakeRecovery(recoveryList);
-        TakeEnchant(enchantList);
+        TakeEnegy(attack.DamageList, true);
+        TakeEnegy(attack.RecoveryList, false);
+        TakeEnchant(attack.EnchantList);
     }
 
-    private void TakeEnegy(List<Enegy> enegryList, bool isDown)
+    public void TakeEnegy(List<Enegy> enegryList, bool isDown)
     {
         int operatorVal = isDown ? -1 : 1;
         foreach (Enegy enegry in enegryList)

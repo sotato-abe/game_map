@@ -221,7 +221,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         {
             if (itemBlockList[selectedItem].Item is Consumable consumable)
             {
-                playerBattler.TakeRecovery(consumable.ConsumableBase.RecoveryList);
+                playerBattler.TakeEnegy(consumable.ConsumableBase.RecoveryList, false);
                 playerBattler.TakeEnchant(consumable.ConsumableBase.EnchantList);
                 playerBattler.BagItemList.Remove(consumable);
                 playerUnit.TakeEnchant(consumable.ConsumableBase.EnchantList);
