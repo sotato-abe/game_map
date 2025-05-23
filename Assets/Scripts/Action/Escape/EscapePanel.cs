@@ -21,7 +21,7 @@ public class EscapePanel : Panel
 
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] private AttackSystem attackSystem;
-    [SerializeField] BattleUnit enemyUnit;
+    List<Battler> enemyList = new List<Battler>();
 
     int lifeCost = 0;
     int batteryCost = 0;
@@ -47,13 +47,20 @@ public class EscapePanel : Panel
         RunningOff();
     }
 
+    public void SetEnemyList(List<Battler> enemyList)
+    {
+        this.enemyList = enemyList;
+    }
+
     private void ProbabilityCalculation()
     {
         int playerSPD = playerUnit.Battler.Speed.val;
-        int enemySPD = enemyUnit.Battler.Speed.val;
-
-        // 逃げる確率の計算
-        // 逃げる確率 = (自分の素早さ / (自分の素早さ + 相手の素早さ)) * 100
+        int enemySPD = 0;
+        foreach (var enemy in enemyList)
+        {
+            enemySPD += enemy.Speed.val;
+        }
+        // enemySPD /= Mathf.Max(1, enemyList.Count - 1);
         probability = (playerSPD * 100) / (playerSPD + enemySPD);
         probabilityText.SetText(probability.ToString() + "%");
     }

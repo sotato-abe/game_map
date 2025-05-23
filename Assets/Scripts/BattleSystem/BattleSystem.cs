@@ -111,7 +111,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.TurnWait;
         SetActionList();
-        turnOrderSystem.ReSetTurnOrderSystem();
+        turnOrderSystem.TurnOrderClear();
         turnOrderSystem.SetupPlayerBattler(playerUnit.Battler);
         playerUnit.SetBattlerTalkMessage(MessageType.Encount);
         foreach (Transform child in rightGroupPanel.transform)
@@ -123,7 +123,6 @@ public class BattleSystem : MonoBehaviour
             turnOrderSystem.SetTurnBattler(enemy);
             SetBattlerUnit(enemy, false);
         }
-        // attackSystem.SetBattler(playerUnit, enemyUnit);
         attackSystem.SetPlayerBattler(playerUnit);
         attackSystem.SetEnemyBattlers(enemyUnitList);
         turnOrderSystem.SetActive(true);

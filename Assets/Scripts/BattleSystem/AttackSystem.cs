@@ -15,7 +15,9 @@ public class AttackSystem : MonoBehaviour
     private List<BattleUnit> enemyUnits;
 
     [SerializeField] private AttackPanel attackPanel;
+    [SerializeField] private EscapePanel escapePanel;
     [SerializeField] MessagePanel messagePanel;
+    [SerializeField] TurnOrderSystem turnOrderSystem;
 
     public void SetBattler(BattleUnit playerUnit, BattleUnit enemyUnit)
     {
@@ -31,6 +33,17 @@ public class AttackSystem : MonoBehaviour
     public void SetEnemyBattlers(List<BattleUnit> enemyUnits)
     {
         this.enemyUnits = enemyUnits;
+        SetEnemyListToPanel();
+    }
+
+    private void SetEnemyListToPanel()
+    {
+        List<Battler> enemyBattlers = new List<Battler>();
+        foreach (BattleUnit enemyUnit in enemyUnits)
+        {
+            enemyBattlers.Add(enemyUnit.Battler);
+        }
+        escapePanel.SetEnemyList(enemyBattlers);
     }
 
     public void ExecutePlayerTalk()
@@ -56,22 +69,22 @@ public class AttackSystem : MonoBehaviour
         {
             GetReward(enemyUnits[0].Battler);
             enemyUnits[0].SetBattlerTalkMessage(MessageType.Lose);
+            turnOrderSystem.RemoveTurnBattler(enemyUnits[0].Battler);
             Destroy(enemyUnits[0].gameObject); // TODO : 最後のモーションをさせる
-            Debug.Log("test1");
             enemyUnits.RemoveAt(0);
-            Debug.Log("test2");
-        }
 
-        if (enemyUnits.Count == 0)
-        {
-            Debug.Log($"全滅させた");
-            playerUnit.SetTalkMessage("かった!!");
-            OnBattleResult?.Invoke();
+            if (enemyUnits.Count == 0)
+            {
+                Debug.Log($"全滅させた");
+                playerUnit.SetTalkMessage("かった!!");
+                OnBattleResult?.Invoke();
+            }
+            else
+            {
+                SetEnemyListToPanel();
+            }
         }
-        else
-        {
-            EndPlayerTurn();
-        }
+        EndPlayerTurn();
     }
 
     private void GetReward(Battler battler)

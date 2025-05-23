@@ -11255,7 +11255,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPanel: {fileID: 598288762}
+  escapePanel: {fileID: 1167826551}
   messagePanel: {fileID: 1685434740}
+  turnOrderSystem: {fileID: 2086057356}
 --- !u!224 &1883646492
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12677,7 +12679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8469542832532789813, guid: 68135bac03f6df64f85a5e0f98f5cc76, type: 3}
       propertyPath: encounterThreshold
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8469542832532789815, guid: 68135bac03f6df64f85a5e0f98f5cc76, type: 3}
       propertyPath: m_RootOrder

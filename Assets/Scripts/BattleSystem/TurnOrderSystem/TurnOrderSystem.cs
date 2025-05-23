@@ -16,23 +16,7 @@ public class TurnOrderSystem : MonoBehaviour
 
     private Battler playerBattler;
 
-    public void SetupBattlerTurns(List<Battler> newBattlers)
-    {
-        // 既存の子オブジェクトをすべて削除
-        foreach (Transform child in battlerList.transform)
-        {
-            Destroy(child.gameObject);
-        }
-        turnBattlerList.Clear();
-
-        // バトラー情報を保存
-        battlers = newBattlers;
-        turnBar.gameObject.SetActive(true);
-        // 生成を開始
-        GenerateTurnBattler();
-    }
-
-    public void ReSetTurnOrderSystem()
+    public void TurnOrderClear()
     {
         // 既存の子オブジェクトをすべて削除
         foreach (Transform child in battlerList.transform)
@@ -41,6 +25,7 @@ public class TurnOrderSystem : MonoBehaviour
         }
         turnBattlerList.Clear();
         turnBar.gameObject.SetActive(true);
+        isActive = false;
     }
 
     public void SetupPlayerBattler(Battler player)
@@ -58,30 +43,11 @@ public class TurnOrderSystem : MonoBehaviour
         turnBattlerList.Add(turnBattler);
     }
 
-    private void GenerateTurnBattler()
-    {
-        foreach (Battler battler in battlers)
-        {
-            TurnBattler turnBattler = Instantiate(turnBattlerPrefab, battlerList.transform);
-            turnBattler.OnExecuteTurn += ExecuteTurn;
-            turnBattler.SetBattler(battler);
-            turnBattler.SetLane(turnLane);
-            turnBattlerList.Add(turnBattler);
-        }
-        SetActive(true);
-    }
-
     public void SetActive(bool isActiveFlg)
     {
         if (isActive == isActiveFlg) return;  // 状態が変わらない場合は処理をスキップ
 
         isActive = isActiveFlg;
-
-        if (turnBattlerList.Count == 0)
-        {
-            Debug.LogWarning("No TurnBattlerList");
-        }
-
         foreach (TurnBattler turnBattler in turnBattlerList)
         {
             if (turnBattler != null)
@@ -103,17 +69,14 @@ public class TurnOrderSystem : MonoBehaviour
 
         if (targetTurnBattler.battler == playerBattler) // TODO: 仮の分岐ちゃんとプレイヤーと他を分ける
         {
-            Debug.Log($"プレイヤーのターン開始");
             battleSystem.StartActionSelection();
         }
         else
         {
-            Debug.Log($"敵のターン開始");
             StartCoroutine(battleSystem.EnemyAttack());
         }
         yield return null;
     }
-
     public void EndTurn()
     {
         if (targetTurnBattler)
@@ -129,10 +92,27 @@ public class TurnOrderSystem : MonoBehaviour
         foreach (TurnBattler turnBattler in turnBattlerList)
         {
             turnBattler.OnExecuteTurn -= ExecuteTurn;
-            turnBattler.EndBattle();
+            turnBattler.EndBattle();           
             Destroy(turnBattler.gameObject);
         }
+        isActive = false;
         turnBar.gameObject.SetActive(false);
         turnBattlerList.Clear();
+    }
+
+    public void RemoveTurnBattler(Battler targetBattler)
+    {
+        foreach (TurnBattler turnBattler in turnBattlerList)
+        {
+            if (turnBattler.battler == targetBattler)
+            {
+
+                turnBattler.OnExecuteTurn -= ExecuteTurn;
+                turnBattler.EndBattle();
+                Destroy(turnBattler.gameObject);
+                turnBattlerList.Remove(turnBattler);
+                break;
+            }
+        }
     }
 }

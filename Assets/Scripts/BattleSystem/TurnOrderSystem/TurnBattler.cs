@@ -118,6 +118,7 @@ public class TurnBattler : MonoBehaviour
     {
         foreach (TurnBattlerIcon icon in turnBattlerIconList)
         {
+            if(icon == null) continue; // nullチェック
             Destroy(icon.gameObject);
         }
 
