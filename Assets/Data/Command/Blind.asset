@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: Blind
   m_EditorClassIdentifier: 
   name: "\u30D6\u30E9\u30A4\u30F3\u30C9"
-  commandType: 3
-  targetType: 1
+  rarity: 0
+  sprite: {fileID: 21300000, guid: 73350164b3752034fa9f2e105202090b, type: 3}
+  description: "\u30BF\u30FC\u30B2\u30C3\u30C8\u306B\u30D6\u30E9\u30A4\u30F3\u30C9\u3092\uFF11\u30A8\u30F3\u30C1\u30E3\u30F3\u30C8\u3059\u308B"
+  capacity: 0
   lifeCost: 0
   batteryCost: 1
   soulCost: 0
-  sprite: {fileID: 21300000, guid: 73350164b3752034fa9f2e105202090b, type: 3}
-  description: "\u30BF\u30FC\u30B2\u30C3\u30C8\u306B\u30D6\u30E9\u30A4\u30F3\u30C9\u3092\uFF11\u30A8\u30F3\u30C1\u30E3\u30F3\u30C8\u3059\u308B"
+  targetType: 2
+  damageList: []
+  recoveryList: []
   enchantList:
   - type: 10
     val: 1

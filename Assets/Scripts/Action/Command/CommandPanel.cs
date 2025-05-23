@@ -15,9 +15,6 @@ public class CommandPanel : Panel
     [SerializeField] AttackSystem attackSystem;
 
     private Battler playerBattler;
-    private int lifeCost = 0;
-    private int batteryCost = 0;
-    private int soulCost = 0;
     List<CommandUnit> commandUnitList = new List<CommandUnit>();
 
     private int headWidth = 145;
@@ -64,8 +61,6 @@ public class CommandPanel : Panel
             Destroy(child.gameObject);
         }
 
-        int commandNum = 0;
-
         foreach (var command in playerBattler.RunTable)
         {
             GameObject commandUnitObject = Instantiate(commandUnitPrefab, commandList.transform);
@@ -73,15 +68,14 @@ public class CommandPanel : Panel
             CommandUnit commandUnit = commandUnitObject.GetComponent<CommandUnit>();
             commandUnitList.Add(commandUnit);
             commandUnit.Setup(command);
-            commandNum++;
         }
     }
 
     public void CountEnegyCost()
     {
-        lifeCost = 0;
-        batteryCost = 0;
-        soulCost = 0;
+        int lifeCost = 0;
+        int batteryCost = 0;
+        int soulCost = 0;
 
         foreach (CommandUnit commandUnit in commandUnitList)
         {
@@ -94,17 +88,13 @@ public class CommandPanel : Panel
                 lifeCost += commandUnit.Command.Base.LifeCost.val;
                 batteryCost += commandUnit.Command.Base.BatteryCost.val;
                 soulCost += commandUnit.Command.Base.SoulCost.val;
-            }else{
+            }
+            else
+            {
                 commandUnit.SetStatus(UnitStatus.EnegyOut);
             }
         }
 
-        SetEnegyCost();
-        SetEnegyCost();
-    }
-
-    public void SetEnegyCost()
-    {
         lifeCostText.SetText($"{lifeCost}");
         batteryCostText.SetText($"{batteryCost}");
         soulCostText.SetText($"{soulCost}");
@@ -114,51 +104,32 @@ public class CommandPanel : Panel
     {
         if (executeFlg)
         {
-            List<EnchantCount> enchants = ActivateCommands();
-            attackSystem.ExecutePlayerCommand(enchants);
+            List<Attack> attacks = new List<Attack>();
+            foreach (CommandUnit commandUnit in commandUnitList)
+            {
+                if (CheckEnegy(commandUnit.Command) == false)
+                {
+                    continue;
+                }
+
+                UseEnegy(commandUnit.Command);
+                attacks.Add(commandUnit.Command.Attack);
+            }
+            attackSystem.ExecutePlayerAttack(attacks);
             CountEnegyCost();
         }
     }
 
-    public List<EnchantCount> ActivateCommands()
-    {
-        List<EnchantCount> enchants = new List<EnchantCount>();
-
-        foreach (CommandUnit commandUnit in commandUnitList)
-        {
-            if (CheckEnegy(commandUnit.Command) == false)
-            {
-                continue;
-            }
-
-            UseEnegy(commandUnit.Command);
-
-            TargetType target = commandUnit.Command.Base.TargetType;
-
-            foreach (var enchant in commandUnit.Command.Base.EnchantList)
-            {
-                EnchantCount enchantCount = new EnchantCount(enchant.Type, target, enchant.Val);
-                enchants.Add(enchantCount);
-            }
-        }
-
-        return enchants;
-    }
-
     public bool CheckEnegy(Command command)
     {
-        if (
-            command.Base.LifeCost.val <= playerBattler.Life &&
-            command.Base.BatteryCost.val <= playerBattler.Battery &&
-            command.Base.SoulCost.val <= playerBattler.Soul
-        )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        int life = Mathf.Max(0, playerBattler.Life);
+        int battery = Mathf.Max(0, playerBattler.Battery);
+        int soul = Mathf.Max(0, playerBattler.Soul);
+
+        return
+            command.Base.LifeCost.val <= life &&
+            command.Base.BatteryCost.val <= battery &&
+            command.Base.SoulCost.val <= soul;
     }
 
     public void UseEnegy(Command command)

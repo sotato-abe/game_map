@@ -13,11 +13,22 @@ MonoBehaviour:
   m_Name: Shock
   m_EditorClassIdentifier: 
   name: "\u30B7\u30E7\u30C3\u30AF"
-  commandType: 0
-  targetType: 1
+  rarity: 0
+  sprite: {fileID: 21300000, guid: 0034c4d3ffb5b7d45a741ea5eade90d1, type: 3}
+  description: "\u30BF\u30FC\u30B2\u30C3\u30C8\u306E\u30E9\u30A4\u30D5\u306B\uFF13\u56DE\u5C0F\u653B\u6483\u3059\u308B\u3002"
+  capacity: 0
   lifeCost: 0
   batteryCost: 3
   soulCost: 0
-  sprite: {fileID: 21300000, guid: 0034c4d3ffb5b7d45a741ea5eade90d1, type: 3}
-  description: "\u30BF\u30FC\u30B2\u30C3\u30C8\u306E\u30E9\u30A4\u30D5\u306B\u5C0F\u653B\u6483\u3059\u308B\u3002"
-  enchantList: []
+  targetType: 2
+  damageList:
+  - type: 0
+    val: 2
+  - type: 0
+    val: 2
+  - type: 0
+    val: 2
+  recoveryList: []
+  enchantList:
+  - type: 18
+    val: 1

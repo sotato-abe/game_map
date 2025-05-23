@@ -51,56 +51,8 @@ public class AttackSystem : MonoBehaviour
         }
     }
 
-    public void ExecutePlayerCommand(List<EnchantCount> enchantCounts)
-    {
-        if (0 < enchantCounts.Count)
-        {
-            List<Enchant> playerEnchants = new List<Enchant>();
-            List<Enchant> enemyEnchants = new List<Enchant>();
-
-            foreach (EnchantCount enchantCount in enchantCounts)
-            {
-                // 自身へのエンチャント
-                if (enchantCount.Target == TargetType.Own || enchantCount.Target == TargetType.Ally || enchantCount.Target == TargetType.All)
-                {
-                    Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
-                    playerEnchants.Add(enchant);
-
-                }
-
-                // 相手へのエンチャント
-                if (enchantCount.Target == TargetType.Enemy || enchantCount.Target == TargetType.EnemyAll || enchantCount.Target == TargetType.All)
-                {
-                    Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
-                    enemyEnchants.Add(enchant);
-                }
-            }
-            if (playerEnchants.Count > 0)
-            {
-                playerUnit.TakeEnchant(playerEnchants);
-            }
-            if (enemyEnchants.Count > 0)
-            {
-                enemyUnit.TakeEnchant(enemyEnchants);
-            }
-        }
-        if (playerUnit.Battler.Life <= 0)
-        {
-            OnBattleDefeat?.Invoke();
-        }
-        if (enemyUnit.Battler.Life <= 0)
-        {
-            OnBattleResult?.Invoke();
-        }
-        else
-        {
-            EndPlayerTurn();
-        }
-    }
-
     public void ExecutePlayerEscape()
     {
-        // TODO : 逃亡時の処理を追加
         playerUnit.SetBattlerTalkMessage(MessageType.Escape);
         enemyUnit.SetTalkMessage("まて!!");
         OnBattleEscape?.Invoke();
