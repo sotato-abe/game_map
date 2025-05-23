@@ -12,6 +12,7 @@ public class EquipmentDialog : VariableDialog
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] EnegyIcon costPrefab;
+    [SerializeField] Image targetImage;
 
     public void Setup(Item item)
     {
@@ -25,6 +26,8 @@ public class EquipmentDialog : VariableDialog
             SetEnegy(equipment.EquipmentBase.RecoveryList, false);
             SetEnchant(equipment.EquipmentBase.EnchantList);
             SetCost(equipment.EquipmentBase.CostList);
+            TargetData targetData = TargetDatabase.Instance?.GetData(equipment.Attack.Target);
+            targetImage.sprite = targetData.icon;
             ResizeDialog();
         }
     }
