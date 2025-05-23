@@ -10,6 +10,7 @@ public class BattlerStatusDialog : Dialog
     [SerializeField] TextMeshProUGUI techniqueText;
     [SerializeField] TextMeshProUGUI defenseText;
     [SerializeField] TextMeshProUGUI speedText;
+    [SerializeField] TextMeshProUGUI luckText;
 
     void Start()
     {
@@ -22,5 +23,6 @@ public class BattlerStatusDialog : Dialog
         techniqueText.SetText(battler.Technique.val.ToString());
         defenseText.SetText(battler.Defense.val.ToString());
         speedText.SetText(battler.Speed.val.ToString());
+        luckText.SetText(battler.Luck.val.ToString());
     }
 }

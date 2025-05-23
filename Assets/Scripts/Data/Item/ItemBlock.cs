@@ -23,17 +23,14 @@ public class ItemBlock : Block
 
         if (item is Consumable)
         {
-            // consumableDialog.gameObject.SetActive(true);
             consumableDialog.Setup(item);
         }
         else if (item is Equipment)
         {
-            // equipmentDialog.gameObject.SetActive(true);
             equipmentDialog.Setup(item);
         }
         else if (item is Treasure)
         {
-            // treasureDialog.gameObject.SetActive(true);
             treasureDialog.Setup(item);
         }
     }

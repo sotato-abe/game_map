@@ -8,7 +8,7 @@ public class TreasureDialog : VariableDialog
 {
     public void Setup(Item item)
     {
-        if (item is Consumable consumable)
+        if (item is Treasure treasure)
         {
             namePlate.SetName(item.Base.Name);
             description.text = item.Base.Description;
