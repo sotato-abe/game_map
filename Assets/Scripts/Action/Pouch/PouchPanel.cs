@@ -6,11 +6,12 @@ using TMPro;
 
 public class PouchPanel : Panel
 {
-    [SerializeField] GameObject itemUnitPrefab;  // ItemUnitのプレハブ
+    [SerializeField] ItemUnit itemUnitPrefab;  // ItemUnitのプレハブ
     [SerializeField] GameObject blockPrefab;  // blockのプレハブ
     [SerializeField] GameObject itemList;
     [SerializeField] TextMeshProUGUI pouchRatio;
     [SerializeField] BattleUnit playerUnit;
+    [SerializeField] AttackSystem attackSystem;
 
     private Battler playerBattler;
 
@@ -100,7 +101,7 @@ public class PouchPanel : Panel
         {
             // ItemUnitのインスタンスを生成
             Item item = consumable;
-            GameObject itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
+            ItemUnit itemUnitObject = Instantiate(itemUnitPrefab, itemList.transform);
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
             itemUnit.Setup(item);
@@ -113,13 +114,16 @@ public class PouchPanel : Panel
 
             itemNum++;
         }
-        // SetBlock();
+        SetBlock();
         pouchRatio.text = $"{playerBattler.PouchList.Count}/{playerBattler.Pouch.val}";
         ArrengeItemUnits();
     }
 
     private void SetBlock()
     {
+        if (playerBattler.Pouch.val <= maxRow)
+            return;
+
         int blockNum = maxRow - (playerBattler.Pouch.val % maxRow);
         blockList.Clear();
 
@@ -198,50 +202,41 @@ public class PouchPanel : Panel
 
     public void UseItem()
     {
-        if (itemList.transform.childCount > 0)
+        if (itemList.transform.childCount == 0)
         {
-            // 選択されたアイテムの ItemUnit を取得
-            if (selectedItem >= 0 && selectedItem < itemList.transform.childCount)
-            {
-                // 選択されたアイテムの ItemUnit を取得
-                var targetItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-
-                if (targetItemUnit != null && targetItemUnit.Item != null) // ItemUnit とその Item が存在するかを確認
-                {
-                    isActive = false;
-                    // playerBattler.TakeRecovery(targetItemUnit.Item.Base.RecoveryList);
-                    if (targetItemUnit.Item is Consumable consumable)
-                    {
-                        playerBattler.PouchList.Remove(consumable);
-
-                        selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
-
-                        var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
-                        selectedItemUnit.SetTarget(false);
-
-                        SetItemUnit();
-                        playerUnit.UpdateEnegyUI();
-
-                        OnActionExecute?.Invoke();
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Selected item is not a consumable.");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("No item found to use.");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Selected item is out of bounds.");
-            }
+            Debug.LogWarning("No items in the list.");
+            return;
         }
-        else
+
+        if (selectedItem < 0 || selectedItem >= itemList.transform.childCount)
         {
             Debug.LogWarning("Selected item is out of bounds.");
+            return;
         }
+
+        var targetItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
+        if (targetItemUnit == null || targetItemUnit.Item == null)
+        {
+            Debug.LogWarning("Selected ItemUnit or its Item is null.");
+            return;
+        }
+
+        if (targetItemUnit.Item is not Consumable consumable)
+        {
+            Debug.LogWarning("Selected item is not a consumable.");
+            return;
+        }
+
+        selectedItem = Mathf.Clamp(selectedItem, 0, itemList.transform.childCount - 2);
+        var selectedItemUnit = itemList.transform.GetChild(selectedItem).GetComponent<ItemUnit>();
+        List<Attack> attacks = new List<Attack>();
+        attacks.Add(consumable.Attack);
+        attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
+        playerBattler.PouchList.Remove(consumable);
+
+        SetItemUnit();
+        playerUnit.UpdateEnegyUI();
+        OnActionExecute?.Invoke();
+        isActive = false;
     }
 }

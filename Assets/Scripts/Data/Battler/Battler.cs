@@ -163,52 +163,54 @@ public class Battler
 
     public bool AddItem(Item item)
     {
+        switch (item)
+        {
+            case Consumable consumable:
+                if (PouchList.Count < Pouch.val)
+                {
+                    PouchList.Add(consumable);
+                    return true;
+                }
+                else
+                {
+                    return TryAddToBag(consumable);
+                }
 
-        if (item is Consumable consumable)
-        {
-            if (PouchList.Count < Pouch.val)
-            {
-                PouchList.Add(consumable);
-            }
-            else if (BagItemList.Count < Bag.val)
-            {
-                BagItemList.Add(consumable);
-            }
-            else
-            {
-                Debug.Log("Pouch & Bag is full.");
+            case Equipment equipment:
+                return TryAddToBag(equipment);
+
+            case Treasure treasure:
+                return TryAddToBag(treasure);
+
+            default:
+                Debug.Log("Unknown item type.");
                 return false;
-            }
         }
-        else if (item is Equipment equipment)
+    }
+
+    private bool TryAddToBag(Item item)
+    {
+        if (BagItemList.Count < Bag.val)
         {
-            if (BagItemList.Count < Bag.val)
-            {
-                BagItemList.Add(equipment);
-            }
-            else
-            {
-                Debug.Log("Bag is full.");
-                return false;
-            }
+            BagItemList.Add(item);
+            return true;
         }
-        else if (item is Treasure treasure)
+
+        Debug.Log("Bag is full.");
+        return false;
+    }
+
+    public void UseConsumable(Consumable consumable)
+    {
+        if (PouchList.Contains(consumable))
         {
-            if (BagItemList.Count < Bag.val)
-            {
-                BagItemList.Add(treasure);
-            }
-            else
-            {
-                Debug.Log("Bag is full.");
-                return false;
-            }
+            PouchList.Remove(consumable);
+            TakeAttack(consumable.Attack);
+            Debug.Log($"{consumable.Base.Name} を使用した。");
         }
         else
         {
-            Debug.Log("Bag is full.");
-            return false;
+            Debug.Log("そのアイテムはポーチにありません。");
         }
-        return true;
     }
 }

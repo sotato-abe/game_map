@@ -196,7 +196,9 @@ public class BattleSystem : MonoBehaviour
             case ActionType.Command:
                 Debug.Log("Command 処理を実行");
                 break;
-
+            case ActionType.Pouch:
+                Debug.Log("Pouch 処理を実行");
+                break;
             case ActionType.Escape:
                 Debug.Log("Escape 処理を実行");
                 break;

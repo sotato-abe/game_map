@@ -170,7 +170,6 @@ public class AttackSystem : MonoBehaviour
         playerUnit.SetBattlerTalkMessage(MessageType.Escape);
         enemyUnits[0].SetTalkMessage("まて!!");
         OnBattleEscape?.Invoke();
-
     }
 
     private void EndPlayerTurn()
@@ -258,7 +257,6 @@ public class AttackSystem : MonoBehaviour
 
     private IEnumerator OutOfLineBattler(BattleUnit battlerUnit)
     {
-        Debug.Log("test1");
         battlerUnit.SetBattlerTalkMessage(MessageType.Lose);
         battlerUnit.SetMotion(MotionType.Rotate);
         turnOrderSystem.RemoveTurnBattler(battlerUnit.Battler);

@@ -33,6 +33,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     {
         playerBattler = playerUnit.Battler;
         SetPouchList();
+        SetPouchSize();
     }
 
     public void OnDrop(PointerEventData eventData)
