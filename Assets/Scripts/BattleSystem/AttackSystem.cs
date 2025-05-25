@@ -97,7 +97,10 @@ public class AttackSystem : MonoBehaviour
             if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
             {
                 // エネジーを消費する
-                UseEnegy(equipment);
+                enemyUnit.Battler.Life -= equipment.EquipmentBase.LifeCost.val;
+                enemyUnit.Battler.Battery -= equipment.EquipmentBase.BatteryCost.val;
+                enemyUnit.Battler.Soul -= equipment.EquipmentBase.SoulCost.val;
+                enemyUnit.UpdateEnegyUI();
                 attacks.Add(equipment.Attack);
             }
         }
@@ -226,6 +229,7 @@ public class AttackSystem : MonoBehaviour
     {
         if (playerUnit.Battler.Life <= 0)
         {
+            Debug.Log("Lose"); // TODO : プレイヤー敗北の演出：シーン変更
             playerUnit.SetBattlerTalkMessage(MessageType.Lose);
             OnBattleDefeat?.Invoke();
         }
@@ -239,8 +243,7 @@ public class AttackSystem : MonoBehaviour
                     GetReward(enemyUnit.Battler);
                     enemyUnit.SetBattlerTalkMessage(MessageType.Lose);
                     turnOrderSystem.RemoveTurnBattler(enemyUnit.Battler);
-                    enemyUnits.RemoveAt(i);
-                    Destroy(enemyUnit.gameObject); // TODO : 最後のモーションをさせる
+                    StartCoroutine(OutOfLineBattler(enemyUnit));
                 }
             }
             for (int i = allyUnits.Count - 1; i >= 0; i--)
@@ -248,14 +251,30 @@ public class AttackSystem : MonoBehaviour
                 BattleUnit allyUnit = allyUnits[i];
                 if (allyUnit.Battler.Life <= 0)
                 {
-                    GetReward(allyUnit.Battler);
                     allyUnit.SetBattlerTalkMessage(MessageType.Lose);
                     turnOrderSystem.RemoveTurnBattler(allyUnit.Battler);
-                    allyUnits.RemoveAt(i);
-                    Destroy(allyUnit.gameObject); // TODO : 最後のモーションをさせる
+                    StartCoroutine(OutOfLineBattler(allyUnit));
                 }
             }
         }
+    }
+
+
+    private IEnumerator OutOfLineBattler(BattleUnit battlerUnit)
+    {
+        Debug.Log("test1");
+        battlerUnit.SetMotion(MotionType.Rotate);
+        if (enemyUnits.Contains(battlerUnit))
+        {
+            enemyUnits.Remove(battlerUnit);
+            Destroy(battlerUnit.gameObject); // TODO : 最後のモーションをさせる
+        }
+        else if (allyUnits.Contains(battlerUnit))
+        {
+            allyUnits.Remove(battlerUnit);
+            Destroy(battlerUnit.gameObject); // TODO : 最後のモーションをさせる
+        }
+        yield return new WaitForSeconds(0.5f);
         if (enemyUnits.Count == 0)
         {
             playerUnit.SetBattlerTalkMessage(MessageType.Win);
@@ -273,13 +292,5 @@ public class AttackSystem : MonoBehaviour
             equipment.EquipmentBase.LifeCost.val <= life &&
             equipment.EquipmentBase.BatteryCost.val <= battery &&
             equipment.EquipmentBase.SoulCost.val <= soul;
-    }
-
-    public void UseEnegy(Equipment equipment)
-    {
-        enemyUnits[0].Battler.Life -= equipment.EquipmentBase.LifeCost.val;
-        enemyUnits[0].Battler.Battery -= equipment.EquipmentBase.BatteryCost.val;
-        enemyUnits[0].Battler.Soul -= equipment.EquipmentBase.SoulCost.val;
-        enemyUnits[0].UpdateEnegyUI();
     }
 }
