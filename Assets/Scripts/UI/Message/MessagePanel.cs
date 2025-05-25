@@ -9,7 +9,7 @@ public class MessagePanel : SlidePanel
     [SerializeField] MessagePrefab messagePrefab;
     private List<Message> messageList = new List<Message>();
 
-    private int messageCount = 7;
+    private int messageCount = 4;
 
     public void AddMessage(MessageIconType iconType, string message)
     {

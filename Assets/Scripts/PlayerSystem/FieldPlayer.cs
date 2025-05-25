@@ -14,7 +14,7 @@ public class FieldPlayer : FieldCharacter
     [SerializeField] LayerMask entryLayer;
     [SerializeField] LayerMask areaLayer;
     [SerializeField] LayerMask encountLayer;
-    [SerializeField] float moveSpeed = 3f;
+    [SerializeField] float moveSpeed = 6f;
 
     public UnityAction OnEncount;
     public UnityAction OnReserve;
