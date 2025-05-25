@@ -168,7 +168,7 @@ public class AttackSystem : MonoBehaviour
     public void ExecutePlayerEscape()
     {
         playerUnit.SetBattlerTalkMessage(MessageType.Escape);
-        enemyUnits[0].SetTalkMessage("まて!!");
+        enemyUnits[0].SetBattlerTalkMessage(MessageType.Escape);
         OnBattleEscape?.Invoke();
     }
 
