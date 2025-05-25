@@ -109,6 +109,7 @@ public class Battler
 
     public void TakeEnegy(List<Enegy> enegryList, bool isDown)
     {
+        Debug.Log($"TakeEnegy: {enegryList.Count} items, isDown: {isDown}");
         int operatorVal = isDown ? -1 : 1;
         foreach (Enegy enegry in enegryList)
         {

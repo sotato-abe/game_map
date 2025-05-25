@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -59,7 +60,21 @@ public class BattleUnit : MonoBehaviour
 
     public void SetBattlerTalkMessage(MessageType messageType)
     {
-        string battlerMessage = Battler.Base.MessageList.Find(m => m.messageType == messageType)?.message ?? messageType.GetDefaultMessage();
+        // 指定された messageType に一致するメッセージをすべて取得
+        var matchingMessages = Battler.Base.MessageList
+            .Where(m => m.messageType == messageType)
+            .ToList();
+
+        // ランダムに1つ選ぶ（見つからない場合は null）
+        TalkMessage foundMessage = matchingMessages.Count > 0
+            ? matchingMessages[UnityEngine.Random.Range(0, matchingMessages.Count)]
+            : null;
+
+        // 見つかったメッセージを使うか、デフォルトメッセージを使う
+        string battlerMessage = foundMessage != null
+            ? foundMessage.message
+            : messageType.GetDefaultMessage();
+
         SetTalkMessage(battlerMessage);
     }
 

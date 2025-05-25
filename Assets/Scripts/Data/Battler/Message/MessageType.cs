@@ -17,7 +17,7 @@ public static class MessageTypeExtensions
         switch (messageType)
         {
             case MessageType.Encount:
-                return "へっへっへ";
+                return "ちょっとつきあえや";
             case MessageType.Attack:
                 return "くらえ";
             case MessageType.Recovery:
@@ -27,7 +27,7 @@ public static class MessageTypeExtensions
             case MessageType.Miss:
                 return "ミスった！";
             case MessageType.Escape:
-                return "にげろ !";
+                return "まて !";
             case MessageType.Win:
                 return "よし";
             case MessageType.Lose:

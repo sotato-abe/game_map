@@ -172,6 +172,13 @@ public class AttackSystem : MonoBehaviour
         OnBattleEscape?.Invoke();
     }
 
+    public void FailEscape()
+    {
+        playerUnit.SetBattlerTalkMessage(MessageType.Miss);
+        enemyUnits[0].SetBattlerTalkMessage(MessageType.Win);
+        EndPlayerTurn();
+    }
+
     private void EndPlayerTurn()
     {
         Debug.Log($"EndPlayerTurn");

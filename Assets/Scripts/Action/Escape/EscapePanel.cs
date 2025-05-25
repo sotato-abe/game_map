@@ -89,14 +89,16 @@ public class EscapePanel : Panel
             if (Random.Range(0, 100) < probability)
             {
                 // 逃げる成功
-                attackSystem.ExecutePlayerEscape();
                 playerUnit.UpdateEnegyUI();
+                yield return new WaitForSeconds(1f);
+                attackSystem.ExecutePlayerEscape();
             }
             else
             {
                 // 逃げる失敗
                 playerUnit.SetBattlerTalkMessage(MessageType.Miss);
                 playerUnit.UpdateEnegyUI();
+                attackSystem.FailEscape();
             }
         }
         RunningOff();
