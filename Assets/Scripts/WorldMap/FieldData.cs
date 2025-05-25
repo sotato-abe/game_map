@@ -100,6 +100,6 @@ public class FieldData
             return null;
         }
 
-        return enemyGroups[r].GetBattlerList();
+        return enemyGroups[r].GetRandomBattlerList();
     }
 }
