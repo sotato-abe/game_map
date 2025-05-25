@@ -217,10 +217,10 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.ActionSelection;
     }
 
-    public IEnumerator EnemyAttack()
+    public IEnumerator EnemyAttack(Battler attaker)
     {
         yield return new WaitForSeconds(0.5f);
-        attackSystem.ExecuteEnemyAttack();
+        attackSystem.ExecuteEnemyAttack(attaker);
     }
 
     private void BattleEscape()

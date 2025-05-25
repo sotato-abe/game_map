@@ -95,7 +95,7 @@ public class EscapePanel : Panel
             else
             {
                 // 逃げる失敗
-                attackSystem.ExecuteEnemyAttack();
+                playerUnit.SetBattlerTalkMessage(MessageType.Miss);
                 playerUnit.UpdateEnegyUI();
             }
         }

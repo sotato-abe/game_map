@@ -61,78 +61,47 @@ public class AttackSystem : MonoBehaviour
         EndPlayerTurn();
     }
 
-    public void ExecutePlayerAttack(List<Attack> attacks)
+
+    public void ExecuteBattlerAttack(Battler attaker, List<Attack> attacks, bool isAlly)
     {
+        List<BattleUnit> targetUnits = isAlly ? allyUnits : enemyUnits;
+        BattleUnit attakerUnit = targetUnits.FirstOrDefault(unit => unit.Battler == attaker);
         if (0 < attacks.Count)
         {
-            playerUnit.SetBattlerTalkMessage(MessageType.Attack);
-            // TODO : Battlerのステータスを参照して、攻撃の値を変更する     
-            // TODO : attacksをtarget毎に分ける
-            foreach (Attack attack in attacks)
-            {
-                if (attack.Target == TargetType.Enemy)
-                {
-                    Debug.Log("Enemy");
-                    enemyUnits[0].TakeAttack(attack);
-                }
-                else if (attack.Target == TargetType.EnemyAll)
-                {
-                    Debug.Log("EnemyAll");
-                    // TODO : 右全体にアタックする場合の処理
-                    foreach (BattleUnit enemyUnit in enemyUnits)
-                    {
-                        enemyUnit.TakeAttack(attack);
-                    }
-                }
-                else if (attack.Target == TargetType.Own)
-                {
-                    Debug.Log("Own");
-                    // TODO : 自身にアタックする場合の処理
-                    playerUnit.TakeAttack(attack);
-                }
-                else if (attack.Target == TargetType.Ally)
-                {
-                    Debug.Log("Ally");
-                    // TODO : 左全体にアタックする場合の処理
-                    foreach (BattleUnit allyUnit in allyUnits)
-                    {
-                        allyUnit.TakeAttack(attack);
-                    }
-                }
-                else
-                {
-                    Debug.Log("All");
-                    // TODO : 全体にアタックする場合の処理
-                    foreach (BattleUnit enemyUnit in enemyUnits)
-                    {
-                        enemyUnit.TakeAttack(attack);
-                    }
-                    foreach (BattleUnit allyUnit in allyUnits)
-                    {
-                        allyUnit.TakeAttack(attack);
-                    }
-                }
-            }
+            attakerUnit.SetBattlerTalkMessage(MessageType.Attack);
+            ExecuteAttack(attakerUnit, attacks, isAlly);
         }
-        for (int i = enemyUnits.Count - 1; i >= 0; i--)
+        else
         {
-            BattleUnit enemyUnit = enemyUnits[i];
-            if (enemyUnit.Battler.Life <= 0)
-            {
-                GetReward(enemyUnit.Battler);
-                enemyUnit.SetBattlerTalkMessage(MessageType.Lose);
-                turnOrderSystem.RemoveTurnBattler(enemyUnit.Battler);
-                enemyUnits.RemoveAt(i);
-                Destroy(enemyUnit.gameObject); // TODO : 最後のモーションをさせる
-            }
+            // TODO : 攻撃失敗の演出
+            attakerUnit.SetBattlerTalkMessage(MessageType.Miss);
         }
-        if (enemyUnits.Count == 0)
-        {
-            playerUnit.SetBattlerTalkMessage(MessageType.Win);
-            OnBattleResult?.Invoke();
-        }
+        ConfirmationSurvival();
         SetEnemyListToPanel();
         EndPlayerTurn();
+    }
+
+    public void ExecuteEnemyAttack(Battler attacker)
+    {
+        List<Attack> attacks = new List<Attack>();
+
+        BattleUnit enemyUnit = enemyUnits.FirstOrDefault(unit => unit.Battler == attacker);
+
+        foreach (Equipment equipment in enemyUnit.Battler.EquipmentList)
+        {
+            if (CheckEnegy(equipment) == false)
+            {
+                continue;
+            }
+
+            if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
+            {
+                // エネジーを消費する
+                UseEnegy(equipment);
+                attacks.Add(equipment.Attack);
+            }
+        }
+        ExecuteBattlerAttack(enemyUnit.Battler, attacks, false);
     }
 
     private void GetReward(Battler battler)
@@ -169,27 +138,26 @@ public class AttackSystem : MonoBehaviour
             resultItemMessageList += ($"{battler.Base.Name} は何も持っていなかった。\n");
         }
 
-        string prizeText = "";
-        if (battler.Money > 0)
-        {
-            prizeText += ($"ゼニ：{battler.Money} Z、");
-            playerUnit.Battler.Money += battler.Money;
-        }
-        if (battler.Disk > 0)
-        {
-            prizeText += ($"ディスク：{battler.Disk}、");
-            playerUnit.Battler.Disk += battler.Disk;
-        }
-        if (prizeText != "")
-        {
-            resultItemMessageList += ($"{prizeText}を手に入れた。\n");
-        }
-
         if (playerUnit.Battler is PlayerBattler playerBattler)
         {
+            string prizeText = "";
+            if (battler.Money > 0)
+            {
+                prizeText += ($"ゼニ：{battler.Money} Z、");
+                playerUnit.Battler.Money += battler.Money;
+            }
+            if (battler.Disk > 0)
+            {
+                prizeText += ($"ディスク：{battler.Disk}、");
+                playerUnit.Battler.Disk += battler.Disk;
+            }
+            if (prizeText != "")
+            {
+                resultItemMessageList += ($"{prizeText}を手に入れた。\n");
+                playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
+            }
             playerBattler.AcquisitionExp(battler.Exp); // プレイヤーの経験値を加算
             resultItemMessageList += ($"経験値を{battler.Exp}手に入れた。");
-            playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
         }
         messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
     }
@@ -209,82 +177,89 @@ public class AttackSystem : MonoBehaviour
         OnExecuteBattleAction?.Invoke();
     }
 
-    public void ExecuteEnemyAttack()
+    private void ExecuteAttack(BattleUnit attackerUnit, List<Attack> attacks, bool isAllyAttack = true)
     {
-        List<Attack> attacks = new List<Attack>();
+        List<BattleUnit> allies = isAllyAttack ? allyUnits : enemyUnits;
+        List<BattleUnit> enemies = isAllyAttack ? enemyUnits : allyUnits;
 
-        foreach (Equipment equipment in enemyUnits[0].Battler.EquipmentList)
+        foreach (Attack attack in attacks)
         {
-            if (CheckEnegy(equipment) == false)
+            switch (attack.Target)
             {
-                continue;
+                case TargetType.Own:
+                    attackerUnit.TakeAttack(attack);
+                    break;
+
+                case TargetType.AllyFront:
+                    if (allies.Count > 0)
+                        allies[0].TakeAttack(attack);
+                    break;
+
+                case TargetType.AllyAll:
+                    foreach (var unit in allies)
+                        unit.TakeAttack(attack);
+                    break;
+
+                case TargetType.EnemyFront:
+                    if (enemies.Count > 0)
+                        enemies[0].TakeAttack(attack);
+                    break;
+
+                case TargetType.EnemyAll:
+                    foreach (var unit in enemies)
+                        unit.TakeAttack(attack);
+                    break;
+
+                default: // TargetType.All など
+                    foreach (var unit in allies)
+                        unit.TakeAttack(attack);
+                    foreach (var unit in enemies)
+                        unit.TakeAttack(attack);
+                    break;
             }
 
-            if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
-            {
-                // エネジーを消費する
-                UseEnegy(equipment);
-                attacks.Add(equipment.Attack);
-            }
+            break; // 一回の攻撃で終了ならここで break
         }
+    }
 
-        if (0 < attacks.Count)
-        {
-            enemyUnits[0].SetBattlerTalkMessage(MessageType.Attack);
-            foreach (Attack attack in attacks)
-            {
-                if (attack.Target == TargetType.Enemy)
-                {
-                    Debug.Log("Enemy");
-                    playerUnit.TakeAttack(attack);
-                }
-                else if (attack.Target == TargetType.EnemyAll)
-                {
-                    Debug.Log("EnemyAll");
-                    // TODO : 右全体にアタックする場合の処理
-                    foreach (BattleUnit batleUnit in allyUnits)
-                    {
-                        batleUnit.TakeAttack(attack);
-                    }
-                }
-                else if (attack.Target == TargetType.Own)
-                {
-                    Debug.Log("Own");
-                    // TODO : 自身にアタックする場合の処理
-                    enemyUnits[0].TakeAttack(attack);
-                }
-                else if (attack.Target == TargetType.Ally)
-                {
-                    Debug.Log("Ally");
-                    // TODO : 左全体にアタックする場合の処理
-                    foreach (BattleUnit battleUnit in enemyUnits)
-                    {
-                        battleUnit.TakeAttack(attack);
-                    }
-                }
-                else
-                {
-                    Debug.Log("All");
-                    // TODO : 全体にアタックする場合の処理
-                    foreach (BattleUnit enemyUnit in enemyUnits)
-                    {
-                        enemyUnit.TakeAttack(attack);
-                    }
-                    foreach (BattleUnit allyUnit in allyUnits)
-                    {
-                        allyUnit.TakeAttack(attack);
-                    }
-                }
-            }
-        }
+    private void ConfirmationSurvival()
+    {
         if (playerUnit.Battler.Life <= 0)
         {
+            playerUnit.SetBattlerTalkMessage(MessageType.Lose);
             OnBattleDefeat?.Invoke();
         }
         else
         {
-            enemyUnits[0].DecreaseEnchant();
-            OnExecuteBattleAction?.Invoke();
+            for (int i = enemyUnits.Count - 1; i >= 0; i--)
+            {
+                BattleUnit enemyUnit = enemyUnits[i];
+                if (enemyUnit.Battler.Life <= 0)
+                {
+                    GetReward(enemyUnit.Battler);
+                    enemyUnit.SetBattlerTalkMessage(MessageType.Lose);
+                    turnOrderSystem.RemoveTurnBattler(enemyUnit.Battler);
+                    enemyUnits.RemoveAt(i);
+                    Destroy(enemyUnit.gameObject); // TODO : 最後のモーションをさせる
+                }
+            }
+            for (int i = allyUnits.Count - 1; i >= 0; i--)
+            {
+                BattleUnit allyUnit = allyUnits[i];
+                if (allyUnit.Battler.Life <= 0)
+                {
+                    GetReward(allyUnit.Battler);
+                    allyUnit.SetBattlerTalkMessage(MessageType.Lose);
+                    turnOrderSystem.RemoveTurnBattler(allyUnit.Battler);
+                    allyUnits.RemoveAt(i);
+                    Destroy(allyUnit.gameObject); // TODO : 最後のモーションをさせる
+                }
+            }
+        }
+        if (enemyUnits.Count == 0)
+        {
+            playerUnit.SetBattlerTalkMessage(MessageType.Win);
+            OnBattleResult?.Invoke();
         }
     }
 

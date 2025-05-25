@@ -73,7 +73,7 @@ public class TurnOrderSystem : MonoBehaviour
         }
         else
         {
-            StartCoroutine(battleSystem.EnemyAttack());
+            StartCoroutine(battleSystem.EnemyAttack(turnBattler.battler));
         }
         yield return null;
     }
