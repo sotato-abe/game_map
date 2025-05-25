@@ -262,7 +262,6 @@ public class AttackSystem : MonoBehaviour
 
     private IEnumerator OutOfLineBattler(BattleUnit battlerUnit)
     {
-        Debug.Log("test1");
         battlerUnit.SetMotion(MotionType.Rotate);
         if (enemyUnits.Contains(battlerUnit))
         {
