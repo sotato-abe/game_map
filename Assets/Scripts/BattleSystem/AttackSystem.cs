@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class AttackSystem : MonoBehaviour
 {
-    public UnityAction OnBattleResult;
+    public UnityAction OnBattleEnd;
     public UnityAction OnExecuteBattleAction;
     public UnityAction OnBattleDefeat;
     public UnityAction OnBattleEscape;
@@ -241,8 +241,6 @@ public class AttackSystem : MonoBehaviour
                 if (enemyUnit.Battler.Life <= 0)
                 {
                     GetReward(enemyUnit.Battler);
-                    enemyUnit.SetBattlerTalkMessage(MessageType.Lose);
-                    turnOrderSystem.RemoveTurnBattler(enemyUnit.Battler);
                     StartCoroutine(OutOfLineBattler(enemyUnit));
                 }
             }
@@ -251,8 +249,6 @@ public class AttackSystem : MonoBehaviour
                 BattleUnit allyUnit = allyUnits[i];
                 if (allyUnit.Battler.Life <= 0)
                 {
-                    allyUnit.SetBattlerTalkMessage(MessageType.Lose);
-                    turnOrderSystem.RemoveTurnBattler(allyUnit.Battler);
                     StartCoroutine(OutOfLineBattler(allyUnit));
                 }
             }
@@ -262,22 +258,26 @@ public class AttackSystem : MonoBehaviour
 
     private IEnumerator OutOfLineBattler(BattleUnit battlerUnit)
     {
+        Debug.Log("test1");
+        battlerUnit.SetBattlerTalkMessage(MessageType.Lose);
         battlerUnit.SetMotion(MotionType.Rotate);
+        turnOrderSystem.RemoveTurnBattler(battlerUnit.Battler);
         if (enemyUnits.Contains(battlerUnit))
         {
             enemyUnits.Remove(battlerUnit);
-            Destroy(battlerUnit.gameObject); // TODO : 最後のモーションをさせる
         }
         else if (allyUnits.Contains(battlerUnit))
         {
             allyUnits.Remove(battlerUnit);
-            Destroy(battlerUnit.gameObject); // TODO : 最後のモーションをさせる
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f); // モーションの時間を待つ
+        Destroy(battlerUnit.gameObject);
+
+        // 勝利条件の確認
         if (enemyUnits.Count == 0)
         {
             playerUnit.SetBattlerTalkMessage(MessageType.Win);
-            OnBattleResult?.Invoke();
+            OnBattleEnd?.Invoke();
         }
     }
 

@@ -48,7 +48,7 @@ public class BattleSystem : MonoBehaviour
 
         actionBoard.OnExecuteBattleAction += ExecuteBattleAction;
         actionBoard.OnExitBattleAction += () => state = BattleState.ActionSelection;
-        attackSystem.OnBattleResult += BattleResult;
+        attackSystem.OnBattleEnd += BattleEnd;
         attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
         attackSystem.OnBattleEscape += BattleEscape;
         attackSystem.OnBattleDefeat += BattleDefeat;
@@ -231,13 +231,6 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator EscapeResultView()
     {
         yield return new WaitForSeconds(1.5f);
-        BattleEnd();
-    }
-
-    // TODO : リワード移動したしこの処理をスキップしてもいいかも。
-    public void BattleResult()
-    {
-        actionBoard.ChangeExecuteFlg(false);
         BattleEnd();
     }
 
