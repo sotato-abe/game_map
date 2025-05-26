@@ -15,7 +15,7 @@ public class Blowing : MonoBehaviour
     [SerializeField] Sprite FearBackImage;
 
     private float paddingHeight = 40f;
-    private float paddingWidth = 40f;
+    private float paddingWidth = 30f;
     private float maxWidth = 250f;
     private float blowingWidth = 250f;
     private List<TalkMessage> messageList = new List<TalkMessage>();
