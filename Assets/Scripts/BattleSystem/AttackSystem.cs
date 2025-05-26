@@ -10,7 +10,7 @@ public class AttackSystem : MonoBehaviour
     public UnityAction OnExecuteBattleAction;
     public UnityAction OnBattleDefeat;
     public UnityAction OnBattleEscape;
-    private BattleUnit playerUnit;
+    private PlayerUnit playerUnit;
     private BattleUnit enemyUnit;
     private List<BattleUnit> enemyUnits = new List<BattleUnit>();
     private List<BattleUnit> allyUnits = new List<BattleUnit>();
@@ -21,13 +21,13 @@ public class AttackSystem : MonoBehaviour
     [SerializeField] TurnOrderSystem turnOrderSystem;
     [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
-    public void SetBattler(BattleUnit playerUnit, BattleUnit enemyUnit)
+    public void SetBattler(PlayerUnit playerUnit, BattleUnit enemyUnit)
     {
         this.playerUnit = playerUnit;
         this.enemyUnit = enemyUnit;
     }
 
-    public void SetPlayerBattler(BattleUnit playerUnit)
+    public void SetPlayerBattler(PlayerUnit playerUnit)
     {
         allyUnits.Clear();
         this.playerUnit = playerUnit;
@@ -164,6 +164,7 @@ public class AttackSystem : MonoBehaviour
             playerBattler.AcquisitionExp(battler.Exp); // プレイヤーの経験値を加算
             resultItemMessageList += ($"経験値を{battler.Exp}手に入れた。");
         }
+        playerUnit.CheckSkillPoint();
         messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
     }
 

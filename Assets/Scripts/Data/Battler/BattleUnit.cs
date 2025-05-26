@@ -155,7 +155,7 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
-    public void SetStatusDialog()
+    public virtual void SetStatusDialog()
     {
         statusDialog.Setup(Battler);
     }
