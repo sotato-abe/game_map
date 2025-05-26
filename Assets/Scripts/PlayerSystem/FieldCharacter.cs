@@ -7,12 +7,18 @@ using UnityEngine.Events;
 public class FieldCharacter : MonoBehaviour
 {
     [SerializeField] public Animator animator;
+    public Battler Battler; // このフィールドキャラクターに関連付けられたバトラー
     public Animator Animator => animator;
 
     protected virtual void Awake()
     {
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
+    }
+
+    public virtual void SetUp(Battler battler = null)
+    {
+        this.Battler = battler;
     }
 
     public IEnumerator JumpMotion()

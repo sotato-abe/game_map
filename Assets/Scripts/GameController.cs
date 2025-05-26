@@ -65,10 +65,8 @@ public class GameController : MonoBehaviour
         // Debug.Log("BattleStart");
         reserveSystem.gameObject.SetActive(false);
         configSystem.SetActive(false);
-        enemy = fieldSystem.GetEnemy();
         List<Battler> enemyGroup = fieldSystem.GetEnemyGruop();
         battleSystem.gameObject.SetActive(true);
-        // battleSystem.BattleStart(enemy);
         battleSystem.SetBattle(enemyGroup);
         rightUnit.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
@@ -82,7 +80,7 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(false);
         configSystem.SetActive(true);
         fieldPlayer.SetMoveFlg(true);
-        fieldSystem.RemoveEnemy();
+        fieldSystem.RemoveAllEnemy();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
         messagePanel.SetActive(true);
     }

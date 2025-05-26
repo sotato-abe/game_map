@@ -19,6 +19,7 @@ public class AttackSystem : MonoBehaviour
     [SerializeField] private EscapePanel escapePanel;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] TurnOrderSystem turnOrderSystem;
+    [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
     public void SetBattler(BattleUnit playerUnit, BattleUnit enemyUnit)
     {
@@ -175,7 +176,6 @@ public class AttackSystem : MonoBehaviour
 
     public void FailEscape()
     {
-        playerUnit.SetBattlerTalkMessage(MessageType.Miss);
         enemyUnits[0].SetBattlerTalkMessage(MessageType.Win);
         EndPlayerTurn();
     }
@@ -275,6 +275,7 @@ public class AttackSystem : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f); // モーションの時間を待つ
         Destroy(battlerUnit.gameObject);
+        fieldCharacterSystem.RemoveFieldCharacter(battlerUnit.Battler); // フィールドからキャラクターを削除
 
         // 勝利条件の確認
         if (enemyUnits.Count == 0)

@@ -71,13 +71,7 @@ public class FieldSystem : MonoBehaviour
 
     public void Encount()
     {
-        fieldCharacterSystem.appearanceEnemy();
         OnEncount?.Invoke();
-    }
-
-    public void RemoveEnemy()
-    {
-        fieldCharacterSystem.RemoveEnemy(); // 敵を削除
     }
 
     public void EntryBuilding(BuildingType type)
@@ -340,17 +334,19 @@ public class FieldSystem : MonoBehaviour
         fieldInfoPanel.gameObject.SetActive(false);
         // fieldInfoPanel.Setup(fieldData.fieldBase);
     }
-    public Battler GetEnemy()
+
+    public void RemoveAllEnemy()
     {
-        return fieldData.GetRundamEnemy();
+        fieldCharacterSystem.RemoveAllCharacter(); // 敵を削除
     }
 
     public List<Battler> GetEnemyGruop()
     {
         List<Battler> enemyGroup = fieldData.GetRundamEnemyGroup();
+        StartCoroutine(fieldCharacterSystem.appearanceEnemy(enemyGroup)); // 敵をフィールドに出現させる
         if (enemyGroup == null)
         {
-            Debug.LogError("GetEnemy: enemyGroupがnullです");
+            Debug.LogError("GetEnemyGruop: enemyGroupがnullです");
             return null;
         }
         return enemyGroup;

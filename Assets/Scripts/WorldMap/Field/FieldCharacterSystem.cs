@@ -12,34 +12,53 @@ public class FieldCharacterSystem : MonoBehaviour
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
     [SerializeField] FieldEnemy Slyme_fieldEnemy; //キャラクター
     [SerializeField] FieldEnemy Oldman_fieldEnemy; //キャラクター
-    List<FieldEnemy> fieldEnemies = new List<FieldEnemy>(); // フィールドの敵リスト
+    List<FieldEnemy> fieldCharacters = new List<FieldEnemy>(); // フィールドの敵リスト
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
 
-    public void appearanceEnemy()
+    public IEnumerator appearanceEnemy(List<Battler> battlers)
     {
-        (Vector3 targetPos, bool isRight) = GetRundomArroundFloorPosition();
-        FieldEnemy enemy = Instantiate(Oldman_fieldEnemy, targetPos, Quaternion.identity, fieldCanvas.transform);
-        if (isRight)
+        // count分の敵をフィールドに出現させる
+        foreach (Battler battler in battlers)
         {
-            enemy.transform.localScale = new Vector3(-1, 1, 1); // 左向きにする
-            fieldPlayer.transform.localScale = new Vector3(1, 1, 1); // 左向きにする
+            // ランダムな位置を取得
+            (Vector3 targetPos, bool isRight) = GetRundomArroundFloorPosition();
+            FieldEnemy enemy = Instantiate(Oldman_fieldEnemy, targetPos, Quaternion.identity, fieldCanvas.transform);
+            enemy.SetUp(battler); // バトラーの設定を行う
+            if (isRight)
+            {
+                enemy.transform.localScale = new Vector3(-1, 1, 1); // 左向きにする
+                fieldPlayer.transform.localScale = new Vector3(1, 1, 1); // 左向きにする
+            }
+            else
+            {
+                enemy.transform.localScale = new Vector3(1, 1, 1); // 右向きにする
+                fieldPlayer.transform.localScale = new Vector3(-1, 1, 1); // 左向きにする
+            }
+            fieldCharacters.Add(enemy); // 生成した敵をリストに追加
+            yield return new WaitForSeconds(0.3f);
         }
-        else
-        {
-            enemy.transform.localScale = new Vector3(1, 1, 1); // 右向きにする
-            fieldPlayer.transform.localScale = new Vector3(-1, 1, 1); // 左向きにする
-        }
-        fieldEnemies.Add(enemy); // 生成した敵をリストに追加
+        yield break; // 全ての敵を出現させたらnullを返す
     }
 
-    public void RemoveEnemy()
+    public void RemoveAllCharacter()
     {
-        // 敵を削除
-        foreach (FieldEnemy enemy in fieldEnemies)
+        // 全てのフィールドキャラクターを削除
+        foreach (FieldEnemy enemy in fieldCharacters)
         {
-            Destroy(enemy.gameObject); // 敵を削除
+            Destroy(enemy.gameObject); // ゲームオブジェクトを削除
         }
-        fieldEnemies.Clear(); // リストをクリア
+        fieldCharacters.Clear(); // リストをクリア
+    }
+
+    public void RemoveFieldCharacter(Battler battler)
+    {
+        // 指定されたバトラーに対応する敵を削除
+        FieldEnemy enemyToRemove = fieldCharacters.Find(enemy => enemy.Battler == battler);
+        if (enemyToRemove != null)
+        {
+            fieldCharacters.Remove(enemyToRemove); // リストから削除
+            Destroy(enemyToRemove.gameObject); // ゲームオブジェクトを削除
+        }
     }
 
     private (Vector3, bool) GetRundomArroundFloorPosition(int range = 1)
