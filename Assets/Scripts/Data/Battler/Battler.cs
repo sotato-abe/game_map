@@ -99,6 +99,20 @@ public class Battler
             coordinate = _base.Birthplace.Coordinate;
     }
 
+    public Attack GetAttack()
+    {
+        Attack attack = new Attack(
+            TargetType.EnemyFront,
+            new List<Enegy>(),
+            new List<Enegy>(),
+            new List<Enchant>()
+        );
+        attack.DamageList.Add(new Enegy(EnegyType.Life, Power.val));
+        // TODO : AbilityやEquipmentからの追加ダメージを考慮する
+        
+        return attack;
+    }
+
     // ライフを割り切るときにfalseを返す（isAlive）
     public void TakeAttack(Attack attack)
     {

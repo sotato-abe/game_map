@@ -104,6 +104,7 @@ public class AttackSystem : MonoBehaviour
                 attacks.Add(equipment.Attack);
             }
         }
+        attacks.Add(enemyUnit.Battler.GetAttack());
         ExecuteBattlerAttack(enemyUnit.Battler, attacks, false);
     }
 

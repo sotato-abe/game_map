@@ -116,6 +116,7 @@ public class AttackPanel : Panel
                     attacks.Add(equipmentUnit.Equipment.Attack);
                 }
             }
+            attacks.Add(playerBattler.GetAttack());
             attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
             CountEnegyCost();
         }
