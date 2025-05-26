@@ -49,13 +49,15 @@ public class BattleUnit : MonoBehaviour
     {
         TalkMessage talkMessage = new TalkMessage(MessageType.Talk, panelType, message);
         blowing.gameObject.SetActive(true);
-        blowing.AddMessageList(talkMessage);
+        // blowing.AddMessage(talkMessage);
+        StartCoroutine(blowing.AddMessage(talkMessage));
     }
 
     public void SetMessage(TalkMessage talkMessage)
     {
         blowing.gameObject.SetActive(true);
-        blowing.AddMessageList(talkMessage);
+        // blowing.AddMessage(talkMessage);
+        StartCoroutine(blowing.AddMessage(talkMessage));
     }
 
     public void SetBattlerTalkMessage(MessageType messageType)

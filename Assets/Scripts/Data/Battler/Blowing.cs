@@ -21,7 +21,7 @@ public class Blowing : MonoBehaviour
     private List<TalkMessage> messageList = new List<TalkMessage>();
     private Coroutine fadeCoroutine;
     private Coroutine messageCoroutine;
-
+    private Coroutine typingCoroutine;
 
     private void OnDisable()
     {
@@ -33,6 +33,34 @@ public class Blowing : MonoBehaviour
             StopCoroutine(messageCoroutine);
             messageCoroutine = null;
         }
+    }
+
+    public IEnumerator AddMessage(TalkMessage talkMessage)
+    {
+        // 前のTypeDialogが動いていたら停止
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        // Textをクリア
+        messageText.text = "";
+        messageList.Clear(); // 既存のメッセージをクリア
+        SetPanel(talkMessage.panelType); // パネルの種類を設定
+
+        // TypeDialogの開始（Coroutineとして保持）
+        typingCoroutine = StartCoroutine(TypeDialog(talkMessage.message));
+
+        // TypeDialog終了まで待つ
+        yield return typingCoroutine;
+        typingCoroutine = null;
+
+        float waitTime = Mathf.Clamp(talkMessage.message.Length * 0.2f, 2f, 6f); // 最小2秒、最大6秒
+        yield return new WaitForSeconds(waitTime);
+
+        messageCoroutine = null;
+        gameObject.SetActive(false); // 表示終了後に非アクティブにする
     }
 
     public void AddMessageList(TalkMessage talkMessage)
@@ -52,32 +80,37 @@ public class Blowing : MonoBehaviour
         while (messageList.Count > 0)
         {
             string message = messageList[0].message; // 先頭のメッセージを取得
-            switch (messageList[0].panelType)
-            {
-                case PanelType.Default:
-                    panelImage.sprite = DefaultBackImage; // デフォルトの背景画像を設定
-                    break;
-                case PanelType.Surprise:
-                    panelImage.sprite = SurpriseBackImage; // サプライズの背景画像を設定
-                    break;
-                case PanelType.Thinking:
-                    panelImage.sprite = ThinkingBackImage; // 考え中の背景画像を設定
-                    break;
-                case PanelType.Fear:
-                    panelImage.sprite = FearBackImage; // 恐怖の背景画像を設定
-                    break;
-                default:
-                    panelImage.sprite = DefaultBackImage; // デフォルトの背景画像を設定
-                    break;
-            }
+            SetPanel(messageList[0].panelType); // パネルの種類を設定
             yield return TypeDialog(message);
             // messageの文字数によって待ち時間を変更する
-            float waitTime = Mathf.Clamp(message.Length * 0.1f, 1f, 5f); // 最小1秒、最大5秒
+            float waitTime = Mathf.Clamp(message.Length * 0.2f, 2f, 6f); // 最小1秒、最大5秒
             yield return new WaitForSeconds(waitTime);
             messageList.RemoveAt(0); // タイプし終わったメッセージを削除
         }
         messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
         transform.gameObject.SetActive(false); // すべてのメッセージが終了したら、オブジェクトを非アクティブにする
+    }
+
+    private void SetPanel(PanelType panelType)
+    {
+        switch (panelType)
+        {
+            case PanelType.Default:
+                panelImage.sprite = DefaultBackImage;
+                break;
+            case PanelType.Surprise:
+                panelImage.sprite = SurpriseBackImage;
+                break;
+            case PanelType.Thinking:
+                panelImage.sprite = ThinkingBackImage;
+                break;
+            case PanelType.Fear:
+                panelImage.sprite = FearBackImage;
+                break;
+            default:
+                panelImage.sprite = DefaultBackImage;
+                break;
+        }
     }
 
     public IEnumerator TypeDialog(string line)
@@ -90,7 +123,7 @@ public class Blowing : MonoBehaviour
         }
         else
         {
-            blowingWidth = line.Length * 21f + paddingWidth;
+            blowingWidth = line.Length * 20f + paddingWidth;
         }
         foreach (char letter in line)
         {
