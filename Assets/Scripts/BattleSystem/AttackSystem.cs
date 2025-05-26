@@ -181,7 +181,6 @@ public class AttackSystem : MonoBehaviour
 
     private void EndPlayerTurn()
     {
-        Debug.Log($"EndPlayerTurn");
         playerUnit.DecreaseEnchant();
         OnExecuteBattleAction?.Invoke();
     }
@@ -226,8 +225,6 @@ public class AttackSystem : MonoBehaviour
                         unit.TakeAttack(attack);
                     break;
             }
-
-            break; // 一回の攻撃で終了ならここで break
         }
     }
 

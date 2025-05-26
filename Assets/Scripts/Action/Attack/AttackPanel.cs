@@ -114,10 +114,6 @@ public class AttackPanel : Panel
                 {
                     UseEnegy(equipmentUnit.Equipment);
                     attacks.Add(equipmentUnit.Equipment.Attack);
-                    Debug.Log($"AttackType: {equipmentUnit.Equipment.Attack.Target}, " +
-                              $"Damage: {equipmentUnit.Equipment.Attack.DamageList.Count}, " +
-                              $"Recovery: {equipmentUnit.Equipment.Attack.RecoveryList.Count}, " +
-                              $"Enchant: {equipmentUnit.Equipment.Attack.EnchantList.Count}");
                 }
             }
             attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
