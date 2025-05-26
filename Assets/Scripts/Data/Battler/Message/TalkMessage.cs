@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-[CreateAssetMenu(fileName = "NewTalkMessage", menuName = "Message/TalkMessage Data")]
-public class TalkMessage : ScriptableObject
+[System.Serializable]
+public class TalkMessage
 {
-    [SerializeField, TextArea] public string message;
-    [SerializeField] public MessageType messageType;
-    [SerializeField] public PanelType panelType;
+    public MessageType messageType;
+    public PanelType panelType = PanelType.Default;
+    public string message;
 }
