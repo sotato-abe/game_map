@@ -14,8 +14,8 @@ public class Blowing : MonoBehaviour
     [SerializeField] Sprite ThinkingBackImage;
     [SerializeField] Sprite FearBackImage;
 
-    private float paddingHeight = 40f;
-    private float paddingWidth = 30f;
+    private float paddingHeight = 50f;
+    private float paddingWidth = 50f;
     private float maxWidth = 250f;
     private float blowingWidth = 250f;
     private List<TalkMessage> messageList = new List<TalkMessage>();
@@ -90,7 +90,7 @@ public class Blowing : MonoBehaviour
         }
         else
         {
-            blowingWidth = line.Length * 20f + paddingWidth;
+            blowingWidth = line.Length * 21f + paddingWidth;
         }
         foreach (char letter in line)
         {
