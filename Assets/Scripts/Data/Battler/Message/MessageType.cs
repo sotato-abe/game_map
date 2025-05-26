@@ -8,6 +8,7 @@ public enum MessageType
     Escape,   //逃亡
     Win,     //勝利
     Lose,     //敗北
+    Talk,     //敗北
 }
 
 public static class MessageTypeExtensions
@@ -32,6 +33,8 @@ public static class MessageTypeExtensions
                 return "よし";
             case MessageType.Lose:
                 return "くそぅ";
+            case MessageType.Talk:
+                return "?";
             default:
                 return "";
         }

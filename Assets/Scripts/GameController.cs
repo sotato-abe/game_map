@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour
         configSystem.OnConfigClose += ConfigEnd;
 
         playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
-        playerUnit.SetTalkMessage("よし。。");
+        playerUnit.SetTalkMessage("よし、はじめるか。");
 
         playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;

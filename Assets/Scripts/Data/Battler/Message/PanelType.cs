@@ -1,6 +1,7 @@
 public enum PanelType
 {
         Default,
-        Sunprise,
+        Surprise,
         Thinking,
+        Fear,
 }

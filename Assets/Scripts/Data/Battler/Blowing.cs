@@ -8,12 +8,17 @@ public class Blowing : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI messageText;
     [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] Image panelImage;
+    [SerializeField] Sprite DefaultBackImage;
+    [SerializeField] Sprite SurpriseBackImage;
+    [SerializeField] Sprite ThinkingBackImage;
+    [SerializeField] Sprite FearBackImage;
 
-    private float paddingHeight = 50f;
+    private float paddingHeight = 40f;
     private float paddingWidth = 40f;
     private float maxWidth = 250f;
     private float blowingWidth = 250f;
-    private List<string> messageList = new List<string>();
+    private List<TalkMessage> messageList = new List<TalkMessage>();
     private Coroutine fadeCoroutine;
     private Coroutine messageCoroutine;
 
@@ -30,9 +35,9 @@ public class Blowing : MonoBehaviour
         }
     }
 
-    public void AddMesageList(string message)
+    public void AddMessageList(TalkMessage talkMessage)
     {
-        messageList.Add(message);
+        messageList.Add(talkMessage);
         if (messageCoroutine == null)
         {
             if (gameObject.activeSelf)
@@ -46,7 +51,25 @@ public class Blowing : MonoBehaviour
     {
         while (messageList.Count > 0)
         {
-            string message = messageList[0]; // 先頭のメッセージを取得
+            string message = messageList[0].message; // 先頭のメッセージを取得
+            switch (messageList[0].panelType)
+            {
+                case PanelType.Default:
+                    panelImage.sprite = DefaultBackImage; // デフォルトの背景画像を設定
+                    break;
+                case PanelType.Surprise:
+                    panelImage.sprite = SurpriseBackImage; // サプライズの背景画像を設定
+                    break;
+                case PanelType.Thinking:
+                    panelImage.sprite = ThinkingBackImage; // 考え中の背景画像を設定
+                    break;
+                case PanelType.Fear:
+                    panelImage.sprite = FearBackImage; // 恐怖の背景画像を設定
+                    break;
+                default:
+                    panelImage.sprite = DefaultBackImage; // デフォルトの背景画像を設定
+                    break;
+            }
             yield return TypeDialog(message);
             // messageの文字数によって待ち時間を変更する
             float waitTime = Mathf.Clamp(message.Length * 0.1f, 1f, 5f); // 最小1秒、最大5秒

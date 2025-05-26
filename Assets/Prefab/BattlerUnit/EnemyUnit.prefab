@@ -94,6 +94,7 @@ MonoBehaviour:
   nameText: {fileID: 5862428825479487760}
   backPanel: {fileID: 6357324105369357790}
   padding: 30
+  minWidth: 10
 --- !u!1 &3712891936452592472
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,6 +543,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7852485535879243760}
     m_Modifications:
+    - target: {fileID: 2593457876485197528, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 5192105328292701364, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -608,11 +613,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5192105328292701364, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -80
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 5192105328292701364, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 5192105328292701364, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -642,6 +647,18 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 3526398151508342791, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
+    - target: {fileID: 5533691489111502734, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533691489111502734, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5533691489111502734, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
 --- !u!224 &5272265372198258018 stripped

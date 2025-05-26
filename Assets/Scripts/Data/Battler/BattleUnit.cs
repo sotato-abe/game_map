@@ -45,17 +45,17 @@ public class BattleUnit : MonoBehaviour
         statusDialog.ShowDialog(false);
     }
 
-    public void SetTalkMessage(string message)
+    public void SetTalkMessage(string message, PanelType panelType = PanelType.Default)
     {
-        if (blowing != null) // Nullチェックを追加
-        {
-            blowing.gameObject.SetActive(true);
-            blowing.AddMesageList(message);
-        }
-        else
-        {
-            Debug.LogError("blowing is not assigned!");
-        }
+        TalkMessage talkMessage = new TalkMessage(MessageType.Talk, panelType, message);
+        blowing.gameObject.SetActive(true);
+        blowing.AddMessageList(talkMessage);
+    }
+
+    public void SetMessage(TalkMessage talkMessage)
+    {
+        blowing.gameObject.SetActive(true);
+        blowing.AddMessageList(talkMessage);
     }
 
     public void SetBattlerTalkMessage(MessageType messageType)
@@ -75,7 +75,11 @@ public class BattleUnit : MonoBehaviour
             ? foundMessage.message
             : messageType.GetDefaultMessage();
 
-        SetTalkMessage(battlerMessage);
+        PanelType panelType = foundMessage != null
+            ? foundMessage.panelType
+            : PanelType.Default;
+
+        SetTalkMessage(battlerMessage, panelType);
     }
 
     public void TakeAttack(Attack attack)
