@@ -12,6 +12,7 @@ public class PlayerUnit : BattleUnit
     public void Setup(PlayerBattler battler)
     {
         base.Setup((Battler)battler);
+        namePlate.minWidth = 80; // 最小幅を設定
         namePlate.SetName(battler.Base.Name);
         CheckSkillPoint();
     }
