@@ -1382,6 +1382,37 @@ MonoBehaviour:
   title: {fileID: 1414729116}
   description: {fileID: 1443350618}
   icon: {fileID: 896521923}
+--- !u!1 &278443516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 278443517}
+  m_Layer: 0
+  m_Name: FieldCharacterBehind
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &278443517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278443516}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 995.3804, y: 557.1091, z: -1288.9805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &283923456
 GameObject:
   m_ObjectHideFlags: 0
@@ -2982,7 +3013,8 @@ MonoBehaviour:
   fieldPlayer: {fileID: 513887582}
   Slyme_fieldEnemy: {fileID: -1339983889087343359, guid: 8eb35c238d4d86f4cbf9052be65b4ba1, type: 3}
   Oldman_fieldEnemy: {fileID: -1339983889087343359, guid: 78656b6891c44f14cb69a3c6fdac3869, type: 3}
-  fieldCanvas: {fileID: 2054272911}
+  fieldCharacterBehind: {fileID: 278443516}
+  fieldCharacterFront: {fileID: 1109646791}
 --- !u!1 &701491497
 GameObject:
   m_ObjectHideFlags: 0
@@ -3955,7 +3987,7 @@ Transform:
   m_Children:
   - {fileID: 814000238}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1055977295
 PrefabInstance:
@@ -5458,6 +5490,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096632428}
   m_CullTransparentMesh: 1
+--- !u!1 &1109646791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1109646792}
+  m_Layer: 0
+  m_Name: FieldCharacterFront
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109646792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109646791}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 995.3804, y: 557.1091, z: -1288.9805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1119025270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7676,7 +7739,7 @@ RectTransform:
   m_Children:
   - {fileID: 98391773}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11866,7 +11929,7 @@ RectTransform:
   - {fileID: 924898345}
   - {fileID: 1119025271}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -12362,7 +12425,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -12904,7 +12967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8469542832532789815, guid: 68135bac03f6df64f85a5e0f98f5cc76, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8469542832532789815, guid: 68135bac03f6df64f85a5e0f98f5cc76, type: 3}
       propertyPath: m_LocalPosition.x

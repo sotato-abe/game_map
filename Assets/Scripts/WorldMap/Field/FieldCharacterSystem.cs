@@ -13,7 +13,8 @@ public class FieldCharacterSystem : MonoBehaviour
     [SerializeField] FieldEnemy Slyme_fieldEnemy; //キャラクター
     [SerializeField] FieldEnemy Oldman_fieldEnemy; //キャラクター
     List<FieldEnemy> fieldCharacters = new List<FieldEnemy>(); // フィールドの敵リスト
-    [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
+    [SerializeField] GameObject fieldCharacterFront; // フィールドキャンバス
+    [SerializeField] GameObject fieldCharacterBehind; // フィールドキャンバス
 
     public IEnumerator appearanceEnemy(List<Battler> battlers)
     {
@@ -21,19 +22,14 @@ public class FieldCharacterSystem : MonoBehaviour
         foreach (Battler battler in battlers)
         {
             // ランダムな位置を取得
-            (Vector3 targetPos, bool isRight) = GetRundomArroundFloorPosition();
-            FieldEnemy enemy = Instantiate(Oldman_fieldEnemy, targetPos, Quaternion.identity, fieldCanvas.transform);
+            (Vector3 targetPos, bool isRight, bool isFront) = GetRundomArroundFloorPosition();
+            FieldEnemy enemy = null;
+            GameObject targetPosition = isFront ? fieldCharacterFront : fieldCharacterBehind;
+            int reversal = isRight ? -1 : 1; // 向きの設定
+            enemy = Instantiate(Oldman_fieldEnemy, targetPos, Quaternion.identity, targetPosition.transform);
             enemy.SetUp(battler); // バトラーの設定を行う
-            if (isRight)
-            {
-                enemy.transform.localScale = new Vector3(-1, 1, 1); // 左向きにする
-                fieldPlayer.transform.localScale = new Vector3(1, 1, 1); // 左向きにする
-            }
-            else
-            {
-                enemy.transform.localScale = new Vector3(1, 1, 1); // 右向きにする
-                fieldPlayer.transform.localScale = new Vector3(-1, 1, 1); // 左向きにする
-            }
+            enemy.transform.localScale = new Vector3(reversal, 1, 1); // 左向きにする
+            fieldPlayer.transform.localScale = new Vector3(reversal * -1, 1, 1); // 左向きにする
             fieldCharacters.Add(enemy); // 生成した敵をリストに追加
             yield return new WaitForSeconds(0.3f);
         }
@@ -61,13 +57,14 @@ public class FieldCharacterSystem : MonoBehaviour
         }
     }
 
-    private (Vector3, bool) GetRundomArroundFloorPosition(int range = 1)
+    private (Vector3, bool, bool) GetRundomArroundFloorPosition(int range = 1)
     {
         // フィールドのランダムな位置を取得
         Vector3 pos = fieldPlayer.transform.position;
         // 0 は除外、-range ~ rangeの範囲でランダムな座標を取得
         int x = 0;
         int y = 0;
+        bool isFront = true;
         bool isRight = true;
 
         // (0,0) 以外になるまでランダムに取得
@@ -76,13 +73,13 @@ public class FieldCharacterSystem : MonoBehaviour
             x = Random.Range(-range, range + 1); // 上限は含まれないので +1
             y = Random.Range(-range, range + 1);
         }
+        if (y < 0)
+            isFront = false;
         if (x < 0)
-        {
             isRight = false;
-        }
 
         Vector3 targetPos = new Vector3(pos.x + x, pos.y + y, 0); // プレイヤーの位置にランダムなオフセットを加算
 
-        return (targetPos, isRight);
+        return (targetPos, isRight, isFront);
     }
 }
