@@ -40,41 +40,32 @@ public class PouchPanel : Panel
 
     public void Update()
     {
-        if (!isActive)
+        if (isActive)
         {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                isActive = true;
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                isActive = false;
-                OnActionExit?.Invoke();
-            }
-
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                SelectItem(ArrowType.Down);
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                SelectItem(ArrowType.Right);
-            }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                SelectItem(ArrowType.Up);
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                SelectItem(ArrowType.Left);
-            }
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 UseItem();
             }
+        }
+
+        // TODO：ターン実行時にActiveになるようにする。
+        // TODO：左右移動で選択するようにする
+        // TODO：シフト＋矢印で選択できるようにする
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            SelectItem(ArrowType.Down);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SelectItem(ArrowType.Right);
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            SelectItem(ArrowType.Up);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SelectItem(ArrowType.Left);
         }
     }
 
