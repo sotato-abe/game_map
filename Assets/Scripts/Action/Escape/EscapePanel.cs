@@ -62,7 +62,7 @@ public class EscapePanel : Panel
         }
         // enemySPD /= Mathf.Max(1, enemyList.Count - 1);
         probability = (playerSPD * 100) / (playerSPD + enemySPD);
-        probabilityText.SetText(probability.ToString() + "%");
+        probabilityText.SetText(probability.ToString());
     }
 
     private void CountEnegyCost()
