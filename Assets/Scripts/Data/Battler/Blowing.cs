@@ -48,7 +48,9 @@ public class Blowing : MonoBehaviour
         {
             string message = messageList[0]; // 先頭のメッセージを取得
             yield return TypeDialog(message);
-            yield return new WaitForSeconds(2f);
+            // messageの文字数によって待ち時間を変更する
+            float waitTime = Mathf.Clamp(message.Length * 0.1f, 1f, 5f); // 最小1秒、最大5秒
+            yield return new WaitForSeconds(waitTime);
             messageList.RemoveAt(0); // タイプし終わったメッセージを削除
         }
         messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
