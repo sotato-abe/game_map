@@ -109,7 +109,6 @@ public class Battler
         );
         attack.DamageList.Add(new Enegy(EnegyType.Life, Power.val));
         // TODO : AbilityやEquipmentからの追加ダメージを考慮する
-        
         return attack;
     }
 
