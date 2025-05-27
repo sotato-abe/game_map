@@ -59,7 +59,7 @@ public class AttackSystem : MonoBehaviour
         // 確率でクエスト開放する
         // クエストを受注するとバトルは終了する
 
-        EndPlayerTurn();
+        EndPlayerTurn(playerUnit);
     }
 
 
@@ -79,7 +79,7 @@ public class AttackSystem : MonoBehaviour
         }
         ConfirmationSurvival();
         SetEnemyListToPanel();
-        EndPlayerTurn();
+        EndPlayerTurn(attakerUnit);
     }
 
     public void ExecuteEnemyAttack(Battler attacker)
@@ -178,12 +178,12 @@ public class AttackSystem : MonoBehaviour
     public void FailEscape()
     {
         enemyUnits[0].SetBattlerTalkMessage(MessageType.Win);
-        EndPlayerTurn();
+        EndPlayerTurn(playerUnit);
     }
 
-    private void EndPlayerTurn()
+    private void EndPlayerTurn(BattleUnit battlerUnit)
     {
-        playerUnit.DecreaseEnchant();
+        battlerUnit.DecreaseEnchant();
         OnExecuteBattleAction?.Invoke();
     }
 

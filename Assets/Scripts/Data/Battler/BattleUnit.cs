@@ -49,14 +49,6 @@ public class BattleUnit : MonoBehaviour
     {
         TalkMessage talkMessage = new TalkMessage(MessageType.Talk, panelType, message);
         blowing.gameObject.SetActive(true);
-        // blowing.AddMessage(talkMessage);
-        StartCoroutine(blowing.AddMessage(talkMessage));
-    }
-
-    public void SetMessage(TalkMessage talkMessage)
-    {
-        blowing.gameObject.SetActive(true);
-        // blowing.AddMessage(talkMessage);
         StartCoroutine(blowing.AddMessage(talkMessage));
     }
 
@@ -86,8 +78,7 @@ public class BattleUnit : MonoBehaviour
 
     public void TakeAttack(Attack attack)
     {
-        SetMotion(MotionType.Shake);
-        SetBattlerTalkMessage(MessageType.Damage);
+        SetBattlerReaction(attack);
         Battler.TakeAttack(attack);
         UpdateEnegyUI();
         UpdateEnchantUI();
@@ -100,40 +91,49 @@ public class BattleUnit : MonoBehaviour
         soulBar.ChangeEnegyVal(Battler.Soul);
     }
 
-    public void TakeEnchant(List<Enchant> enchantList)
+    private void SetBattlerReaction(Attack attack)
     {
-        SetMotion(MotionType.Shake);
-        Battler.TakeEnchant(enchantList);
-        EncahntMessage(enchantList);
-        UpdateEnchantUI();
-    }
+        var reactions = new List<(int count, MotionType motion, MessageType message, bool isEnchant)>
+        {
+            (attack.DamageList.Count, MotionType.Shake, MessageType.Damage, false),
+            (attack.RecoveryList.Count, MotionType.Shake, MessageType.Recovery, false),
+            (attack.EnchantList.Count, MotionType.Shake, MessageType.Question,true)
+        };
 
-    private void EncahntMessage(List<Enchant> enchantList)
-    {
-        int buffCount = 0;
-        foreach (Enchant enchant in enchantList)
+        var maxReaction = reactions.OrderByDescending(r => r.count).First();
+
+        if (!maxReaction.isEnchant)
         {
-            EnchantData enchantData = EnchantDatabase.Instance?.GetData(enchant.Type);
-            if (enchantData.buffType == BuffType.Buff)
-            {
-                buffCount++;
-            }
-            else if (enchantData.buffType == BuffType.Debuff)
-            {
-                buffCount--;
-            }
-        }
-        if (buffCount > 0)
-        {
-            SetBattlerTalkMessage(MessageType.Recovery);
-        }
-        else if (buffCount < 0)
-        {
-            SetBattlerTalkMessage(MessageType.Damage);
+            SetMotion(maxReaction.motion);
+            SetBattlerTalkMessage(maxReaction.message);
         }
         else
         {
-            SetTalkMessage("。。。");
+            int buffCount = 0;
+            foreach (var enchant in attack.EnchantList)
+            {
+                var data = EnchantDatabase.Instance?.GetData(enchant.Type);
+                if (data == null) continue;
+
+                buffCount += data.buffType == BuffType.Buff ? 1 :
+                             data.buffType == BuffType.Debuff ? -1 : 0;
+            }
+
+            if (buffCount == 0)
+            {
+                SetMotion(MotionType.Move);
+                SetBattlerTalkMessage(MessageType.Question);
+            }
+            else if (buffCount > 0)
+            {
+                SetMotion(MotionType.Randam);
+                SetBattlerTalkMessage(MessageType.Recovery);
+            }
+            else
+            {
+                SetMotion(MotionType.Shake);
+                SetBattlerTalkMessage(MessageType.Damage);
+            }
         }
     }
 

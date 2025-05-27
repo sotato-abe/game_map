@@ -58,6 +58,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         {
             if (droppedItemBlock.transform.parent == itemList.transform)
             {
+                Debug.Log("バッグのアイテムです。");
                 return;
             }
             if (playerBattler.BagItemList.Count >= playerBattler.Bag.val)
@@ -217,31 +218,27 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void UseItem()
     {
-        if (itemBlockList.Count > 0)
+        if (itemBlockList.Count <= 0)
         {
-            if (itemBlockList[selectedItem].Item is Consumable consumable)
-            {
-                playerBattler.TakeEnegy(consumable.ConsumableBase.RecoveryList, false);
-                playerBattler.TakeEnchant(consumable.ConsumableBase.EnchantList);
-                playerBattler.BagItemList.Remove(consumable);
-                playerUnit.TakeEnchant(consumable.ConsumableBase.EnchantList);
-                playerUnit.UpdateEnegyUI();
-                SetBlock();
-            }
-            else if (itemBlockList[selectedItem].Item is Equipment)
-            {
-                // 装備品を装備する
-                equipmentWindow.AddItem(itemBlockList[selectedItem].Item);
-                SetBlock();
-            }
-            else
-            {
-                Debug.LogWarning("選択中のアイテムは使用できません。");
-            }
+            Debug.LogWarning("使用できるアイテムがありません。");
+            return;
+        }
+
+        if (itemBlockList[selectedItem].Item is Consumable consumable)
+        {
+            playerBattler.BagItemList.Remove(consumable);
+            playerUnit.TakeAttack(consumable.Attack);
+            SetBlock();
+        }
+        else if (itemBlockList[selectedItem].Item is Equipment)
+        {
+            // 装備品を装備する
+            equipmentWindow.AddItem(itemBlockList[selectedItem].Item);
+            SetBlock();
         }
         else
         {
-            Debug.LogWarning("使用できるアイテムがありません。");
+            Debug.LogWarning("選択中のアイテムは使用できません。");
         }
     }
 }
