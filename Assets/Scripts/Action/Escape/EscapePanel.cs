@@ -23,6 +23,7 @@ public class EscapePanel : Panel
     [SerializeField] private AttackSystem attackSystem;
     List<Battler> enemyList = new List<Battler>();
 
+    private bool isEscaping = false;
     int lifeCost = 0;
     int batteryCost = 0;
     int soulCost = 0;
@@ -31,7 +32,7 @@ public class EscapePanel : Panel
 
     public void Update()
     {
-        if (attackSystem.ActivePlayerTurn)
+        if (attackSystem.ActivePlayerTurn && !isEscaping)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -77,6 +78,7 @@ public class EscapePanel : Panel
 
     private IEnumerator Escape()
     {
+        isEscaping = true;
         playerUnit.Battler.Life -= lifeCost;
         playerUnit.Battler.Battery -= batteryCost;
         playerUnit.Battler.Soul -= soulCost;
@@ -99,6 +101,7 @@ public class EscapePanel : Panel
         }
         RunningOff();
         ProbabilityCalculation();
+        isEscaping = false;
     }
 
     private IEnumerator RunningCoroutine()

@@ -172,7 +172,7 @@ public class BattleSystem : MonoBehaviour
         {
             allyUnitList.Remove(battlerUnit);
         }
-        yield return new WaitForSeconds(0.5f); // モーションの時間を待つ
+        yield return new WaitForSeconds(1.0f); // モーションの時間を待つ
         Destroy(battlerUnit.gameObject);
         fieldCharacterSystem.RemoveFieldCharacter(battlerUnit.Battler); // フィールドからキャラクターを削除
 
