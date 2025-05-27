@@ -10,8 +10,8 @@ public class EnegyIcon : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] EnegyIconList enegyIconList;
 
-    [SerializeField] Color damageColor = new Color(133, 10, 240, 255);
-    [SerializeField] Color recoveryColor = new Color(0, 0, 0, 200);
+    [SerializeField] Color recoveryColor = new Color(2, 115, 229, 255);
+    [SerializeField] Color damageColor = new Color(243, 52, 74, 255);
 
     public EnegyType enegyType;
 
@@ -44,4 +44,3 @@ public class EnegyIcon : MonoBehaviour
         EnegyUp?.Invoke(enegyType);
     }
 }
-
