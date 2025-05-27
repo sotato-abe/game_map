@@ -13,7 +13,7 @@ public class StatusPanel : Panel
     [SerializeField] BattlerEnegyBar battery;
     [SerializeField] BattlerEnegyBar soul;
     [SerializeField] TextMeshProUGUI level;
-    [SerializeField] SkillPointPanel skillPointPanel;
+    [SerializeField] SkillPoint skillPoint;
     [SerializeField] TextMeshProUGUI description;
     [SerializeField] GameObject enegyList;
     [SerializeField] GameObject statusList;
@@ -25,9 +25,7 @@ public class StatusPanel : Panel
     [SerializeField] AbilityUnit abilityPrefab;
     [SerializeField] EnchantIcon enchantIconPrefab;
     [SerializeField] StatusLevel statusLevel;
-
-    int Width = 750;
-    int PaddingHeight = 250;
+    [SerializeField] StatusDialog statusDialog;
     private List<Enegy> enegyCountList = new List<Enegy>();
 
     private void Start()
@@ -69,13 +67,7 @@ public class StatusPanel : Panel
         SetEnchant();
         SetAbility();
         description.text = playerUnit.Battler.Base.Description;
-        ResizePanel();
-    }
-
-    private void ResizePanel()
-    {
-        float panelHeight = description.preferredHeight + PaddingHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(Width, panelHeight);
+        statusDialog.Setup(playerUnit.Battler);
     }
 
     private void SetCharacterCard()
@@ -184,12 +176,12 @@ public class StatusPanel : Panel
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         if (battler.SkillPoint > 0)
         {
-            skillPointPanel.gameObject.SetActive(true);
-            skillPointPanel.SetPoint(battler.SkillPoint);
+            skillPoint.gameObject.SetActive(true);
+            skillPoint.SetPoint(battler.SkillPoint);
         }
         else
         {
-            skillPointPanel.gameObject.SetActive(false);
+            skillPoint.gameObject.SetActive(false);
         }
     }
 

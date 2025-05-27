@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class SkillPointPanel : MonoBehaviour
+public class SkillPoint : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI title;
-    [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] RectTransform backRectTransform;
     private float padding = 40f;
 
     public void SetPoint(int skillPoint)
@@ -18,13 +18,13 @@ public class SkillPointPanel : MonoBehaviour
 
     private void ResizePlate()
     {
-        if (title == null || backImageRectTransform == null)
+        if (title == null || backRectTransform == null)
         {
-            Debug.LogError("title または backImageRectTransform が null");
+            Debug.LogError("title または backRectTransform が null");
             return;
         }
 
         float newWidth = title.preferredWidth + padding;
-        backImageRectTransform.sizeDelta = new Vector2(newWidth, backImageRectTransform.sizeDelta.y);
+        backRectTransform.sizeDelta = new Vector2(newWidth, backRectTransform.sizeDelta.y);
     }
 }

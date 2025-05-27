@@ -7,7 +7,7 @@ using TMPro;
 public class MessagePrefab : MonoBehaviour
 {
     [SerializeField] Image image;
-    [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] RectTransform backRectTransform;
     [SerializeField] TextMeshProUGUI text;
 
     private int lineWidth = 700;
@@ -22,13 +22,13 @@ public class MessagePrefab : MonoBehaviour
 
     private void ResizePlate()
     {
-        if (text == null || backImageRectTransform == null)
+        if (text == null || backRectTransform == null)
         {
-            Debug.LogError("description または backImageRectTransform が null");
+            Debug.LogError("description または backRectTransform が null");
             return;
         }
 
         float newHeight = text.preferredHeight + padding;
-        backImageRectTransform.sizeDelta = new Vector2(lineWidth, newHeight);
+        backRectTransform.sizeDelta = new Vector2(lineWidth, newHeight);
     }
 }

@@ -7,14 +7,14 @@ using TMPro;
 public class Blowing : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI messageText;
-    [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] RectTransform backRectTransform;
     [SerializeField] Image panelImage;
     [SerializeField] Sprite DefaultBackImage;
     [SerializeField] Sprite SurpriseBackImage;
     [SerializeField] Sprite ThinkingBackImage;
     [SerializeField] Sprite FearBackImage;
 
-    private float paddingHeight = 50f;
+    private float paddingHeight = 60f;
     private float paddingWidth = 50f;
     private float maxWidth = 250f;
     private float blowingWidth = 250f;
@@ -135,9 +135,9 @@ public class Blowing : MonoBehaviour
 
     private void ResizePlate()
     {
-        if (messageText == null || backImageRectTransform == null)
+        if (messageText == null || backRectTransform == null)
         {
-            Debug.LogError("messageText または backImageRectTransform が null");
+            Debug.LogError("messageText または backRectTransform が null");
             return;
         }
 
@@ -147,6 +147,6 @@ public class Blowing : MonoBehaviour
         // 横幅を最大値で制限
         // float newWidth = Mathf.Min(messageText.preferredWidth, maxWidth) + paddingWidth;
         float newHeight = messageText.preferredHeight + paddingHeight;
-        backImageRectTransform.sizeDelta = new Vector2(blowingWidth, newHeight);
+        backRectTransform.sizeDelta = new Vector2(blowingWidth, newHeight);
     }
 }

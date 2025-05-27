@@ -60,7 +60,6 @@ public class EscapePanel : Panel
         {
             enemySPD += enemy.Speed.val;
         }
-        // enemySPD /= Mathf.Max(1, enemyList.Count - 1);
         probability = (playerSPD * 100) / (playerSPD + enemySPD);
         probabilityText.SetText(probability.ToString());
     }

@@ -10,7 +10,7 @@ public class Description : MonoBehaviour
     [SerializeField] Image image;
 
     [SerializeField] float padding = 90f;
-    [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] RectTransform backRectTransform;
 
     public IEnumerator TypeDescription(string line)
     {
@@ -25,13 +25,13 @@ public class Description : MonoBehaviour
 
     private void ResizePlate()
     {
-        if (description == null || backImageRectTransform == null)
+        if (description == null || backRectTransform == null)
         {
-            Debug.LogError("description または backImageRectTransform が null");
+            Debug.LogError("description または backRectTransform が null");
             return;
         }
 
         float newHeight = description.preferredHeight + padding;
-        backImageRectTransform.sizeDelta = new Vector2(backImageRectTransform.sizeDelta.x, newHeight);
+        backRectTransform.sizeDelta = new Vector2(backRectTransform.sizeDelta.x, newHeight);
     }
 }

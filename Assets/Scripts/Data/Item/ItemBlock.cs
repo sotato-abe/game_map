@@ -14,12 +14,13 @@ public class ItemBlock : Block
     [SerializeField] ConsumableDialog consumableDialog;
     [SerializeField] EquipmentDialog equipmentDialog;
     [SerializeField] TreasureDialog treasureDialog;
-    private bool isActive = false;
+    private bool isActive = true;
 
     public void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
+        SetTarget(false);
 
         if (item is Consumable)
         {

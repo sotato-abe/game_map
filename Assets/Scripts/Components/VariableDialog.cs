@@ -5,14 +5,14 @@ using TMPro;
 
 public class VariableDialog : Dialog
 {
-    [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] RectTransform backRectTransform;
     protected virtual float PaddingHeight => 110f;
-    private float dialogWidth = 300f;
+    protected virtual float dialogWidth => 300f;
 
     public void ResizeDialog()
     {
         description.ForceMeshUpdate();
         float newHeight = description.preferredHeight + PaddingHeight;
-        backImageRectTransform.sizeDelta = new Vector2(dialogWidth, newHeight);
+        backRectTransform.sizeDelta = new Vector2(dialogWidth, newHeight);
     }
 }
