@@ -40,7 +40,7 @@ public class PouchPanel : Panel
 
     public void Update()
     {
-        if (isActive)
+        if (attackSystem.ActivePlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {

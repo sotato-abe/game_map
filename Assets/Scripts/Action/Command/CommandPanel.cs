@@ -36,7 +36,7 @@ public class CommandPanel : Panel
 
     public void Update()
     {
-        if (executeFlg)
+        if (attackSystem.ActivePlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -102,22 +102,20 @@ public class CommandPanel : Panel
 
     public void ExecuteCommand()
     {
-        if (executeFlg)
-        {
-            List<Attack> attacks = new List<Attack>();
-            foreach (CommandUnit commandUnit in commandUnitList)
-            {
-                if (CheckEnegy(commandUnit.Command) == false)
-                {
-                    continue;
-                }
 
-                UseEnegy(commandUnit.Command);
-                attacks.Add(commandUnit.Command.Attack);
+        List<Attack> attacks = new List<Attack>();
+        foreach (CommandUnit commandUnit in commandUnitList)
+        {
+            if (CheckEnegy(commandUnit.Command) == false)
+            {
+                continue;
             }
-            attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
-            CountEnegyCost();
+
+            UseEnegy(commandUnit.Command);
+            attacks.Add(commandUnit.Command.Attack);
         }
+        attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
+        CountEnegyCost();
     }
 
     public bool CheckEnegy(Command command)

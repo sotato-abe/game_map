@@ -31,7 +31,7 @@ public class EscapePanel : Panel
 
     public void Update()
     {
-        if (executeFlg)
+        if (attackSystem.ActivePlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -77,28 +77,25 @@ public class EscapePanel : Panel
 
     private IEnumerator Escape()
     {
-        if (executeFlg)
+        playerUnit.Battler.Life -= lifeCost;
+        playerUnit.Battler.Battery -= batteryCost;
+        playerUnit.Battler.Soul -= soulCost;
+
+        yield return StartCoroutine(RunningCoroutine());
+
+        if (Random.Range(0, 100) < probability)
         {
-            playerUnit.Battler.Life -= lifeCost;
-            playerUnit.Battler.Battery -= batteryCost;
-            playerUnit.Battler.Soul -= soulCost;
-
-            yield return StartCoroutine(RunningCoroutine());
-
-            if (Random.Range(0, 100) < probability)
-            {
-                // 逃げる成功
-                playerUnit.UpdateEnegyUI();
-                yield return new WaitForSeconds(1f);
-                attackSystem.ExecutePlayerEscape();
-            }
-            else
-            {
-                // 逃げる失敗
-                playerUnit.SetBattlerTalkMessage(MessageType.Miss);
-                playerUnit.UpdateEnegyUI();
-                attackSystem.FailEscape();
-            }
+            // 逃げる成功
+            playerUnit.UpdateEnegyUI();
+            yield return new WaitForSeconds(1f);
+            attackSystem.ExecutePlayerEscape(true);
+        }
+        else
+        {
+            // 逃げる失敗
+            playerUnit.SetBattlerTalkMessage(MessageType.Miss);
+            playerUnit.UpdateEnegyUI();
+            attackSystem.ExecutePlayerEscape(false);
         }
         RunningOff();
         ProbabilityCalculation();

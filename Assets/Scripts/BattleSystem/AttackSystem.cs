@@ -6,25 +6,23 @@ using UnityEngine.Events;
 
 public class AttackSystem : MonoBehaviour
 {
-    public UnityAction OnBattleEnd;
     public UnityAction OnExecuteBattleAction;
     public UnityAction OnBattleDefeat;
     public UnityAction OnBattleEscape;
     private PlayerUnit playerUnit;
-    private BattleUnit enemyUnit;
     private List<BattleUnit> enemyUnits = new List<BattleUnit>();
     private List<BattleUnit> allyUnits = new List<BattleUnit>();
 
     [SerializeField] private AttackPanel attackPanel;
     [SerializeField] private EscapePanel escapePanel;
-    [SerializeField] MessagePanel messagePanel;
     [SerializeField] TurnOrderSystem turnOrderSystem;
-    [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
-    public void SetBattler(PlayerUnit playerUnit, BattleUnit enemyUnit)
+    private bool activePlayerTurn = false;
+    public bool ActivePlayerTurn => activePlayerTurn;
+
+    public void SetActivePlayerTurn(bool isActive)
     {
-        this.playerUnit = playerUnit;
-        this.enemyUnit = enemyUnit;
+        activePlayerTurn = isActive;
     }
 
     public void SetPlayerBattler(PlayerUnit playerUnit)
@@ -37,20 +35,9 @@ public class AttackSystem : MonoBehaviour
     public void SetEnemyBattlers(List<BattleUnit> enemyUnits)
     {
         this.enemyUnits = enemyUnits;
-        SetEnemyListToPanel();
     }
 
-    private void SetEnemyListToPanel()
-    {
-        List<Battler> enemyBattlers = new List<Battler>();
-        foreach (BattleUnit enemyUnit in enemyUnits)
-        {
-            enemyBattlers.Add(enemyUnit.Battler);
-        }
-        escapePanel.SetEnemyList(enemyBattlers);
-    }
-
-    public void ExecutePlayerTalk()
+    public void ExecutePlayerTalk() // 現在未使用中
     {
         playerUnit.SetTalkMessage("hey");
         enemyUnits[0].SetTalkMessage("...  ");
@@ -77,114 +64,7 @@ public class AttackSystem : MonoBehaviour
             // TODO : 攻撃失敗の演出
             attakerUnit.SetBattlerTalkMessage(MessageType.Miss);
         }
-        ConfirmationSurvival();
-        SetEnemyListToPanel();
         EndPlayerTurn(attakerUnit);
-    }
-
-    public void ExecuteEnemyAttack(Battler attacker)
-    {
-        List<Attack> attacks = new List<Attack>();
-
-        BattleUnit enemyUnit = enemyUnits.FirstOrDefault(unit => unit.Battler == attacker);
-
-        foreach (Equipment equipment in enemyUnit.Battler.EquipmentList)
-        {
-            if (CheckEnegy(equipment) == false)
-            {
-                continue;
-            }
-
-            if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
-            {
-                // エネジーを消費する
-                enemyUnit.Battler.Life -= equipment.EquipmentBase.LifeCost.val;
-                enemyUnit.Battler.Battery -= equipment.EquipmentBase.BatteryCost.val;
-                enemyUnit.Battler.Soul -= equipment.EquipmentBase.SoulCost.val;
-                enemyUnit.UpdateEnegyUI();
-                attacks.Add(equipment.Attack);
-            }
-        }
-        attacks.Add(enemyUnit.Battler.GetAttack());
-        ExecuteBattlerAttack(enemyUnit.Battler, attacks, false);
-    }
-
-    private void GetReward(Battler battler)
-    {
-        List<Consumable> targetItems = battler.PouchList;
-        string resultItemMessageList = "";
-        resultItemMessageList = battler.Base.Name + " に勝利した。\n";
-
-        if (targetItems != null && targetItems.Count > 0)
-        {
-            string itemList = "";
-            List<Consumable> awardedItems = new List<Consumable>();
-
-            foreach (Consumable item in targetItems)
-            {
-                // TODO：アイテムのレア度によって取得確率を変える
-                if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
-                {
-                    bool success = playerUnit.Battler.AddItem(item); // プレイヤーのインベントリに追加
-                    if (success)
-                    {
-                        itemList += $"{item.Base.Name},";
-                    }
-                }
-            }
-
-            if (itemList != "")
-            {
-                resultItemMessageList += ($"{itemList}を手に入れた。\n");
-            }
-        }
-        else
-        {
-            resultItemMessageList += ($"{battler.Base.Name} は何も持っていなかった。\n");
-        }
-
-        if (playerUnit.Battler is PlayerBattler playerBattler)
-        {
-            string prizeText = "";
-            if (battler.Money > 0)
-            {
-                prizeText += ($"ゼニ：{battler.Money} Z、");
-                playerUnit.Battler.Money += battler.Money;
-            }
-            if (battler.Disk > 0)
-            {
-                prizeText += ($"ディスク：{battler.Disk}、");
-                playerUnit.Battler.Disk += battler.Disk;
-            }
-            if (prizeText != "")
-            {
-                resultItemMessageList += ($"{prizeText}を手に入れた。\n");
-                playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
-            }
-            playerBattler.AcquisitionExp(battler.Exp); // プレイヤーの経験値を加算
-            resultItemMessageList += ($"経験値を{battler.Exp}手に入れた。");
-        }
-        playerUnit.CheckSkillPoint();
-        messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
-    }
-
-    public void ExecutePlayerEscape()
-    {
-        playerUnit.SetBattlerTalkMessage(MessageType.Escape);
-        enemyUnits[0].SetBattlerTalkMessage(MessageType.Escape);
-        OnBattleEscape?.Invoke();
-    }
-
-    public void FailEscape()
-    {
-        enemyUnits[0].SetBattlerTalkMessage(MessageType.Win);
-        EndPlayerTurn(playerUnit);
-    }
-
-    private void EndPlayerTurn(BattleUnit battlerUnit)
-    {
-        battlerUnit.DecreaseEnchant();
-        OnExecuteBattleAction?.Invoke();
     }
 
     private void ExecuteAttack(BattleUnit attackerUnit, List<Attack> attacks, bool isAllyAttack = true)
@@ -230,60 +110,54 @@ public class AttackSystem : MonoBehaviour
         }
     }
 
-    private void ConfirmationSurvival()
+    public IEnumerator ExecuteEnemyAttack(Battler attacker) // EnemyUnitに移動できそう
     {
-        if (playerUnit.Battler.Life <= 0)
+        List<Attack> attacks = new List<Attack>();
+
+        BattleUnit enemyUnit = enemyUnits.FirstOrDefault(unit => unit.Battler == attacker);
+
+        foreach (Equipment equipment in enemyUnit.Battler.EquipmentList)
         {
-            Debug.Log("Lose"); // TODO : プレイヤー敗北の演出：シーン変更
-            playerUnit.SetBattlerTalkMessage(MessageType.Lose);
-            OnBattleDefeat?.Invoke();
+            if (CheckEnegy(equipment) == false)
+            {
+                continue;
+            }
+
+            if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
+            {
+                // エネジーを消費する
+                enemyUnit.Battler.Life -= equipment.EquipmentBase.LifeCost.val;
+                enemyUnit.Battler.Battery -= equipment.EquipmentBase.BatteryCost.val;
+                enemyUnit.Battler.Soul -= equipment.EquipmentBase.SoulCost.val;
+                enemyUnit.UpdateEnegyUI();
+                attacks.Add(equipment.Attack);
+            }
+        }
+        attacks.Add(enemyUnit.Battler.GetAttack());
+        ExecuteBattlerAttack(enemyUnit.Battler, attacks, false);
+        yield return new WaitForSeconds(0.5f);
+    }
+
+    public void ExecutePlayerEscape(bool isSuccess)
+    {
+        if (isSuccess)
+        {
+            playerUnit.SetBattlerTalkMessage(MessageType.Escape);
+            enemyUnits[0].SetBattlerTalkMessage(MessageType.Escape);
+            OnBattleEscape?.Invoke();
         }
         else
         {
-            for (int i = enemyUnits.Count - 1; i >= 0; i--)
-            {
-                BattleUnit enemyUnit = enemyUnits[i];
-                if (enemyUnit.Battler.Life <= 0)
-                {
-                    GetReward(enemyUnit.Battler);
-                    StartCoroutine(OutOfLineBattler(enemyUnit));
-                }
-            }
-            for (int i = allyUnits.Count - 1; i >= 0; i--)
-            {
-                BattleUnit allyUnit = allyUnits[i];
-                if (allyUnit.Battler.Life <= 0)
-                {
-                    StartCoroutine(OutOfLineBattler(allyUnit));
-                }
-            }
+            enemyUnits[0].SetBattlerTalkMessage(MessageType.Win);
+            EndPlayerTurn(playerUnit);
         }
     }
 
-
-    private IEnumerator OutOfLineBattler(BattleUnit battlerUnit)
+    private void EndPlayerTurn(BattleUnit battlerUnit)
     {
-        battlerUnit.SetBattlerTalkMessage(MessageType.Lose);
-        battlerUnit.SetMotion(MotionType.Rotate);
-        turnOrderSystem.RemoveTurnBattler(battlerUnit.Battler);
-        if (enemyUnits.Contains(battlerUnit))
-        {
-            enemyUnits.Remove(battlerUnit);
-        }
-        else if (allyUnits.Contains(battlerUnit))
-        {
-            allyUnits.Remove(battlerUnit);
-        }
-        yield return new WaitForSeconds(0.5f); // モーションの時間を待つ
-        Destroy(battlerUnit.gameObject);
-        fieldCharacterSystem.RemoveFieldCharacter(battlerUnit.Battler); // フィールドからキャラクターを削除
-
-        // 勝利条件の確認
-        if (enemyUnits.Count == 0)
-        {
-            playerUnit.SetBattlerTalkMessage(MessageType.Win);
-            OnBattleEnd?.Invoke();
-        }
+        battlerUnit.DecreaseEnchant();
+        activePlayerTurn = false;
+        OnExecuteBattleAction?.Invoke();
     }
 
     public bool CheckEnegy(Equipment equipment)

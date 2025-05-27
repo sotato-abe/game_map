@@ -17,7 +17,6 @@ public class ActionBoard : MonoBehaviour
     [SerializeField] private StoragePanel storagePanel;
     [SerializeField] private StatusPanel statusPanel;
     [SerializeField] private EscapePanel escapePanel;
-    [SerializeField] private QuitPanel quitPanel;
 
     private Dictionary<ActionType, Panel> actionPanels;
     private Dictionary<EventType, UnityAction> executeActions;
@@ -37,7 +36,6 @@ public class ActionBoard : MonoBehaviour
             { ActionType.Storage, storagePanel },
             { ActionType.Status, statusPanel },
             { ActionType.Escape, escapePanel },
-            { ActionType.Quit, quitPanel }
         };
 
         executeActions = new Dictionary<EventType, UnityAction>
@@ -80,10 +78,10 @@ public class ActionBoard : MonoBehaviour
 
     public void ChangeExecuteFlg(bool executeFlg)
     {
-        foreach (var panel in actionPanels.Values)
-        {
-            panel.executeFlg = executeFlg;
-        }
+        // foreach (var panel in actionPanels.Values)
+        // {
+        //     panel.executeFlg = executeFlg;
+        // }
     }
 
     public void ActionExecute()

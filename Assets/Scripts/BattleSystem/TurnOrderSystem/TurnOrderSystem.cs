@@ -9,6 +9,7 @@ public class TurnOrderSystem : MonoBehaviour
     [SerializeField] GameObject turnBar;
     [SerializeField] GameObject turnLane;
     [SerializeField] BattleSystem battleSystem;
+    [SerializeField] AttackSystem attackSystem;
     private TurnBattler targetTurnBattler;
     private List<TurnBattler> turnBattlerList = new List<TurnBattler>();
     private List<Battler> battlers = new List<Battler>(); // 保存用
@@ -59,24 +60,19 @@ public class TurnOrderSystem : MonoBehaviour
 
     public void ExecuteTurn(TurnBattler turnBattler)
     {
-        StartCoroutine(ExecuteTurnCoroutine(turnBattler));
-    }
-
-    private IEnumerator ExecuteTurnCoroutine(TurnBattler turnBattler)
-    {
         targetTurnBattler = turnBattler;
         SetActive(false);
 
         if (targetTurnBattler.battler == playerBattler) // TODO: 仮の分岐ちゃんとプレイヤーと他を分ける
         {
-            battleSystem.StartActionSelection();
+            attackSystem.SetActivePlayerTurn(true);
         }
         else
         {
-            StartCoroutine(battleSystem.EnemyAttack(turnBattler.battler));
+            StartCoroutine(attackSystem.ExecuteEnemyAttack(turnBattler.battler));
         }
-        yield return null;
     }
+
     public void EndTurn()
     {
         if (targetTurnBattler)
@@ -92,7 +88,7 @@ public class TurnOrderSystem : MonoBehaviour
         foreach (TurnBattler turnBattler in turnBattlerList)
         {
             turnBattler.OnExecuteTurn -= ExecuteTurn;
-            turnBattler.EndBattle();           
+            turnBattler.EndBattle();
             Destroy(turnBattler.gameObject);
         }
         isActive = false;

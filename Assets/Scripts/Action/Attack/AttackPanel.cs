@@ -36,10 +36,11 @@ public class AttackPanel : Panel
 
     public void Update()
     {
-        if (executeFlg)
+        if (attackSystem.ActivePlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
+                Debug.Log("AttackPanel: ExecuteAttack");
                 ExecuteAttack();
             }
         }
@@ -99,27 +100,24 @@ public class AttackPanel : Panel
 
     public void ExecuteAttack()
     {
-        if (executeFlg)
+        List<Attack> attacks = new List<Attack>();
+        foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
         {
-            List<Attack> attacks = new List<Attack>();
-            foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
+            if (!CheckEnegy(equipmentUnit.Equipment))
             {
-                if (!CheckEnegy(equipmentUnit.Equipment))
-                {
-                    equipmentUnit.SetStatus(UnitStatus.EnegyOut);
-                    continue;
-                }
-
-                if (Random.Range(0, 100) < equipmentUnit.Equipment.EquipmentBase.Probability)
-                {
-                    UseEnegy(equipmentUnit.Equipment);
-                    attacks.Add(equipmentUnit.Equipment.Attack);
-                }
+                equipmentUnit.SetStatus(UnitStatus.EnegyOut);
+                continue;
             }
-            attacks.Add(playerBattler.GetAttack());
-            attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
-            CountEnegyCost();
+
+            if (Random.Range(0, 100) < equipmentUnit.Equipment.EquipmentBase.Probability)
+            {
+                UseEnegy(equipmentUnit.Equipment);
+                attacks.Add(equipmentUnit.Equipment.Attack);
+            }
         }
+        attacks.Add(playerBattler.GetAttack());
+        attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
+        CountEnegyCost();
     }
 
     public bool CheckEnegy(Equipment equipment)

@@ -335,11 +335,6 @@ public class FieldSystem : MonoBehaviour
         // fieldInfoPanel.Setup(fieldData.fieldBase);
     }
 
-    public void RemoveAllEnemy()
-    {
-        fieldCharacterSystem.RemoveAllCharacter(); // 敵を削除
-    }
-
     public List<Battler> GetEnemyGruop()
     {
         List<Battler> enemyGroup = fieldData.GetRundamEnemyGroup();
