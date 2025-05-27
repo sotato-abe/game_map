@@ -40,6 +40,10 @@ public class PouchPanel : Panel
 
     public void Update()
     {
+        if(itemUnitList.Count == 0)
+        {
+            return; // アイテムがない場合は何もしない
+        }
         if (attackSystem.ActivePlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.Return))

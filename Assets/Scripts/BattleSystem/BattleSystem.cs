@@ -52,6 +52,7 @@ public class BattleSystem : MonoBehaviour
         attackSystem.SetEnemyBattlers(enemyUnitList);
         turnOrderSystem.SetActive(true);
         actionBoard.gameObject.SetActive(true);
+        actionBoard.SetEnemyListToPanel(enemies);
     }
 
     public void SetBattlerUnit(Battler battler, bool isAlly)
