@@ -57,7 +57,6 @@ public class EnchantIcon : Unit
 
     public void SetColor(BuffType buffType)
     {
-        Debug.Log($"Setting color for buff type: {buffType}");
         switch (buffType)
         {
             case BuffType.Buff:
