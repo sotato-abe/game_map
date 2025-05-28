@@ -314,6 +314,7 @@ public class FieldPlayer : FieldCharacter
             }
             Building building = hitBuilding.GetComponent<Building>();
             SetMoveFlg(false);
+            playerAnimator.SetBool("isMoving", false);
             EntryBuilding?.Invoke(building.Type);
             return true;
         }
@@ -335,6 +336,7 @@ public class FieldPlayer : FieldCharacter
         {
             // オブジェクトに接触したときの処理をここに追加
             SetMoveFlg(false);
+            playerAnimator.SetBool("isMoving", false);
             OnGetItem?.Invoke();
             return true;
         }
@@ -364,6 +366,7 @@ public class FieldPlayer : FieldCharacter
             if (roll < threshold)
             {
                 SetMoveFlg(false);
+                playerAnimator.SetBool("isMoving", false);
                 OnEncount?.Invoke();
             }
         }

@@ -13,6 +13,7 @@ public class AttackPanel : Panel
     [SerializeField] TextMeshProUGUI soulCostText;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] AttackSystem attackSystem;
+    [SerializeField] FieldPlayer fieldPlayer;
 
     private Battler playerBattler;
     List<EquipmentUnit> equipmentUnitList = new List<EquipmentUnit>();
@@ -100,6 +101,7 @@ public class AttackPanel : Panel
 
     public void ExecuteAttack()
     {
+        fieldPlayer.SetAnimation(AnimationType.Attack);
         List<Attack> attacks = new List<Attack>();
         foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
         {

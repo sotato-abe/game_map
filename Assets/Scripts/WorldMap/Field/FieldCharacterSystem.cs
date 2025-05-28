@@ -36,6 +36,16 @@ public class FieldCharacterSystem : MonoBehaviour
         yield break; // 全ての敵を出現させたらnullを返す
     }
 
+    public void SetCharacterMotion(Battler battler, AnimationType animationType)
+    {
+        // 指定されたバトラーに対応する敵のモーションを設定
+        FieldEnemy enemy = fieldCharacters.Find(e => e.Battler == battler);
+        if (enemy != null)
+        {
+            enemy.SetAnimation(animationType); // モーションを設定
+        }
+    }
+
     public void RemoveAllCharacter()
     {
         // 全てのフィールドキャラクターを削除

@@ -21,6 +21,32 @@ public class FieldCharacter : MonoBehaviour
         this.Battler = battler;
     }
 
+    public virtual void SetAnimation(AnimationType animationType)
+    {
+        switch (animationType)
+        {
+            case AnimationType.Attack:
+                Debug.Log("attack_animation");
+                animator.SetTrigger("Attack");
+                break;
+            case AnimationType.Defense:
+                animator.SetTrigger("Defense");
+                break;
+            case AnimationType.Damage:
+                animator.SetTrigger("Damage");
+                break;
+            case AnimationType.Recovery:
+                animator.SetTrigger("Recovery");
+                break;
+            case AnimationType.Death:
+                animator.SetTrigger("Death");
+                break;
+            default:
+                Debug.LogWarning($"Unknown animation type: {animationType}");
+                break;
+        }
+    }
+
     public IEnumerator JumpMotion()
     {
         float bounceHeight = 1.5f;
