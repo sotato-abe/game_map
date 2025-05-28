@@ -187,19 +187,21 @@ public class StatusPanel : Panel
 
     public void EnegyUp(EnegyType type)
     {
+        Debug.Log($"EnegyUp: {type}");
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         battler.EnegyUp(type);
-        playerUnit.SetEnegy();
         SetEnegy();
         SetSkillPoint();
+        playerUnit.SetEnegy();
     }
 
     public void StatusUp(StatusType type)
     {
+        Debug.Log($"StatusUp: {type}");
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         battler.StatusUp(type);
-        playerUnit.SetStatusDialog();
         SetStatus();
         SetSkillPoint();
+        playerUnit.SetStatusDialog();
     }
 }

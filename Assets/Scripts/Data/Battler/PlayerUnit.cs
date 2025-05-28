@@ -17,6 +17,12 @@ public class PlayerUnit : BattleUnit
         CheckSkillPoint();
     }
 
+    public override void SetEnegy()
+    {
+        base.SetEnegy();
+        CheckSkillPoint();
+    }
+
     public override void UpdateEnegyUI()
     {
         base.UpdateEnegyUI();

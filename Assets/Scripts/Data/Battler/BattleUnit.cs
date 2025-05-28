@@ -17,6 +17,7 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] Blowing blowing;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] GameObject enchantList;
+    [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
     public virtual void Setup(Battler battler)
     {
@@ -28,7 +29,7 @@ public class BattleUnit : MonoBehaviour
         UpdateEnchantUI();
     }
 
-    public void SetEnegy()
+    public virtual void SetEnegy()
     {
         lifeBar.SetEnegy(EnegyType.Life, Battler.MaxLife, Battler.Life);
         batteryBar.SetEnegy(EnegyType.Battery, Battler.MaxBattery, Battler.Battery);
@@ -93,18 +94,21 @@ public class BattleUnit : MonoBehaviour
 
     private void SetBattlerReaction(Attack attack)
     {
-        var reactions = new List<(int count, MotionType motion, MessageType message, bool isEnchant)>
+        var reactions = new List<(int count, MotionType motion, AnimationType animationType, MessageType message, bool isEnchant)>
         {
-            (attack.DamageList.Count, MotionType.Shake, MessageType.Damage, false),
-            (attack.RecoveryList.Count, MotionType.Shake, MessageType.Recovery, false),
-            (attack.EnchantList.Count, MotionType.Shake, MessageType.Question,true)
-        };
+            (attack.DamageList.Count, MotionType.Shake, AnimationType.Damage, MessageType.Damage, false),
+            (attack.RecoveryList.Count, MotionType.Shake, AnimationType.Recovery, MessageType.Recovery, false),
+            (attack.EnchantList.Count, MotionType.Shake, AnimationType.Buff, MessageType.Question, true)
+        }
+        ;
 
         var maxReaction = reactions.OrderByDescending(r => r.count).First();
 
         if (!maxReaction.isEnchant)
         {
+            Debug.Log($"Battler: {Battler.Base.Name}");
             SetMotion(maxReaction.motion);
+            fieldCharacterSystem.SetCharacterMotion(Battler, maxReaction.animationType);
             SetBattlerTalkMessage(maxReaction.message);
         }
         else
@@ -122,16 +126,19 @@ public class BattleUnit : MonoBehaviour
             if (buffCount == 0)
             {
                 SetMotion(MotionType.Move);
+                fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Buff);
                 SetBattlerTalkMessage(MessageType.Question);
             }
             else if (buffCount > 0)
             {
                 SetMotion(MotionType.Randam);
+                fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Debuff);
                 SetBattlerTalkMessage(MessageType.Recovery);
             }
             else
             {
                 SetMotion(MotionType.Shake);
+                fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Damage);
                 SetBattlerTalkMessage(MessageType.Damage);
             }
         }

@@ -1,8 +1,9 @@
 public enum AnimationType
 {
     Attack,
-    Defense,
     Damage,
     Recovery,
+    Buff,
+    Debuff,
     Death,
 }

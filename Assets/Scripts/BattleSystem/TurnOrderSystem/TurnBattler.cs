@@ -46,9 +46,10 @@ public class TurnBattler : MonoBehaviour
 
         isActive = isActiveFlg;
         // TurnBattlerIconsそれぞれに状態変更を行う
-        foreach (TurnBattlerIcon icon in turnBattlerIconList)
+        for (int i = 0; i < turnBattlerIconList.Count; i++)
         {
-            icon.SetActive(isActive);
+            var item = turnBattlerIconList[i];
+            item.SetActive(isActive);
         }
 
         // 状態が無効になった場合、アイコン生成を停止
@@ -118,7 +119,7 @@ public class TurnBattler : MonoBehaviour
     {
         foreach (TurnBattlerIcon icon in turnBattlerIconList)
         {
-            if(icon == null) continue; // nullチェック
+            if (icon == null) continue; // nullチェック
             Destroy(icon.gameObject);
         }
 
