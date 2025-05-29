@@ -2804,12 +2804,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8728866761450074843, guid: 4b1d9da764af52948a515016f28e6d09, type: 3}
       propertyPath: m_LocalScale.x
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8728866761450074844, guid: 4b1d9da764af52948a515016f28e6d09, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1715926204, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
+      objectReference: {fileID: 841700989, guid: 61ba1986af552b14191af1a4b3bef7df, type: 3}
     - target: {fileID: 8871477698653150959, guid: 4b1d9da764af52948a515016f28e6d09, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -4347,7 +4347,7 @@ PrefabInstance:
     - target: {fileID: 8728866761450074844, guid: 4b1d9da764af52948a515016f28e6d09, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1991087543, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
+      objectReference: {fileID: -1957735908, guid: ca6b786c80ee42d4092d6e3d481ecf04, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b1d9da764af52948a515016f28e6d09, type: 3}
 --- !u!224 &932160287 stripped
@@ -8332,7 +8332,7 @@ PrefabInstance:
     - target: {fileID: 8728866761450074844, guid: 4b1d9da764af52948a515016f28e6d09, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -634346586, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
+      objectReference: {fileID: -121343250, guid: ca6b786c80ee42d4092d6e3d481ecf04, type: 3}
     - target: {fileID: 8871477698653150959, guid: 4b1d9da764af52948a515016f28e6d09, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -8432,7 +8432,6 @@ MonoBehaviour:
   fieldPlayer: {fileID: 513887582}
   fieldInfoPanel: {fileID: 237653653}
   worldMapSystem: {fileID: 797766553}
-  fieldCharacterSystem: {fileID: 5370715735038402384}
   hitTargetPin: {fileID: 406702498}
   messagePanel: {fileID: 1685434740}
   playerBattler:
@@ -12246,7 +12245,6 @@ MonoBehaviour:
   attackPanel: {fileID: 598288762}
   escapePanel: {fileID: 1167826551}
   turnOrderSystem: {fileID: 2086057356}
-  fieldCharacterSystem: {fileID: 5370715735038402384}
 --- !u!224 &1883646492
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13589,8 +13587,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4293256677
-  m_fontColor: {r: 0.8980392, g: 0.8980392, b: 0.8980392, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
