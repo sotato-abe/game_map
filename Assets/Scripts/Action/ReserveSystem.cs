@@ -19,8 +19,9 @@ public class ReserveSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E))
         {
+            Debug.Log("ReserveSystem Escape Key Pressed");
             actionBoard.gameObject.SetActive(false);
             OnReserveEnd?.Invoke();
         }

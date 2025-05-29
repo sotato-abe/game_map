@@ -82,12 +82,23 @@ public class BattleUnit : MonoBehaviour
         SetTalkMessage(battlerMessage, panelType);
     }
 
+    public void ExecuteAttack()
+    {
+        // 攻撃時のモーションを設定
+        fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Attack);
+    }
+
     public void TakeAttack(Attack attack)
     {
         SetBattlerReaction(attack);
         Battler.TakeAttack(attack);
         UpdateEnegyUI();
         UpdateEnchantUI();
+        if (Battler.Life <= 0)
+        {
+            fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Death);
+            SetBattlerTalkMessage(MessageType.Lose);
+        }
     }
 
     public virtual void UpdateEnegyUI()

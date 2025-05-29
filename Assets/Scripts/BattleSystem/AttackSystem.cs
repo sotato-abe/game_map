@@ -16,7 +16,6 @@ public class AttackSystem : MonoBehaviour
     [SerializeField] private AttackPanel attackPanel;
     [SerializeField] private EscapePanel escapePanel;
     [SerializeField] TurnOrderSystem turnOrderSystem;
-    [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
     private bool activePlayerTurn = false;
     public bool ActivePlayerTurn => activePlayerTurn;
@@ -135,7 +134,7 @@ public class AttackSystem : MonoBehaviour
             }
         }
         attacks.Add(enemyUnit.Battler.GetAttack());
-        fieldCharacterSystem.SetCharacterMotion(attacker, AnimationType.Attack);
+        enemyUnit.ExecuteAttack();
         ExecuteBattlerAttack(enemyUnit.Battler, attacks, false);
         yield return new WaitForSeconds(0.5f);
     }

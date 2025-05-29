@@ -20,7 +20,6 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
-    [SerializeField] FieldCharacterSystem fieldCharacterSystem; // フィールドプレイヤーマップサイズ
     [SerializeField] HitTargetPin hitTargetPin;
     [SerializeField] MessagePanel messagePanel;
 
@@ -338,7 +337,6 @@ public class FieldSystem : MonoBehaviour
     public List<Battler> GetEnemyGruop()
     {
         List<Battler> enemyGroup = fieldData.GetRundamEnemyGroup();
-        StartCoroutine(fieldCharacterSystem.appearanceEnemy(enemyGroup)); // 敵をフィールドに出現させる
         if (enemyGroup == null)
         {
             Debug.LogError("GetEnemyGruop: enemyGroupがnullです");

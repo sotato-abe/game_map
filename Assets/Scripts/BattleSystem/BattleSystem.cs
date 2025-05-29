@@ -28,7 +28,7 @@ public class BattleSystem : MonoBehaviour
 
     void Start()
     {
-        transform.gameObject.SetActive(true);
+        transform.gameObject.SetActive(false);
         attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
         attackSystem.OnBattleEscape += BattleEscape;
         attackSystem.OnBattleDefeat += BattleDefeat;
@@ -38,6 +38,7 @@ public class BattleSystem : MonoBehaviour
     {
         turnOrderSystem.TurnOrderClear();
         turnOrderSystem.SetupPlayerBattler(playerUnit.Battler);
+        StartCoroutine(fieldCharacterSystem.appearanceEnemy(enemies)); // 敵をフィールドに出現させる
         playerUnit.SetBattlerTalkMessage(MessageType.Encount);
         foreach (Transform child in rightGroupPanel.transform)
         {
@@ -57,24 +58,18 @@ public class BattleSystem : MonoBehaviour
 
     public void SetBattlerUnit(Battler battler, bool isAlly)
     {
+        BattleUnit targetUnit = isAlly ? allyUnitPrefab : enemyUnitPrefab;
+        GameObject targetGroupPanel = isAlly ? leftGroupPanel : rightGroupPanel;
+        BattleUnit battlerUnit = Instantiate(targetUnit, targetGroupPanel.transform);
+        battlerUnit.Setup(battler);
+        battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
+        battlerUnit.SetMotion(MotionType.Jump);
+        battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
+
         if (isAlly)
-        {
-            BattleUnit battlerUnit = Instantiate(allyUnitPrefab, leftGroupPanel.transform);
-            battlerUnit.Setup(battler);
-            battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
-            battlerUnit.SetMotion(MotionType.Jump);
-            battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
             allyUnitList.Add(battlerUnit);
-        }
         else
-        {
-            BattleUnit battlerUnit = Instantiate(enemyUnitPrefab, rightGroupPanel.transform);
-            battlerUnit.Setup(battler);
-            battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
-            battlerUnit.SetMotion(MotionType.Jump);
-            battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
             enemyUnitList.Add(battlerUnit);
-        }
     }
 
     public void ExecuteBattleAction()
@@ -114,8 +109,6 @@ public class BattleSystem : MonoBehaviour
     public void BattleDefeat()
     {
         Debug.Log("ゲームオーバー");
-        fieldCharacterSystem.SetCharacterMotion(playerUnit.Battler, AnimationType.Death);
-        // ゲームオーバー処理をここに追加
     }
 
 
@@ -193,8 +186,6 @@ public class BattleSystem : MonoBehaviour
         if (targetItems != null && targetItems.Count > 0)
         {
             string itemList = "";
-            List<Consumable> awardedItems = new List<Consumable>();
-
             foreach (Consumable item in targetItems)
             {
                 // TODO：アイテムのレア度によって取得確率を変える

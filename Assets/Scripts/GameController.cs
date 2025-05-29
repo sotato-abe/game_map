@@ -44,7 +44,7 @@ public class GameController : MonoBehaviour
     public void ReserveStart()
     {
         // Debug.Log("ReserveStart");
-        battleSystem.gameObject.SetActive(false);
+        reserveSystem.gameObject.SetActive(true);
         configSystem.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
@@ -64,7 +64,6 @@ public class GameController : MonoBehaviour
     public void BattleStart()
     {
         // Debug.Log("BattleStart");
-        reserveSystem.gameObject.SetActive(false);
         configSystem.SetActive(false);
         List<Battler> enemyGroup = fieldSystem.GetEnemyGruop();
         battleSystem.gameObject.SetActive(true);
