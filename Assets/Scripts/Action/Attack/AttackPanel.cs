@@ -41,7 +41,6 @@ public class AttackPanel : Panel
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                Debug.Log("AttackPanel: ExecuteAttack");
                 ExecuteAttack();
             }
         }

@@ -61,23 +61,24 @@ public class BattleSystem : MonoBehaviour
         {
             BattleUnit battlerUnit = Instantiate(allyUnitPrefab, leftGroupPanel.transform);
             battlerUnit.Setup(battler);
+            battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
             battlerUnit.SetMotion(MotionType.Jump);
             battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
             allyUnitList.Add(battlerUnit);
         }
         else
         {
-            BattleUnit enemyUnit = Instantiate(enemyUnitPrefab, rightGroupPanel.transform);
-            enemyUnit.Setup(battler);
-            enemyUnit.SetMotion(MotionType.Jump);
-            enemyUnit.SetBattlerTalkMessage(MessageType.Encount);
-            enemyUnitList.Add(enemyUnit);
+            BattleUnit battlerUnit = Instantiate(enemyUnitPrefab, rightGroupPanel.transform);
+            battlerUnit.Setup(battler);
+            battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
+            battlerUnit.SetMotion(MotionType.Jump);
+            battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
+            enemyUnitList.Add(battlerUnit);
         }
     }
 
     public void ExecuteBattleAction()
     {
-        Debug.Log("BattleSystem: ExecuteBattleAction");
         ConfirmationSurvival();
         ReSetEnemyList();
         turnOrderSystem.EndTurn();
@@ -102,7 +103,6 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleEnd()
     {
-        Debug.Log("BattleSystem: BattleEnd");
         turnOrderSystem.BattlerEnd();
         playerUnit.SetMotion(MotionType.Move);
         enemyUnitList.Clear();
@@ -160,7 +160,6 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator OutOfLineBattler(BattleUnit battlerUnit)
     {
-        Debug.Log("OutOfLineBattler");
         battlerUnit.SetBattlerTalkMessage(MessageType.Lose);
         battlerUnit.SetMotion(MotionType.Rotate);
         turnOrderSystem.RemoveTurnBattler(battlerUnit.Battler);
@@ -179,7 +178,6 @@ public class BattleSystem : MonoBehaviour
         // 勝利条件の確認
         if (enemyUnitList.Count == 0)
         {
-            Debug.Log("BattleSystem: All enemies defeated, player wins!");
             playerUnit.SetBattlerTalkMessage(MessageType.Win);
             BattleEnd();
         }

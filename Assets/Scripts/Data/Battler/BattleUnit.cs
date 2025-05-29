@@ -29,6 +29,11 @@ public class BattleUnit : MonoBehaviour
         UpdateEnchantUI();
     }
 
+    public void SetFieldCharacterSystem(FieldCharacterSystem fieldCharacterSystem)
+    {
+        this.fieldCharacterSystem = fieldCharacterSystem;
+    }
+
     public virtual void SetEnegy()
     {
         lifeBar.SetEnegy(EnegyType.Life, Battler.MaxLife, Battler.Life);

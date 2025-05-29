@@ -38,6 +38,7 @@ public class FieldCharacterSystem : MonoBehaviour
 
     public void SetCharacterMotion(Battler battler, AnimationType animationType)
     {
+        Debug.Log("SetCharacterMotion");
         // 指定されたバトラーに対応する敵のモーションを設定
         FieldEnemy enemy = fieldCharacters.Find(e => e.Battler == battler);
         if (enemy != null)
