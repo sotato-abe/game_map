@@ -209,7 +209,7 @@ public class Battler
             return true;
         }
 
-        Debug.Log("Bag is full.");
+        Debug.Log("バッグがいっぱいです。");
         return false;
     }
 
@@ -219,7 +219,6 @@ public class Battler
         {
             PouchList.Remove(consumable);
             TakeAttack(consumable.Attack);
-            Debug.Log($"{consumable.Base.Name} を使用した。");
         }
         else
         {

@@ -23,7 +23,6 @@ public class FieldCharacter : MonoBehaviour
 
     public virtual void SetAnimation(AnimationType animationType)
     {
-        Debug.Log("SetAnimation: " + animationType);
         switch (animationType)
         {
             case AnimationType.Attack:

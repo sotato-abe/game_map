@@ -190,7 +190,6 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     private void ArrengeItemBlocks()
     {
         // head, body, arm1, arm2, leg に追加された ItemBlock を整列
-        Debug.Log("整列");
         head.ArrangeItemBlock();
         body.ArrangeItemBlock();
         arm1.ArrangeItemBlock();

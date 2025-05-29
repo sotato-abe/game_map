@@ -111,7 +111,6 @@ public class BattleUnit : MonoBehaviour
 
         if (!maxReaction.isEnchant)
         {
-            Debug.Log($"Battler: {Battler.Base.Name}");
             SetMotion(maxReaction.motion);
             fieldCharacterSystem.SetCharacterMotion(Battler, maxReaction.animationType);
             SetBattlerTalkMessage(maxReaction.message);
