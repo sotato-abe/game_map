@@ -13,6 +13,7 @@ public class StoragePanel : Panel, IDropHandler
     [SerializeField] GameObject storageArea;
     [SerializeField] TextMeshProUGUI storageRatio;
     [SerializeField] DeckWindow deckWindow;
+    [SerializeField] RectTransform inventoryRectTransform;
     [SerializeField] BattleUnit playerUnit;
 
     private Battler playerBattler;
@@ -88,7 +89,7 @@ public class StoragePanel : Panel, IDropHandler
         int width = commandWidth * row + 20;
         int column = (playerBattler.Storage.val - 1) / row + 1;
         int height = commandWidth * column + headHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+        inventoryRectTransform.sizeDelta = new Vector2(width, height);
     }
 
     public void SetStorage()
