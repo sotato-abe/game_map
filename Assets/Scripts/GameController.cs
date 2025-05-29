@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         playerBattler.Init();
+        fieldPlayer.SetUp(playerBattler); // フィールドプレイヤーの初期化
         fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
         fieldSystem.OnReserve += ReserveStart;
         fieldSystem.OnEncount += BattleStart;

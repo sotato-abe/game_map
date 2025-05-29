@@ -12,7 +12,7 @@ public class FieldCharacterSystem : MonoBehaviour
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
     [SerializeField] FieldEnemy Slyme_fieldEnemy; //キャラクター
     [SerializeField] FieldEnemy Oldman_fieldEnemy; //キャラクター
-    List<FieldEnemy> fieldCharacters = new List<FieldEnemy>(); // フィールドの敵リスト
+    List<FieldCharacter> fieldCharacters = new List<FieldCharacter>(); // フィールドの敵リスト
     [SerializeField] GameObject fieldCharacterFront; // フィールドキャンバス
     [SerializeField] GameObject fieldCharacterBehind; // フィールドキャンバス
 
@@ -23,10 +23,9 @@ public class FieldCharacterSystem : MonoBehaviour
         {
             // ランダムな位置を取得
             (Vector3 targetPos, bool isRight, bool isFront) = GetRundomArroundFloorPosition();
-            FieldEnemy enemy = null;
             GameObject targetPosition = isFront ? fieldCharacterFront : fieldCharacterBehind;
             int reversal = isRight ? -1 : 1; // 向きの設定
-            enemy = Instantiate(Oldman_fieldEnemy, targetPos, Quaternion.identity, targetPosition.transform);
+            FieldEnemy enemy = Instantiate(Oldman_fieldEnemy, targetPos, Quaternion.identity, targetPosition.transform);
             enemy.SetUp(battler); // バトラーの設定を行う
             enemy.transform.localScale = new Vector3(reversal, 1, 1); // 左向きにする
             fieldPlayer.transform.localScale = new Vector3(reversal * -1, 1, 1); // 左向きにする
@@ -39,17 +38,20 @@ public class FieldCharacterSystem : MonoBehaviour
     public void SetCharacterMotion(Battler battler, AnimationType animationType)
     {
         // 指定されたバトラーに対応する敵のモーションを設定
-        FieldEnemy enemy = fieldCharacters.Find(e => e.Battler == battler);
+        FieldCharacter enemy = fieldCharacters.Find(e => e.Battler == battler);
         if (enemy != null)
         {
             enemy.SetAnimation(animationType); // モーションを設定
+        }else if (battler == fieldPlayer.Battler)
+        {
+            fieldPlayer.SetAnimation(animationType); // プレイヤーのモーションを設定
         }
     }
 
     public void RemoveAllCharacter()
     {
         // 全てのフィールドキャラクターを削除
-        foreach (FieldEnemy enemy in fieldCharacters)
+        foreach (FieldCharacter enemy in fieldCharacters)
         {
             Destroy(enemy.gameObject); // ゲームオブジェクトを削除
         }
@@ -59,7 +61,7 @@ public class FieldCharacterSystem : MonoBehaviour
     public void RemoveFieldCharacter(Battler battler)
     {
         // 指定されたバトラーに対応する敵を削除
-        FieldEnemy enemyToRemove = fieldCharacters.Find(enemy => enemy.Battler == battler);
+        FieldCharacter enemyToRemove = fieldCharacters.Find(enemy => enemy.Battler == battler);
         if (enemyToRemove != null)
         {
             fieldCharacters.Remove(enemyToRemove); // リストから削除

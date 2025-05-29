@@ -114,6 +114,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleDefeat()
     {
         Debug.Log("ゲームオーバー");
+        fieldCharacterSystem.SetCharacterMotion(playerUnit.Battler, AnimationType.Death);
         // ゲームオーバー処理をここに追加
     }
 
