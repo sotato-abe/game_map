@@ -13,7 +13,8 @@ public class StatusPanel : Panel
     [SerializeField] BattlerEnegyBar battery;
     [SerializeField] BattlerEnegyBar soul;
     [SerializeField] TextMeshProUGUI level;
-    [SerializeField] SkillPointPanel skillPointPanel;
+    [SerializeField] SkillPoint skillPoint;
+    [SerializeField] TextMeshProUGUI description;
     [SerializeField] GameObject enegyList;
     [SerializeField] GameObject statusList;
     [SerializeField] GameObject storageList;
@@ -24,7 +25,7 @@ public class StatusPanel : Panel
     [SerializeField] AbilityUnit abilityPrefab;
     [SerializeField] EnchantIcon enchantIconPrefab;
     [SerializeField] StatusLevel statusLevel;
-
+    [SerializeField] StatusDialog statusDialog;
     private List<Enegy> enegyCountList = new List<Enegy>();
 
     private void Start()
@@ -65,6 +66,8 @@ public class StatusPanel : Panel
         SetStatus();
         SetEnchant();
         SetAbility();
+        description.text = playerUnit.Battler.Base.Description;
+        statusDialog.Setup(playerUnit.Battler);
     }
 
     private void SetCharacterCard()
@@ -128,7 +131,7 @@ public class StatusPanel : Panel
 
     private Transform GetTargetParent(StatusType type)
     {
-        return (type == StatusType.ATK || type == StatusType.TEC ||
+        return (type == StatusType.POW || type == StatusType.TEC ||
                 type == StatusType.DEF || type == StatusType.SPD || type == StatusType.LUK)
                 ? statusList.transform
                 : (type == StatusType.MMR || type == StatusType.BAG || type == StatusType.STG || type == StatusType.POC)
@@ -173,12 +176,12 @@ public class StatusPanel : Panel
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         if (battler.SkillPoint > 0)
         {
-            skillPointPanel.gameObject.SetActive(true);
-            skillPointPanel.SetPoint(battler.SkillPoint);
+            skillPoint.gameObject.SetActive(true);
+            skillPoint.SetPoint(battler.SkillPoint);
         }
         else
         {
-            skillPointPanel.gameObject.SetActive(false);
+            skillPoint.gameObject.SetActive(false);
         }
     }
 
@@ -186,17 +189,17 @@ public class StatusPanel : Panel
     {
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         battler.EnegyUp(type);
-        playerUnit.SetEnegy();
         SetEnegy();
         SetSkillPoint();
+        playerUnit.SetEnegy();
     }
 
     public void StatusUp(StatusType type)
     {
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         battler.StatusUp(type);
-        playerUnit.SetStatusDialog();
         SetStatus();
         SetSkillPoint();
+        playerUnit.SetStatusDialog();
     }
 }

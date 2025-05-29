@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af844d78079a0364eb4f7f78b96a8d7b, type: 3}
+  m_Name: Ah
+  m_EditorClassIdentifier: 
+  name: "\u30A2\u30FC"
+  sprite: {fileID: 21300000, guid: 8c07afcb379a3894baeb50a293191177, type: 3}
+  description: 
+  birthplace: {fileID: 0}
+  maxLife: 20
+  maxBattery: 0
+  power: 1
+  defense: 0
+  technique: 0
+  speed: 1
+  luck: 0
+  memory: 5
+  storage: 10
+  pouch: 5
+  bag: 10
+  money: 10
+  disk: 5
+  key: 5
+  exp: 20
+  abilityList: []
+  equipmentList:
+  - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
+    level: 0
+  runTable: []
+  deckList: []
+  storageList: []
+  pouchList:
+  - _base: {fileID: 11400000, guid: 41b67b484254e284286b7abdcd1ebc1d, type: 2}
+    count: 1
+  - _base: {fileID: 11400000, guid: f7bf4e68dc757544da294afa5fa03153, type: 2}
+    count: 1
+  bagConsumableList: []
+  bagEquipmentList: []
+  bagTreasureList: []
+  messageList:
+  - messageType: 0
+    panelType: 1
+    message: "\u307E\u305F\u3093\u304B\u3044\u3001\u308F\u308C\u3047"
+  - messageType: 0
+    panelType: 1
+    message: "\u304A\u3046\u304A\u3046\u3001\u3061\u3087\u3063\u3068\u307E\u3066\u3084"
+  - messageType: 1
+    panelType: 0
+    message: "\u3057\u306D\u3084"
+  - messageType: 2
+    panelType: 3
+    message: "\u304D\u304F\u3045\uFF5E"
+  - messageType: 3
+    panelType: 0
+    message: "\u3088\u3051\u3093\u306A\u3084"
+  - messageType: 4
+    panelType: 1
+    message: "\u3044\u3066\u3047"
+  - messageType: 5
+    panelType: 1
+    message: "\u307E\u305F\u3093\u304B\u3044\u3001\u304A\u3089\uFF01"
+  - messageType: 6
+    panelType: 0
+    message: "\u304A\u3063\u3057\u3083\uFF5E"
+  - messageType: 7
+    panelType: 3
+    message: "\u3053\u3093\u3050\u3089\u3044\u306B\u3057\u3068\u3044\u3066\u3084\u3089\u3041"

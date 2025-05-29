@@ -8,4 +8,5 @@ public class CafeteriaBase : BuildingBase
     [SerializeField] List<Item> items;
 
     public List<Item> Items { get => items; }
+    public override BuildingType type => BuildingType.Cafeteria;
 }

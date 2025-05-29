@@ -4,5 +4,6 @@ public enum BattleState
     TurnWait,
     ActionSelection,
     ActionSelected,
-    BattleResult,
+    Execution,
+    BattleEnd,
 }

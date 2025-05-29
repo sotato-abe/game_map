@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea38c0fa632b7f43b9507a1bdd07987, type: 3}
+  m_Name: Ishi
+  m_EditorClassIdentifier: 
+  id: 0
+  mapName: "\u30A4\u30B7\u306E\u753A"
+  level: 1
+  fieldType: 1
+  mapHeight: 60
+  mapWidth: 100
+  description: "\u30AB\u30EA\u30B9\u30C8\u9023\u90A6\u306E\u52A0\u76DF\u56FD\u3002\n\u5E83\u5927\u306A\u30C8\u30EA\u7802\u6F20\u306B\u4F4D\u7F6E\u3059\u308B\u3001\n\u5317\u5927\u9678\u3068\u5357\u5927\u9678\u3092\u7D50\u3076\u5E83\u5927\u306A\u30C8\u30EA\u7802\u6F20\u306B\u4F4D\u7F6E\u3059\u308B\u3002"
+  randomFillPercent: 45
+  coordinate: {x: 20, y: 49}
+  consumables:
+  - _base: {fileID: 11400000, guid: 41b67b484254e284286b7abdcd1ebc1d, type: 2}
+    count: 0
+  equipments:
+  - _base: {fileID: 11400000, guid: 43b029d19eba7be47bf808cae9f1e8b4, type: 2}
+    level: 0
+  treasures:
+  - _base: {fileID: 11400000, guid: d6c9c00a31ae22c4aba623a503758d18, type: 2}
+  enemies:
+  - _base: {fileID: 11400000, guid: 68b491635af498f4598f586f90439224, type: 2}
+    level: 1
+    soul: 0
+    AbilityList: []
+    Enchants: []
+    coordinate: {x: 0, y: 0}
+  - _base: {fileID: 11400000, guid: afb95766c8c50324f8b8b130c64665e4, type: 2}
+    level: 2
+    soul: 0
+    AbilityList: []
+    Enchants: []
+    coordinate: {x: 0, y: 0}
+  buildings:
+  - {fileID: 11400000, guid: 3b429cd37c2429440bbb24474997c427, type: 2}
+  - {fileID: 11400000, guid: 5b9f449696e238c4eae2d864ad28a351, type: 2}
+  - {fileID: 11400000, guid: ed34c2e7d5d23f24ab2e47936af7c69c, type: 2}
+  - {fileID: 11400000, guid: ef0570dc982d8b948be97326152d37df, type: 2}
+  - {fileID: 11400000, guid: 580364207d9bd9345831ba006750d4fe, type: 2}
+  enemyGroups:
+  - {fileID: 11400000, guid: 634b35535ae9feb4f94cc4015c9dfaed, type: 2}

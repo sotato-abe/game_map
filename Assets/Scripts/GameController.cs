@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] FieldSystem fieldSystem;
     [SerializeField] ConfigSystem configSystem;
+    [SerializeField] SlidePanel rightUnit;
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
@@ -23,6 +24,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         playerBattler.Init();
+        fieldPlayer.SetUp(playerBattler); // フィールドプレイヤーの初期化
         fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
         fieldSystem.OnReserve += ReserveStart;
         fieldSystem.OnEncount += BattleStart;
@@ -30,7 +32,7 @@ public class GameController : MonoBehaviour
         configSystem.OnConfigClose += ConfigEnd;
 
         playerUnit.Setup(playerBattler); // プレイヤーのバトルユニットの初期化
-        playerUnit.SetTalkMessage("よし。。");
+        playerUnit.SetTalkMessage("よし、はじめるか。", PanelType.Default);
 
         playerCoordinate = playerBattler.coordinate;
         reserveSystem.OnReserveEnd += ReserveEnd;
@@ -46,6 +48,7 @@ public class GameController : MonoBehaviour
         configSystem.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
+        messagePanel.SetActive(false);
     }
 
     public void ReserveEnd()
@@ -55,6 +58,7 @@ public class GameController : MonoBehaviour
         reserveSystem.gameObject.SetActive(false);
         configSystem.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        messagePanel.SetActive(true);
     }
 
     public void BattleStart()
@@ -62,31 +66,36 @@ public class GameController : MonoBehaviour
         // Debug.Log("BattleStart");
         reserveSystem.gameObject.SetActive(false);
         configSystem.SetActive(false);
-        enemy = fieldSystem.GetEnemy();
+        List<Battler> enemyGroup = fieldSystem.GetEnemyGruop();
         battleSystem.gameObject.SetActive(true);
-        battleSystem.BattleStart(playerUnit.Battler, enemy);
+        battleSystem.SetBattle(enemyGroup);
+        rightUnit.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
+        messagePanel.SetActive(false);
     }
 
     public void BattleEnd()
     {
         // Debug.Log("BattleEnd");
+        rightUnit.SetActive(false);
         battleSystem.gameObject.SetActive(false);
         configSystem.SetActive(true);
         fieldPlayer.SetMoveFlg(true);
-        fieldSystem.RemoveEnemy();
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        messagePanel.SetActive(true);
     }
 
     public void ConfigStart()
     {
         fieldPlayer.SetMoveFlg(false);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
+        messagePanel.SetActive(false);
     }
 
     public void ConfigEnd()
     {
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        messagePanel.SetActive(true);
     }
 }

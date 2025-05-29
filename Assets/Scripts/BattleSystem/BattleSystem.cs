@@ -13,202 +13,189 @@ public class BattleSystem : MonoBehaviour
     public UnityAction OnBattleEnd;
 
     [SerializeField] TurnOrderSystem turnOrderSystem;
-    [SerializeField] ActionBoard actionBoard;
+    [SerializeField] FieldCharacterSystem fieldCharacterSystem;
+    [SerializeField] BattleActionBoard actionBoard;
     [SerializeField] MessagePanel messagePanel;
-    [SerializeField] BattleUnit playerUnit;
-    [SerializeField] BattleUnit enemyUnit;
+    [SerializeField] PlayerUnit playerUnit;
+    [SerializeField] BattleUnit allyUnitPrefab;
+    [SerializeField] BattleUnit enemyUnitPrefab;
     [SerializeField] AttackSystem attackSystem;
-    [SerializeField] ActionIcon actionIconPrefab;
-    [SerializeField] GameObject actionListObject;
+    [SerializeField] GameObject leftGroupPanel;
+    [SerializeField] GameObject rightGroupPanel;
 
-    public BattleState state;
-    private ActionType activeAction = ActionType.Attack;
-    private ActionIcon selectedAction;
-    private readonly List<ActionType> actionList = new List<ActionType> { };
-    private readonly List<ActionIcon> actionIconList = new();
-
+    private List<BattleUnit> allyUnitList = new List<BattleUnit>();
+    private List<BattleUnit> enemyUnitList = new List<BattleUnit>();
 
     void Start()
     {
-        // actionList.Add(ActionType.Talk);
-        actionList.Add(ActionType.Attack);
-        actionList.Add(ActionType.Command);
-        actionList.Add(ActionType.Pouch);
-        actionList.Add(ActionType.Escape);
-
         transform.gameObject.SetActive(true);
-        enemyUnit.gameObject.SetActive(false);
-
-        actionBoard.OnExecuteBattleAction += ExecuteBattleAction;
-        actionBoard.OnExitBattleAction += () => state = BattleState.ActionSelection;
-        attackSystem.OnBattleResult += BattleResult;
         attackSystem.OnExecuteBattleAction += ExecuteBattleAction;
         attackSystem.OnBattleEscape += BattleEscape;
         attackSystem.OnBattleDefeat += BattleDefeat;
     }
 
-    private void SetActionList()
+    public void SetBattle(List<Battler> enemies)
     {
-        foreach (ActionType actionValue in actionList)
-        {
-            ActionIcon actionIcon = Instantiate(actionIconPrefab, actionListObject.transform);
-            actionIcon.OnPointerEnterAction += SelectAction;
-            actionIcon.SetAction(actionValue);
-            actionIconList.Add(actionIcon);
-            if (activeAction == actionValue)
-            {
-                actionBoard.ChangeActionPanel(actionValue);
-            }
-        }
-        SelectActiveActionIcon(activeAction);
-        actionBoard.ChangeActionPanel(activeAction);
-    }
-
-    public void Update()
-    {
-        if (state == BattleState.ActionSelection || state == BattleState.TurnWait)
-        {
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
-                index = (index + 1) % actionList.Count; // 次のインデックスへ（リストの範囲を超えたら先頭へ）
-                ActionType selectAction = actionList[index]; // 更新
-                SelectAction(selectAction);
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                int index = actionList.IndexOf(activeAction); // 現在のactiveActionのインデックスを取得
-                index = (index - 1 + actionList.Count) % actionList.Count; // 前のインデックスへ（負の値を回避）
-                ActionType selectAction = actionList[index]; // 更新
-                SelectAction(selectAction);
-            }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                state = BattleState.ActionSelected;
-            }
-        }
-    }
-
-    private void SelectAction(ActionType selectAction)
-    {
-        if (state == BattleState.ActionSelection || state == BattleState.TurnWait)
-        {
-            if (activeAction == selectAction) return;
-            activeAction = selectAction;
-            SelectActiveActionIcon(selectAction);
-            actionBoard.ChangeActionPanel(selectAction);
-        }
-    }
-
-    public void BattleStart(Battler player, Battler enemy)
-    {
-        state = BattleState.TurnWait;
-        SetActionList();
-        SetupBattlers(player, enemy);
-    }
-
-    public void SetupBattlers(Battler player, Battler enemy)
-    {
-        enemyUnit.gameObject.SetActive(true);
-        enemyUnit.Setup(enemy);
-        enemyUnit.SetMotion(MotionType.Jump);
-        enemyUnit.SetBattlerTalkMessage(MessageType.Encount);
+        turnOrderSystem.TurnOrderClear();
+        turnOrderSystem.SetupPlayerBattler(playerUnit.Battler);
         playerUnit.SetBattlerTalkMessage(MessageType.Encount);
-
-        attackSystem.SetBattler(playerUnit, enemyUnit);
-        turnOrderSystem.SetupPlayerBattler(player);
-        turnOrderSystem.SetupBattlerTurns(new List<Battler> { player, enemy });
-        actionBoard.gameObject.SetActive(true);
-        actionBoard.SetEventType(EventType.Battle);
-        messagePanel.AddMessage(MessageIconType.Battle, $"{enemy.Base.Name} があられた!!");
-    }
-
-    public void StartActionSelection()
-    {
-        actionBoard.ChangeExecuteFlg(true);
-        state = BattleState.ActionSelection;
-    }
-
-    private void SelectActiveActionIcon(ActionType target)
-    {
-        // 現在選択中のアクションを非アクティブにする
-        if (selectedAction != null)
+        foreach (Transform child in rightGroupPanel.transform)
         {
-            selectedAction.SetActive(false);
+            Destroy(child.gameObject);
         }
-
-        // 対応するアクションアイコンを探してアクティブにする
-        foreach (ActionIcon icon in actionIconList)
+        foreach (Battler enemy in enemies)
         {
-            if (icon.type == activeAction)
-            {
-                selectedAction = icon;
-                selectedAction.SetActive(false);
-            }
+            turnOrderSystem.SetTurnBattler(enemy);
+            SetBattlerUnit(enemy, false);
+        }
+        attackSystem.SetPlayerBattler(playerUnit);
+        attackSystem.SetEnemyBattlers(enemyUnitList);
+        turnOrderSystem.SetActive(true);
+        actionBoard.gameObject.SetActive(true);
+        actionBoard.SetEnemyListToPanel(enemies);
+    }
 
-            if (icon.type == target)
-            {
-                selectedAction = icon;
-                selectedAction.SetActive(true);
-            }
+    public void SetBattlerUnit(Battler battler, bool isAlly)
+    {
+        if (isAlly)
+        {
+            BattleUnit battlerUnit = Instantiate(allyUnitPrefab, leftGroupPanel.transform);
+            battlerUnit.Setup(battler);
+            battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
+            battlerUnit.SetMotion(MotionType.Jump);
+            battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
+            allyUnitList.Add(battlerUnit);
+        }
+        else
+        {
+            BattleUnit battlerUnit = Instantiate(enemyUnitPrefab, rightGroupPanel.transform);
+            battlerUnit.Setup(battler);
+            battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
+            battlerUnit.SetMotion(MotionType.Jump);
+            battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
+            enemyUnitList.Add(battlerUnit);
         }
     }
 
     public void ExecuteBattleAction()
     {
-        switch (activeAction)
-        {
-            case ActionType.Talk:
-                Debug.Log("Talk 処理を実行");
-                break;
-
-            case ActionType.Attack:
-                Debug.Log("Attack 処理を実行");
-                break;
-
-            case ActionType.Command:
-                Debug.Log("Command 処理を実行");
-                break;
-
-            case ActionType.Escape:
-                Debug.Log("Escape 処理を実行");
-                break;
-
-            default:
-                Debug.LogWarning("未定義のアクションが選択されました");
-                break;
-        }
-
-        // アクション実行後は、State を Standby に戻す
-        state = BattleState.ActionSelection;
-        actionBoard.ChangeExecuteFlg(false);
+        ConfirmationSurvival();
+        ReSetEnemyList();
         turnOrderSystem.EndTurn();
     }
 
-    public void ExitBattleAction()
-    {
-        state = BattleState.ActionSelection;
-    }
-
-    public IEnumerator EnemyAttack()
+    public IEnumerator EnemyAttack(Battler attaker)
     {
         yield return new WaitForSeconds(0.5f);
-        attackSystem.ExecuteEnemyAttack();
+        attackSystem.ExecuteEnemyAttack(attaker);
     }
 
-    public void BattleResult()
+    private void BattleEscape()
     {
-        actionBoard.ChangeExecuteFlg(false);
-        List<Item> targetItems = enemyUnit.Battler.PouchList;
+        StartCoroutine(EscapeResultView());
+    }
+
+    private IEnumerator EscapeResultView()
+    {
+        yield return new WaitForSeconds(1.5f);
+        BattleEnd();
+    }
+
+    public void BattleEnd()
+    {
+        turnOrderSystem.BattlerEnd();
+        playerUnit.SetMotion(MotionType.Move);
+        enemyUnitList.Clear();
+        actionBoard.gameObject.SetActive(false);
+        fieldCharacterSystem.RemoveAllCharacter(); // 敵を削除
+        OnBattleEnd?.Invoke();
+    }
+
+    public void BattleDefeat()
+    {
+        Debug.Log("ゲームオーバー");
+        fieldCharacterSystem.SetCharacterMotion(playerUnit.Battler, AnimationType.Death);
+        // ゲームオーバー処理をここに追加
+    }
+
+
+    private void ConfirmationSurvival()
+    {
+        if (playerUnit.Battler.Life <= 0)
+        {
+            playerUnit.SetBattlerTalkMessage(MessageType.Lose);
+            messagePanel.AddMessage(MessageIconType.System, "ゲームオーバー...");
+            BattleDefeat();
+        }
+        else
+        {
+            for (int i = enemyUnitList.Count - 1; i >= 0; i--)
+            {
+                BattleUnit enemyUnit = enemyUnitList[i];
+                if (enemyUnit.Battler.Life <= 0)
+                {
+                    GetReward(enemyUnit.Battler);
+                    StartCoroutine(OutOfLineBattler(enemyUnit));
+                }
+            }
+            for (int i = allyUnitList.Count - 1; i >= 0; i--)
+            {
+                BattleUnit allyUnit = allyUnitList[i];
+                if (allyUnit.Battler.Life <= 0)
+                {
+                    StartCoroutine(OutOfLineBattler(allyUnit));
+                }
+            }
+        }
+    }
+
+    private void ReSetEnemyList()
+    {
+        List<Battler> enemyBattlers = new List<Battler>();
+        foreach (BattleUnit enemyUnit in enemyUnitList)
+        {
+            enemyBattlers.Add(enemyUnit.Battler);
+        }
+        actionBoard.SetEnemyListToPanel(enemyBattlers);
+    }
+
+    private IEnumerator OutOfLineBattler(BattleUnit battlerUnit)
+    {
+        battlerUnit.SetBattlerTalkMessage(MessageType.Lose);
+        battlerUnit.SetMotion(MotionType.Rotate);
+        turnOrderSystem.RemoveTurnBattler(battlerUnit.Battler);
+        if (enemyUnitList.Contains(battlerUnit))
+        {
+            enemyUnitList.Remove(battlerUnit);
+        }
+        else if (allyUnitList.Contains(battlerUnit))
+        {
+            allyUnitList.Remove(battlerUnit);
+        }
+        yield return new WaitForSeconds(1.0f); // モーションの時間を待つ
+        Destroy(battlerUnit.gameObject);
+        fieldCharacterSystem.RemoveFieldCharacter(battlerUnit.Battler); // フィールドからキャラクターを削除
+
+        // 勝利条件の確認
+        if (enemyUnitList.Count == 0)
+        {
+            playerUnit.SetBattlerTalkMessage(MessageType.Win);
+            BattleEnd();
+        }
+    }
+
+    private void GetReward(Battler battler)
+    {
+        List<Consumable> targetItems = battler.PouchList;
         string resultItemMessageList = "";
-        resultItemMessageList = enemyUnit.Battler.Base.Name + " に勝利した。\n";
+        resultItemMessageList = battler.Base.Name + " に勝利した。\n";
 
         if (targetItems != null && targetItems.Count > 0)
         {
             string itemList = "";
-            List<Item> awardedItems = new List<Item>();
+            List<Consumable> awardedItems = new List<Consumable>();
 
-            foreach (Item item in targetItems)
+            foreach (Consumable item in targetItems)
             {
                 // TODO：アイテムのレア度によって取得確率を変える
                 if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
@@ -228,73 +215,31 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            resultItemMessageList += ($"{enemyUnit.Battler.Base.Name} は何も持っていなかった。\n");
-        }
-
-        string prizeText = "";
-        if (enemyUnit.Battler.Money > 0)
-        {
-            prizeText += ($"ゼニ：{enemyUnit.Battler.Money} Z、");
-            playerUnit.Battler.Money += enemyUnit.Battler.Money;
-        }
-        if (enemyUnit.Battler.Disk > 0)
-        {
-            prizeText += ($"ディスク：{enemyUnit.Battler.Disk}、");
-            playerUnit.Battler.Disk += enemyUnit.Battler.Disk;
-        }
-        if (prizeText != "")
-        {
-            resultItemMessageList += ($"{prizeText}を手に入れた。\n");
+            resultItemMessageList += ($"{battler.Base.Name} は何も持っていなかった。\n");
         }
 
         if (playerUnit.Battler is PlayerBattler playerBattler)
         {
-            playerBattler.AcquisitionExp(enemyUnit.Battler.Exp); // プレイヤーの経験値を加算
-            resultItemMessageList += ($"経験値を{enemyUnit.Battler.Exp}手に入れた。");
-            playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
+            string prizeText = "";
+            if (battler.Money > 0)
+            {
+                prizeText += ($"ゼニ：{battler.Money} Z、");
+                playerUnit.Battler.Money += battler.Money;
+            }
+            if (battler.Disk > 0)
+            {
+                prizeText += ($"ディスク：{battler.Disk}、");
+                playerUnit.Battler.Disk += battler.Disk;
+            }
+            if (prizeText != "")
+            {
+                resultItemMessageList += ($"{prizeText}を手に入れた。\n");
+                playerBattler.UpdatePropertyPanel();  // PlayerBattler のメソッドを呼び出す
+            }
+            playerBattler.AcquisitionExp(battler.Exp); // プレイヤーの経験値を加算
+            resultItemMessageList += ($"経験値を{battler.Exp}手に入れた。");
         }
+        playerUnit.CheckSkillPoint();
         messagePanel.AddMessage(MessageIconType.Battle, resultItemMessageList);
-
-        StartCoroutine(BattleResultView());
-    }
-
-    private IEnumerator BattleResultView()
-    {
-        // TODO : バトル結果の表示処理を実装する
-        yield return new WaitForSeconds(1.5f);
-        BattleEnd();
-    }
-
-    private void BattleEscape()
-    {
-        StartCoroutine(EscapeResultView());
-    }
-
-    private IEnumerator EscapeResultView()
-    {
-        yield return new WaitForSeconds(1.5f);
-        BattleEnd();
-    }
-
-    public void BattleEnd()
-    {
-        actionBoard.ChangeExecuteFlg(false);
-        state = BattleState.Standby;
-        turnOrderSystem.BattlerEnd();
-        foreach (ActionIcon icon in actionIconList)
-        {
-            Destroy(icon.gameObject);
-        }
-        actionIconList.Clear();
-        actionBoard.ClosePanel();
-        enemyUnit.gameObject.SetActive(false);
-        playerUnit.SetMotion(MotionType.Move);
-        OnBattleEnd?.Invoke();
-    }
-
-    public void BattleDefeat()
-    {
-        playerUnit.SetBattlerTalkMessage(MessageType.Lose);
-        messagePanel.AddMessage(MessageIconType.System, "ゲームオーバー...");
     }
 }

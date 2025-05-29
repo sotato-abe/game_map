@@ -6,178 +6,171 @@ using UnityEngine.Events;
 
 public class AttackSystem : MonoBehaviour
 {
-    public UnityAction OnBattleResult;
     public UnityAction OnExecuteBattleAction;
     public UnityAction OnBattleDefeat;
     public UnityAction OnBattleEscape;
-    private BattleUnit playerUnit;
-    private BattleUnit enemyUnit;
+    private PlayerUnit playerUnit;
+    private List<BattleUnit> enemyUnits = new List<BattleUnit>();
+    private List<BattleUnit> allyUnits = new List<BattleUnit>();
 
     [SerializeField] private AttackPanel attackPanel;
+    [SerializeField] private EscapePanel escapePanel;
+    [SerializeField] TurnOrderSystem turnOrderSystem;
+    [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
-    public void SetBattler(BattleUnit playerUnit, BattleUnit enemyUnit)
+    private bool activePlayerTurn = false;
+    public bool ActivePlayerTurn => activePlayerTurn;
+
+    public void SetActivePlayerTurn(bool isActive)
     {
-        this.playerUnit = playerUnit;
-        this.enemyUnit = enemyUnit;
+        activePlayerTurn = isActive;
     }
 
-    public void ExecutePlayerTalk()
+    public void SetPlayerBattler(PlayerUnit playerUnit)
+    {
+        allyUnits.Clear();
+        this.playerUnit = playerUnit;
+        allyUnits.Add(playerUnit);
+    }
+
+    public void SetEnemyBattlers(List<BattleUnit> enemyUnits)
+    {
+        this.enemyUnits = enemyUnits;
+    }
+
+    public void ExecutePlayerTalk() // 現在未使用中
     {
         playerUnit.SetTalkMessage("hey");
-        enemyUnit.SetTalkMessage("...  ");
+        enemyUnits[0].SetTalkMessage("...  ");
 
         // TODO : Talkのアクション実装
         // 確率でクエスト開放する
         // クエストを受注するとバトルは終了する
 
-        EndPlayerTurn();
+        EndPlayerTurn(playerUnit);
     }
 
-    public void ExecutePlayerAttack(List<Damage> damages)
+
+    public void ExecuteBattlerAttack(Battler attaker, List<Attack> attacks, bool isAlly)
     {
-        if (0 < damages.Count)
+        List<BattleUnit> targetUnits = isAlly ? allyUnits : enemyUnits;
+        BattleUnit attakerUnit = targetUnits.FirstOrDefault(unit => unit.Battler == attaker);
+        if (0 < attacks.Count)
         {
-            playerUnit.SetBattlerTalkMessage(MessageType.Attack);
-            enemyUnit.TakeDamage(damages);
-        }
-        if (enemyUnit.Battler.Life <= 0)
-        {
-            enemyUnit.SetBattlerTalkMessage(MessageType.Lose);
-            OnBattleResult?.Invoke();
+            attakerUnit.SetBattlerTalkMessage(MessageType.Attack);
+            ExecuteAttack(attakerUnit, attacks, isAlly);
         }
         else
         {
-            EndPlayerTurn();
+            // TODO : 攻撃失敗の演出
+            attakerUnit.SetBattlerTalkMessage(MessageType.Miss);
         }
+        EndPlayerTurn(attakerUnit);
     }
 
-    public void ExecutePlayerCommand(List<EnchantCount> enchantCounts)
+    private void ExecuteAttack(BattleUnit attackerUnit, List<Attack> attacks, bool isAllyAttack = true)
     {
-        if (0 < enchantCounts.Count)
-        {
-            List<Enchant> playerEnchants = new List<Enchant>();
-            List<Enchant> enemyEnchants = new List<Enchant>();
+        List<BattleUnit> allies = isAllyAttack ? allyUnits : enemyUnits;
+        List<BattleUnit> enemies = isAllyAttack ? enemyUnits : allyUnits;
 
-            foreach (EnchantCount enchantCount in enchantCounts)
+        foreach (Attack attack in attacks)
+        {
+            switch (attack.Target)
             {
-                // 自身へのエンチャント
-                if (enchantCount.Target == TargetType.Own || enchantCount.Target == TargetType.Ally || enchantCount.Target == TargetType.All)
-                {
-                    Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
-                    playerEnchants.Add(enchant);
+                case TargetType.Own:
+                    attackerUnit.TakeAttack(attack);
+                    break;
 
-                }
+                case TargetType.AllyFront:
+                    if (allies.Count > 0)
+                        allies[0].TakeAttack(attack);
+                    break;
 
-                // 相手へのエンチャント
-                if (enchantCount.Target == TargetType.Opponent || enchantCount.Target == TargetType.Enemy || enchantCount.Target == TargetType.All)
-                {
-                    Enchant enchant = new Enchant(enchantCount.Type, enchantCount.Val);
-                    enemyEnchants.Add(enchant);
-                }
+                case TargetType.AllyAll:
+                    foreach (var unit in allies)
+                        unit.TakeAttack(attack);
+                    break;
+
+                case TargetType.EnemyFront:
+                    if (enemies.Count > 0)
+                        enemies[0].TakeAttack(attack);
+                    break;
+
+                case TargetType.EnemyAll:
+                    foreach (var unit in enemies)
+                        unit.TakeAttack(attack);
+                    break;
+
+                default: // TargetType.All など
+                    foreach (var unit in allies)
+                        unit.TakeAttack(attack);
+                    foreach (var unit in enemies)
+                        unit.TakeAttack(attack);
+                    break;
             }
-            if (playerEnchants.Count > 0)
-            {
-                playerUnit.TakeEnchant(playerEnchants);
-            }
-            if (enemyEnchants.Count > 0)
-            {
-                enemyUnit.TakeEnchant(enemyEnchants);
-            }
-        }
-        if (playerUnit.Battler.Life <= 0)
-        {
-            OnBattleDefeat?.Invoke();
-        }
-        if (enemyUnit.Battler.Life <= 0)
-        {
-            OnBattleResult?.Invoke();
-        }
-        else
-        {
-            EndPlayerTurn();
         }
     }
 
-    public void ExecutePlayerEscape()
+    public IEnumerator ExecuteEnemyAttack(Battler attacker) // EnemyUnitに移動できそう
     {
-        // TODO : 逃亡時の処理を追加
-        // playerUnit.SetTalkMessage("Run!");
-        playerUnit.SetBattlerTalkMessage(MessageType.Escape);
-        enemyUnit.SetTalkMessage("まて!!");
-        OnBattleEscape?.Invoke();
+        List<Attack> attacks = new List<Attack>();
 
-    }
-    
-    private void EndPlayerTurn()
-    {
-        playerUnit.DecreaseEnchant();
-        OnExecuteBattleAction?.Invoke();
-    }
+        BattleUnit enemyUnit = enemyUnits.FirstOrDefault(unit => unit.Battler == attacker);
 
-    public void ExecuteEnemyAttack()
-    {
-        List<Damage> damages = new List<Damage>();
-
-        foreach (Equipment equipment in enemyUnit.Battler.Equipments)
+        foreach (Equipment equipment in enemyUnit.Battler.EquipmentList)
         {
             if (CheckEnegy(equipment) == false)
             {
                 continue;
             }
 
-            if (Random.Range(0, 100) < equipment.Base.Probability)
+            if (Random.Range(0, 100) < equipment.EquipmentBase.Probability)
             {
-                UseEnegy(equipment);
-                foreach (var attack in equipment.Base.AttackList)
-                {
-                    Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
-                    damages.Add(damage);
-                }
+                // エネジーを消費する
+                enemyUnit.Battler.Life -= equipment.EquipmentBase.LifeCost.val;
+                enemyUnit.Battler.Battery -= equipment.EquipmentBase.BatteryCost.val;
+                enemyUnit.Battler.Soul -= equipment.EquipmentBase.SoulCost.val;
+                enemyUnit.UpdateEnegyUI();
+                attacks.Add(equipment.Attack);
             }
         }
+        attacks.Add(enemyUnit.Battler.GetAttack());
+        fieldCharacterSystem.SetCharacterMotion(attacker, AnimationType.Attack);
+        ExecuteBattlerAttack(enemyUnit.Battler, attacks, false);
+        yield return new WaitForSeconds(0.5f);
+    }
 
-        if (0 < damages.Count)
+    public void ExecutePlayerEscape(bool isSuccess)
+    {
+        if (isSuccess)
         {
-            enemyUnit.SetBattlerTalkMessage(MessageType.Attack);
-            playerUnit.TakeDamage(damages);
-        }
-        if (playerUnit.Battler.Life <= 0)
-        {
-            OnBattleDefeat?.Invoke();
+            playerUnit.SetBattlerTalkMessage(MessageType.Escape);
+            enemyUnits[0].SetBattlerTalkMessage(MessageType.Escape);
+            OnBattleEscape?.Invoke();
         }
         else
         {
-            EndEnemyTurn();
+            enemyUnits[0].SetBattlerTalkMessage(MessageType.Win);
+            EndPlayerTurn(playerUnit);
         }
     }
 
-    private void EndEnemyTurn()
+    private void EndPlayerTurn(BattleUnit battlerUnit)
     {
-        enemyUnit.DecreaseEnchant();
+        battlerUnit.DecreaseEnchant();
+        activePlayerTurn = false;
         OnExecuteBattleAction?.Invoke();
     }
 
     public bool CheckEnegy(Equipment equipment)
     {
-        if (
-            equipment.Base.LifeCost.val <= enemyUnit.Battler.Life &&
-            equipment.Base.BatteryCost.val <= enemyUnit.Battler.Battery &&
-            equipment.Base.SoulCost.val <= enemyUnit.Battler.Soul
-        )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+        int life = Mathf.Max(0, enemyUnits[0].Battler.Life);
+        int battery = Mathf.Max(0, enemyUnits[0].Battler.Battery);
+        int soul = Mathf.Max(0, enemyUnits[0].Battler.Soul);
 
-    public void UseEnegy(Equipment equipment)
-    {
-        enemyUnit.Battler.Life -= equipment.Base.LifeCost.val;
-        enemyUnit.Battler.Battery -= equipment.Base.BatteryCost.val;
-        enemyUnit.Battler.Soul -= equipment.Base.SoulCost.val;
-        enemyUnit.UpdateEnegyUI();
+        return
+            equipment.EquipmentBase.LifeCost.val <= life &&
+            equipment.EquipmentBase.BatteryCost.val <= battery &&
+            equipment.EquipmentBase.SoulCost.val <= soul;
     }
 }

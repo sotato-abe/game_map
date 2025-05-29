@@ -10,6 +10,10 @@ public class EnchantIcon : Unit
     [SerializeField] TextMeshProUGUI val;
     [SerializeField] EnchantDialog dialog;
 
+    [SerializeField] Color buffColor = new Color(2, 115, 229, 255);
+    [SerializeField] Color debuffColor = new Color(243, 52, 74, 255);
+    [SerializeField] Color bothColor = new Color(0, 0, 0, 200);
+
     private float magnificationPower = 1.1f; // ターゲットスケール
 
     public void SetEnchant(Enchant enchant)
@@ -41,6 +45,32 @@ public class EnchantIcon : Unit
         else
         {
             Debug.LogWarning($"EnchantIcon: No data found for type {type}");
+        }
+
+        BuffType buffType = BuffType.Both;
+        if (EnchantDatabase.Instance != null)
+        {
+            buffType = EnchantDatabase.Instance.IsBuff(type);
+        }
+        SetColor(buffType);
+    }
+
+    public void SetColor(BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case BuffType.Buff:
+                image.color = buffColor;
+                val.color = buffColor;
+                break;
+            case BuffType.Debuff:
+                image.color = debuffColor;
+                val.color = debuffColor;
+                break;
+            default:
+                image.color = bothColor;
+                val.color = bothColor;
+                break;
         }
     }
 

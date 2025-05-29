@@ -16,8 +16,6 @@ public class BagPanel : Panel
 
     private void Start()
     {
-        inventoryWindow.OnDropItemBlockAction += MoveItemBlock;
-        inventoryWindow.OnDropEquipmentBlockAction += MoveEquipmentBlock;
     }
     private void OnEnable()
     {
@@ -61,18 +59,9 @@ public class BagPanel : Panel
         OnActionExecute?.Invoke();
     }
 
-    public void MoveItemBlock(ItemBlock item)
-    {
-        pouchWindow.RemoveItem(item);
-    }
-
     private void LayoutRebuilderContent()
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(contentList.GetComponent<RectTransform>());
     }
 
-    public void MoveEquipmentBlock(EquipmentBlock equipment)
-    {
-        equipmentWindow.RemoveEquipment(equipment);
-    }
 }

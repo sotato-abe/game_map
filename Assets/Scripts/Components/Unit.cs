@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class Unit : MonoBehaviour
 {
+    public float scale = 1.2f;
     public IEnumerator OnPointer(bool focusFlg)
     {
         float time = 0.05f;
@@ -14,7 +15,7 @@ public class Unit : MonoBehaviour
         if (focusFlg)
         {
             Vector3 originalScale = transform.localScale;
-            Vector3 targetScale = new Vector3(1.2f, 1.2f, 1.2f);
+            Vector3 targetScale = new Vector3(scale, scale, scale);
             while (currentTime < time)
             {
                 transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);

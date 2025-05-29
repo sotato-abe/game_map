@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -16,6 +17,7 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] Blowing blowing;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] GameObject enchantList;
+    [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
     public virtual void Setup(Battler battler)
     {
@@ -27,7 +29,12 @@ public class BattleUnit : MonoBehaviour
         UpdateEnchantUI();
     }
 
-    public void SetEnegy()
+    public void SetFieldCharacterSystem(FieldCharacterSystem fieldCharacterSystem)
+    {
+        this.fieldCharacterSystem = fieldCharacterSystem;
+    }
+
+    public virtual void SetEnegy()
     {
         lifeBar.SetEnegy(EnegyType.Life, Battler.MaxLife, Battler.Life);
         batteryBar.SetEnegy(EnegyType.Battery, Battler.MaxBattery, Battler.Battery);
@@ -44,31 +51,43 @@ public class BattleUnit : MonoBehaviour
         statusDialog.ShowDialog(false);
     }
 
-    public void SetTalkMessage(string message)
+    public void SetTalkMessage(string message, PanelType panelType = PanelType.Default)
     {
-        if (blowing != null) // Nullチェックを追加
-        {
-            blowing.gameObject.SetActive(true);
-            blowing.AddMesageList(message);
-        }
-        else
-        {
-            Debug.LogError("blowing is not assigned!");
-        }
+        TalkMessage talkMessage = new TalkMessage(MessageType.Talk, panelType, message);
+        blowing.gameObject.SetActive(true);
+        StartCoroutine(blowing.AddMessage(talkMessage));
     }
 
     public void SetBattlerTalkMessage(MessageType messageType)
     {
-        string battlerMessage = Battler.Base.Messages.Find(m => m.messageType == messageType)?.message ?? messageType.GetDefaultMessage();
-        SetTalkMessage(battlerMessage);
+        // 指定された messageType に一致するメッセージをすべて取得
+        var matchingMessages = Battler.Base.MessageList
+            .Where(m => m.messageType == messageType)
+            .ToList();
+
+        // ランダムに1つ選ぶ（見つからない場合は null）
+        TalkMessage foundMessage = matchingMessages.Count > 0
+            ? matchingMessages[UnityEngine.Random.Range(0, matchingMessages.Count)]
+            : null;
+
+        // 見つかったメッセージを使うか、デフォルトメッセージを使う
+        string battlerMessage = foundMessage != null
+            ? foundMessage.message
+            : messageType.GetDefaultMessage();
+
+        PanelType panelType = foundMessage != null
+            ? foundMessage.panelType
+            : PanelType.Default;
+
+        SetTalkMessage(battlerMessage, panelType);
     }
 
-    public void TakeDamage(List<Damage> damageList)
+    public void TakeAttack(Attack attack)
     {
-        SetMotion(MotionType.Shake);
-        SetBattlerTalkMessage(MessageType.Damage);
-        Battler.TakeDamage(damageList);
+        SetBattlerReaction(attack);
+        Battler.TakeAttack(attack);
         UpdateEnegyUI();
+        UpdateEnchantUI();
     }
 
     public virtual void UpdateEnegyUI()
@@ -78,40 +97,54 @@ public class BattleUnit : MonoBehaviour
         soulBar.ChangeEnegyVal(Battler.Soul);
     }
 
-    public void TakeEnchant(List<Enchant> enchantList)
+    private void SetBattlerReaction(Attack attack)
     {
-        SetMotion(MotionType.Shake);
-        Battler.TakeEnchant(enchantList);
-        EncahntMessage(enchantList);
-        UpdateEnchantUI();
-    }
+        var reactions = new List<(int count, MotionType motion, AnimationType animationType, MessageType message, bool isEnchant)>
+        {
+            (attack.DamageList.Count, MotionType.Shake, AnimationType.Damage, MessageType.Damage, false),
+            (attack.RecoveryList.Count, MotionType.Shake, AnimationType.Recovery, MessageType.Recovery, false),
+            (attack.EnchantList.Count, MotionType.Shake, AnimationType.Buff, MessageType.Question, true)
+        }
+        ;
 
-    private void EncahntMessage(List<Enchant> enchantList)
-    {
-        int buffCount = 0;
-        foreach (Enchant enchant in enchantList)
+        var maxReaction = reactions.OrderByDescending(r => r.count).First();
+
+        if (!maxReaction.isEnchant)
         {
-            EnchantData enchantData = EnchantDatabase.Instance?.GetData(enchant.Type);
-            if (enchantData.buffType == BuffType.Buff)
-            {
-                buffCount++;
-            }
-            else if (enchantData.buffType == BuffType.Debuff)
-            {
-                buffCount--;
-            }
-        }
-        if (buffCount > 0)
-        {
-            SetBattlerTalkMessage(MessageType.Recovery);
-        }
-        else if (buffCount < 0)
-        {
-            SetBattlerTalkMessage(MessageType.Damage);
+            SetMotion(maxReaction.motion);
+            fieldCharacterSystem.SetCharacterMotion(Battler, maxReaction.animationType);
+            SetBattlerTalkMessage(maxReaction.message);
         }
         else
         {
-            SetTalkMessage("。。。");
+            int buffCount = 0;
+            foreach (var enchant in attack.EnchantList)
+            {
+                var data = EnchantDatabase.Instance?.GetData(enchant.Type);
+                if (data == null) continue;
+
+                buffCount += data.buffType == BuffType.Buff ? 1 :
+                             data.buffType == BuffType.Debuff ? -1 : 0;
+            }
+
+            if (buffCount == 0)
+            {
+                SetMotion(MotionType.Move);
+                fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Buff);
+                SetBattlerTalkMessage(MessageType.Question);
+            }
+            else if (buffCount > 0)
+            {
+                SetMotion(MotionType.Randam);
+                fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Debuff);
+                SetBattlerTalkMessage(MessageType.Recovery);
+            }
+            else
+            {
+                SetMotion(MotionType.Shake);
+                fieldCharacterSystem.SetCharacterMotion(Battler, AnimationType.Damage);
+                SetBattlerTalkMessage(MessageType.Damage);
+            }
         }
     }
 
@@ -139,7 +172,7 @@ public class BattleUnit : MonoBehaviour
         }
     }
 
-    public void SetStatusDialog()
+    public virtual void SetStatusDialog()
     {
         statusDialog.Setup(Battler);
     }

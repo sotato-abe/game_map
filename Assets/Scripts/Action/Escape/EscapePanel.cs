@@ -21,8 +21,9 @@ public class EscapePanel : Panel
 
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] private AttackSystem attackSystem;
-    [SerializeField] BattleUnit enemyUnit;
+    List<Battler> enemyList = new List<Battler>();
 
+    private bool isEscaping = false;
     int lifeCost = 0;
     int batteryCost = 0;
     int soulCost = 0;
@@ -31,7 +32,7 @@ public class EscapePanel : Panel
 
     public void Update()
     {
-        if (executeFlg)
+        if (attackSystem.ActivePlayerTurn && !isEscaping)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -47,15 +48,21 @@ public class EscapePanel : Panel
         RunningOff();
     }
 
+    public void SetEnemyList(List<Battler> enemyList)
+    {
+        this.enemyList = enemyList;
+    }
+
     private void ProbabilityCalculation()
     {
         int playerSPD = playerUnit.Battler.Speed.val;
-        int enemySPD = enemyUnit.Battler.Speed.val;
-
-        // 逃げる確率の計算
-        // 逃げる確率 = (自分の素早さ / (自分の素早さ + 相手の素早さ)) * 100
+        int enemySPD = 0;
+        foreach (var enemy in enemyList)
+        {
+            enemySPD += enemy.Speed.val;
+        }
         probability = (playerSPD * 100) / (playerSPD + enemySPD);
-        probabilityText.SetText(probability.ToString() + "%");
+        probabilityText.SetText(probability.ToString());
     }
 
     private void CountEnegyCost()
@@ -71,29 +78,30 @@ public class EscapePanel : Panel
 
     private IEnumerator Escape()
     {
-        if (executeFlg)
+        isEscaping = true;
+        playerUnit.Battler.Life -= lifeCost;
+        playerUnit.Battler.Battery -= batteryCost;
+        playerUnit.Battler.Soul -= soulCost;
+
+        yield return StartCoroutine(RunningCoroutine());
+
+        if (Random.Range(0, 100) < probability)
         {
-            playerUnit.Battler.Life -= lifeCost;
-            playerUnit.Battler.Battery -= batteryCost;
-            playerUnit.Battler.Soul -= soulCost;
-
-            yield return StartCoroutine(RunningCoroutine());
-
-            if (Random.Range(0, 100) < probability)
-            {
-                // 逃げる成功
-                attackSystem.ExecutePlayerEscape();
-                playerUnit.UpdateEnegyUI();
-            }
-            else
-            {
-                // 逃げる失敗
-                attackSystem.ExecuteEnemyAttack();
-                playerUnit.UpdateEnegyUI();
-            }
+            // 逃げる成功
+            playerUnit.UpdateEnegyUI();
+            yield return new WaitForSeconds(1f);
+            attackSystem.ExecutePlayerEscape(true);
+        }
+        else
+        {
+            // 逃げる失敗
+            playerUnit.SetBattlerTalkMessage(MessageType.Miss);
+            playerUnit.UpdateEnegyUI();
+            attackSystem.ExecutePlayerEscape(false);
         }
         RunningOff();
         ProbabilityCalculation();
+        isEscaping = false;
     }
 
     private IEnumerator RunningCoroutine()

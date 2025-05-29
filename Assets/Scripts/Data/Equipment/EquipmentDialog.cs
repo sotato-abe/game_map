@@ -12,17 +12,24 @@ public class EquipmentDialog : VariableDialog
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] EnegyIcon costPrefab;
+    [SerializeField] Image targetImage;
 
-    public void Setup(Equipment equipment)
+    public void Setup(Item item)
     {
-        namePlate.SetName(equipment.Base.Name);
-        description.text = equipment.Base.Description;
-        probability.SetText(equipment.Base.Probability.Value.ToString() + "%");
-        ResetSkillList();
-        SetAttack(equipment.Base.AttackList);
-        SetEnchant(equipment.Base.EnchantList);
-        SetCost(equipment.Base.CostList);
-        ResizeDialog();
+        if (item is Equipment equipment)
+        {
+            namePlate.SetName(equipment.EquipmentBase.Name);
+            description.text = equipment.EquipmentBase.Description;
+            probability.SetText(equipment.EquipmentBase.Probability.Value.ToString() + "%");
+            ResetSkillList();
+            SetEnegy(equipment.EquipmentBase.DamageList, true);
+            SetEnegy(equipment.EquipmentBase.RecoveryList, false);
+            SetEnchant(equipment.EquipmentBase.EnchantList);
+            SetCost(equipment.EquipmentBase.CostList);
+            TargetData targetData = TargetDatabase.Instance?.GetData(equipment.Attack.Target);
+            targetImage.sprite = targetData.icon;
+            ResizeDialog();
+        }
     }
 
     private void ResetSkillList()
@@ -34,15 +41,16 @@ public class EquipmentDialog : VariableDialog
         }
     }
 
-    private void SetAttack(List<Enegy> attacks)
+    private void SetEnegy(List<Enegy> enegies, bool isDamage)
     {
         // attackList内に攻撃力を追加
-        foreach (var attack in attacks)
+        foreach (var enegy in enegies)
         {
-            EnegyIcon attackObject = Instantiate(enegyPrefab, enchantList.transform);
-            attackObject.gameObject.SetActive(true);
-            EnegyIcon attackUnit = attackObject.GetComponent<EnegyIcon>();
-            attackUnit.SetCostIcon(attack);
+            EnegyIcon enegyObject = Instantiate(enegyPrefab, enchantList.transform);
+            enegyObject.gameObject.SetActive(true);
+            EnegyIcon enegyUnit = enegyObject.GetComponent<EnegyIcon>();
+            enegyUnit.SetCostIcon(enegy);
+            enegyUnit.SetColor(isDamage);
         }
     }
 
@@ -54,7 +62,6 @@ public class EquipmentDialog : VariableDialog
             EnchantIcon enchantObject = Instantiate(enchantIcon, enchantList.transform);
             enchantObject.gameObject.SetActive(true);
             EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
-
             enchantUnit.SetEnchant(enchant);
         }
     }

@@ -9,7 +9,7 @@ public class Title : MonoBehaviour
     [SerializeField] TextMeshProUGUI title;
     [SerializeField] Image image;
     [SerializeField] float padding = 30f;
-    [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] RectTransform backRectTransform;
 
     public IEnumerator TypeTitle(string line)
     {
@@ -24,13 +24,13 @@ public class Title : MonoBehaviour
 
     private void ResizePlate()
     {
-        if (title == null || backImageRectTransform == null)
+        if (title == null || backRectTransform == null)
         {
-            Debug.LogError("title または backImageRectTransform が null");
+            Debug.LogError("title または backRectTransform が null");
             return;
         }
 
         float newWidth = title.preferredWidth + padding;
-        backImageRectTransform.sizeDelta = new Vector2(newWidth, backImageRectTransform.sizeDelta.y);
+        backRectTransform.sizeDelta = new Vector2(newWidth, backRectTransform.sizeDelta.y);
     }
 }

@@ -18,7 +18,7 @@ public class Battler
     public int MaxBattery { get; set; }
     public int Battery { get; set; }
 
-    public Status Attack { get; set; }
+    public Status Power { get; set; }
     public Status Technique { get; set; }
     public Status Defense { get; set; }
     public Status Speed { get; set; }
@@ -33,19 +33,18 @@ public class Battler
     public int Exp { get; set; }
 
     public List<Ability> AbilityList = new List<Ability>();
-    public List<Equipment> Equipments { get; set; }
+    public List<Equipment> EquipmentList { get; set; }
     public List<Command> RunTable { get; set; }
     public List<Command> DeckList { get; set; }
     public List<Command> StorageList { get; set; }
-    public List<Item> PouchList { get; set; }
+    public List<Consumable> PouchList { get; set; }
     public List<Item> BagItemList { get; set; }
-    public List<Equipment> BagEquipmentList { get; set; }
     public List<Enchant> Enchants = new List<Enchant>();
     public Vector2Int coordinate;
 
     public List<Status> StatusList => new List<Status>
     {
-        Attack,
+        Power,
         Technique,
         Defense,
         Speed,
@@ -68,7 +67,7 @@ public class Battler
         Life = MaxLife;
         MaxBattery = _base.MaxBattery;
         Battery = MaxBattery;
-        Attack = _base.Attack;
+        Power = _base.Power;
         Technique = _base.Technique;
         Defense = _base.Defense;
         Speed = _base.Speed;
@@ -83,10 +82,14 @@ public class Battler
         Exp = _base.Exp;
 
         AbilityList = new List<Ability>(_base.AbilityList ?? new List<Ability>());
-        Equipments = new List<Equipment>(_base.Equipments ?? new List<Equipment>());
-        PouchList = new List<Item>(_base.PouchList ?? new List<Item>());
-        BagItemList = new List<Item>(_base.BagItemList ?? new List<Item>());
-        BagEquipmentList = new List<Equipment>(_base.BagEquipmentList ?? new List<Equipment>());
+        EquipmentList = new List<Equipment>(_base.EquipmentList ?? new List<Equipment>());
+        PouchList = new List<Consumable>(_base.PouchList ?? new List<Consumable>());
+
+        BagItemList = new List<Item>();
+        BagItemList.AddRange(_base.BagConsumableList);
+        BagItemList.AddRange(_base.BagEquipmentList);
+        BagItemList.AddRange(_base.BagTreasureList);
+
         RunTable = new List<Command>(_base.RunTable ?? new List<Command>());
         DeckList = new List<Command>(_base.DeckList ?? new List<Command>());
         StorageList = new List<Command>(_base.StorageList ?? new List<Command>());
@@ -96,44 +99,47 @@ public class Battler
             coordinate = _base.Birthplace.Coordinate;
     }
 
-    public void TakeRecovery(List<Enegy> recoveryList)
+    public Attack GetAttack()
     {
-        foreach (Enegy recovery in recoveryList)
-        {
-            if (recovery.type == EnegyType.Life)
-            {
-                Life = Mathf.Min(Life + recovery.val, MaxLife);
-            }
-            if (recovery.type == EnegyType.Battery)
-            {
-                Battery = Mathf.Min(Battery + recovery.val, MaxBattery);
-            }
-            if (recovery.type == EnegyType.Soul)
-            {
-                Soul = Soul + recovery.val;
-            }
-        }
+        Attack attack = new Attack(
+            TargetType.EnemyFront,
+            new List<Enegy>(),
+            new List<Enegy>(),
+            new List<Enchant>()
+        );
+        attack.DamageList.Add(new Enegy(EnegyType.Life, Power.val));
+        // TODO : AbilityやEquipmentからの追加ダメージを考慮する
+        return attack;
     }
 
     // ライフを割り切るときにfalseを返す（isAlive）
-    public void TakeDamage(List<Damage> damageList)
+    public void TakeAttack(Attack attack)
     {
-        foreach (Damage damage in damageList)
+        TakeEnegy(attack.DamageList, true);
+        TakeEnegy(attack.RecoveryList, false);
+        TakeEnchant(attack.EnchantList);
+    }
+
+    public void TakeEnegy(List<Enegy> enegryList, bool isDown)
+    {
+        int operatorVal = isDown ? -1 : 1;
+        foreach (Enegy enegry in enegryList)
         {
-            if (damage.AttackType == AttackType.Enegy)
+            if (enegry.type == EnegyType.Life)
             {
-                if (damage.EnegyType == EnegyType.Life)
-                {
-                    Life = Life - damage.Val;
-                }
-                if (damage.EnegyType == EnegyType.Battery)
-                {
-                    Battery = Battery - damage.Val;
-                }
-                if (damage.EnegyType == EnegyType.Soul)
-                {
-                    Soul = Soul - damage.Val;
-                }
+                Life += operatorVal * enegry.val;
+                Life = Mathf.Min(Life, MaxLife);
+            }
+            if (enegry.type == EnegyType.Battery)
+            {
+                Battery += operatorVal * enegry.val;
+                Battery = Mathf.Min(Battery, MaxBattery);
+
+            }
+            if (enegry.type == EnegyType.Soul)
+            {
+                Soul += operatorVal * enegry.val;
+                Soul = Mathf.Min(Soul, 100);
             }
         }
     }
@@ -168,51 +174,55 @@ public class Battler
         }
     }
 
-    //　同じタイプの装備がある場合は、それを外してから追加して元の装備を返す
-    // もともと装備をしていない場合はnullを返す
-    public Equipment AddEquipment(Equipment equipment)
-    {
-        Equipment existingEquipment = Equipments.Find(e => e.Base.Type == equipment.Base.Type);
-        if (existingEquipment != null)
-        {
-            Equipments.Remove(existingEquipment);
-            Equipments.Add(equipment);
-            return existingEquipment;
-        }
-        else
-        {
-            Equipments.Add(equipment);
-            return null;
-        }
-    }
-
     public bool AddItem(Item item)
     {
-        if (PouchList.Count < Pouch.val)
+        switch (item)
         {
-            PouchList.Add(item);
+            case Consumable consumable:
+                if (PouchList.Count < Pouch.val)
+                {
+                    PouchList.Add(consumable);
+                    return true;
+                }
+                else
+                {
+                    return TryAddToBag(consumable);
+                }
+
+            case Equipment equipment:
+                return TryAddToBag(equipment);
+
+            case Treasure treasure:
+                return TryAddToBag(treasure);
+
+            default:
+                Debug.Log("Unknown item type.");
+                return false;
         }
-        else if (BagItemList.Count + Equipments.Count < Bag.val)
+    }
+
+    private bool TryAddToBag(Item item)
+    {
+        if (BagItemList.Count < Bag.val)
         {
             BagItemList.Add(item);
+            return true;
+        }
+
+        Debug.Log("バッグがいっぱいです。");
+        return false;
+    }
+
+    public void UseConsumable(Consumable consumable)
+    {
+        if (PouchList.Contains(consumable))
+        {
+            PouchList.Remove(consumable);
+            TakeAttack(consumable.Attack);
         }
         else
         {
-            Debug.Log("Bag is full.");
-            return false;
+            Debug.Log("そのアイテムはポーチにありません。");
         }
-        return true;
-    }
-
-    public void AddEquipmentToEquipments(Equipment equipment)
-    {
-        // プレイヤーのインベントリにアイテムを追加する処理
-        Equipments.Add(equipment); // Bag はプレイヤーのインベントリリスト
-    }
-
-    public void AddCommandToDeck(Command command)
-    {
-        // プレイヤーのインベントリにアイテムを追加する処理
-        DeckList.Add(command); // Bag はプレイヤーのインベントリリスト
     }
 }

@@ -55,4 +55,15 @@ public class EnchantDatabase : MonoBehaviour
 
         return null;
     }
+
+    public BuffType IsBuff(EnchantType type)
+    {
+        if (dataDict != null && dataDict.TryGetValue(type, out var data))
+        {
+            return data.buffType;
+        }
+
+        Debug.LogWarning($"EnchantDatabase: No data found for type {type}");
+        return BuffType.Both;
+    }
 }

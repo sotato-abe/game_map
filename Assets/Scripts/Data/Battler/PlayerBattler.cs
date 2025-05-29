@@ -64,8 +64,8 @@ public class PlayerBattler : Battler
         {
             switch (type)
             {
-                case StatusType.ATK:
-                    Attack.val += 1;
+                case StatusType.POW:
+                    Power.val += 1;
                     break;
                 case StatusType.TEC:
                     Technique.val += 1;

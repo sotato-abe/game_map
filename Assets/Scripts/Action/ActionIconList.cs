@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Action/ActionTypeList")]
+[CreateAssetMenu(menuName = "Type/ActionIconList")]
 public class ActionIconList : ScriptableObject
 {
     [System.Serializable]

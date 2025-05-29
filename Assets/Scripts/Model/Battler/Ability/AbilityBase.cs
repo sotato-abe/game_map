@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Ability/Ability")]
+[CreateAssetMenu(menuName = "Battler/Ability")]
 public class AbilityBase : ScriptableObject
 {
     [SerializeField] new string name;

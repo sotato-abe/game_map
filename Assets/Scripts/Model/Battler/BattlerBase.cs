@@ -7,10 +7,11 @@ public class BattlerBase : ScriptableObject
 {
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
-    [SerializeField] MapBase birthplace;
+    [SerializeField, TextArea] string description;
+    [SerializeField] FieldBase birthplace;
     [SerializeField] int maxLife = 10;
     [SerializeField] int maxBattery = 5;
-    [SerializeField] int attack = 1;
+    [SerializeField] int power = 1;
     [SerializeField] int defense = 1;
     [SerializeField] int technique = 1;
     [SerializeField] int speed = 1;
@@ -25,21 +26,23 @@ public class BattlerBase : ScriptableObject
     [SerializeField] int exp = 10;
 
     [SerializeField] List<Ability> abilityList;
-    [SerializeField] List<Equipment> equipments;
+    [SerializeField] List<Equipment> equipmentList;
     [SerializeField] List<Command> runTable;
     [SerializeField] List<Command> deckList;
     [SerializeField] List<Command> storageList;
-    [SerializeField] List<Item> pouchList;
-    [SerializeField] List<Item> bagItemList;
+    [SerializeField] List<Consumable> pouchList;
+    [SerializeField] List<Consumable> bagConsumableList;
     [SerializeField] List<Equipment> bagEquipmentList;
-    [SerializeField] List<TalkMessage> messages;
+    [SerializeField] List<Treasure> bagTreasureList;
+    [SerializeField] List<TalkMessage> messageList;
 
     public string Name { get => name; }
     public Sprite Sprite { get => sprite; }
+    public string Description { get => description; }
     public int MaxLife { get => maxLife; }
     public int MaxBattery { get => maxBattery; }
 
-    public Status Attack => new Status(StatusType.ATK, attack);
+    public Status Power => new Status(StatusType.POW, power);
     public Status Technique => new Status(StatusType.TEC, technique);
     public Status Defense => new Status(StatusType.DEF, defense);
     public Status Speed => new Status(StatusType.SPD, speed);
@@ -55,13 +58,14 @@ public class BattlerBase : ScriptableObject
     public int Exp { get => exp; }
 
     public List<Ability> AbilityList { get => abilityList; }
-    public List<Equipment> Equipments { get => equipments; }
-    public List<Item> PouchList { get => pouchList; }
-    public List<Item> BagItemList { get => bagItemList; }
+    public List<Equipment> EquipmentList { get => equipmentList; }
+    public List<Consumable> PouchList { get => pouchList; }
+    public List<Consumable> BagConsumableList { get => bagConsumableList; }
     public List<Equipment> BagEquipmentList { get => bagEquipmentList; }
+    public List<Treasure> BagTreasureList { get => bagTreasureList; }
     public List<Command> RunTable { get => runTable; }
     public List<Command> DeckList { get => deckList; }
     public List<Command> StorageList { get => storageList; }
-    public List<TalkMessage> Messages { get => messages; }
-    public MapBase Birthplace { get => birthplace; }
+    public List<TalkMessage> MessageList { get => messageList; }
+    public FieldBase Birthplace { get => birthplace; }
 }

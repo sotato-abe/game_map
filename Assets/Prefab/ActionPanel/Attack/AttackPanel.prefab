@@ -401,7 +401,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 210, y: 50}
+  m_SizeDelta: {x: 170, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2324534555442018700
 CanvasRenderer:
@@ -468,7 +468,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 10
+  m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1108,10 +1108,14 @@ PrefabInstance:
     - target: {fileID: 6232928895520963377, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: fc23db1274627e34ca2d6974dc71495f, type: 3}
+      objectReference: {fileID: -1972410777, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
     - target: {fileID: 6260249497740412907, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
       propertyPath: m_Name
       value: EnegyCounter (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6758074600026658385, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
+      propertyPath: m_text
+      value: 23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
@@ -1229,10 +1233,14 @@ PrefabInstance:
     - target: {fileID: 6232928895520963377, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 7ead19da0222737499c38b50bf0bce96, type: 3}
+      objectReference: {fileID: 813754672, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
     - target: {fileID: 6260249497740412907, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
       propertyPath: m_Name
       value: EnegyCounter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6758074600026658385, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
+      propertyPath: m_text
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
@@ -1350,10 +1358,14 @@ PrefabInstance:
     - target: {fileID: 6232928895520963377, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: ada399fa8e5933f4e8e43f318cb88539, type: 3}
+      objectReference: {fileID: 367007100, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
     - target: {fileID: 6260249497740412907, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
       propertyPath: m_Name
       value: EnegyCounter (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6758074600026658385, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}
+      propertyPath: m_text
+      value: 456
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1521af333c86e1941a869ad00e1674d3, type: 3}

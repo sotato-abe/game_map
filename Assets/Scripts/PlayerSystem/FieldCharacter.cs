@@ -7,12 +7,46 @@ using UnityEngine.Events;
 public class FieldCharacter : MonoBehaviour
 {
     [SerializeField] public Animator animator;
+    public Battler Battler; // このフィールドキャラクターに関連付けられたバトラー
     public Animator Animator => animator;
 
     protected virtual void Awake()
     {
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
+    }
+
+    public virtual void SetUp(Battler battler = null)
+    {
+        this.Battler = battler;
+    }
+
+    public virtual void SetAnimation(AnimationType animationType)
+    {
+        switch (animationType)
+        {
+            case AnimationType.Attack:
+                animator.SetTrigger("Attack");
+                break;
+            case AnimationType.Damage:
+                animator.SetTrigger("Damage");
+                break;
+            case AnimationType.Recovery:
+                animator.SetTrigger("Recovery");
+                break;
+            case AnimationType.Buff:
+                animator.SetTrigger("Buff");
+                break;
+            case AnimationType.Debuff:
+                animator.SetTrigger("Debuff");
+                break;
+            case AnimationType.Death:
+                animator.SetTrigger("Death");
+                break;
+            default:
+                Debug.LogWarning($"Unknown animation type: {animationType}");
+                break;
+        }
     }
 
     public IEnumerator JumpMotion()

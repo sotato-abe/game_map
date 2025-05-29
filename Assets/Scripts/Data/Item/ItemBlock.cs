@@ -4,31 +4,47 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+// バックで使用するアイテムのクラス
+// 装備、消耗品、トレジャーをすべて受け入れてバックに表示するためのクラス
 public class ItemBlock : Block
 {
     public Item Item { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image cursor;
-    [SerializeField] ItemDialog itemDialog;
-    private bool isActive = false;
+    [SerializeField] ConsumableDialog consumableDialog;
+    [SerializeField] EquipmentDialog equipmentDialog;
+    [SerializeField] TreasureDialog treasureDialog;
+    private bool isActive = true;
 
     public void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
-        itemDialog.gameObject.SetActive(true);
-        itemDialog.Setup(Item);
+        SetTarget(false);
+
+        if (item is Consumable)
+        {
+            consumableDialog.Setup(item);
+        }
+        else if (item is Equipment)
+        {
+            equipmentDialog.Setup(item);
+        }
+        else if (item is Treasure)
+        {
+            treasureDialog.Setup(item);
+        }
     }
 
     public void OnPointerEnter()
     {
-        itemDialog.ShowDialog(true);
+        ShowDialog(true);
         StartCoroutine(OnPointer(true));
     }
 
     public void OnPointerExit()
     {
-        itemDialog.ShowDialog(false);
+        ShowDialog(false);
         StartCoroutine(OnPointer(false));
     }
 
@@ -41,5 +57,21 @@ public class ItemBlock : Block
         Color bgColor = cursor.color;
         bgColor.a = isActive ? 1f : 0f;
         cursor.color = bgColor;
+    }
+
+    private void ShowDialog(bool showFlg)
+    {
+        if (Item is Consumable)
+        {
+            consumableDialog.ShowDialog(showFlg);
+        }
+        else if (Item is Equipment)
+        {
+            equipmentDialog.ShowDialog(showFlg);
+        }
+        else if (Item is Treasure)
+        {
+            treasureDialog.ShowDialog(showFlg);
+        }
     }
 }

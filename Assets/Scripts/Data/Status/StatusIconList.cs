@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Status/StatusIconList")]
+[CreateAssetMenu(menuName = "Type/StatusIconList")]
 public class StatusIconList : ScriptableObject
 {
     [System.Serializable]

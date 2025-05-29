@@ -11,7 +11,7 @@ public class TalkPanel : Panel
 
     public void Update()
     {
-        if (executeFlg)
+        if (attackSystem.ActivePlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -22,9 +22,6 @@ public class TalkPanel : Panel
 
     public void TalkExecute()
     {
-        if (executeFlg)
-        {
-            attackSystem.ExecutePlayerTalk();
-        }
+        attackSystem.ExecutePlayerTalk();
     }
 }

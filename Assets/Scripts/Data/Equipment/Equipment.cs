@@ -3,35 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Equipment
+public class Equipment : Item
 {
     [SerializeField] EquipmentBase _base;
-    
-    public EquipmentBase Base { get => _base; }
-    public int Life { get; set; }
-    public int Battery { get; set; }
-    public int Attack { get; set; }
-    public int Technique { get; set; }
-    public int Defense { get; set; }
-    public int Speed { get; set; }
-    public Enegy LifeCost { get; set; }
-    public Enegy BatteryCost { get; set; }
-    public Enegy SoulCost { get; set; }
-    public Probability Probability { get; set; }
-    public List<Enegy> CostList { get; set; }
+    [SerializeField] int level = 1;
 
-    public void Init()
-    {
-        Life = Life;
-        Battery = Battery;
-        Attack = Attack;
-        Technique = Technique;
-        Defense = Defense;
-        Speed = Speed;
-        LifeCost = LifeCost;
-        BatteryCost = BatteryCost;
-        SoulCost = SoulCost;
-        Probability = Probability;
-        CostList = CostList;
-    }
+    public override ItemType itemType => ItemType.Equipment;
+    public override ItemBase Base => _base; // EquipmentBase は ItemBase を継承している前提
+    public EquipmentBase EquipmentBase => _base;
+    public int Level => level;
+
+    public Attack Attack => new Attack(
+        _base.TargetType,
+        new List<Enegy>(_base.DamageList),
+        new List<Enegy>(_base.RecoveryList),
+        new List<Enchant>(_base.EnchantList)
+    );
 }

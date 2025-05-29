@@ -5,44 +5,66 @@ using UnityEngine;
 public class FieldData
 {
     public Vector2Int coordinate; // 座標
-    public MapBase mapBase = null; // マップデータ
-    public DirectionType groundDirection = DirectionType.None; // 進行方向
-    public int mapWidth { get => mapBase != null ? mapBase.MapWidth : 50; } // マップの幅(初期値：50)
-    public int mapHeight { get => mapBase != null ? mapBase.MapHeight : 50; } // マップの高さ(初期値：50)
-    public int randomFillPercent { get => mapBase != null ? mapBase.RandomFillPercent : 45; } // マップの建蔽率(初期値：45%)
+    public FieldBase fieldBase = null; // マップデータ
+    public int mapWidth { get => fieldBase != null ? fieldBase.MapWidth : 50; } // マップの幅(初期値：50)
+    public int mapHeight { get => fieldBase != null ? fieldBase.MapHeight : 50; } // マップの高さ(初期値：50)
+    public int randomFillPercent { get => fieldBase != null ? fieldBase.RandomFillPercent : 45; } // マップの建蔽率(初期値：45%)
     private FieldType _fieldType;
-    private bool _openTop, _openLeft, _openRight, _openBottom;
-    public FieldType fieldType { get => mapBase != null ? mapBase.FieldType : _fieldType; set => _fieldType = value; }
-    public bool openTop { get => mapBase != null ? mapBase.OpenTop : _openTop; set => _openTop = value; }
-    public bool openLeft { get => mapBase != null ? mapBase.OpenLeft : _openLeft; set => _openLeft = value; }
-    public bool openRight { get => mapBase != null ? mapBase.OpenRight : _openRight; set => _openRight = value; }
-    public bool openBottom { get => mapBase != null ? mapBase.OpenBottom : _openBottom; set => _openBottom = value; }
-
-    public Kiosk kiosk { get => mapBase != null ? mapBase.Kiosk : null; }
-    public Cafeteria cafeteria { get => mapBase != null ? mapBase.Cafeteria : null; }
-    public ArmsShop armsShop { get => mapBase != null ? mapBase.ArmsShop : null; }
-    public Laboratory laboratory { get => mapBase != null ? mapBase.Laboratory : null; }
-    public Hotel hotel { get => mapBase != null ? mapBase.Hotel : null; }
+    public FieldType fieldType { get => fieldBase != null ? fieldBase.FieldType : _fieldType; set => _fieldType = value; }
+    public bool openTop, openLeft, openRight, openBottom;
+    public List<Item> items = new List<Item>();
     public List<Battler> enemies = new List<Battler>();
-    public List<Item> items = new List<Item>(); // アイテムリスト
+    public List<BattlerGroup> enemyGroups = new List<BattlerGroup>();
+    public List<BuildingBase> Buildings { get => fieldBase != null ? fieldBase.Buildings : new List<BuildingBase>(); }
 
     public virtual void Init()
     {
-        if (mapBase != null)
-        {
-            items = new List<Item>(mapBase.Items);
-        }
+        SetItem();
         SetEnemy();
+    }
+
+    private void SetItem()
+    {
+        items.Clear();
+        if (fieldBase != null)
+        {
+            items.AddRange(fieldBase.Consumables);
+            items.AddRange(fieldBase.Equipments);
+            items.AddRange(fieldBase.Treasures);
+        }
+        List<Item> fieldItems = FieldBaseDatabase.Instance.GetItemList((FieldType)fieldType);
+        items.AddRange(fieldItems);
     }
 
     private void SetEnemy()
     {
-        if (mapBase != null)
+        if (fieldBase != null)
         {
-            enemies.AddRange(mapBase.Enemies);
+            enemies.AddRange(fieldBase.Enemies);
+            enemyGroups.AddRange(fieldBase.EnemyGroups);
         }
         List<Battler> fieldEnemies = FieldBaseDatabase.Instance.GetBattlerList((FieldType)fieldType);
         enemies.AddRange(fieldEnemies);
+        List<BattlerGroup> fieldEnemyGroup = FieldBaseDatabase.Instance.GetBattlerGroupList((FieldType)fieldType);
+        enemyGroups.AddRange(fieldEnemyGroup);
+    }
+
+    public Item GetRandomItem()
+    {
+        if (items == null || items.Count == 0)
+        {
+            Debug.LogError("GetRandomItem: itemsリストが空です");
+            return null;
+        }
+
+        int r = Random.Range(0, items.Count);
+        if (items[r] == null)
+        {
+            Debug.LogError($"GetRandomItem: items[{r}] が null です");
+            return null;
+        }
+
+        return items[r];
     }
 
     public Battler GetRundamEnemy()
@@ -63,21 +85,21 @@ public class FieldData
         return enemies[r];
     }
 
-    public Item GetRandomItem()
+    public List<Battler> GetRundamEnemyGroup()
     {
-        if (items == null || items.Count == 0)
+        if (enemyGroups == null || enemyGroups.Count == 0)
         {
-            Debug.LogError("GetRandomItem: itemsリストが空です");
+            Debug.LogError("GetRandomEnemyGroup: enemiesリストが空です");
             return null;
         }
 
-        int r = Random.Range(0, items.Count);
-        if (items[r] == null)
+        int r = Random.Range(0, enemyGroups.Count);
+        if (enemyGroups[r] == null)
         {
-            Debug.LogError($"GetRandomItem: items[{r}] が null です");
+            Debug.LogError($"GetRandomEnemyGroup: enemies[{r}] が null です");
             return null;
         }
 
-        return items[r];
+        return enemyGroups[r].GetRandomBattlerList();
     }
 }

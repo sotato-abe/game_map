@@ -9,14 +9,15 @@ public class ItemUnit : Unit
     public Item Item { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image cursor;
-    [SerializeField] ItemDialog dialog;
-    private bool isActive = false;
+    [SerializeField] ConsumableDialog dialog;
+    private bool isActive = true;
 
     public virtual void Setup(Item item)
     {
         Item = item;
         image.sprite = Item.Base.Sprite;
         dialog.Setup(Item);
+        SetTarget(false);
     }
 
     public void OnPointerEnter()

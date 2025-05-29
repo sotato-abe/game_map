@@ -81,7 +81,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         int life = 0, battery = 0, soul = 0;
         foreach (var slot in runTableList)
         {
-            foreach (Enegy cost in slot.command.Base.CostList)
+            foreach (Enegy cost in slot.command.CostList)
             {
                 switch (cost.type)
                 {

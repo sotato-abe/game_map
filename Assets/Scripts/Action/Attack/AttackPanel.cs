@@ -13,9 +13,9 @@ public class AttackPanel : Panel
     [SerializeField] TextMeshProUGUI soulCostText;
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] AttackSystem attackSystem;
+    [SerializeField] FieldPlayer fieldPlayer;
 
     private Battler playerBattler;
-
     List<EquipmentUnit> equipmentUnitList = new List<EquipmentUnit>();
 
     private int headWidth = 150;
@@ -35,22 +35,22 @@ public class AttackPanel : Panel
         CountEnegyCost();
     }
 
-    public void SetPanelSize()
-    {
-        int row = playerBattler.Equipments.Count;
-        int width = equipmentWidth * row + headWidth;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(width, panelHeight);
-    }
-
     public void Update()
     {
-        if (executeFlg)
+        if (attackSystem.ActivePlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 ExecuteAttack();
             }
         }
+    }
+
+    public void SetPanelSize()
+    {
+        int row = playerBattler.EquipmentList.Count;
+        int width = equipmentWidth * row + headWidth;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, panelHeight);
     }
 
     private void SetEquipmentList()
@@ -62,7 +62,7 @@ public class AttackPanel : Panel
             Destroy(child.gameObject);
         }
 
-        foreach (var equipment in playerBattler.Equipments)
+        foreach (var equipment in playerBattler.EquipmentList)
         {
             // EquipmentUnitのインスタンスを生成
             GameObject equipmentUnitObject = Instantiate(equipmentUnitPrefab, equipmentList.transform);
@@ -71,83 +71,6 @@ public class AttackPanel : Panel
             equipmentUnitList.Add(equipmentUnit);
             equipmentUnit.Setup(equipment);
         }
-    }
-
-    public void ExecuteAttack()
-    {
-        if (executeFlg)
-        {
-            List<Damage> damages = ActivateEquipments();
-            attackSystem.ExecutePlayerAttack(damages);
-            CountEnegyCost();
-        }
-    }
-
-    public List<Damage> ActivateEquipments()
-    {
-        List<Damage> damages = new List<Damage>();
-
-        foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
-        {
-            if (CheckEnegy(equipmentUnit.Equipment) == false)
-            {
-                equipmentUnit.SetStatus(UnitStatus.EnegyOut);
-                continue;
-            }
-            if (Random.Range(0, 100) < equipmentUnit.Equipment.Base.Probability)
-            {
-                UseEnegy(equipmentUnit.Equipment);
-                foreach (var attack in equipmentUnit.Equipment.Base.AttackList)
-                {
-                    Damage damage = new Damage(AttackType.Enegy, attack.type, attack.val);
-                    // TODO : ダメージにステータスによる増減を追加（計算は仮で構築中）
-                    if (attack.type == EnegyType.Life)
-                    {
-                        damage.Val = Mathf.FloorToInt(damage.Val + playerBattler.Attack.val);
-                    }
-                    else if (attack.type == EnegyType.Battery)
-                    {
-                        Debug.Log("Battery Damage : 考え中");
-                    }
-                    else if (attack.type == EnegyType.Soul)
-                    {
-                        Debug.Log("Soul Damage : 考え中");
-                    }
-                    damages.Add(damage);
-                }
-                equipmentUnit.SetEquipmentMotion(EquipmentUnitMotionType.Jump);
-            }
-        }
-
-        return damages;
-    }
-
-    public bool CheckEnegy(Equipment equipment)
-    {
-        int life = playerBattler.Life < 0 ? 0 : playerBattler.Life;
-        int battery = playerBattler.Battery < 0 ? 0 : playerBattler.Battery;
-        int soul = playerBattler.Soul < 0 ? 0 : playerBattler.Soul;
-
-        if (
-            equipment.Base.LifeCost.val <= life &&
-            equipment.Base.BatteryCost.val <= battery &&
-            equipment.Base.SoulCost.val <= soul
-        )
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public void UseEnegy(Equipment equipment)
-    {
-        playerBattler.Life -= equipment.Base.LifeCost.val;
-        playerBattler.Battery -= equipment.Base.BatteryCost.val;
-        playerBattler.Soul -= equipment.Base.SoulCost.val;
-        playerUnit.UpdateEnegyUI();
     }
 
     public void CountEnegyCost()
@@ -160,9 +83,9 @@ public class AttackPanel : Panel
         {
             if (CheckEnegy(equipmentUnit.Equipment))
             {
-                lifeCost += equipmentUnit.Equipment.Base.LifeCost.val;
-                batteryCost += equipmentUnit.Equipment.Base.BatteryCost.val;
-                soulCost += equipmentUnit.Equipment.Base.SoulCost.val;
+                lifeCost += equipmentUnit.Equipment.EquipmentBase.LifeCost.val;
+                batteryCost += equipmentUnit.Equipment.EquipmentBase.BatteryCost.val;
+                soulCost += equipmentUnit.Equipment.EquipmentBase.SoulCost.val;
             }
             else
             {
@@ -173,5 +96,48 @@ public class AttackPanel : Panel
         lifeCostText.SetText($"{lifeCost}");
         batteryCostText.SetText($"{batteryCost}");
         soulCostText.SetText($"{soulCost}");
+    }
+
+    public void ExecuteAttack()
+    {
+        fieldPlayer.SetAnimation(AnimationType.Attack);
+        List<Attack> attacks = new List<Attack>();
+        foreach (EquipmentUnit equipmentUnit in equipmentUnitList)
+        {
+            if (!CheckEnegy(equipmentUnit.Equipment))
+            {
+                equipmentUnit.SetStatus(UnitStatus.EnegyOut);
+                continue;
+            }
+
+            if (Random.Range(0, 100) < equipmentUnit.Equipment.EquipmentBase.Probability)
+            {
+                UseEnegy(equipmentUnit.Equipment);
+                attacks.Add(equipmentUnit.Equipment.Attack);
+            }
+        }
+        attacks.Add(playerBattler.GetAttack());
+        attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
+        CountEnegyCost();
+    }
+
+    public bool CheckEnegy(Equipment equipment)
+    {
+        int life = Mathf.Max(0, playerBattler.Life);
+        int battery = Mathf.Max(0, playerBattler.Battery);
+        int soul = Mathf.Max(0, playerBattler.Soul);
+
+        return
+            equipment.EquipmentBase.LifeCost.val <= life &&
+            equipment.EquipmentBase.BatteryCost.val <= battery &&
+            equipment.EquipmentBase.SoulCost.val <= soul;
+    }
+
+    public void UseEnegy(Equipment equipment)
+    {
+        playerBattler.Life -= equipment.EquipmentBase.LifeCost.val;
+        playerBattler.Battery -= equipment.EquipmentBase.BatteryCost.val;
+        playerBattler.Soul -= equipment.EquipmentBase.SoulCost.val;
+        playerUnit.UpdateEnegyUI();
     }
 }

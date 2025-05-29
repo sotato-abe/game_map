@@ -1,12 +1,15 @@
 public enum MessageType
 {
-        Encount,  //遭遇
-        Attack,   //攻撃
-        Recovery,   //回復        
-        Damage,   //ダメージ 
-        Escape,   //逃亡
-        Win,     //勝利
-        Lose,     //敗北
+    Encount,  //遭遇
+    Attack,   //攻撃
+    Recovery,   //回復        
+    Miss,   //ミス 
+    Damage,   //ダメージ 
+    Escape,   //逃亡
+    Win,     //勝利
+    Lose,     //敗北
+    Talk,     //敗北
+    Question,     //ナゾ
 }
 
 public static class MessageTypeExtensions
@@ -16,19 +19,25 @@ public static class MessageTypeExtensions
         switch (messageType)
         {
             case MessageType.Encount:
-                return "へっへっへ";
+                return "ちょっとつきあえや";
             case MessageType.Attack:
                 return "くらえ";
             case MessageType.Recovery:
                 return "これで大丈夫";
             case MessageType.Damage:
                 return "いてぇ";
+            case MessageType.Miss:
+                return "ミスった！";
             case MessageType.Escape:
-                return "にげろ !";
+                return "まて !";
             case MessageType.Win:
                 return "よし";
             case MessageType.Lose:
                 return "くそぅ";
+            case MessageType.Talk:
+                return "おい、話があるんだ";
+            case MessageType.Question:
+                return "?";
             default:
                 return "";
         }

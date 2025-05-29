@@ -10,6 +10,8 @@ public class NamePlate : MonoBehaviour
     [SerializeField] private Image backPanel;
     [SerializeField] float padding = 20f;
 
+    public int minWidth = 10; // 最小幅を設定
+
     public void SetName(string name)
     {
         nameText.SetText(name);
@@ -21,6 +23,7 @@ public class NamePlate : MonoBehaviour
     {
         // backPanelのサイズを変更
         float newWidth = nameText.preferredWidth + padding;
+        newWidth = Mathf.Max(newWidth, minWidth);
         backPanel.rectTransform.sizeDelta = new Vector2(newWidth, backPanel.rectTransform.sizeDelta.y);
     }
 

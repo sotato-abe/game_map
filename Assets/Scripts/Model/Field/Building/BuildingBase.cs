@@ -10,6 +10,7 @@ public class BuildingBase : ScriptableObject
     [SerializeField] Battler owner;
     [SerializeField, TextArea] string description;
 
+    public virtual BuildingType type => BuildingType.Building;
     public string Name { get => name; }
     public Battler Owner { get => owner; }
     public string Description { get => description; }

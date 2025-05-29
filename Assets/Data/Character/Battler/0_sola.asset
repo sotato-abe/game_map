@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: "\u30BD\u30E9"
   sprite: {fileID: 21300000, guid: f7da00ab0df561b40a9c8114c29ef004, type: 3}
+  description: "\u30A4\u30B7\u306E\u60B2\u5287\u3000\u306B\u3088\u308A\u4E21\u89AA\u3068\u4F4F\u3080\u5834\u6240\u3092\u306A\u304F\u3059\u3001\n\r\u305D\u306E\u6642\u3000\u30CB\u30B3\u3000\u3068\u51FA\u4F1A\u3044\u65C5\u3092\u59CB\u3081\u308B\u3002\r\n\u30A6\u30C1\u30E5\u30A6\u306B\u3042\u3053\u304C\u308C\u308B\u3066\u3044\u308B\u3002\r\r"
   birthplace: {fileID: 11400000, guid: fe45e07fabe81034ab6cba712d26ba59, type: 2}
-  maxLife: 20
+  maxLife: 5
   maxBattery: 10
-  attack: 2
+  power: 1
   defense: 0
   technique: 3
   speed: 3
@@ -33,9 +34,9 @@ MonoBehaviour:
   abilityList:
   - _base: {fileID: 11400000, guid: 82f0db91690ab9a4780d5ea0b553bae6, type: 2}
   - _base: {fileID: 11400000, guid: 53cd9583c7791bf4bb657a39de4d8c2f, type: 2}
-  equipments:
+  equipmentList:
   - _base: {fileID: 11400000, guid: 062b64e50b225994d8abe20a62011c1b, type: 2}
-  - _base: {fileID: 11400000, guid: 43b029d19eba7be47bf808cae9f1e8b4, type: 2}
+    level: 0
   runTable:
   - _base: {fileID: 11400000, guid: 0bdf0d66e2259aa449e03de672f4ddca, type: 2}
   - _base: {fileID: 11400000, guid: fb28658768236574ca2c2799ed67f836, type: 2}
@@ -45,19 +46,58 @@ MonoBehaviour:
   storageList:
   - _base: {fileID: 11400000, guid: cb11b5d4d8c5087438c52d7ae464c3e3, type: 2}
   pouchList:
-  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
-  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
-  bagItemList:
-  - _base: {fileID: 11400000, guid: 3b787454939bc0448bebe75f3cd9dad6, type: 2}
-  - _base: {fileID: 11400000, guid: eb1ac28415d748e42a337948891e2350, type: 2}
+  - _base: {fileID: 11400000, guid: 41b67b484254e284286b7abdcd1ebc1d, type: 2}
+    count: 1
+  - _base: {fileID: 11400000, guid: 9180da945676dad4b8676fd0b6d5d8e6, type: 2}
+    count: 1
+  bagConsumableList:
+  - _base: {fileID: 11400000, guid: df6d84d209dab2e45ae4eb5a89fc2220, type: 2}
+    count: 0
   bagEquipmentList:
   - _base: {fileID: 11400000, guid: bcb879f4c71c32c42b5752e8ae5912d8, type: 2}
-  messages:
-  - {fileID: 11400000, guid: 2de104b90cabb164ea277df1f2544d66, type: 2}
-  - {fileID: 11400000, guid: 1d4143167a71d8c42a2aa3daf82cff36, type: 2}
-  - {fileID: 11400000, guid: 76ca8b7067703c14081d8a0edd51cc6f, type: 2}
-  - {fileID: 11400000, guid: d658239894f792c4a9bdc1a6c66968a0, type: 2}
-  - {fileID: 11400000, guid: b90a057a2fe1db84b9a6c45a9efbddc8, type: 2}
-  - {fileID: 11400000, guid: b6867322175f6c7439c528082c6da866, type: 2}
-  - {fileID: 11400000, guid: e567876961ed6354180664fac433e73f, type: 2}
-  - {fileID: 11400000, guid: 802e3a0ce52d7ef44ac90632a85caece, type: 2}
+    level: 1
+  - _base: {fileID: 11400000, guid: cbf42a31774d3514183eff425d29d2b2, type: 2}
+    level: 1
+  - _base: {fileID: 11400000, guid: 062b64e50b225994d8abe20a62011c1b, type: 2}
+    level: 1
+  - _base: {fileID: 11400000, guid: 422cceca8c53e6341854b9f38afc5208, type: 2}
+    level: 1
+  bagTreasureList:
+  - _base: {fileID: 11400000, guid: d6c9c00a31ae22c4aba623a503758d18, type: 2}
+  messageList:
+  - messageType: 0
+    panelType: 2
+    message: "\u306A\u3093\u3060\u3088"
+  - messageType: 1
+    panelType: 1
+    message: "\u304F\u3089\u3048\u3063 !"
+  - messageType: 1
+    panelType: 0
+    message: "\u3088\u3063\u3068"
+  - messageType: 2
+    panelType: 0
+    message: "\u3075\u30FC"
+  - messageType: 2
+    panelType: 0
+    message: "\u3053\u308C\u3067\u3088\u3057"
+  - messageType: 3
+    panelType: 3
+    message: "\u30DF\u30B9\u3063\u305F\u3001\u3001"
+  - messageType: 3
+    panelType: 3
+    message: "\u3042\u3061\u3083\uFF5E"
+  - messageType: 4
+    panelType: 1
+    message: "\u3044\u305F\u3044\u3063"
+  - messageType: 4
+    panelType: 0
+    message: "\u304F\u305D\u3063"
+  - messageType: 5
+    panelType: 0
+    message: "\u306B\u3052\u308D\u3063"
+  - messageType: 6
+    panelType: 0
+    message: "\u3088\u3057"
+  - messageType: 7
+    panelType: 3
+    message: "\u307E\u3051\u305F\uFF5E"

@@ -7,16 +7,21 @@ using TMPro;
 public class Blowing : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI messageText;
-    [SerializeField] RectTransform backImageRectTransform;
+    [SerializeField] RectTransform backRectTransform;
+    [SerializeField] Image panelImage;
+    [SerializeField] Sprite DefaultBackImage;
+    [SerializeField] Sprite SurpriseBackImage;
+    [SerializeField] Sprite ThinkingBackImage;
+    [SerializeField] Sprite FearBackImage;
 
-    private float paddingHeight = 50f;
-    private float paddingWidth = 40f;
+    private float paddingHeight = 60f;
+    private float paddingWidth = 50f;
     private float maxWidth = 250f;
     private float blowingWidth = 250f;
-    private List<string> messageList = new List<string>();
+    private List<TalkMessage> messageList = new List<TalkMessage>();
     private Coroutine fadeCoroutine;
     private Coroutine messageCoroutine;
-
+    private Coroutine typingCoroutine;
 
     private void OnDisable()
     {
@@ -30,9 +35,37 @@ public class Blowing : MonoBehaviour
         }
     }
 
-    public void AddMesageList(string message)
+    public IEnumerator AddMessage(TalkMessage talkMessage)
     {
-        messageList.Add(message);
+        // 前のTypeDialogが動いていたら停止
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        // Textをクリア
+        messageText.text = "";
+        messageList.Clear(); // 既存のメッセージをクリア
+        SetPanel(talkMessage.panelType); // パネルの種類を設定
+
+        // TypeDialogの開始（Coroutineとして保持）
+        typingCoroutine = StartCoroutine(TypeDialog(talkMessage.message));
+
+        // TypeDialog終了まで待つ
+        yield return typingCoroutine;
+        typingCoroutine = null;
+
+        float waitTime = Mathf.Clamp(talkMessage.message.Length * 0.2f, 2f, 6f); // 最小2秒、最大6秒
+        yield return new WaitForSeconds(waitTime);
+
+        messageCoroutine = null;
+        gameObject.SetActive(false); // 表示終了後に非アクティブにする
+    }
+
+    public void AddMessageList(TalkMessage talkMessage)
+    {
+        messageList.Add(talkMessage);
         if (messageCoroutine == null)
         {
             if (gameObject.activeSelf)
@@ -46,13 +79,38 @@ public class Blowing : MonoBehaviour
     {
         while (messageList.Count > 0)
         {
-            string message = messageList[0]; // 先頭のメッセージを取得
+            string message = messageList[0].message; // 先頭のメッセージを取得
+            SetPanel(messageList[0].panelType); // パネルの種類を設定
             yield return TypeDialog(message);
-            yield return new WaitForSeconds(2f);
+            // messageの文字数によって待ち時間を変更する
+            float waitTime = Mathf.Clamp(message.Length * 0.2f, 2f, 6f); // 最小1秒、最大5秒
+            yield return new WaitForSeconds(waitTime);
             messageList.RemoveAt(0); // タイプし終わったメッセージを削除
         }
         messageCoroutine = null; // すべてのメッセージが終了したら、コルーチンの参照をクリア
         transform.gameObject.SetActive(false); // すべてのメッセージが終了したら、オブジェクトを非アクティブにする
+    }
+
+    private void SetPanel(PanelType panelType)
+    {
+        switch (panelType)
+        {
+            case PanelType.Default:
+                panelImage.sprite = DefaultBackImage;
+                break;
+            case PanelType.Surprise:
+                panelImage.sprite = SurpriseBackImage;
+                break;
+            case PanelType.Thinking:
+                panelImage.sprite = ThinkingBackImage;
+                break;
+            case PanelType.Fear:
+                panelImage.sprite = FearBackImage;
+                break;
+            default:
+                panelImage.sprite = DefaultBackImage;
+                break;
+        }
     }
 
     public IEnumerator TypeDialog(string line)
@@ -77,9 +135,9 @@ public class Blowing : MonoBehaviour
 
     private void ResizePlate()
     {
-        if (messageText == null || backImageRectTransform == null)
+        if (messageText == null || backRectTransform == null)
         {
-            Debug.LogError("messageText または backImageRectTransform が null");
+            Debug.LogError("messageText または backRectTransform が null");
             return;
         }
 
@@ -89,6 +147,6 @@ public class Blowing : MonoBehaviour
         // 横幅を最大値で制限
         // float newWidth = Mathf.Min(messageText.preferredWidth, maxWidth) + paddingWidth;
         float newHeight = messageText.preferredHeight + paddingHeight;
-        backImageRectTransform.sizeDelta = new Vector2(blowingWidth, newHeight);
+        backRectTransform.sizeDelta = new Vector2(blowingWidth, newHeight);
     }
 }

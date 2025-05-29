@@ -7,6 +7,10 @@ using UnityEngine.EventSystems;
 
 public class CloseBtn : Unit
 {
+    void Start()
+    {
+        scale = 1.4f;
+    }
     public void OnPointerEnter()
     {
         StartCoroutine(OnPointer(true));
