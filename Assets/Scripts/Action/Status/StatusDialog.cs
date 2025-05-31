@@ -11,7 +11,8 @@ public class StatusDialog : MonoBehaviour
     [SerializeField] RectTransform backRectTransform;
 
     private float PaddingHeight = 90f;
-    private float dialogWidth = 360f;
+    // private float PaddingWidth = 90f;
+    private float dialogWidth = 400f;
 
     public void Setup(Battler battler)
     {

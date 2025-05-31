@@ -51,11 +51,6 @@ public class ReserveActionBoard : MonoBehaviour
             currentIndex = (currentIndex - 1 + actionTypeList.Count) % actionTypeList.Count;
             ChangeActionPanel();
         }
-        // if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E))
-        // {
-        //     transform.gameObject.SetActive(false);
-        //     OnReserveEnd?.Invoke();
-        // }
     }
 
     private void ChangeActionPanel()

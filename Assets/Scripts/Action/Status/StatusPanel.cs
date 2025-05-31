@@ -12,7 +12,6 @@ public class StatusPanel : Panel
     [SerializeField] BattlerEnegyBar life;
     [SerializeField] BattlerEnegyBar battery;
     [SerializeField] BattlerEnegyBar soul;
-    [SerializeField] TextMeshProUGUI level;
     [SerializeField] SkillPoint skillPoint;
     [SerializeField] TextMeshProUGUI description;
     [SerializeField] GameObject enegyList;
@@ -106,8 +105,6 @@ public class StatusPanel : Panel
         Battler battler = playerUnit.Battler;
         ClearTransformChildren(statusList.transform);
         ClearTransformChildren(storageList.transform);
-
-        level.text = battler.Level.ToString();
 
         foreach (Status status in battler.StatusList)
         {
