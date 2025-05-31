@@ -9,9 +9,6 @@ public class StatusPanel : Panel
 {
     [SerializeField] BattleUnit playerUnit;
     [SerializeField] CharacterCard characterCard;
-    [SerializeField] BattlerEnegyBar life;
-    [SerializeField] BattlerEnegyBar battery;
-    [SerializeField] BattlerEnegyBar soul;
     [SerializeField] SkillPoint skillPoint;
     [SerializeField] TextMeshProUGUI description;
     [SerializeField] GameObject enegyList;
@@ -61,7 +58,6 @@ public class StatusPanel : Panel
         SetCharacterCard();
         SetLevel();
         SetSkillPoint();
-        SetEnegy();
         SetStatus();
         SetEnchant();
         SetAbility();
@@ -74,32 +70,6 @@ public class StatusPanel : Panel
         characterCard.SetCharacter(playerUnit.Battler);
     }
 
-    private void SetEnegy()
-    {
-        Battler battler = playerUnit.Battler;
-        if (enegyCountList.Count > 0)
-        {
-            enegyCountList.Clear();
-        }
-        ClearTransformChildren(enegyList.transform);
-
-        this.life.SetEnegy(EnegyType.Life, battler.MaxLife, battler.Life);
-        this.battery.SetEnegy(EnegyType.Battery, battler.MaxBattery, battler.Battery);
-        this.soul.SetEnegy(EnegyType.Soul, 100, battler.Soul);
-
-        Enegy life = new Enegy(EnegyType.Life, battler.MaxLife);
-        Enegy battery = new Enegy(EnegyType.Battery, battler.MaxBattery);
-        enegyCountList.Add(life);
-        enegyCountList.Add(battery);
-
-        foreach (Enegy enegy in enegyCountList)
-        {
-            EnegyIcon enegyCounterObject = Instantiate(enegyCounterPrefab, enegyList.transform);
-            enegyCounterObject.gameObject.SetActive(true);
-            enegyCounterObject.EnegyUp += EnegyUp;
-            enegyCounterObject.SetCostIcon(enegy);
-        }
-    }
     private void SetStatus()
     {
         Battler battler = playerUnit.Battler;
@@ -186,7 +156,6 @@ public class StatusPanel : Panel
     {
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         battler.EnegyUp(type);
-        SetEnegy();
         SetSkillPoint();
         playerUnit.SetEnegy();
     }

@@ -11,7 +11,6 @@ public class BagPanel : Panel
     [SerializeField] InventoryWindow inventoryWindow;
     [SerializeField] PouchWindow pouchWindow;
     [SerializeField] EquipmentWindow equipmentWindow;
-    [SerializeField] GameObject contentList;
     [SerializeField] BattleUnit playerUnit;
 
     private void Start()
@@ -19,7 +18,7 @@ public class BagPanel : Panel
     }
     private void OnEnable()
     {
-        LayoutRebuilderContent();
+        // LayoutRebuilderContent();
     }
 
     public void Update()
@@ -58,10 +57,4 @@ public class BagPanel : Panel
     {
         OnActionExecute?.Invoke();
     }
-
-    private void LayoutRebuilderContent()
-    {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(contentList.GetComponent<RectTransform>());
-    }
-
 }

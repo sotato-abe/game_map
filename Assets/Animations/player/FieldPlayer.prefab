@@ -119,6 +119,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 407f4c0a279917249a227261201aa6aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  Battler:
+    _base: {fileID: 0}
+    level: 1
+    soul: 0
+    AbilityList: []
+    Enchants: []
+    coordinate: {x: 0, y: 0}
   blockLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -145,3 +153,4 @@ MonoBehaviour:
   fieldMapHeight: 0
   encounterThreshold: 5
   distanceTraveled: 0
+  lastPosition: {x: 0, y: 0, z: 0}
