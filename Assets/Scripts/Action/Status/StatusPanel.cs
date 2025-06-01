@@ -58,6 +58,7 @@ public class StatusPanel : Panel
         SetCharacterCard();
         SetLevel();
         SetSkillPoint();
+        SetEnegy();
         SetStatus();
         SetEnchant();
         SetAbility();
@@ -68,6 +69,29 @@ public class StatusPanel : Panel
     private void SetCharacterCard()
     {
         characterCard.SetCharacter(playerUnit.Battler);
+    }
+
+        private void SetEnegy()
+    {
+        Battler battler = playerUnit.Battler;
+        if (enegyCountList.Count > 0)
+        {
+            enegyCountList.Clear();
+        }
+        ClearTransformChildren(enegyList.transform);
+
+        Enegy life = new Enegy(EnegyType.Life, battler.MaxLife);
+        Enegy battery = new Enegy(EnegyType.Battery, battler.MaxBattery);
+        enegyCountList.Add(life);
+        enegyCountList.Add(battery);
+
+        foreach (Enegy enegy in enegyCountList)
+        {
+            EnegyIcon enegyCounterObject = Instantiate(enegyCounterPrefab, enegyList.transform);
+            enegyCounterObject.gameObject.SetActive(true);
+            enegyCounterObject.EnegyUp += EnegyUp;
+            enegyCounterObject.SetCostIcon(enegy);
+        }
     }
 
     private void SetStatus()
