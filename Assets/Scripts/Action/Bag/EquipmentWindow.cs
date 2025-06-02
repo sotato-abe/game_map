@@ -229,6 +229,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
             {
                 inventoryWindow.RemoveItem(item);
             }
+            playerBattler.CoLStatus();
         }
     }
 
@@ -252,6 +253,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
                 EquipmentSlot slot = GetTargetSlot(equipment.EquipmentBase.EquipmentType);
                 slot.ReSetSlot();
             }
+            playerBattler.CoLStatus();
         }
     }
 }

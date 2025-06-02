@@ -64,9 +64,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 1354860034078369823}
+  updownIcon: {fileID: 1462045936516761769}
   lifeIcon: {fileID: 813754672, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
   ButtryIcon: {fileID: -1972410777, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
-  updownIcon: {fileID: 1462045936516761769}
+  upIcon: {fileID: 21300000, guid: a244ebb03e31d6d4eb8244d824ab8153, type: 3}
+  downIcon: {fileID: 21300000, guid: c9b9700b57599b24480fc073f4275244, type: 3}
   val: {fileID: 9055695846657359364}
   cal: {fileID: 2358444002866612712}
   enegyType: 0
@@ -319,7 +321,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 115, y: 0}
-  m_SizeDelta: {x: 20, y: 20}
+  m_SizeDelta: {x: 15, y: 15}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2968404422675985700
 CanvasRenderer:
@@ -349,7 +351,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a229ee64e5bf9b6428b43f2ff8a3b37e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a244ebb03e31d6d4eb8244d824ab8153, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
