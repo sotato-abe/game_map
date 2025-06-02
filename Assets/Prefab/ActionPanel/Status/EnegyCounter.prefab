@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1624592770086382805}
   - component: {fileID: 4770913449218836303}
-  - component: {fileID: 6476846799428964432}
+  - component: {fileID: -3608840971797974441}
   m_Layer: 5
-  m_Name: EnegyCount
+  m_Name: EnegyCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2583483480076031697}
   m_CullTransparentMesh: 1
---- !u!114 &6476846799428964432
+--- !u!114 &-3608840971797974441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,14 +60,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2583483480076031697}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 075ef374865fab7478885e2b66eefd7a, type: 3}
+  m_Script: {fileID: 11500000, guid: 67e218f5453242246a6366070e297cbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 1354860034078369823}
-  text: {fileID: 9055695846657359364}
-  enegyIconList: {fileID: 11400000, guid: 2cf861fee1c91ce4b80a73943b1c4112, type: 2}
-  recoveryColor: {r: 2, g: 115, b: 229, a: 255}
-  damageColor: {r: 243, g: 52, b: 74, a: 255}
+  icon: {fileID: 1354860034078369823}
+  lifeIcon: {fileID: 813754672, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
+  ButtryIcon: {fileID: -1972410777, guid: dc10b73eaa794e042aa1b18db34f4edb, type: 3}
+  updownIcon: {fileID: 1462045936516761769}
+  val: {fileID: 9055695846657359364}
+  cal: {fileID: 2358444002866612712}
   enegyType: 0
 --- !u!1 &3196269170649698050
 GameObject:
@@ -670,7 +671,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6476846799428964432}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EnegyIcon, Assembly-CSharp
         m_MethodName: OnEnegyUp
         m_Mode: 1

@@ -133,7 +133,7 @@ public class AttackSystem : MonoBehaviour
                 attacks.Add(equipment.Attack);
             }
         }
-        attacks.Add(enemyUnit.Battler.GetAttack());
+        attacks.Add(enemyUnit.Battler.GetPhysicalAttack());
         enemyUnit.ExecuteAttack();
         ExecuteBattlerAttack(enemyUnit.Battler, attacks, false);
         yield return new WaitForSeconds(0.5f);

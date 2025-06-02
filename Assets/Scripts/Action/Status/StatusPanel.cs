@@ -16,13 +16,12 @@ public class StatusPanel : Panel
     [SerializeField] GameObject storageList;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject abilityList;
-    [SerializeField] EnegyIcon enegyCounterPrefab;
-    [SerializeField] StatusIcon statusCounterPrefab;
+    [SerializeField] EnegyCounter enegyCounterPrefab;
+    [SerializeField] StatusCounter statusCounterPrefab;
     [SerializeField] AbilityUnit abilityPrefab;
     [SerializeField] EnchantIcon enchantIconPrefab;
     [SerializeField] StatusLevel statusLevel;
     [SerializeField] StatusDialog statusDialog;
-    private List<Enegy> enegyCountList = new List<Enegy>();
 
     private void Start()
     {
@@ -71,26 +70,17 @@ public class StatusPanel : Panel
         characterCard.SetCharacter(playerUnit.Battler);
     }
 
-        private void SetEnegy()
+    private void SetEnegy()
     {
         Battler battler = playerUnit.Battler;
-        if (enegyCountList.Count > 0)
-        {
-            enegyCountList.Clear();
-        }
         ClearTransformChildren(enegyList.transform);
 
-        Enegy life = new Enegy(EnegyType.Life, battler.MaxLife);
-        Enegy battery = new Enegy(EnegyType.Battery, battler.MaxBattery);
-        enegyCountList.Add(life);
-        enegyCountList.Add(battery);
-
-        foreach (Enegy enegy in enegyCountList)
+        foreach (EnegyCount enegyCount in battler.EnegyCountList)
         {
-            EnegyIcon enegyCounterObject = Instantiate(enegyCounterPrefab, enegyList.transform);
+            EnegyCounter enegyCounterObject = Instantiate(enegyCounterPrefab, enegyList.transform);
             enegyCounterObject.gameObject.SetActive(true);
             enegyCounterObject.EnegyUp += EnegyUp;
-            enegyCounterObject.SetCostIcon(enegy);
+            enegyCounterObject.SetEnegyCounter(enegyCount);
         }
     }
 
@@ -100,15 +90,15 @@ public class StatusPanel : Panel
         ClearTransformChildren(statusList.transform);
         ClearTransformChildren(storageList.transform);
 
-        foreach (Status status in battler.StatusList)
+        foreach (StatusCount status in battler.StatusCountList)
         {
             Transform parent = GetTargetParent(status.type);
             if (parent == null) continue;
 
-            StatusIcon statusCounterObject = Instantiate(statusCounterPrefab, parent);
+            StatusCounter statusCounterObject = Instantiate(statusCounterPrefab, parent);
             statusCounterObject.gameObject.SetActive(true);
             statusCounterObject.StatusUp += StatusUp;
-            statusCounterObject.SetStatusIcon(status);
+            statusCounterObject.SetStatusCounter(status);
         }
     }
 
