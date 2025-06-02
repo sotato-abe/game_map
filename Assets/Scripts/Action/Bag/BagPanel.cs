@@ -29,28 +29,6 @@ public class BagPanel : Panel
             isActive = false;
             OnActionExit?.Invoke();
         }
-
-        //InventoryWindowを操作
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            inventoryWindow.SelectItem(ArrowType.Up);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            inventoryWindow.SelectItem(ArrowType.Right);
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            inventoryWindow.SelectItem(ArrowType.Down);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            inventoryWindow.SelectItem(ArrowType.Left);
-        }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            inventoryWindow.UseItem();
-        }
     }
 
     public void ExecuteTurn()

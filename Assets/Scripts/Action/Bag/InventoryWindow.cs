@@ -41,6 +41,30 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         SetBlock();
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            SelectItem(ArrowType.Up);
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SelectItem(ArrowType.Right);
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            SelectItem(ArrowType.Down);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SelectItem(ArrowType.Left);
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            UseItem();
+        }
+    }
+
     public void SetPanelSize()
     {
         int width = itemWidth * row + 30;
