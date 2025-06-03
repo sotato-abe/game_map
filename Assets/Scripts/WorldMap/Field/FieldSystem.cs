@@ -103,7 +103,6 @@ public class FieldSystem : MonoBehaviour
 
     private void SetBattlerUnit(Battler battler)
     {
-        Debug.Log($"SetBattlerUnit: {battler.Base.Name}のバトラーを設定");
         foreach (Transform child in rightUnitGroup.transform)
         {
             Destroy(child.gameObject);
