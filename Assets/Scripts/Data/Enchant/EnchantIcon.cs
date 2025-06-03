@@ -10,7 +10,7 @@ public class EnchantIcon : Unit
     [SerializeField] TextMeshProUGUI val;
     [SerializeField] EnchantDialog dialog;
 
-    Color32 buffColor = new Color32(2, 171, 229, 255);
+    Color32 buffColor = new Color32(3, 137, 229, 255);
     Color32 debuffColor = new Color32(245, 52, 124, 255);
     Color32 bothColor = new Color32(0, 0, 0, 200);
 

@@ -10,7 +10,7 @@ public class EnegyIcon : MonoBehaviour
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] EnegyIconList enegyIconList;
 
-    Color32 upColor = new Color32(2, 171, 229, 255);
+    Color32 upColor = new Color32(3, 137, 229, 255);
     Color32 downColor = new Color32(245, 52, 124, 255);
 
     public EnegyType enegyType;

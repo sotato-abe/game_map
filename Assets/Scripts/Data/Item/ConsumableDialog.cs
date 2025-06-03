@@ -12,6 +12,8 @@ public class ConsumableDialog : VariableDialog
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon costPrefab;
+    [SerializeField] GameObject levelPrefab;
+    [SerializeField] GameObject levelList;
     [SerializeField] Image targetImage;
 
     public void Setup(Item item)
@@ -26,11 +28,30 @@ public class ConsumableDialog : VariableDialog
             SetEnegy(consumable.ConsumableBase.RecoveryList, false);
             SetEnchant(consumable.ConsumableBase.EnchantList);
             SetCost(consumable.CostList);
+            SetRarity(item);
             TargetData targetData = TargetDatabase.Instance?.GetData(consumable.Attack.Target);
             targetImage.sprite = targetData.icon;
             ResizeDialog();
         }
     }
+
+    private void SetRarity(Item item)
+    {
+        // levelList内のオブジェクトを削除
+        foreach (Transform child in levelList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // レベルに応じてレベルリストを設定
+        for (int i = 0; i <= (int)item.Base.Rarity; i++)
+        {
+            GameObject levelObject = Instantiate(levelPrefab, levelList.transform);
+            levelObject.SetActive(true);
+        }
+    }
+
+
 
     private void ResetSkillList()
     {

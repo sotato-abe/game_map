@@ -12,6 +12,8 @@ public class CommandDialog : VariableDialog
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] EnegyIcon costPrefab;
     [SerializeField] Image targetImage;
+    [SerializeField] GameObject levelPrefab;
+    [SerializeField] GameObject levelList;
 
     public void Setup(Command command)
     {
@@ -22,9 +24,26 @@ public class CommandDialog : VariableDialog
         SetEnegy(command.Base.RecoveryList, false);
         SetEnchant(command.Base.EnchantList);
         SetCost(command.CostList);
+        SetRarity(command);
         TargetData targetData = TargetDatabase.Instance?.GetData(command.Attack.Target);
         targetImage.sprite = targetData.icon;
         ResizeDialog();
+    }
+
+    private void SetRarity(Command command)
+    {
+        // levelList内のオブジェクトを削除
+        foreach (Transform child in levelList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // レベルに応じてレベルリストを設定
+        for (int i = 0; i <= (int)command.Base.Rarity; i++)
+        {
+            GameObject levelObject = Instantiate(levelPrefab, levelList.transform);
+            levelObject.SetActive(true);
+        }
     }
 
     private void ResetSkillList()

@@ -6,8 +6,6 @@ using UnityEngine;
 public class EquipmentBase : ItemBase
 {
     [SerializeField] EquipmentType equipmentType;
-
-    // EquipmentStatus
     [SerializeField] int life;
     [SerializeField] int battery;
     [SerializeField] int power;

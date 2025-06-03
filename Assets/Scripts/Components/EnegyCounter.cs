@@ -16,7 +16,7 @@ public class EnegyCounter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI val;
     [SerializeField] private TextMeshProUGUI cal;
     public EnegyType enegyType;
-    Color32 upColor = new Color32(2, 171, 229, 255);
+    Color32 upColor = new Color32(3, 137, 229, 255);
     Color32 downColor = new Color32(245, 52, 124, 255);
 
     public delegate void EnegyUpDelegate(EnegyType enegyType);

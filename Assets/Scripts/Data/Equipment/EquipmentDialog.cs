@@ -14,6 +14,8 @@ public class EquipmentDialog : VariableDialog
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] EnegyIcon costPrefab;
+    [SerializeField] GameObject levelPrefab;
+    [SerializeField] GameObject levelList;
     [SerializeField] Image targetImage;
 
     public void Setup(Item item)
@@ -29,9 +31,26 @@ public class EquipmentDialog : VariableDialog
             SetEnchant(equipment.EquipmentBase.EnchantList);
             SetCost(equipment.EquipmentBase.CostList);
             SetStatus(equipment);
+            SetRarity(item);
             TargetData targetData = TargetDatabase.Instance?.GetData(equipment.Attack.Target);
             targetImage.sprite = targetData.icon;
             ResizeDialog();
+        }
+    }
+
+    private void SetRarity(Item item)
+    {
+        // levelList内のオブジェクトを削除
+        foreach (Transform child in levelList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // レベルに応じてレベルリストを設定
+        for (int i = 0; i <= (int)item.Base.Rarity; i++)
+        {
+            GameObject levelObject = Instantiate(levelPrefab, levelList.transform);
+            levelObject.SetActive(true);
         }
     }
 
