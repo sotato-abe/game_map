@@ -19,10 +19,10 @@ public class BattlerStatusDialog : Dialog
 
     public virtual void Setup(Battler battler)
     {
-        attackText.SetText(battler.Power.val.ToString());
-        techniqueText.SetText(battler.Technique.val.ToString());
-        defenseText.SetText(battler.Defense.val.ToString());
-        speedText.SetText(battler.Speed.val.ToString());
-        luckText.SetText(battler.Luck.val.ToString());
+        attackText.SetText(battler.ColPower.val.ToString());
+        techniqueText.SetText(battler.ColTechnique.val.ToString());
+        defenseText.SetText(battler.ColDefense.val.ToString());
+        speedText.SetText(battler.ColSpeed.val.ToString());
+        luckText.SetText(battler.ColLuck.val.ToString());
     }
 }

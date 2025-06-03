@@ -6,6 +6,7 @@ using UnityEngine;
 public class BattlerBase : ScriptableObject
 {
     [SerializeField] new string name;
+    [SerializeField] RarityType rarity = RarityType.Common;
     [SerializeField] Sprite sprite;
     [SerializeField, TextArea] string description;
     [SerializeField] FieldBase birthplace;
