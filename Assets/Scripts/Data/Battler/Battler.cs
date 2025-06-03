@@ -153,6 +153,7 @@ public class Battler
         }
 
         ColLife = MaxLife + DiffLife;
+        Debug.Log($"CoLStatus: {ColLife},{MaxLife}/{Life}");
         ColBattery = MaxBattery + DiffBattery;
         ColPower.val = Power.val + DiffPower;
         ColTechnique.val = Technique.val + DiffTechnique;
@@ -240,6 +241,11 @@ public class Battler
         }
     }
 
+    public void ClearEnchant()
+    {
+        Enchants.Clear();
+    }
+
     public bool AddItem(Item item)
     {
         switch (item)
@@ -277,18 +283,5 @@ public class Battler
 
         Debug.Log("バッグがいっぱいです。");
         return false;
-    }
-
-    public void UseConsumable(Consumable consumable)
-    {
-        if (PouchList.Contains(consumable))
-        {
-            PouchList.Remove(consumable);
-            TakeAttack(consumable.Attack);
-        }
-        else
-        {
-            Debug.Log("そのアイテムはポーチにありません。");
-        }
     }
 }

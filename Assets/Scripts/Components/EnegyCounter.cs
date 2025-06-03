@@ -24,11 +24,11 @@ public class EnegyCounter : MonoBehaviour
 
     public void SetEnegyCounter(EnegyCount enegy)
     {
-        val.text = enegy.val.ToString();
+        val.text = enegy.max.ToString();
         cal.text = enegy.cal.ToString();
         enegyType = enegy.type;
         icon.sprite = enegy.type == EnegyType.Life ? lifeIcon : ButtryIcon;
-        SetUpDownIcon(enegy.val, enegy.cal);
+        SetUpDownIcon(enegy.max, enegy.cal);
     }
 
     private void SetUpDownIcon(int val, int cal)

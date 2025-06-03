@@ -100,6 +100,7 @@ public class BattleSystem : MonoBehaviour
     {
         turnOrderSystem.BattlerEnd();
         playerUnit.SetMotion(MotionType.Move);
+        playerUnit.ClearEnchant();
         enemyUnitList.Clear();
         actionBoard.gameObject.SetActive(false);
         fieldCharacterSystem.RemoveAllCharacter(); // 敵を削除

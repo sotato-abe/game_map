@@ -50,12 +50,14 @@ public class PlayerBattler : Battler
                     MaxBattery += 5;
                     break;
             }
+            CoLStatus();
             SkillPoint -= 1;
         }
         else
         {
             Debug.Log("スキルポイントが足りません。");
         }
+        Debug.Log($"スキルポイント: {ColLife},{MaxLife}/{Life}");
     }
 
     public void StatusUp(StatusType type)
@@ -94,6 +96,7 @@ public class PlayerBattler : Battler
 
             }
             SkillPoint -= 1;
+            CoLStatus();
         }
         else
         {

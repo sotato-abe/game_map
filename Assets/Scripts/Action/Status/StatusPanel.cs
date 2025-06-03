@@ -170,16 +170,18 @@ public class StatusPanel : Panel
     {
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         battler.EnegyUp(type);
-        SetSkillPoint();
         playerUnit.SetEnegy();
+        Debug.Log($"Enegy Up: {playerUnit.Battler.ColLife},{playerUnit.Battler.MaxLife}/{playerUnit.Battler.Life}");
+        SetSkillPoint();
+        SetEnegy();
     }
 
     public void StatusUp(StatusType type)
     {
         PlayerBattler battler = playerUnit.Battler as PlayerBattler;
         battler.StatusUp(type);
-        SetStatus();
         SetSkillPoint();
         playerUnit.SetStatusDialog();
+        SetStatus();
     }
 }

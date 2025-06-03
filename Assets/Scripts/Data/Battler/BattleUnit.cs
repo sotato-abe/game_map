@@ -165,6 +165,12 @@ public class BattleUnit : MonoBehaviour
         UpdateEnchantUI();
     }
 
+    public void ClearEnchant()
+    {
+        Battler.ClearEnchant();
+        UpdateEnchantUI();
+    }
+
     private void UpdateEnchantUI()
     {
         List<Enchant> enchants = Battler.Enchants;
@@ -178,8 +184,8 @@ public class BattleUnit : MonoBehaviour
         {
             EnchantIcon enchantObject = Instantiate(enchantPrefab, enchantList.transform);
             enchantObject.gameObject.SetActive(true);
-            EnchantIcon enchantUnit = enchantObject.GetComponent<EnchantIcon>();
-            enchantUnit.SetEnchant(enchant);
+            EnchantIcon enchantIcon = enchantObject.GetComponent<EnchantIcon>();
+            enchantIcon.SetEnchant(enchant);
         }
     }
 
