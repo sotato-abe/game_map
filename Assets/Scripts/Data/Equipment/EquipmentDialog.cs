@@ -9,6 +9,8 @@ public class EquipmentDialog : VariableDialog
     [SerializeField] private TextMeshProUGUI probability;
     [SerializeField] GameObject enchantList;
     [SerializeField] GameObject costList;
+    [SerializeField] GameObject statusList;
+    [SerializeField] StatusDialogIcon statusPrefab;
     [SerializeField] EnegyIcon enegyPrefab;
     [SerializeField] EnchantIcon enchantIcon;
     [SerializeField] EnegyIcon costPrefab;
@@ -21,18 +23,61 @@ public class EquipmentDialog : VariableDialog
             namePlate.SetName(equipment.EquipmentBase.Name);
             description.text = equipment.EquipmentBase.Description;
             probability.SetText(equipment.EquipmentBase.Probability.Value.ToString() + "%");
-            ResetSkillList();
+            SetSkillList();
             SetEnegy(equipment.EquipmentBase.DamageList, true);
             SetEnegy(equipment.EquipmentBase.RecoveryList, false);
             SetEnchant(equipment.EquipmentBase.EnchantList);
             SetCost(equipment.EquipmentBase.CostList);
+            SetStatus(equipment);
             TargetData targetData = TargetDatabase.Instance?.GetData(equipment.Attack.Target);
             targetImage.sprite = targetData.icon;
             ResizeDialog();
         }
     }
 
-    private void ResetSkillList()
+    private void SetStatus(Equipment equipment)
+    {
+        int statusCount = 0;
+        // statusList内のオブジェクトを削除
+        foreach (Transform child in statusList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (var enegy in equipment.EnegyList)
+        {
+            if (enegy.val == 0) continue;
+            EnegyIcon statusObject = Instantiate(enegyPrefab, statusList.transform);
+            statusObject.gameObject.SetActive(true);
+            EnegyIcon statusUnit = statusObject.GetComponent<EnegyIcon>();
+            statusUnit.SetCostIcon(enegy);
+            statusUnit.SetColor(enegy.val < 0);
+            statusCount++;
+        }
+
+        // statusList内にステータスを追加
+        foreach (var status in equipment.StatusList)
+        {
+            if (status.val <= 0) continue;
+            StatusDialogIcon statusObject = Instantiate(statusPrefab, statusList.transform);
+            statusObject.gameObject.SetActive(true);
+            StatusDialogIcon statusUnit = statusObject.GetComponent<StatusDialogIcon>();
+            statusUnit.SetStatusIcon(status);
+            statusCount++;
+        }
+
+        if (statusCount == 0)
+        {
+            // ステータスがない場合はステータスリストを非表示にする
+            statusList.SetActive(false);
+        }
+        else
+        {
+            // ステータスがある場合はステータスリストを表示する
+            statusList.SetActive(true);
+        }
+    }
+
+    private void SetSkillList()
     {
         // skillList内のオブジェクトを削除
         foreach (Transform child in enchantList.transform)

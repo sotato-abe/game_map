@@ -24,8 +24,8 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 
     private RectTransform rectTransform;
 
-    [SerializeField] Color activeColor = new Color(133, 10, 240, 255);
-    [SerializeField] Color stopColor = new Color(0, 0, 0, 200);
+    Color32 activeColor = new Color32(133, 10, 255, 200);
+    Color32 stopColor = new Color32(0, 0, 0, 200);
 
     private void Awake()
     {

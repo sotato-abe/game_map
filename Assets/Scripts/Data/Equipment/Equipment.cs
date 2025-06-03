@@ -19,4 +19,22 @@ public class Equipment : Item
         new List<Enegy>(_base.RecoveryList),
         new List<Enchant>(_base.EnchantList)
     );
+    public List<Enegy> EnegyList => new List<Enegy>
+    {
+        new Enegy(EnegyType.Life, _base.Life),
+        new Enegy(EnegyType.Battery, _base.Battery)
+    };
+
+    public List<Status> StatusList => new List<Status>
+    {
+        new Status(StatusType.POW, _base.Power),
+        new Status(StatusType.TEC, _base.Technique),
+        new Status(StatusType.DEF, _base.Defense),
+        new Status(StatusType.SPD, _base.Speed),
+        new Status(StatusType.LUK, _base.Luck),
+        new Status(StatusType.MMR, _base.Memory),
+        new Status(StatusType.STG, _base.Storage),
+        new Status(StatusType.POC, _base.Pouch),
+        new Status(StatusType.BAG, _base.Bag)
+    };
 }

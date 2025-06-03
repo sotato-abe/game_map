@@ -10,9 +10,9 @@ public class EnchantIcon : Unit
     [SerializeField] TextMeshProUGUI val;
     [SerializeField] EnchantDialog dialog;
 
-    [SerializeField] Color buffColor = new Color(2, 115, 229, 255);
-    [SerializeField] Color debuffColor = new Color(243, 52, 74, 255);
-    [SerializeField] Color bothColor = new Color(0, 0, 0, 200);
+    Color32 buffColor = new Color32(2, 171, 229, 255);
+    Color32 debuffColor = new Color32(245, 52, 124, 255);
+    Color32 bothColor = new Color32(0, 0, 0, 200);
 
     private float magnificationPower = 1.1f; // ターゲットスケール
 
