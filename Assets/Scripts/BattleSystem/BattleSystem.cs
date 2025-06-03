@@ -20,8 +20,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleUnit allyUnitPrefab;
     [SerializeField] BattleUnit enemyUnitPrefab;
     [SerializeField] AttackSystem attackSystem;
-    [SerializeField] GameObject leftGroupPanel;
-    [SerializeField] GameObject rightGroupPanel;
+    [SerializeField] SlidePanel leftUnitGroup;
+    [SerializeField] SlidePanel rightUnitGroup;
 
     private List<BattleUnit> allyUnitList = new List<BattleUnit>();
     private List<BattleUnit> enemyUnitList = new List<BattleUnit>();
@@ -40,7 +40,7 @@ public class BattleSystem : MonoBehaviour
         turnOrderSystem.SetupPlayerBattler(playerUnit.Battler);
         StartCoroutine(fieldCharacterSystem.appearanceEnemy(enemies)); // 敵をフィールドに出現させる
         playerUnit.SetBattlerTalkMessage(MessageType.Encount);
-        foreach (Transform child in rightGroupPanel.transform)
+        foreach (Transform child in rightUnitGroup.transform)
         {
             Destroy(child.gameObject);
         }
@@ -49,6 +49,7 @@ public class BattleSystem : MonoBehaviour
             turnOrderSystem.SetTurnBattler(enemy);
             SetBattlerUnit(enemy, false);
         }
+        rightUnitGroup.SetActive(true);
         attackSystem.SetPlayerBattler(playerUnit);
         attackSystem.SetEnemyBattlers(enemyUnitList);
         turnOrderSystem.SetActive(true);
@@ -59,7 +60,7 @@ public class BattleSystem : MonoBehaviour
     public void SetBattlerUnit(Battler battler, bool isAlly)
     {
         BattleUnit targetUnit = isAlly ? allyUnitPrefab : enemyUnitPrefab;
-        GameObject targetGroupPanel = isAlly ? leftGroupPanel : rightGroupPanel;
+        SlidePanel targetGroupPanel = isAlly ? leftUnitGroup : rightUnitGroup;
         BattleUnit battlerUnit = Instantiate(targetUnit, targetGroupPanel.transform);
         battlerUnit.Setup(battler);
         battlerUnit.SetFieldCharacterSystem(fieldCharacterSystem);
@@ -98,6 +99,7 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleEnd()
     {
+        rightUnitGroup.SetActive(false);
         turnOrderSystem.BattlerEnd();
         playerUnit.SetMotion(MotionType.Move);
         playerUnit.ClearEnchant();

@@ -153,7 +153,6 @@ public class Battler
         }
 
         ColLife = MaxLife + DiffLife;
-        Debug.Log($"CoLStatus: {ColLife},{MaxLife}/{Life}");
         ColBattery = MaxBattery + DiffBattery;
         ColPower.val = Power.val + DiffPower;
         ColTechnique.val = Technique.val + DiffTechnique;

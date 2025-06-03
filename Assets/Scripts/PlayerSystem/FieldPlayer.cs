@@ -19,7 +19,7 @@ public class FieldPlayer : FieldCharacter
     public UnityAction OnEncount;
     public UnityAction OnReserve;
     public UnityAction OnGetItem;
-    public UnityAction ResetFieldPanel;
+    public UnityAction ExitBuilding;
     public TileType playerTileType = TileType.Base;
     public bool canEncount = false;
     bool isMoving = false;
@@ -321,7 +321,7 @@ public class FieldPlayer : FieldCharacter
         else if (playerTileType == TileType.Building)
         {
             playerTileType = TileType.Ground;
-            ResetFieldPanel?.Invoke();
+            ExitBuilding?.Invoke();
             return true;
         }
         else

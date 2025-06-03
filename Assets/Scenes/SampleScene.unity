@@ -1426,7 +1426,7 @@ GameObject:
   - component: {fileID: 225038490}
   - component: {fileID: 225038491}
   m_Layer: 5
-  m_Name: RightUnit
+  m_Name: RightUnitGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2559,8 +2559,9 @@ GameObject:
   m_Component:
   - component: {fileID: 497177302}
   - component: {fileID: 497177303}
+  - component: {fileID: 497177304}
   m_Layer: 5
-  m_Name: LeftUnit
+  m_Name: LeftUnitGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2605,14 +2606,30 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: -80
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_Spacing: -40
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 1
+--- !u!114 &497177304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 497177301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90269e63c2ddd674c85f1bbf9743841b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 0}
+  activePosition: {x: 0, y: 0, z: 0}
+  inactivePosition: {x: 0, y: 0, z: 0}
+  isActive: 0
 --- !u!1001 &510561028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9353,10 +9370,12 @@ MonoBehaviour:
   hotelPrefab: {fileID: 3720347694098594850, guid: d1755181d0f3b254883b15f3d7c32794, type: 3}
   fieldCanvas: {fileID: 2054272911}
   fieldPlayer: {fileID: 513887582}
+  rightUnitPrefab: {fileID: 7852485535879243533, guid: 824457a14ae28404d8e7aba0e0e93753, type: 3}
   fieldInfoPanel: {fileID: 237653653}
   worldMapSystem: {fileID: 797766553}
   hitTargetPin: {fileID: 406702498}
   messagePanel: {fileID: 1685434740}
+  rightUnitGroup: {fileID: 225038491}
   playerBattler:
     _base: {fileID: 0}
     level: 1
@@ -9540,7 +9559,6 @@ MonoBehaviour:
   messagePanel: {fileID: 1685434740}
   fieldSystem: {fileID: 1297574419}
   configSystem: {fileID: 1754231586}
-  rightUnit: {fileID: 225038491}
   playerCoordinate: {x: 0, y: 0}
 --- !u!4 &1384630402
 Transform:
@@ -11066,8 +11084,8 @@ MonoBehaviour:
   allyUnitPrefab: {fileID: 2428576714935050543, guid: f408a883362f2b44cb50602fea2c4d70, type: 3}
   enemyUnitPrefab: {fileID: 7852485535879243533, guid: 824457a14ae28404d8e7aba0e0e93753, type: 3}
   attackSystem: {fileID: 1883646491}
-  leftGroupPanel: {fileID: 497177301}
-  rightGroupPanel: {fileID: 225038488}
+  leftUnitGroup: {fileID: 497177304}
+  rightUnitGroup: {fileID: 225038491}
 --- !u!1 &1629055076
 GameObject:
   m_ObjectHideFlags: 0
@@ -14370,7 +14388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8469542832532789813, guid: 68135bac03f6df64f85a5e0f98f5cc76, type: 3}
       propertyPath: encounterThreshold
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8469542832532789815, guid: 68135bac03f6df64f85a5e0f98f5cc76, type: 3}
       propertyPath: m_RootOrder

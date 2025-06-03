@@ -18,10 +18,12 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] GameObject kioskPrefab, cafeteriaPrefab, armsShopPrefab, laboratoryPrefab, hotelPrefab; // 建物のプレファブ
     [SerializeField] GameObject fieldCanvas; // フィールドキャンバス
     [SerializeField] FieldPlayer fieldPlayer; //キャラクター
+    [SerializeField] BattleUnit rightUnitPrefab;
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] WorldMapSystem worldMapSystem;
     [SerializeField] HitTargetPin hitTargetPin;
     [SerializeField] MessagePanel messagePanel;
+    [SerializeField] SlidePanel rightUnitGroup;
 
     DirectionType playerDirection = DirectionType.None; // キャラクターの方向
     public PlayerBattler playerBattler;
@@ -38,7 +40,7 @@ public class FieldSystem : MonoBehaviour
         fieldPlayer.OnEncount += Encount;
         fieldPlayer.OnGetItem += GetItem;
         fieldPlayer.ChangeField += ReloadMap;
-        fieldPlayer.ResetFieldPanel += ResetFieldInfoPanel;
+        fieldPlayer.ExitBuilding += ExitBuilding;
         fieldPlayer.EntryBuilding += EntryBuilding;
     }
 
@@ -58,7 +60,7 @@ public class FieldSystem : MonoBehaviour
     {
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
         fieldData.Init(); // フィールドデータの初期化
-        ResetFieldInfoPanel();
+        ExitBuilding();
         fieldPlayer.canEncount = fieldData.enemies.Count > 0; // エンカウントフラグを設定
         fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
     }
@@ -85,8 +87,31 @@ public class FieldSystem : MonoBehaviour
             fieldInfoPanel.SetupBuilding(building);
             messagePanel.AddMessage(MessageIconType.Building, $"{building.Name}");
             currentBuildingBase = building; // 現在の建物を更新
+            SetBattlerUnit(currentBuildingBase.Owner); // 建物の所有者をバトラーとして設定
+            rightUnitGroup.SetActive(true); // 右側のグループパネルをアクティブにする
         }
         fieldPlayer.SetMoveFlg(true); // 移動フラグをオンにする
+    }
+
+    private void ExitBuilding()
+    {
+        currentBuildingBase = null;
+        fieldInfoPanel.gameObject.SetActive(false);
+        rightUnitGroup.SetActive(false); // 右側のグループパネルを非表示にする
+        // fieldInfoPanel.Setup(fieldData.fieldBase);
+    }
+
+    private void SetBattlerUnit(Battler battler)
+    {
+        Debug.Log($"SetBattlerUnit: {battler.Base.Name}のバトラーを設定");
+        foreach (Transform child in rightUnitGroup.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        BattleUnit battlerUnit = Instantiate(rightUnitPrefab, rightUnitGroup.transform);
+        battlerUnit.Setup(battler);
+        battlerUnit.SetMotion(MotionType.Jump);
+        battlerUnit.SetBattlerTalkMessage(MessageType.Encount);
     }
 
 
@@ -325,13 +350,6 @@ public class FieldSystem : MonoBehaviour
     Vector2 GetCharacterPositionFromCoordinate(int x, int y)
     {
         return new Vector2(x * tileSize + tileSize, (fieldData.mapHeight - y) * tileSize); // マップの中心を考慮して座標を計算
-    }
-
-    private void ResetFieldInfoPanel()
-    {
-        currentBuildingBase = null;
-        fieldInfoPanel.gameObject.SetActive(false);
-        // fieldInfoPanel.Setup(fieldData.fieldBase);
     }
 
     public List<Battler> GetEnemyGruop()

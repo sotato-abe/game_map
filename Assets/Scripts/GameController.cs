@@ -13,7 +13,6 @@ public class GameController : MonoBehaviour
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] FieldSystem fieldSystem;
     [SerializeField] ConfigSystem configSystem;
-    [SerializeField] SlidePanel rightUnit;
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
@@ -68,7 +67,6 @@ public class GameController : MonoBehaviour
         List<Battler> enemyGroup = fieldSystem.GetEnemyGruop();
         battleSystem.gameObject.SetActive(true);
         battleSystem.SetBattle(enemyGroup);
-        rightUnit.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
         messagePanel.SetActive(false);
     }
@@ -76,7 +74,6 @@ public class GameController : MonoBehaviour
     public void BattleEnd()
     {
         // Debug.Log("BattleEnd");
-        rightUnit.SetActive(false);
         battleSystem.gameObject.SetActive(false);
         configSystem.SetActive(true);
         fieldPlayer.SetMoveFlg(true);
