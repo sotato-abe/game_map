@@ -24,6 +24,7 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
 
     private RectTransform rectTransform;
 
+    // Color32 activeColor = new Color32(130, 255, 10, 200);
     Color32 activeColor = new Color32(133, 10, 255, 200);
     Color32 stopColor = new Color32(0, 0, 0, 200);
 
@@ -50,10 +51,12 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
         if (isActive)
         {
             SetColor(activeColor);
+            // image.color = Color.black;
         }
         else
         {
             SetColor(stopColor);
+            // image.color = Color.white;
         }
 
         // コルーチンを開始してスムーズにサイズとフォントサイズを変更

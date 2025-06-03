@@ -138,12 +138,15 @@ public class FieldPlayer : FieldCharacter
 
         transform.position = targetPos;
         isMoving = false;
-        CheckForBuilding();
-        CheckForObject();
+        bool isBuildingEvent = CheckForBuilding();
+        bool isObjectEvent = CheckForObject();
 
         if (Time.time - lastEncountCheckTime >= encountCooldown)
         {
-            CheckForEncount();
+            if (!isBuildingEvent && !isObjectEvent)
+            {
+                CheckForEncount();
+            }
             lastEncountCheckTime = Time.time;
         }
     }
