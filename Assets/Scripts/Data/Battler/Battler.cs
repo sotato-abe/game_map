@@ -153,7 +153,9 @@ public class Battler
         }
 
         ColLife = MaxLife + DiffLife;
+        Life = Mathf.Min(Life, ColLife); // LifeがMaxLifeを超えないようにする
         ColBattery = MaxBattery + DiffBattery;
+        Battery = Mathf.Min(Battery, ColBattery); // BatteryがMaxBatteryを超えないようにする
         ColPower.val = Power.val + DiffPower;
         ColTechnique.val = Technique.val + DiffTechnique;
         ColDefense.val = Defense.val + DiffDefense;

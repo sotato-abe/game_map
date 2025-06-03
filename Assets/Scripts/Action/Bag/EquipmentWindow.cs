@@ -230,6 +230,8 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
                 inventoryWindow.RemoveItem(item);
             }
             playerBattler.CoLStatus();
+            playerUnit.SetEnegy();
+            playerUnit.SetStatusDialog();
         }
     }
 
@@ -254,6 +256,8 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
                 slot.ReSetSlot();
             }
             playerBattler.CoLStatus();
+            playerUnit.SetEnegy();
+            playerUnit.SetStatusDialog();
         }
     }
 }
