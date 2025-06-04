@@ -18,7 +18,6 @@ public class ConfigSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.M)) // Mキーでワールドマップを表示
         {
-            Debug.Log("Mキーが押されました。");
             if (worldMapPanel.isActive)
             {
                 CloseConfig(); // ワールドマップを非表示にする
