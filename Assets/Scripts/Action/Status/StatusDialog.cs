@@ -9,6 +9,8 @@ public class StatusDialog : MonoBehaviour
     [SerializeField] public TextMeshProUGUI characterName;
     [SerializeField] public TextMeshProUGUI description;
     [SerializeField] RectTransform backRectTransform;
+    [SerializeField] GameObject rarityPrefab;
+    [SerializeField] GameObject rarityList;
 
     private float PaddingHeight = 90f;
     // private float PaddingWidth = 90f;
@@ -18,7 +20,22 @@ public class StatusDialog : MonoBehaviour
     {
         characterName.SetText(battler.Base.Name);
         description.text = battler.Base.Description;
+        SetRarity((int)battler.Base.Rarity);
         ResizeDialog();
+    }
+    private void SetRarity(int rarity = 1)
+    {
+        // rarityList内を初期化
+        foreach (Transform child in rarityList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        // rarityList内にレアリティを追加
+        for (int i = 0; i <= rarity; i++)
+        {
+            GameObject rarityObject = Instantiate(rarityPrefab, rarityList.transform);
+            rarityObject.SetActive(true);
+        }
     }
 
     public void ResizeDialog()

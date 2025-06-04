@@ -38,6 +38,7 @@ public class BattlerBase : ScriptableObject
     [SerializeField] List<TalkMessage> messageList;
 
     public string Name { get => name; }
+    public RarityType Rarity { get => rarity; }
     public Sprite Sprite { get => sprite; }
     public string Description { get => description; }
     public int MaxLife { get => maxLife; }

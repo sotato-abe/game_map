@@ -17,6 +17,8 @@ public class BattleUnit : MonoBehaviour
     [SerializeField] Blowing blowing;
     [SerializeField] EnchantIcon enchantPrefab;
     [SerializeField] GameObject enchantList;
+    [SerializeField] GameObject rarityPrefab;
+    [SerializeField] GameObject rarityList;
     [SerializeField] FieldCharacterSystem fieldCharacterSystem;
 
     public virtual void Setup(Battler battler)
@@ -26,6 +28,7 @@ public class BattleUnit : MonoBehaviour
         characterCard.SetCharacter(battler);
         statusDialog.Setup(Battler);
         SetEnegy();
+        SetRarity();
         UpdateEnchantUI();
     }
 
@@ -39,6 +42,21 @@ public class BattleUnit : MonoBehaviour
         lifeBar.SetEnegy(EnegyType.Life, Battler.ColLife, Battler.Life);
         batteryBar.SetEnegy(EnegyType.Battery, Battler.ColBattery, Battler.Battery);
         soulBar.SetEnegy(EnegyType.Soul, 100, Battler.Soul);
+    }
+
+    private void SetRarity()
+    {
+        // rarityList内を初期化
+        foreach (Transform child in rarityList.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        // rarityList内にレアリティを追加
+        for (int i = 0; i <= (int)Battler.Base.Rarity; i++)
+        {
+            GameObject rarityObject = Instantiate(rarityPrefab, rarityList.transform);
+            rarityObject.SetActive(true);
+        }
     }
 
     public void OnPointerEnter()
