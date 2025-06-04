@@ -9,10 +9,10 @@ public class GameController : MonoBehaviour
     [SerializeField] FieldPlayer fieldPlayer;
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
-    [SerializeField] AgeTimePanel ageTimePanel;
-    [SerializeField] MessagePanel messagePanel;
     [SerializeField] FieldSystem fieldSystem;
     [SerializeField] ConfigSystem configSystem;
+    [SerializeField] AgeTimePanel ageTimePanel;
+    [SerializeField] MessagePanel messagePanel;
 
     //　プレイヤーの現在座標を保持する変数
     //　後々１つのクラスとして独立させる
