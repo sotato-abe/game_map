@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class FieldInfoPanel : MonoBehaviour
+public class FieldInfoPanel : SlidePanel
 {
     [SerializeField] Title title;
     [SerializeField] Description description;

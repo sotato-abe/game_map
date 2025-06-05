@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] FieldSystem fieldSystem;
     [SerializeField] ConfigSystem configSystem;
+    [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] AgeTimePanel ageTimePanel;
     [SerializeField] MessagePanel messagePanel;
 
@@ -48,6 +49,7 @@ public class GameController : MonoBehaviour
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
         messagePanel.SetActive(false);
+        fieldInfoPanel.SetActive(false);
     }
 
     public void ReserveEnd()
@@ -58,6 +60,7 @@ public class GameController : MonoBehaviour
         configSystem.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
         messagePanel.SetActive(true);
+        fieldInfoPanel.SetActive(true);
     }
 
     public void BattleStart()
@@ -69,6 +72,7 @@ public class GameController : MonoBehaviour
         battleSystem.SetBattle(enemyGroup);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
         messagePanel.SetActive(false);
+        fieldInfoPanel.SetActive(false);
     }
 
     public void BattleEnd()
@@ -79,6 +83,7 @@ public class GameController : MonoBehaviour
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
         messagePanel.SetActive(true);
+        fieldInfoPanel.SetActive(true);
     }
 
     public void ConfigStart()
@@ -86,6 +91,7 @@ public class GameController : MonoBehaviour
         fieldPlayer.SetMoveFlg(false);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
         messagePanel.SetActive(false);
+        fieldInfoPanel.SetActive(false);
     }
 
     public void ConfigEnd()
@@ -93,5 +99,6 @@ public class GameController : MonoBehaviour
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
         messagePanel.SetActive(true);
+        fieldInfoPanel.SetActive(true);
     }
 }
