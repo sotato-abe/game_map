@@ -98,7 +98,7 @@ public class FieldSystem : MonoBehaviour
         currentBuildingBase = null;
         fieldInfoPanel.gameObject.SetActive(false);
         rightUnitGroup.SetActive(false); // 右側のグループパネルを非表示にする
-        // fieldInfoPanel.Setup(fieldData.fieldBase);
+        fieldInfoPanel.Setup(fieldData.fieldBase);
     }
 
     private void SetBattlerUnit(Battler battler)

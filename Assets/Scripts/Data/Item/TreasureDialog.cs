@@ -8,7 +8,7 @@ public class TreasureDialog : VariableDialog
 {
     [SerializeField] GameObject levelPrefab;
     [SerializeField] GameObject levelList;
-    protected override float PaddingHeight => 60f;
+    protected override float PaddingHeight => 65f;
     public void Setup(Item item)
     {
         if (item is Treasure treasure)
