@@ -24,6 +24,7 @@ public class FieldSystem : MonoBehaviour
     [SerializeField] HitTargetPin hitTargetPin;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] SlidePanel rightUnitGroup;
+    [SerializeField] AgeTimePanel ageTimePanel;
 
     DirectionType playerDirection = DirectionType.None; // キャラクターの方向
     public PlayerBattler playerBattler;
@@ -89,6 +90,7 @@ public class FieldSystem : MonoBehaviour
             currentBuildingBase = building; // 現在の建物を更新
             SetBattlerUnit(currentBuildingBase.Owner); // 建物の所有者をバトラーとして設定
             rightUnitGroup.SetActive(true); // 右側のグループパネルをアクティブにする
+            ageTimePanel.SetTimeSpeed(TimeState.Live);
         }
         fieldPlayer.SetMoveFlg(true); // 移動フラグをオンにする
     }
@@ -99,6 +101,7 @@ public class FieldSystem : MonoBehaviour
         fieldInfoPanel.gameObject.SetActive(false);
         rightUnitGroup.SetActive(false); // 右側のグループパネルを非表示にする
         fieldInfoPanel.Setup(fieldData.fieldBase);
+        ageTimePanel.SetTimeSpeed(TimeState.Fast); // 時間の進行を速くする
     }
 
     private void SetBattlerUnit(Battler battler)
