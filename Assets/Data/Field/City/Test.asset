@@ -13,22 +13,48 @@ MonoBehaviour:
   m_Name: Test
   m_EditorClassIdentifier: 
   id: 0
-  mapName: "\u30C6\u30B9\u30C8\u30B7\u30C6\u30A3\u30FC"
+  mapName: "\u30C6\u30B9\u30C8\u30DD\u30A4\u30F3\u30C8"
   level: 1
   fieldType: 8
   mapHeight: 30
   mapWidth: 30
-  description: "\u691C\u8A3C\u7528\u306B\u4F5C\u3089\u308C\u305F\u307E\u3061\u3002"
+  description: "\u691C\u8A3C\u7528\u306B\u4F5C\u3089\u308C\u305F\u30A8\u30EA\u30A2\u3002\n\u30CA\u30BE\u304C\u591A\u304F\u3001\u884C\u65B9\u4E0D\u660E\u8005\u304C\u591A\u304F\u3044\u308B\u3089\u3057\u3044\u3002"
   randomFillPercent: 49
   coordinate: {x: 17, y: 49}
-  items:
-  - _base: {fileID: 11400000, guid: db8b6a7db83b29c498304651473a779f, type: 2}
-  - _base: {fileID: 11400000, guid: 458de18a481fa324b826dfe6936d4f62, type: 2}
-  - _base: {fileID: 11400000, guid: 811460af88770c34299fa7f39dba81d2, type: 2}
+  consumables: []
+  equipments: []
+  treasures: []
   enemies:
   - _base: {fileID: 11400000, guid: f30ad004893b71a43a6d715c0b948bbf, type: 2}
     level: 1
     soul: 0
+    ColPower:
+      type: 0
+      val: 0
+    ColTechnique:
+      type: 2
+      val: 0
+    ColDefense:
+      type: 1
+      val: 0
+    ColSpeed:
+      type: 3
+      val: 0
+    ColLuck:
+      type: 4
+      val: 0
+    ColMemory:
+      type: 5
+      val: 0
+    ColStorage:
+      type: 6
+      val: 0
+    ColPouch:
+      type: 7
+      val: 0
+    ColBag:
+      type: 8
+      val: 0
     AbilityList: []
     Enchants:
     - type: 0
@@ -37,3 +63,4 @@ MonoBehaviour:
       val: 1
     coordinate: {x: 0, y: 0}
   buildings: []
+  enemyGroups: []
