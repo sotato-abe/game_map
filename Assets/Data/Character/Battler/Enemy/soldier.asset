@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: soldier
   m_EditorClassIdentifier: 
   name: "\u4E00\u822C\u5175"
+  rarity: 0
   sprite: {fileID: 21300000, guid: d98744d5b8d808f45be11960900889e7, type: 3}
   description: 
   birthplace: {fileID: 0}
@@ -32,7 +33,9 @@ MonoBehaviour:
   key: 5
   exp: 26
   abilityList: []
-  equipmentList: []
+  equipmentList:
+  - _base: {fileID: 11400000, guid: ffcdbfc289589a94f92baf73a6bedc31, type: 2}
+    level: 0
   runTable: []
   deckList: []
   storageList: []

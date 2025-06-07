@@ -48,8 +48,6 @@ public class GameController : MonoBehaviour
         configSystem.SetActive(false);
         reserveSystem.ReserveStart();
         ageTimePanel.SetTimeSpeed(TimeState.Live);
-        messagePanel.SetActive(false);
-        fieldInfoPanel.SetActive(false);
     }
 
     public void ReserveEnd()
@@ -59,8 +57,6 @@ public class GameController : MonoBehaviour
         reserveSystem.gameObject.SetActive(false);
         configSystem.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
-        messagePanel.SetActive(true);
-        fieldInfoPanel.SetActive(true);
     }
 
     public void BattleStart()
@@ -71,8 +67,6 @@ public class GameController : MonoBehaviour
         battleSystem.gameObject.SetActive(true);
         battleSystem.SetBattle(enemyGroup);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
-        messagePanel.SetActive(false);
-        fieldInfoPanel.SetActive(false);
     }
 
     public void BattleEnd()
@@ -82,23 +76,19 @@ public class GameController : MonoBehaviour
         configSystem.SetActive(true);
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
-        messagePanel.SetActive(true);
-        fieldInfoPanel.SetActive(true);
     }
 
     public void ConfigStart()
     {
+        // Debug.Log("ConfigStart");
         fieldPlayer.SetMoveFlg(false);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
-        messagePanel.SetActive(false);
-        fieldInfoPanel.SetActive(false);
     }
 
     public void ConfigEnd()
     {
+        // Debug.Log("ConfigEnd");
         fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
-        messagePanel.SetActive(true);
-        fieldInfoPanel.SetActive(true);
     }
 }

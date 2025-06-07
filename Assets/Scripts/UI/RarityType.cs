@@ -1,6 +1,6 @@
 public enum RarityType
 {
-    Common, // コモン：７０％
+    Common, // コモン：６０％
     Rare, // レア：２０％
     Epic, // エピック：６％
     Legendary, // レジェンダリー：３％

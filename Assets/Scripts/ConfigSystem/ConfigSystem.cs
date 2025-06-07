@@ -9,6 +9,8 @@ public class ConfigSystem : MonoBehaviour
     public UnityAction OnConfigOpen; // リザーブイベント
     public UnityAction OnConfigClose; // エンカウントイベント
     [SerializeField] WorldMapPanel worldMapPanel;
+    [SerializeField] FieldInfoPanel fieldInfoPanel;
+    [SerializeField] MessagePanel messagePanel;
 
     public bool isActive = true; // フラグを追加
 
@@ -42,12 +44,24 @@ public class ConfigSystem : MonoBehaviour
     public void OpenConfig()
     {
         worldMapPanel.SetActive(true); // ワールドマップパネルを表示する
+        messagePanel.SetActive(false);
+        fieldInfoPanel.SetActive(false);
         OnConfigOpen?.Invoke(); // リザーブイベントを発火
     }
 
     public void CloseConfig()
     {
-        worldMapPanel.SetActive(false); // ワールドマップパネルを非表示にする
-        OnConfigClose?.Invoke(); // エンカウントイベントを発火
+        worldMapPanel.SetActive(false); // 
+        int completed = 0;
+        void CheckAllComplete()
+        {
+            completed++;
+            if (completed >= 2)
+            {
+                OnConfigClose?.Invoke(); // エンカウントイベントを発火
+            }
+        }
+        messagePanel.SetActive(true, CheckAllComplete);
+        fieldInfoPanel.SetActive(true, CheckAllComplete);
     }
 }

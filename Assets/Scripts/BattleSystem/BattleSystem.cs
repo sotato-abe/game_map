@@ -22,6 +22,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] AttackSystem attackSystem;
     [SerializeField] SlidePanel leftUnitGroup;
     [SerializeField] SlidePanel rightUnitGroup;
+    [SerializeField] FieldInfoPanel fieldInfoPanel;
 
     private List<BattleUnit> allyUnitList = new List<BattleUnit>();
     private List<BattleUnit> enemyUnitList = new List<BattleUnit>();
@@ -36,6 +37,9 @@ public class BattleSystem : MonoBehaviour
 
     public void SetBattle(List<Battler> enemies)
     {
+        messagePanel.SetActive(false);
+        fieldInfoPanel.SetActive(false);
+
         turnOrderSystem.TurnOrderClear();
         turnOrderSystem.SetupPlayerBattler(playerUnit.Battler);
         StartCoroutine(fieldCharacterSystem.appearanceEnemy(enemies)); // 敵をフィールドに出現させる
@@ -99,14 +103,25 @@ public class BattleSystem : MonoBehaviour
 
     public void BattleEnd()
     {
-        rightUnitGroup.SetActive(false);
         turnOrderSystem.BattlerEnd();
         playerUnit.SetMotion(MotionType.Move);
         playerUnit.ClearEnchant();
         enemyUnitList.Clear();
         actionBoard.gameObject.SetActive(false);
         fieldCharacterSystem.RemoveAllCharacter(); // 敵を削除
-        OnBattleEnd?.Invoke();
+
+        int completed = 0;
+        void CheckAllComplete()
+        {
+            completed++;
+            if (completed >= 3)
+            {
+                OnBattleEnd?.Invoke();
+            }
+        }
+        rightUnitGroup.SetActive(true, CheckAllComplete);
+        messagePanel.SetActive(true, CheckAllComplete);
+        fieldInfoPanel.SetActive(true, CheckAllComplete);
     }
 
     public void BattleDefeat()

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: bubu
   m_EditorClassIdentifier: 
   name: "\u30D6\u30D6"
+  rarity: 0
   sprite: {fileID: 21300000, guid: 2d7178aeb47462d43a38b522bda972d4, type: 3}
   description: 
   birthplace: {fileID: 0}
@@ -32,7 +33,9 @@ MonoBehaviour:
   key: 5
   exp: 25
   abilityList: []
-  equipmentList: []
+  equipmentList:
+  - _base: {fileID: 11400000, guid: 422cceca8c53e6341854b9f38afc5208, type: 2}
+    level: 0
   runTable: []
   deckList: []
   storageList: []

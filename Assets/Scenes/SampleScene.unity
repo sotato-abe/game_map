@@ -2630,10 +2630,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90269e63c2ddd674c85f1bbf9743841b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rectTransform: {fileID: 0}
-  activePosition: {x: 0, y: 0, z: 0}
-  inactivePosition: {x: 0, y: 0, z: 0}
-  isActive: 0
+  rectTransform: {fileID: 497177302}
+  activePosition: {x: 50, y: 40, z: 0}
+  inactivePosition: {x: -550, y: 40, z: 0}
+  isActive: 1
 --- !u!1001 &510561028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11264,6 +11264,7 @@ MonoBehaviour:
   attackSystem: {fileID: 1883646491}
   leftUnitGroup: {fileID: 497177304}
   rightUnitGroup: {fileID: 225038491}
+  fieldInfoPanel: {fileID: 237653653}
 --- !u!1 &1629055076
 GameObject:
   m_ObjectHideFlags: 0
@@ -11462,6 +11463,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldMapPanel: {fileID: 1119025272}
+  fieldInfoPanel: {fileID: 237653653}
+  messagePanel: {fileID: 1685434740}
   isActive: 1
 --- !u!1001 &1776281670
 PrefabInstance:
@@ -12302,6 +12305,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionBoard: {fileID: 1987657849}
   messagePanel: {fileID: 1685434740}
+  leftUnitGroup: {fileID: 497177304}
+  fieldInfoPanel: {fileID: 237653653}
 --- !u!1 &1902449818
 GameObject:
   m_ObjectHideFlags: 0

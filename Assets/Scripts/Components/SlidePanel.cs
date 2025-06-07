@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,21 +12,26 @@ public class SlidePanel : MonoBehaviour
     public Vector3 inactivePosition = new Vector3(0, 0, 0);
     public bool isActive = false;
 
-    public void SetActive(bool activeFlg)
+    public void SetActive(bool activeFlg, Action onComplete = null)
     {
-        if (isActive == activeFlg) return;
+        if (isActive == activeFlg)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
         isActive = activeFlg;
         if (isActive)
         {
-            StartCoroutine(Slide(activePosition));
+            StartCoroutine(Slide(activePosition, onComplete));
         }
         else
         {
-            StartCoroutine(Slide(inactivePosition));
+            StartCoroutine(Slide(inactivePosition, onComplete));
         }
     }
 
-    private IEnumerator Slide(Vector3 targetPosition)
+    private IEnumerator Slide(Vector3 targetPosition, Action onComplete)
     {
         Vector3 startPosition = rectTransform.anchoredPosition;
         float elapsedTime = 0f;
@@ -39,6 +45,6 @@ public class SlidePanel : MonoBehaviour
         }
 
         rectTransform.anchoredPosition = targetPosition;
+        onComplete?.Invoke();
     }
-
 }
