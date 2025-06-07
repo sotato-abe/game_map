@@ -182,14 +182,15 @@ public class BattleSystem : MonoBehaviour
 
     private void GetReward(Battler battler)
     {
-        List<Consumable> targetItems = battler.PouchList;
+        List<Item> targetItems = new List<Item>(battler.PouchList);
+        targetItems.AddRange(new List<Item>(battler.EquipmentList));
         string resultItemMessageList = "";
         resultItemMessageList = battler.Base.Name + " に勝利した。\n";
 
         if (targetItems != null && targetItems.Count > 0)
         {
             string itemList = "";
-            foreach (Consumable item in targetItems)
+            foreach (Item item in targetItems)
             {
                 // TODO：アイテムのレア度によって取得確率を変える
                 if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
