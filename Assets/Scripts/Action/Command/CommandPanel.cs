@@ -113,6 +113,7 @@ public class CommandPanel : Panel
 
             UseEnegy(commandUnit.Command);
             attacks.Add(commandUnit.Command.Attack);
+            commandUnit.SetCommandMotion(UnitMotionType.Jump);
         }
         attackSystem.ExecuteBattlerAttack(playerBattler, attacks, true);
         CountEnegyCost();

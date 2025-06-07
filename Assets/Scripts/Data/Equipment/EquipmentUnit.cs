@@ -30,13 +30,13 @@ public class EquipmentUnit : MonoBehaviour
         StartCoroutine(Targetfoucs(false));
     }
 
-    public void SetEquipmentMotion(EquipmentUnitMotionType motion)
+    public void SetEquipmentMotion(UnitMotionType motion)
     {
         if (this == null || !gameObject.activeInHierarchy) return; // 破棄されている場合は処理しない
 
         switch (motion)
         {
-            case EquipmentUnitMotionType.Jump:
+            case UnitMotionType.Jump:
                 StartCoroutine(JumpMotion());
                 break;
         }

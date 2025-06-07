@@ -114,6 +114,7 @@ public class AttackPanel : Panel
             {
                 UseEnegy(equipmentUnit.Equipment);
                 attacks.Add(equipmentUnit.Equipment.Attack);
+                equipmentUnit.SetEquipmentMotion(UnitMotionType.Jump);
             }
         }
         attacks.Add(playerBattler.GetPhysicalAttack());
