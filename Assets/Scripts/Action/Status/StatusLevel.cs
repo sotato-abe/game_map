@@ -10,7 +10,7 @@ public class StatusLevel : MonoBehaviour
     [SerializeField] TextMeshProUGUI expText;
     [SerializeField] ExpPercentageBar bar;
 
-    private int currentLevel = 0; // 現在のレベル
+    private int currentLevel = 1; // 現在のレベル
     private int currentExp = 0; // 現在の経験値
     public void SetLevel(int level, int exp)
     {
