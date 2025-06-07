@@ -830,8 +830,9 @@ GameObject:
   m_Component:
   - component: {fileID: 48000391}
   - component: {fileID: 48000392}
+  - component: {fileID: 48000393}
   m_Layer: 5
-  m_Name: EnegyList
+  m_Name: EnegyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -858,7 +859,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -500, y: 50}
-  m_SizeDelta: {x: 450, y: 250}
+  m_SizeDelta: {x: 450, y: 230}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &48000392
 MonoBehaviour:
@@ -877,8 +878,8 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 6
-  m_Spacing: 20
+  m_ChildAlignment: 3
+  m_Spacing: 10
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -886,6 +887,22 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &48000393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48000390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90269e63c2ddd674c85f1bbf9743841b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 48000391}
+  activePosition: {x: 50, y: 50, z: 0}
+  inactivePosition: {x: -500, y: 50, z: 0}
+  isActive: 0
 --- !u!1 &59322131
 GameObject:
   m_ObjectHideFlags: 0
@@ -4888,7 +4905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 61
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4949,6 +4966,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
   m_PrefabInstance: {fileID: 1041442352}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1041442354 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1549064357162467753, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
+  m_PrefabInstance: {fileID: 1041442352}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbfdcb69aa8cea4781edb3de971cfd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1055977295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5464,6 +5492,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 2428576714935050543, guid: f408a883362f2b44cb50602fea2c4d70, type: 3}
+      propertyPath: lifeEnegyBar
+      value: 
+      objectReference: {fileID: 1041442354}
+    - target: {fileID: 2428576714935050543, guid: f408a883362f2b44cb50602fea2c4d70, type: 3}
+      propertyPath: soulEnegyBar
+      value: 
+      objectReference: {fileID: 1776281672}
+    - target: {fileID: 2428576714935050543, guid: f408a883362f2b44cb50602fea2c4d70, type: 3}
+      propertyPath: batteryEnegyBar
+      value: 
+      objectReference: {fileID: 1115128002}
     - target: {fileID: 2428576714935050543, guid: f408a883362f2b44cb50602fea2c4d70, type: 3}
       propertyPath: fieldCharacterSystem
       value: 
@@ -6578,7 +6618,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 61
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6643,6 +6683,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
   m_PrefabInstance: {fileID: 1115128000}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1115128002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1549064357162467753, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
+  m_PrefabInstance: {fileID: 1115128000}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbfdcb69aa8cea4781edb3de971cfd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1119025270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11507,7 +11558,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 61
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11572,6 +11623,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2592920246887058098, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
   m_PrefabInstance: {fileID: 1776281670}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1776281672 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1549064357162467753, guid: 5e86c23e25aff3b47917f2734481e9ef, type: 3}
+  m_PrefabInstance: {fileID: 1776281670}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbfdcb69aa8cea4781edb3de971cfd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1785748758
 GameObject:
   m_ObjectHideFlags: 0
@@ -12305,6 +12367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionBoard: {fileID: 1987657849}
   messagePanel: {fileID: 1685434740}
+  enegyPanel: {fileID: 48000393}
   leftUnitGroup: {fileID: 497177304}
   fieldInfoPanel: {fileID: 237653653}
 --- !u!1 &1902449818

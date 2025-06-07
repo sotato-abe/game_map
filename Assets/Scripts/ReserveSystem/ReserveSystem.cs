@@ -10,6 +10,7 @@ public class ReserveSystem : MonoBehaviour
 
     [SerializeField] ReserveActionBoard actionBoard;
     [SerializeField] MessagePanel messagePanel;
+    [SerializeField] SlidePanel enegyPanel;
     [SerializeField] SlidePanel leftUnitGroup;
     [SerializeField] FieldInfoPanel fieldInfoPanel;
 
@@ -32,23 +33,24 @@ public class ReserveSystem : MonoBehaviour
         messagePanel.SetActive(false);
         fieldInfoPanel.SetActive(false);
         leftUnitGroup.SetActive(false);
+        enegyPanel.SetActive(true);
         actionBoard.gameObject.SetActive(true);
     }
 
     public void ResorveEnd()
     {
         actionBoard.gameObject.SetActive(false);
-
         int completed = 0;
         void CheckAllComplete()
         {
             completed++;
-            if (completed >= 3)
+            if (completed >= 4)
             {
                 OnReserveEnd?.Invoke();
             }
         }
 
+        enegyPanel.SetActive(false, CheckAllComplete);
         messagePanel.SetActive(true, CheckAllComplete);
         fieldInfoPanel.SetActive(true, CheckAllComplete);
         leftUnitGroup.SetActive(true, CheckAllComplete);
