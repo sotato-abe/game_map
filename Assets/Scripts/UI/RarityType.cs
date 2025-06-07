@@ -15,7 +15,7 @@ public static class RarityTypeExtensions
     {
         return rarity switch
         {
-            RarityType.Common => 70.0,
+            RarityType.Common => 60.0,
             RarityType.Rare => 20.0,
             RarityType.Epic => 6.0,
             RarityType.Legendary => 3.0,

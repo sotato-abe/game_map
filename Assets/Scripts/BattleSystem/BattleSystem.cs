@@ -192,7 +192,6 @@ public class BattleSystem : MonoBehaviour
             string itemList = "";
             foreach (Item item in targetItems)
             {
-                // TODO：アイテムのレア度によって取得確率を変える
                 if (Random.Range(0, 100) < item.Base.Rarity.GetProbability())
                 {
                     bool success = playerUnit.Battler.AddItem(item); // プレイヤーのインベントリに追加
