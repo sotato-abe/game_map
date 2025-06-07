@@ -11,6 +11,7 @@ public class ConfigSystem : MonoBehaviour
     [SerializeField] WorldMapPanel worldMapPanel;
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] MessagePanel messagePanel;
+    [SerializeField] TitlePanel titlePanel;
 
     public bool isActive = true; // フラグを追加
 
@@ -43,6 +44,9 @@ public class ConfigSystem : MonoBehaviour
 
     public void OpenConfig()
     {
+        titlePanel.SetActive(true);
+        titlePanel.SetTitle(TitleType.Config); // タイトルパネルを設定
+
         worldMapPanel.SetActive(true); // ワールドマップパネルを表示する
         messagePanel.SetActive(false);
         fieldInfoPanel.SetActive(false);
@@ -56,11 +60,12 @@ public class ConfigSystem : MonoBehaviour
         void CheckAllComplete()
         {
             completed++;
-            if (completed >= 2)
+            if (completed >= 3)
             {
                 OnConfigClose?.Invoke(); // エンカウントイベントを発火
             }
         }
+        titlePanel.SetActive(false, CheckAllComplete);
         messagePanel.SetActive(true, CheckAllComplete);
         fieldInfoPanel.SetActive(true, CheckAllComplete);
     }

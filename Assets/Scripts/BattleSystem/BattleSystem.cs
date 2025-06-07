@@ -23,6 +23,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] SlidePanel leftUnitGroup;
     [SerializeField] SlidePanel rightUnitGroup;
     [SerializeField] FieldInfoPanel fieldInfoPanel;
+    [SerializeField] TitlePanel titlePanel;
 
     private List<BattleUnit> allyUnitList = new List<BattleUnit>();
     private List<BattleUnit> enemyUnitList = new List<BattleUnit>();
@@ -39,6 +40,8 @@ public class BattleSystem : MonoBehaviour
     {
         messagePanel.SetActive(false);
         fieldInfoPanel.SetActive(false);
+        titlePanel.SetActive(true);
+        titlePanel.SetTitle(TitleType.Battle);
 
         turnOrderSystem.TurnOrderClear();
         turnOrderSystem.SetupPlayerBattler(playerUnit.Battler);
@@ -114,11 +117,13 @@ public class BattleSystem : MonoBehaviour
         void CheckAllComplete()
         {
             completed++;
-            if (completed >= 3)
+            if (completed >= 4)
             {
                 OnBattleEnd?.Invoke();
             }
         }
+
+        titlePanel.SetActive(false, CheckAllComplete);
         rightUnitGroup.SetActive(true, CheckAllComplete);
         messagePanel.SetActive(true, CheckAllComplete);
         fieldInfoPanel.SetActive(true, CheckAllComplete);
