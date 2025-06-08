@@ -86,6 +86,7 @@ public class AttackPanel : Panel
                 lifeCost += equipmentUnit.Equipment.EquipmentBase.LifeCost.val;
                 batteryCost += equipmentUnit.Equipment.EquipmentBase.BatteryCost.val;
                 soulCost += equipmentUnit.Equipment.EquipmentBase.SoulCost.val;
+                equipmentUnit.SetStatus(UnitStatus.Active);
             }
             else
             {
