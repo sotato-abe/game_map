@@ -49,7 +49,7 @@ public class DeckWindow : MonoBehaviour, IDropHandler
 
         targetList.Add(commandSlot.command);
         sourceList.Remove(commandSlot.command);
-        storagePanel.RemoveCommandBlock(commandSlot);
+        storagePanel.RemoveCommandBlock(commandSlot.command);
         UpdateDeckUI();
     }
 
@@ -68,10 +68,11 @@ public class DeckWindow : MonoBehaviour, IDropHandler
 
         foreach (Command command in commands)
         {
-            CommandBlock commandSlot = Instantiate(commandPrefab, parent);
-            commandSlot.Setup(command);
-            commandSlot.OnEndDragAction += () => ArrangeCommands(slotList);
-            slotList.Add(commandSlot);
+            CommandBlock commandBlock = Instantiate(commandPrefab, parent);
+            commandBlock.Setup(command);
+            commandBlock.OnEndDragAction += () => ArrangeCommands(slotList);
+            commandBlock.OnDeleteCommand += RemoveCommand;
+            slotList.Add(commandBlock);
         }
         ArrangeCommands(slotList);
     }
@@ -107,10 +108,10 @@ public class DeckWindow : MonoBehaviour, IDropHandler
         }
     }
 
-    public void RemoveCommand(CommandBlock commandSlot)
+    public void RemoveCommand(Command command)
     {
-        playerBattler.DeckList.Remove(commandSlot.command);
-        playerBattler.RunTable.Remove(commandSlot.command);
+        playerBattler.DeckList.Remove(command);
+        playerBattler.RunTable.Remove(command);
         UpdateDeckUI();
     }
 }

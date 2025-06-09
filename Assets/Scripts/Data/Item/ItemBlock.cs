@@ -16,6 +16,9 @@ public class ItemBlock : Block
     [SerializeField] TreasureDialog treasureDialog;
     private bool isActive = true;
 
+    public delegate void DeleteItemDelegate(Item item);
+    public event DeleteItemDelegate OnDeleteItem;
+
     public void Setup(Item item)
     {
         Item = item;
@@ -57,6 +60,11 @@ public class ItemBlock : Block
         Color bgColor = cursor.color;
         bgColor.a = isActive ? 1f : 0f;
         cursor.color = bgColor;
+    }
+
+    public void RemoveItem()
+    {
+        OnDeleteItem?.Invoke(Item);
     }
 
     private void ShowDialog(bool showFlg)

@@ -143,6 +143,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
             ItemBlock itemBlock = itemBlockObject.GetComponent<ItemBlock>();
             itemBlock.Setup(item);
             itemBlock.OnEndDragAction += ArrengeItemBlocks;
+            itemBlock.OnDeleteItem += RemoveItem;
             itemBlockList.Add(itemBlock);
 
             if (itemNum == selectedItem)

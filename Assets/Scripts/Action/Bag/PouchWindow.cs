@@ -75,6 +75,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
             itemBlock.gameObject.SetActive(true);
             itemBlock.Setup(consumable);
             itemBlock.OnEndDragAction += ArrengeItemBlocks;
+            itemBlock.OnDeleteItem += RemoveItem;
             itemBlockList.Add(itemBlock);
         }
         SetBlockingBlock();

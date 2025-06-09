@@ -64,7 +64,7 @@ public class StoragePanel : Panel, IDropHandler
             }
 
             AddCommandBlock(droppedCommandBlock.command); // バッグに追加
-            deckWindow.RemoveCommand(droppedCommandBlock);
+            deckWindow.RemoveCommand(droppedCommandBlock.command);
         }
     }
 
@@ -105,6 +105,7 @@ public class StoragePanel : Panel, IDropHandler
             CommandBlock commandSlot = Instantiate(commandPrefab, storageArea.transform);
             commandSlot.gameObject.SetActive(true);
             commandSlot.OnEndDragAction += ArrengeStorage; // 正しく登録
+            commandSlot.OnDeleteCommand += RemoveCommandBlock; // 正しく登録
             commandSlot.Setup(command);
             storageList.Add(commandSlot);
         }
@@ -115,7 +116,7 @@ public class StoragePanel : Panel, IDropHandler
 
     private void SetBlock()
     {
-        int blockNum = (row - (playerBattler.Storage.val % row)) % row;        
+        int blockNum = (row - (playerBattler.Storage.val % row)) % row;
         blockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
@@ -131,9 +132,9 @@ public class StoragePanel : Panel, IDropHandler
         SetStorage();
     }
 
-    public void RemoveCommandBlock(CommandBlock commandSlot)
+    public void RemoveCommandBlock(Command command)
     {
-        playerBattler.StorageList.Remove(commandSlot.command);
+        playerBattler.StorageList.Remove(command);
         SetStorage();
     }
 

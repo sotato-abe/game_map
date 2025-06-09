@@ -1,0 +1,24 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
+
+// ドロップされたItem,Commandを削除するためのTrashWindowクラス
+public class TrashWindow : MonoBehaviour, IDropHandler
+{
+    public void OnDrop(PointerEventData eventData)
+    {
+        CommandBlock droppedCommandBlock = eventData.pointerDrag?.GetComponent<CommandBlock>();
+        ItemBlock droppedItemBlock = eventData.pointerDrag?.GetComponent<ItemBlock>();
+        if (droppedCommandBlock)
+        {
+            // Debug.Log($"test : {droppedCommandBlock.command.Base.Name}");
+            droppedCommandBlock.RemoveCommand();
+        }
+        else if (droppedItemBlock)
+        {
+            // Debug.Log($"test : {droppedItemBlock.Item.Base.Name}");
+            droppedItemBlock.RemoveItem();
+        }
+    }
+}

@@ -10,6 +10,9 @@ public class CommandBlock : Block
     [SerializeField] Image maskImage;
     [SerializeField] CommandDialog commandDialog;
 
+    public delegate void DeleteCommandDelegate(Command block);
+    public event DeleteCommandDelegate OnDeleteCommand;
+
     public void Setup(Command command)
     {
         this.command = command;
@@ -37,8 +40,6 @@ public class CommandBlock : Block
 
     public void RemoveCommand()
     {
-        this.command = null;
-        maskImage.color = new Color(maskImage.color.r, maskImage.color.g, maskImage.color.b, 0f);
-        image.sprite = null;
+        OnDeleteCommand?.Invoke(command);
     }
 }
