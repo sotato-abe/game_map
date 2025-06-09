@@ -124,7 +124,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         titlePanel.SetActive(false, CheckAllComplete);
-        rightUnitGroup.SetActive(true, CheckAllComplete);
+        rightUnitGroup.SetActive(false, CheckAllComplete);
         messagePanel.SetActive(true, CheckAllComplete);
         fieldInfoPanel.SetActive(true, CheckAllComplete);
     }
