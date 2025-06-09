@@ -4,7 +4,7 @@ public enum RarityType
     Rare, // レア：２０％
     Epic, // エピック：６％
     Legendary, // レジェンダリー：３％
-    Mythic, // ミシック：１％
+    Mythic, // ミシック：0.5％
 }
 
 // レアリティによっての確率を取得
@@ -19,7 +19,7 @@ public static class RarityTypeExtensions
             RarityType.Rare => 20.0,
             RarityType.Epic => 6.0,
             RarityType.Legendary => 3.0,
-            RarityType.Mythic => 1.0,
+            RarityType.Mythic => 0.5,
             _ => 0.0
         };
     }
