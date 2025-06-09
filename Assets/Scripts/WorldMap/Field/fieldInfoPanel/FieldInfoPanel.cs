@@ -9,6 +9,7 @@ public class FieldInfoPanel : SlidePanel
     [SerializeField] Title title;
     [SerializeField] Description description;
     [SerializeField] FieldInfoIcon icon;
+    [SerializeField] InfoImage infoImage;
     private List<string> descriptionList = new List<string>();
 
     public void Setup(FieldBase fieldBase)
@@ -20,6 +21,17 @@ public class FieldInfoPanel : SlidePanel
         {
             titleText = fieldBase.Name;
             descriptionText = fieldBase.Description;
+            if (fieldBase.Sprite != null)
+            {
+                infoImage.Setup(fieldBase.Sprite, fieldBase.Name, fieldBase.Description);
+            }
+            else
+            {
+                infoImage.SetUnknown();
+            }
+        }else
+        {
+            infoImage.SetUnknown();
         }
         StartCoroutine(title.TypeTitle(titleText));
         StartCoroutine(description.TypeDescription(descriptionText));

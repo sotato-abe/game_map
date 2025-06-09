@@ -7,6 +7,7 @@ public class FieldBase : ScriptableObject
 {
     [SerializeField] int id;
     [SerializeField] string mapName;
+    [SerializeField] Sprite sprite;
     [SerializeField] int level;
     [SerializeField] FieldType fieldType;
     [SerializeField] int mapHeight = 50;
@@ -23,6 +24,7 @@ public class FieldBase : ScriptableObject
 
     public int Id { get => id; }
     public string Name { get => mapName; }
+    public Sprite Sprite { get => sprite; }
     public int Level { get => level; }
     public FieldType FieldType { get => fieldType; }
     public int MapHeight { get => mapHeight; }
