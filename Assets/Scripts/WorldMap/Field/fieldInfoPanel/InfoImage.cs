@@ -10,9 +10,8 @@ public class InfoImage : MonoBehaviour
     [SerializeField] Sprite unknounSprite;
     [SerializeField] RectTransform backRectTransform;
 
-    int defaultHeight = 80;
-    int defaultwidth = 360;
-    float time = 0.1f;
+    public float scale = 3.0f;
+
 
     public void Setup(Sprite sprite, string name, string description)
     {
@@ -36,33 +35,22 @@ public class InfoImage : MonoBehaviour
         StartCoroutine(OnPointer(false));
     }
 
-    public IEnumerator OnPointer(bool isActive)
+    public IEnumerator OnPointer(bool focusFlg)
     {
+        float time = 0.05f;
         float currentTime = 0f;
-
-        if (isActive)
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = new Vector3(1, 1, 1);
+        if (focusFlg)
         {
-            Vector2 originalSize = backRectTransform.sizeDelta;
-            Vector2 targetSize = new Vector2(defaultwidth, defaultwidth);
-            while (currentTime < time)
-            {
-                backRectTransform.sizeDelta = Vector2.Lerp(originalSize, targetSize, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            backRectTransform.sizeDelta = targetSize;
+            targetScale = new Vector3(scale, scale, scale);
         }
-        else
+        while (currentTime < time)
         {
-            Vector2 originalSize = backRectTransform.sizeDelta;
-            Vector2 targetSize = new Vector2(defaultwidth, defaultHeight);
-            while (currentTime < time)
-            {
-                backRectTransform.sizeDelta = Vector2.Lerp(originalSize, targetSize, currentTime / time);
-                currentTime += Time.deltaTime;
-                yield return null;
-            }
-            backRectTransform.sizeDelta = targetSize;
+            transform.localScale = Vector3.Lerp(originalScale, targetScale, currentTime / time);
+            currentTime += Time.deltaTime;
+            yield return null;
         }
+        transform.localScale = targetScale;
     }
 }
