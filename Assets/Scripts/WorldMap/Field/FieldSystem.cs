@@ -191,7 +191,6 @@ public class FieldSystem : MonoBehaviour
                 GameObject obj = null;
 
                 // タイルタイプごとの処理
-                // TODO buildingがアイコンを持っている場合アイコンを使用
                 if (tileType != (int)TileType.Base && tileType != (int)TileType.Wall && tileType != (int)TileType.Edge)
                 {
                     groundObj = CreateTile($"Tile_{x}_{y}", tileSet.Floor, pos, "MapGround", "Ground");
