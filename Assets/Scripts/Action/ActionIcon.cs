@@ -11,11 +11,12 @@ public class ActionIcon : MonoBehaviour
     public UnityAction<ActionType> OnPointerEnterAction;
     [SerializeField] Image backImage;
     [SerializeField] private bool isActive = false;
+    [SerializeField] Color activeColor = new Color(133, 10, 255, 200); // アクティブ時の色
     private float defaultSize = 50f;
     private float activeScale = 2.0f;
     private float scaleDuration = 0.05f;
     private RectTransform rectTransform;
-    Color32 activeColor = new Color32(133, 10, 255, 200);
+    // Color32 activeColor = new Color32(133, 10, 255, 200);
     Color32 stopColor = new Color32(0, 0, 0, 200);
 
     private void Awake()
