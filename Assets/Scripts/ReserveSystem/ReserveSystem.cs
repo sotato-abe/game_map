@@ -31,11 +31,11 @@ public class ReserveSystem : MonoBehaviour
 
     public void ReserveStart()
     {
+        transform.gameObject.SetActive(true);
         messagePanel.SetActive(false);
         fieldInfoPanel.SetActive(false);
         leftUnitGroup.SetActive(false);
         reservePanel.SetActive(true);
-        titlePanel.SetActive(true);
         titlePanel.SetTitle(TitleType.Reserve);
 
         actionBoard.gameObject.SetActive(true);
@@ -51,6 +51,7 @@ public class ReserveSystem : MonoBehaviour
             if (completed >= 4)
             {
                 OnReserveEnd?.Invoke();
+                transform.gameObject.SetActive(false);
             }
         }
 

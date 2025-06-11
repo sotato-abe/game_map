@@ -44,7 +44,6 @@ public class ConfigSystem : MonoBehaviour
 
     public void OpenConfig()
     {
-        titlePanel.SetActive(true);
         titlePanel.SetTitle(TitleType.Config); // タイトルパネルを設定
 
         worldMapPanel.SetActive(true); // ワールドマップパネルを表示する
@@ -55,7 +54,7 @@ public class ConfigSystem : MonoBehaviour
 
     public void CloseConfig()
     {
-        worldMapPanel.SetActive(false); // 
+        worldMapPanel.SetActive(false);
         int completed = 0;
         void CheckAllComplete()
         {

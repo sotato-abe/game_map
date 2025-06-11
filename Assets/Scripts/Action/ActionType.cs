@@ -1,6 +1,5 @@
 public enum ActionType
 {
-        Talk,
         Attack,
         Command,
         Pouch,
@@ -8,5 +7,4 @@ public enum ActionType
         Storage,
         Status,
         Escape,
-        Quit,
 }

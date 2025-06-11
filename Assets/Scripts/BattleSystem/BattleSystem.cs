@@ -17,8 +17,8 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleActionBoard actionBoard;
     [SerializeField] MessagePanel messagePanel;
     [SerializeField] PlayerUnit playerUnit;
-    [SerializeField] BattleUnit allyUnitPrefab;
-    [SerializeField] BattleUnit enemyUnitPrefab;
+    [SerializeField] BattleUnit leftUnitPrefab;
+    [SerializeField] BattleUnit rightUnitPrefab;
     [SerializeField] AttackSystem attackSystem;
     [SerializeField] SlidePanel leftUnitGroup;
     [SerializeField] SlidePanel rightUnitGroup;
@@ -38,9 +38,9 @@ public class BattleSystem : MonoBehaviour
 
     public void SetBattle(List<Battler> enemies)
     {
+        transform.gameObject.SetActive(true);
         messagePanel.SetActive(false);
         fieldInfoPanel.SetActive(false);
-        titlePanel.SetActive(true);
         titlePanel.SetTitle(TitleType.Battle);
 
         turnOrderSystem.TurnOrderClear();
@@ -66,7 +66,7 @@ public class BattleSystem : MonoBehaviour
 
     public void SetBattlerUnit(Battler battler, bool isAlly)
     {
-        BattleUnit targetUnit = isAlly ? allyUnitPrefab : enemyUnitPrefab;
+        BattleUnit targetUnit = isAlly ? leftUnitPrefab : rightUnitPrefab;
         SlidePanel targetGroupPanel = isAlly ? leftUnitGroup : rightUnitGroup;
         BattleUnit battlerUnit = Instantiate(targetUnit, targetGroupPanel.transform);
         battlerUnit.Setup(battler);
@@ -120,6 +120,7 @@ public class BattleSystem : MonoBehaviour
             if (completed >= 4)
             {
                 OnBattleEnd?.Invoke();
+                transform.gameObject.SetActive(false);
             }
         }
 

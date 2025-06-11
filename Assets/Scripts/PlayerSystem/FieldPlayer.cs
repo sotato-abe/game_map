@@ -19,7 +19,6 @@ public class FieldPlayer : FieldCharacter
     public UnityAction OnEncount;
     public UnityAction OnReserve;
     public UnityAction OnGetItem;
-    public UnityAction ExitBuilding;
     public TileType playerTileType = TileType.Base;
     public bool canEncount = false;
     bool isMoving = false;
@@ -30,12 +29,14 @@ public class FieldPlayer : FieldCharacter
     public float distanceTraveled = 0.0f;
     private float encountCooldown = 1f; // チェック間隔（秒）
     private float lastEncountCheckTime = -Mathf.Infinity;
+
+    private float moveBuildingDistance = 0.0f; // 移動距離の閾値
     public Vector3 lastPosition;
     Coroutine currentMoveCoroutine;
     public delegate void ChangeFieldDelegate(DirectionType fieldId);
     public delegate void EntoryBuildingDelegate(BuildingType type);
     public event ChangeFieldDelegate ChangeField;
-    public event EntoryBuildingDelegate EntryBuilding;
+    public event EntoryBuildingDelegate OnTradeStart;
 
     protected override void Awake()
     {
@@ -306,31 +307,26 @@ public class FieldPlayer : FieldCharacter
         isMoving = false;
     }
 
+    // 前回建物に入ったときから少し移動した後じゃないとtrueにしないようにする
     private bool CheckForBuilding()
     {
+        if (moveBuildingDistance < 2.0f)
+        {
+            moveBuildingDistance += Vector3.Distance(transform.position, lastPosition);
+            lastPosition = transform.position;
+            return false; // 移動距離が閾値に達していない場合は建物イベントを発生させない
+        }
         Collider2D hitBuilding = Physics2D.OverlapCircle(transform.position, 0.4f, buildingLayer);
         if (hitBuilding)
         {
-            if (playerTileType != TileType.Building)
-            {
-                playerTileType = TileType.Building;
-            }
             Building building = hitBuilding.GetComponent<Building>();
             SetMoveFlg(false);
             playerAnimator.SetBool("isMoving", false);
-            EntryBuilding?.Invoke(building.Type);
+            OnTradeStart?.Invoke(building.Type);
+            moveBuildingDistance = 0.0f; // 移動距離をリセット
             return true;
         }
-        else if (playerTileType == TileType.Building)
-        {
-            playerTileType = TileType.Ground;
-            ExitBuilding?.Invoke();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private bool CheckForObject()
@@ -343,10 +339,7 @@ public class FieldPlayer : FieldCharacter
             OnGetItem?.Invoke();
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     void CheckForEncount()

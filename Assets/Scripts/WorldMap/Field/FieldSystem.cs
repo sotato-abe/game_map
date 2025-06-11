@@ -11,6 +11,7 @@ public class FieldSystem : MonoBehaviour
 {
     public UnityAction OnReserve; // リザーブイベント
     public UnityAction OnEncount; // エンカウントイベント
+    public UnityAction OnTrade; // エンカウントイベント
 
     FieldMapGenerator fieldMapGenerator = new FieldMapGenerator();
 
@@ -33,7 +34,6 @@ public class FieldSystem : MonoBehaviour
     List<GameObject> spawnedObjects = new List<GameObject>(); // 生成されたオブジェクトを追跡するリスト
 
     private FieldData fieldData;
-    private BuildingBase currentBuildingBase;
 
     void Start()
     {
@@ -41,8 +41,6 @@ public class FieldSystem : MonoBehaviour
         fieldPlayer.OnEncount += Encount;
         fieldPlayer.OnGetItem += GetItem;
         fieldPlayer.ChangeField += ReloadMap;
-        fieldPlayer.ExitBuilding += ExitBuilding;
-        fieldPlayer.EntryBuilding += EntryBuilding;
     }
 
     public void Setup(PlayerBattler battler)
@@ -61,7 +59,6 @@ public class FieldSystem : MonoBehaviour
     {
         fieldData = worldMapSystem.getFieldDataByCoordinate(playerBattler.coordinate);
         fieldData.Init(); // フィールドデータの初期化
-        ExitBuilding();
         fieldPlayer.canEncount = fieldData.enemies.Count > 0; // エンカウントフラグを設定
         fieldCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(fieldData.mapWidth, fieldData.mapHeight); // フィールドキャンバスのサイズを設定        
     }
@@ -76,32 +73,11 @@ public class FieldSystem : MonoBehaviour
         OnEncount?.Invoke();
     }
 
-    public void EntryBuilding(BuildingType type)
+    public BuildingBase GetBuildingDataByType(BuildingType type)
     {
-        // 現在地のタイルタイプを取得
-        BuildingBase building = ScriptableObject.CreateInstance<BuildingBase>();
-        // TODO : 今の実装だと複数同じタイプがある時に一つ目のBuildingしか取得できないので、エントリーした建物を取得するように修正する
-        building = fieldData.Buildings.Find(b => b.type == type);
-        if (currentBuildingBase != building)
-        {
-            fieldInfoPanel.gameObject.SetActive(true);
-            fieldInfoPanel.SetupBuilding(building);
-            messagePanel.AddMessage(MessageIconType.Building, $"{building.Name}");
-            currentBuildingBase = building; // 現在の建物を更新
-            SetBattlerUnit(currentBuildingBase.Owner); // 建物の所有者をバトラーとして設定
-            rightUnitGroup.SetActive(true); // 右側のグループパネルをアクティブにする
-            ageTimePanel.SetTimeSpeed(TimeState.Live);
-        }
-        fieldPlayer.SetMoveFlg(true); // 移動フラグをオンにする
-    }
-
-    private void ExitBuilding()
-    {
-        currentBuildingBase = null;
-        fieldInfoPanel.gameObject.SetActive(false);
-        rightUnitGroup.SetActive(false); // 右側のグループパネルを非表示にする
-        fieldInfoPanel.Setup(fieldData.fieldBase);
-        ageTimePanel.SetTimeSpeed(TimeState.Fast); // 時間の進行を速くする
+        // 建物のデータを取得
+        BuildingBase building = fieldData.Buildings.Find(b => b.type == type);
+        return building;
     }
 
     private void SetBattlerUnit(Battler battler)
@@ -365,8 +341,9 @@ public class FieldSystem : MonoBehaviour
         return enemyGroup;
     }
 
-    public void FieldInfoPanleSwitch(bool isOpen)
+    public void SetFieldPanelData()
     {
-        fieldInfoPanel.gameObject.SetActive(isOpen);
+        fieldInfoPanel.Setup(fieldData.fieldBase); // フィールド情報パネルを設定
+        fieldInfoPanel.gameObject.SetActive(true); // フィールド情報パネルを表示
     }
 }

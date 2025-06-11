@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     [SerializeField] FieldPlayer fieldPlayer;
     [SerializeField] ReserveSystem reserveSystem;
     [SerializeField] BattleSystem battleSystem;
+    [SerializeField] TradeSystem tradeSystem;
     [SerializeField] FieldSystem fieldSystem;
     [SerializeField] ConfigSystem configSystem;
     [SerializeField] FieldInfoPanel fieldInfoPanel;
@@ -28,6 +29,10 @@ public class GameController : MonoBehaviour
         fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
         fieldSystem.OnReserve += ReserveStart;
         fieldSystem.OnEncount += BattleStart;
+
+        fieldPlayer.OnTradeStart += TradeStart;
+        tradeSystem.OnTradeEnd += TradeEnd;
+
         configSystem.OnConfigOpen += ConfigStart;
         configSystem.OnConfigClose += ConfigEnd;
 
@@ -41,54 +46,66 @@ public class GameController : MonoBehaviour
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
+    public void TradeStart(BuildingType type)
+    {
+        // Debug.Log("TradeStart");
+        ageTimePanel.SetTimeSpeed(TimeState.Live);
+        configSystem.SetActive(false);
+        tradeSystem.TradeStart(type);
+    }
+
+    public void TradeEnd()
+    {
+        // Debug.Log("TradeEnd");
+        ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        configSystem.SetActive(true);
+        fieldPlayer.SetMoveFlg(true);
+    }
+
     public void ReserveStart()
     {
         // Debug.Log("ReserveStart");
-        reserveSystem.gameObject.SetActive(true);
+        ageTimePanel.SetTimeSpeed(TimeState.Live);
         configSystem.SetActive(false);
         reserveSystem.ReserveStart();
-        ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 
     public void ReserveEnd()
     {
         // Debug.Log("ReserveEnd");
-        fieldPlayer.SetMoveFlg(true);
-        reserveSystem.gameObject.SetActive(false);
-        configSystem.SetActive(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        fieldPlayer.SetMoveFlg(true);
+        configSystem.SetActive(true);
     }
 
     public void BattleStart()
     {
         // Debug.Log("BattleStart");
+        ageTimePanel.SetTimeSpeed(TimeState.Live);
         configSystem.SetActive(false);
         List<Battler> enemyGroup = fieldSystem.GetEnemyGruop();
-        battleSystem.gameObject.SetActive(true);
         battleSystem.SetBattle(enemyGroup);
-        ageTimePanel.SetTimeSpeed(TimeState.Live);
     }
 
     public void BattleEnd()
     {
         // Debug.Log("BattleEnd");
-        battleSystem.gameObject.SetActive(false);
+        ageTimePanel.SetTimeSpeed(TimeState.Fast);
         configSystem.SetActive(true);
         fieldPlayer.SetMoveFlg(true);
-        ageTimePanel.SetTimeSpeed(TimeState.Fast);
     }
 
     public void ConfigStart()
     {
         // Debug.Log("ConfigStart");
-        fieldPlayer.SetMoveFlg(false);
         ageTimePanel.SetTimeSpeed(TimeState.Live);
+        fieldPlayer.SetMoveFlg(false);
     }
 
     public void ConfigEnd()
     {
         // Debug.Log("ConfigEnd");
-        fieldPlayer.SetMoveFlg(true);
         ageTimePanel.SetTimeSpeed(TimeState.Fast);
+        fieldPlayer.SetMoveFlg(true);
     }
 }

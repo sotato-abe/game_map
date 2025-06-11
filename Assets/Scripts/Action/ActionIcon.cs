@@ -6,25 +6,15 @@ using TMPro;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-//　actionPanelを切り替えるボタンのアイコン
-public class ActionIcon : MonoBehaviour, IPointerEnterHandler
+public class ActionIcon : MonoBehaviour
 {
     public UnityAction<ActionType> OnPointerEnterAction;
-    [SerializeField] private Image image;
     [SerializeField] Image backImage;
-    [SerializeField] ActionIconList actionIconList;
-
-    public ActionType type;
     [SerializeField] private bool isActive = false;
-    private float defaultWidth = 50f;
-    private float defaultHeight = 50f;
-    private float defaultFontSize = 12f; // デフォルトのフォントサイズ
+    private float defaultSize = 50f;
     private float activeScale = 2.0f;
-    private float scaleDuration = 0.05f; // スケール変更の時間
-
+    private float scaleDuration = 0.05f;
     private RectTransform rectTransform;
-
-    // Color32 activeColor = new Color32(130, 255, 10, 200);
     Color32 activeColor = new Color32(133, 10, 255, 200);
     Color32 stopColor = new Color32(0, 0, 0, 200);
 
@@ -33,47 +23,21 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        OnPointerEnterAction?.Invoke(type);
-    }
-
-    public void SetAction(ActionType actionType)
-    {
-        type = actionType;
-        image.sprite = actionIconList.GetIcon(type);
-    }
-
     public void SetActive(bool activeFlg)
     {
         if (isActive == activeFlg) return;
         isActive = activeFlg;
-        if (isActive)
-        {
-            SetColor(activeColor);
-            // image.color = Color.black;
-        }
-        else
-        {
-            SetColor(stopColor);
-            // image.color = Color.white;
-        }
-
-        // コルーチンを開始してスムーズにサイズとフォントサイズを変更
         StopAllCoroutines();
-
-        float targetWidth = isActive ? defaultWidth * activeScale : defaultWidth;
-        float targetHeight = isActive ? defaultHeight * activeScale : defaultHeight;
-        float targetFontSize = isActive ? defaultFontSize * activeScale : defaultFontSize;
-
-        StartCoroutine(ResizeOverTime(targetWidth, targetHeight, targetFontSize));
+        SetColor(isActive);
+        float targetSize = isActive ? defaultSize * activeScale : defaultSize;
+        StartCoroutine(ResizeOverTime(targetSize));
     }
 
-    private IEnumerator ResizeOverTime(float targetWidth, float targetHeight, float targetFontSize)
+    private IEnumerator ResizeOverTime(float targetSize)
     {
         float elapsedTime = 0f;
         Vector2 startSize = rectTransform.sizeDelta;
-        Vector2 endSize = new Vector2(targetWidth, targetHeight);
+        Vector2 endSize = new Vector2(targetSize, targetSize);
 
         var layout = GetComponent<LayoutElement>();
 
@@ -90,11 +54,14 @@ public class ActionIcon : MonoBehaviour, IPointerEnterHandler
         }
 
         rectTransform.sizeDelta = endSize;
-        layout.preferredHeight = targetHeight;
+        layout.preferredHeight = targetSize;
     }
 
-    private void SetColor(Color color)
+    private void SetColor(bool isActive)
     {
-        backImage.color = color;
+        if (isActive)
+            backImage.color = activeColor;
+        else
+            backImage.color = stopColor;
     }
 }

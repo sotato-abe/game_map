@@ -12,13 +12,16 @@ public class TitlePanel : SlidePanel
     [SerializeField] Sprite reserveIcon;
     [SerializeField] Sprite battleIcon;
     [SerializeField] Sprite configIcon;
+    [SerializeField] Sprite tradeIcon;
 
     Color32 reserveColor = new Color32(187, 0, 255, 200);
     Color32 battleColor = new Color32(255, 0, 71, 200);
     Color32 settingColor = new Color32(0, 237, 255, 200);
+    Color32 tradeColor = new Color32(18, 192, 65, 200);
 
     public void SetTitle(TitleType titleType)
     {
+        SetActive(true);
         switch (titleType)
         {
             case TitleType.Reserve:
@@ -35,6 +38,11 @@ public class TitlePanel : SlidePanel
                 iconImage.sprite = configIcon;
                 nameText.SetText("設定");
                 backPanelImage.color = settingColor;
+                break;
+            case TitleType.Trade:
+                iconImage.sprite = tradeIcon;
+                nameText.SetText("取引");
+                backPanelImage.color = tradeColor;
                 break;
             default:
                 Debug.LogError("Unknown TitleType: " + titleType);
