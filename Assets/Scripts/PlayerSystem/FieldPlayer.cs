@@ -310,7 +310,7 @@ public class FieldPlayer : FieldCharacter
     // 前回建物に入ったときから少し移動した後じゃないとtrueにしないようにする
     private bool CheckForBuilding()
     {
-        if (moveBuildingDistance < 2.0f)
+        if (moveBuildingDistance < 1.0f)
         {
             moveBuildingDistance += Vector3.Distance(transform.position, lastPosition);
             lastPosition = transform.position;
@@ -408,6 +408,7 @@ public class FieldPlayer : FieldCharacter
 
     public void SetMoveFlg(bool flg)
     {
+        Debug.Log($"SetMoveFlg: {flg}");
         if (!flg)
         {
             StopMove();
