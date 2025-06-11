@@ -26,12 +26,10 @@ public class TrashWindow : Unit, IDropHandler
         ItemBlock droppedItemBlock = eventData.pointerDrag?.GetComponent<ItemBlock>();
         if (droppedCommandBlock)
         {
-            // Debug.Log($"test : {droppedCommandBlock.command.Base.Name}");
             droppedCommandBlock.RemoveCommand();
         }
         else if (droppedItemBlock)
         {
-            // Debug.Log($"test : {droppedItemBlock.Item.Base.Name}");
             droppedItemBlock.RemoveItem();
         }
     }

@@ -408,7 +408,6 @@ public class FieldPlayer : FieldCharacter
 
     public void SetMoveFlg(bool flg)
     {
-        Debug.Log($"SetMoveFlg: {flg}");
         if (!flg)
         {
             StopMove();
