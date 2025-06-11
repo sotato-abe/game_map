@@ -7,6 +7,7 @@ public class BuildingBase : ScriptableObject
 {
     [SerializeField] new string name;
     [SerializeField] Sprite icon;
+    [SerializeField] Sprite image;
     [SerializeField] Battler owner;
     [SerializeField, TextArea] string description;
 
@@ -15,4 +16,5 @@ public class BuildingBase : ScriptableObject
     public Battler Owner { get => owner; }
     public string Description { get => description; }
     public Sprite Icon { get => icon; }
+    public Sprite Image { get => image; }
 }

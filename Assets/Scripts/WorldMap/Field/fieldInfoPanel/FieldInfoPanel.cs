@@ -22,26 +22,29 @@ public class FieldInfoPanel : SlidePanel
             titleText = fieldBase.Name;
             descriptionText = fieldBase.Description;
             if (fieldBase.Sprite != null)
-            {
-                infoImage.Setup(fieldBase.Sprite, fieldBase.Name, fieldBase.Description);
-            }
+                infoImage.Setup(fieldBase.Sprite);
             else
-            {
                 infoImage.SetUnknown();
-            }
-        }else
+        }
+        else
         {
             infoImage.SetUnknown();
         }
         StartCoroutine(title.TypeTitle(titleText));
         StartCoroutine(description.TypeDescription(descriptionText));
+        icon.SetIconMotion(MotionType.Jump);
     }
 
     public void SetupBuilding(BuildingBase buildingBase)
     {
         transform.gameObject.SetActive(true);
-        icon.SetIconMotion(MotionType.Jump);
         StartCoroutine(title.TypeTitle(buildingBase.Name));
         StartCoroutine(description.TypeDescription(buildingBase.Description));
+        icon.SetIconMotion(MotionType.Jump);
+
+        if (buildingBase.Image != null)
+            infoImage.Setup(buildingBase.Image);
+        else
+            infoImage.SetUnknown();
     }
 }

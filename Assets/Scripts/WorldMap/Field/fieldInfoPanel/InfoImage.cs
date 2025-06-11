@@ -13,7 +13,7 @@ public class InfoImage : MonoBehaviour
     public float scale = 3.0f;
 
 
-    public void Setup(Sprite sprite, string name, string description)
+    public void Setup(Sprite sprite)
     {
         transform.gameObject.SetActive(true);
         image.sprite = sprite;

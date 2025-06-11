@@ -168,6 +168,7 @@ public class FieldSystem : MonoBehaviour
         renderingTileMap();
         ResetCharacterPosition();
         SetUpFieldPlayerMapSize();
+        SetFieldPanelData();
     }
 
     // フィールド用のタイルを描画
@@ -299,9 +300,11 @@ public class FieldSystem : MonoBehaviour
         GameObject obj = Instantiate(prefab, position, Quaternion.identity);
         Building building = obj.GetComponent<Building>();
         building.Setup(type); // 建物のアイコンを設定
-
         SpriteRenderer renderer = obj.GetComponent<SpriteRenderer>();
         renderer.sortingLayerName = sortingLayer;
+        BuildingBase buildingBase = GetBuildingDataByType(type);
+        if (buildingBase.Icon)
+            renderer.sprite = buildingBase.Icon; // アイコンを設定
         obj.layer = LayerMask.NameToLayer(layerName);
         obj.AddComponent<BoxCollider2D>();
         return obj;

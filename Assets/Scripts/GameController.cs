@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
         playerBattler.Init();
         fieldPlayer.SetUp(playerBattler); // フィールドプレイヤーの初期化
         fieldSystem.Setup(playerBattler); // フィールドシステムの初期化
+        fieldSystem.SetFieldPanelData();
         fieldSystem.OnReserve += ReserveStart;
         fieldSystem.OnEncount += BattleStart;
 
