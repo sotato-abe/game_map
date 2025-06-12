@@ -67,8 +67,8 @@ public class EscapePanel : Panel
 
     private void CountEnegyCost()
     {
-        lifeCost = Mathf.Max(1, playerUnit.Battler.Life / 10);
-        batteryCost = Mathf.Max(1, playerUnit.Battler.Battery / 10);
+        lifeCost = Mathf.Max(0, playerUnit.Battler.Life / 10);
+        batteryCost = Mathf.Max(0, playerUnit.Battler.Battery / 10);
         soulCost = playerUnit.Battler.Soul / 2;
 
         lifeCostText.SetText(lifeCost.ToString());
@@ -100,6 +100,7 @@ public class EscapePanel : Panel
             attackSystem.ExecutePlayerEscape(false);
         }
         RunningOff();
+        CountEnegyCost();
         ProbabilityCalculation();
         isEscaping = false;
     }
