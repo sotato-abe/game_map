@@ -13,55 +13,79 @@ public class BattleActionBoard : MonoBehaviour
     [SerializeField] private ActionIcon pouchIcon;
     [SerializeField] private ActionIcon escapeIcon;
 
-    private Dictionary<ActionType, Panel> actionPanels;
-    private Dictionary<ActionType, ActionIcon> actionIcons;
-    private List<ActionType> actionTypeList;
-    private int currentIndex = 0;
+    private Dictionary<BattleActionType, Panel> actionPanels;
+    private Dictionary<BattleActionType, ActionIcon> actionIcons;
+    private List<BattleActionType> actionTypeList;
+    private BattleActionType currentAction = BattleActionType.Attack;
 
     private void Start()
     {
-        actionPanels = new Dictionary<ActionType, Panel>
+        actionPanels = new Dictionary<BattleActionType, Panel>
         {
-            { ActionType.Attack, attackPanel },
-            { ActionType.Command, commandPanel },
-            { ActionType.Pouch, pouchPanel },
-            { ActionType.Escape, escapePanel },
+            { BattleActionType.Attack, attackPanel },
+            { BattleActionType.Command, commandPanel },
+            { BattleActionType.Pouch, pouchPanel },
+            { BattleActionType.Escape, escapePanel },
         };
 
-        actionIcons = new Dictionary<ActionType, ActionIcon>
+        actionIcons = new Dictionary<BattleActionType, ActionIcon>
         {
-            { ActionType.Attack, attackIcon },
-            { ActionType.Command, commandIcon },
-            { ActionType.Pouch, pouchIcon },
-            { ActionType.Escape, escapeIcon },
+            { BattleActionType.Attack, attackIcon },
+            { BattleActionType.Command, commandIcon },
+            { BattleActionType.Pouch, pouchIcon },
+            { BattleActionType.Escape, escapeIcon },
         };
 
-        actionTypeList = new List<ActionType>(actionPanels.Keys);
+        actionTypeList = new List<BattleActionType>(actionPanels.Keys);
 
+        ChangeActiveIcon();
         ChangeActionPanel();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
         {
-            currentIndex = (currentIndex + 1) % actionTypeList.Count;
-            ChangeActionPanel();
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                currentAction = BattleActionType.Attack;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                currentAction = BattleActionType.Command;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currentAction = BattleActionType.Pouch;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                currentAction = BattleActionType.Escape;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+    }
+
+    private void ChangeActiveIcon()
+    {
+        foreach (var kvp in actionIcons)
         {
-            currentIndex = (currentIndex - 1 + actionTypeList.Count) % actionTypeList.Count;
-            ChangeActionPanel();
+            kvp.Value.SetActive(kvp.Key == currentAction); // 選択状態を表示
         }
     }
 
     private void ChangeActionPanel()
     {
-        ActionType targetAction = actionTypeList[currentIndex];
-
         foreach (var kvp in actionPanels)
         {
-            if (kvp.Key == targetAction)
+            if (kvp.Key == currentAction)
             {
                 kvp.Value.PanelOpen();
             }
@@ -69,11 +93,6 @@ public class BattleActionBoard : MonoBehaviour
             {
                 kvp.Value.ClosePanel();
             }
-        }
-
-        foreach (var kvp in actionIcons)
-        {
-            kvp.Value.SetActive(kvp.Key == targetAction); // 選択状態を表示
         }
     }
 

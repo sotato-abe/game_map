@@ -12,54 +12,87 @@ public class ReserveActionBoard : MonoBehaviour
     [SerializeField] private ActionIcon bagIcon;
     [SerializeField] private ActionIcon storageIcon;
     [SerializeField] private ActionIcon statusIcon;
+    [SerializeField] private ActionIcon quitIcon;
 
-    private Dictionary<ActionType, Panel> actionPanels;
-    private Dictionary<ActionType, ActionIcon> actionIcons;
-    private List<ActionType> actionTypeList;
-    private int currentIndex = 0;
+    private Dictionary<ReserveActionType, Panel> actionPanels;
+    private Dictionary<ReserveActionType, ActionIcon> actionIcons;
+    private List<ReserveActionType> actionTypeList;
+    private ReserveActionType currentAction = ReserveActionType.Bag;
 
     private void Start()
     {
-        actionPanels = new Dictionary<ActionType, Panel>
+        actionPanels = new Dictionary<ReserveActionType, Panel>
         {
-            { ActionType.Bag, bagPanel },
-            { ActionType.Storage, storagePanel },
-            { ActionType.Status, statusPanel },
+            {  ReserveActionType.Bag, bagPanel },
+            {  ReserveActionType.Storage, storagePanel },
+            {  ReserveActionType.Status, statusPanel },
         };
 
-        actionIcons = new Dictionary<ActionType, ActionIcon>
+        actionIcons = new Dictionary<ReserveActionType, ActionIcon>
         {
-            { ActionType.Bag, bagIcon },
-            { ActionType.Storage, storageIcon },
-            { ActionType.Status, statusIcon },
+            {  ReserveActionType.Bag, bagIcon },
+            {  ReserveActionType.Storage, storageIcon },
+            {  ReserveActionType.Status, statusIcon },
+            {  ReserveActionType.Quit, quitIcon },
         };
 
-        actionTypeList = new List<ActionType>(actionPanels.Keys);
+        actionTypeList = new List<ReserveActionType>(actionPanels.Keys);
 
+        ChangeActiveIcon();
         ChangeActionPanel();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
         {
-            currentIndex = (currentIndex + 1) % actionTypeList.Count;
-            ChangeActionPanel();
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                currentAction = ReserveActionType.Bag;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                currentAction = ReserveActionType.Storage;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currentAction = ReserveActionType.Status;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                currentAction = ReserveActionType.Quit;
+                ChangeActiveIcon();
+            }
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            currentIndex = (currentIndex - 1 + actionTypeList.Count) % actionTypeList.Count;
-            ChangeActionPanel();
+            if (currentAction == ReserveActionType.Quit)
+            {
+                OnReserveEnd?.Invoke(); // 予約終了イベントを呼び出す
+            }
+        }
+    }
+
+    private void ChangeActiveIcon()
+    {
+        foreach (var kvp in actionIcons)
+        {
+            kvp.Value.SetActive(kvp.Key == currentAction); // 選択状態を表示
         }
     }
 
     private void ChangeActionPanel()
     {
-        ActionType targetAction = actionTypeList[currentIndex];
-
         foreach (var kvp in actionPanels)
         {
-            if (kvp.Key == targetAction)
+            if (kvp.Key == currentAction)
             {
                 kvp.Value.PanelOpen();
             }
@@ -67,11 +100,6 @@ public class ReserveActionBoard : MonoBehaviour
             {
                 kvp.Value.ClosePanel();
             }
-        }
-
-        foreach (var kvp in actionIcons)
-        {
-            kvp.Value.SetActive(kvp.Key == targetAction); // 選択状態を表示
         }
     }
 }

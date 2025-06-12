@@ -57,6 +57,7 @@ public class TradeSystem : MonoBehaviour
 
     public void TradeEnd()
     {
+        Debug.Log("TradeSystem : TradeEnd");
         actionBoard.gameObject.SetActive(false);
         fieldSystem.SetFieldPanelData();
 

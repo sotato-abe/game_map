@@ -12,11 +12,12 @@ public class TradeActionBoard : MonoBehaviour
     [SerializeField] private ActionIcon talkIcon;
     [SerializeField] private ActionIcon shopIcon;
     [SerializeField] private ActionIcon labIcon;
+    [SerializeField] private ActionIcon quitIcon;
 
     private Dictionary<TradeActionType, Panel> actionPanels;
     private Dictionary<TradeActionType, ActionIcon> actionIcons;
     private List<TradeActionType> actionTypeList;
-    private int currentIndex = 0;
+    private TradeActionType currentAction = TradeActionType.Talk;
 
     private void Start()
     {
@@ -32,34 +33,67 @@ public class TradeActionBoard : MonoBehaviour
             { TradeActionType.Talk, talkIcon },
             { TradeActionType.Shop, shopIcon },
             { TradeActionType.Lab, labIcon },
+            { TradeActionType.Quit, quitIcon },
         };
 
         actionTypeList = new List<TradeActionType>(actionPanels.Keys);
 
+        ChangeActiveIcon();
         ChangeActionPanel();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
         {
-            currentIndex = (currentIndex + 1) % actionTypeList.Count;
-            ChangeActionPanel();
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                currentAction = TradeActionType.Talk;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                currentAction = TradeActionType.Shop;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currentAction = TradeActionType.Lab;
+                ChangeActiveIcon();
+                ChangeActionPanel();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                currentAction = TradeActionType.Quit;
+                ChangeActiveIcon();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            currentIndex = (currentIndex - 1 + actionTypeList.Count) % actionTypeList.Count;
-            ChangeActionPanel();
+            if (currentAction == TradeActionType.Quit)
+            {
+                Debug.Log("Trade ended.");
+                OnTradeEnd?.Invoke();
+            }
+        }
+    }
+
+    private void ChangeActiveIcon()
+    {
+        foreach (var kvp in actionIcons)
+        {
+            kvp.Value.SetActive(kvp.Key == currentAction); // 選択状態を表示
         }
     }
 
     private void ChangeActionPanel()
     {
-        TradeActionType targetAction = actionTypeList[currentIndex];
-
         foreach (var kvp in actionPanels)
         {
-            if (kvp.Key == targetAction)
+            if (kvp.Key == currentAction)
             {
                 kvp.Value.PanelOpen();
             }
@@ -67,11 +101,6 @@ public class TradeActionBoard : MonoBehaviour
             {
                 kvp.Value.ClosePanel();
             }
-        }
-
-        foreach (var kvp in actionIcons)
-        {
-            kvp.Value.SetActive(kvp.Key == targetAction);
         }
     }
 }

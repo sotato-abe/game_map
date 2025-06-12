@@ -8,15 +8,15 @@ using UnityEngine.EventSystems;
 
 public class ActionIcon : MonoBehaviour
 {
-    public UnityAction<ActionType> OnPointerEnterAction;
     [SerializeField] Image backImage;
     [SerializeField] private bool isActive = false;
-    [SerializeField] Color activeColor = new Color(133, 10, 255, 200); // アクティブ時の色
+    [SerializeField] Color defaultColor = new Color(0, 0, 0, 200);
+    [SerializeField] Color activeColor = new Color(133, 10, 255, 200);
     private float defaultSize = 50f;
     private float activeScale = 1.3f;
     private float scaleDuration = 0.05f;
     private RectTransform rectTransform;
-    Color32 stopColor = new Color32(0, 0, 0, 200);
+    // Color32 defaultColor = new Color32(0, 0, 0, 200);
 
     private void Awake()
     {
@@ -62,6 +62,6 @@ public class ActionIcon : MonoBehaviour
         if (isActive)
             backImage.color = activeColor;
         else
-            backImage.color = stopColor;
+            backImage.color = defaultColor;
     }
 }

@@ -44,21 +44,24 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            SelectItem(ArrowType.Up);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            SelectItem(ArrowType.Right);
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            SelectItem(ArrowType.Down);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            SelectItem(ArrowType.Left);
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                SelectItem(ArrowType.Up);
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SelectItem(ArrowType.Right);
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                SelectItem(ArrowType.Down);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SelectItem(ArrowType.Left);
+            }
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {

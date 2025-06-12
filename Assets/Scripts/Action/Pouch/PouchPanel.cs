@@ -38,7 +38,7 @@ public class PouchPanel : Panel
 
     public void Update()
     {
-        if(itemBlockList.Count == 0)
+        if (itemBlockList.Count == 0)
         {
             return; // アイテムがない場合は何もしない
         }
@@ -51,23 +51,24 @@ public class PouchPanel : Panel
         }
 
         // TODO：ターン実行時にActiveになるようにする。
-        // TODO：左右移動で選択するようにする
-        // TODO：シフト＋矢印で選択できるようにする
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            SelectItem(ArrowType.Down);
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            SelectItem(ArrowType.Right);
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            SelectItem(ArrowType.Up);
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            SelectItem(ArrowType.Left);
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                SelectItem(ArrowType.Down);
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                SelectItem(ArrowType.Right);
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                SelectItem(ArrowType.Up);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                SelectItem(ArrowType.Left);
+            }
         }
     }
 
