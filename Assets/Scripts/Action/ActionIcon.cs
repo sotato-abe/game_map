@@ -13,10 +13,9 @@ public class ActionIcon : MonoBehaviour
     [SerializeField] private bool isActive = false;
     [SerializeField] Color activeColor = new Color(133, 10, 255, 200); // アクティブ時の色
     private float defaultSize = 50f;
-    private float activeScale = 2.0f;
+    private float activeScale = 1.3f;
     private float scaleDuration = 0.05f;
     private RectTransform rectTransform;
-    // Color32 activeColor = new Color32(133, 10, 255, 200);
     Color32 stopColor = new Color32(0, 0, 0, 200);
 
     private void Awake()
@@ -40,7 +39,7 @@ public class ActionIcon : MonoBehaviour
         Vector2 startSize = rectTransform.sizeDelta;
         Vector2 endSize = new Vector2(targetSize, targetSize);
 
-        var layout = GetComponent<LayoutElement>();
+        // var layout = GetComponent<LayoutElement>();
 
         while (elapsedTime < scaleDuration)
         {
@@ -49,13 +48,13 @@ public class ActionIcon : MonoBehaviour
 
             Vector2 currentSize = Vector2.Lerp(startSize, endSize, t);
             rectTransform.sizeDelta = currentSize;
-            layout.preferredHeight = currentSize.y;
+            // layout.preferredHeight = currentSize.y;
 
             yield return null;
         }
 
         rectTransform.sizeDelta = endSize;
-        layout.preferredHeight = targetSize;
+        // layout.preferredHeight = targetSize;
     }
 
     private void SetColor(bool isActive)

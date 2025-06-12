@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class StatusPanel : Panel
 {
     [SerializeField] BattleUnit playerUnit;
-    [SerializeField] CharacterCard characterCard;
     [SerializeField] SkillPoint skillPoint;
     [SerializeField] TextMeshProUGUI description;
     [SerializeField] GameObject enegyList;
@@ -54,7 +53,6 @@ public class StatusPanel : Panel
 
     private void Setup()
     {
-        SetCharacterCard();
         SetLevel();
         SetSkillPoint();
         SetEnegy();
@@ -63,11 +61,6 @@ public class StatusPanel : Panel
         SetAbility();
         description.text = playerUnit.Battler.Base.Description;
         statusDialog.Setup(playerUnit.Battler);
-    }
-
-    private void SetCharacterCard()
-    {
-        characterCard.SetCharacter(playerUnit.Battler);
     }
 
     private void SetEnegy()
