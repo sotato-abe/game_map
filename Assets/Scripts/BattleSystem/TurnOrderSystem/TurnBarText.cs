@@ -21,7 +21,7 @@ public class TurnBarText : MonoBehaviour
 
     private IEnumerator FlashAndHide()
     {
-        float duration = 2.5f;
+        float duration = 1.5f;
         float elapsed = 0f;
         float blinkSpeed = 0.3f;
 
