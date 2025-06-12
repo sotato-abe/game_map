@@ -18,9 +18,10 @@ public class StoragePanel : Panel, IDropHandler
 
     private Battler playerBattler;
 
-    private int headHeight = 10;
-    private int commandWidth = 70;
+    private int headHeight = 20;
+    private int defaultItemWidth = 70;
     int row = 10;
+    int padding = 10;
     List<CommandBlock> storageList = new List<CommandBlock>();
     private List<GameObject> blockList = new List<GameObject>();
 
@@ -86,9 +87,9 @@ public class StoragePanel : Panel, IDropHandler
 
     public void SetPanelSize()
     {
-        int width = commandWidth * row + 20;
+        int width = defaultItemWidth * row + 30;
         int column = (playerBattler.Storage.val - 1) / row + 1;
-        int height = commandWidth * column + headHeight;
+        int height = defaultItemWidth * column + headHeight;
         inventoryRectTransform.sizeDelta = new Vector2(width, height);
     }
 
@@ -143,17 +144,17 @@ public class StoragePanel : Panel, IDropHandler
         storageList.RemoveAll(command => command == null); // 破棄されたオブジェクトを削除
         for (int i = 0; i < storageList.Count; i++)
         {
-            int cardHalfWidth = commandWidth / 2;
-            int xPosition = (i % row) * commandWidth + cardHalfWidth;
-            int yPosition = -((i / row) * commandWidth + cardHalfWidth);
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (i % row) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((i / row) * defaultItemWidth + cardHalfWidth) - padding;
             storageList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         for (int i = 0; i < blockList.Count; i++)
         {
-            int cardHalfWidth = commandWidth / 2;
-            int xPosition = (playerBattler.Storage.val % row + i) * commandWidth + cardHalfWidth;
-            int yPosition = -((playerBattler.Storage.val / row) * commandWidth + cardHalfWidth);
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (playerBattler.Storage.val % row + i) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Storage.val / row) * defaultItemWidth + cardHalfWidth) - padding;
             blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }

@@ -19,9 +19,10 @@ public class PouchWindow : MonoBehaviour, IDropHandler
     private List<GameObject> blockingBlockList = new List<GameObject>();
     private Battler playerBattler;
 
-    private int headHeight = 10;
-    private int itemWidth = 70;
-    int row = 10;
+    private int paddingHeight = 20;
+    private int defaultItemWidth = 70;
+    int maxRow = 10;
+    int padding = 10;
 
     public void Start()
     {
@@ -54,9 +55,9 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     public void SetPouchSize()
     {
-        int width = itemWidth * row + 20;
-        int column = (playerBattler.Pouch.val - 1) / row + 1;
-        int height = itemWidth * column + headHeight;
+        int width = defaultItemWidth * maxRow + 30;
+        int column = (playerBattler.Pouch.val - 1) / maxRow + 1;
+        int height = defaultItemWidth * column + paddingHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
@@ -85,7 +86,7 @@ public class PouchWindow : MonoBehaviour, IDropHandler
 
     private void SetBlockingBlock()
     {
-        int blockNum = (row - (playerBattler.Pouch.val % row)) % row;
+        int blockNum = (maxRow - (playerBattler.Pouch.val % maxRow)) % maxRow;
         blockingBlockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
@@ -100,18 +101,18 @@ public class PouchWindow : MonoBehaviour, IDropHandler
         itemBlockList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
         for (int i = 0; i < itemBlockList.Count; i++)
         {
-            int cardHalfWidth = itemWidth / 2;
-            int xPosition = (i % row) * itemWidth + cardHalfWidth;
-            int yPosition = -((i / row) * itemWidth + cardHalfWidth);
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (i % maxRow) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((i / maxRow) * defaultItemWidth + cardHalfWidth) - padding;
             itemBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         // 右下からブロックを配置
         for (int i = 0; i < blockingBlockList.Count; i++)
         {
-            int cardHalfWidth = itemWidth / 2;
-            int xPosition = (playerBattler.Pouch.val % row + i) * itemWidth + cardHalfWidth;
-            int yPosition = -((playerBattler.Pouch.val / row) * itemWidth + cardHalfWidth);
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (playerBattler.Pouch.val % maxRow + i) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Pouch.val / maxRow) * defaultItemWidth + cardHalfWidth) - padding;
             blockingBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }

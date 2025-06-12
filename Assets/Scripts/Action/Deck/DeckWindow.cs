@@ -14,7 +14,10 @@ public class DeckWindow : MonoBehaviour, IDropHandler
     private List<CommandBlock> runTableList = new();
     private List<CommandBlock> deckList = new();
     private Battler playerBattler;
-    private const int row = 5, headHeight = 155, commandWidth = 70, padding = 10;
+    private int maxRow = 5;
+    private int headHeight = 155;
+    private int  defaultCommandWidth = 70;
+    private int padding = 10;
     private const float windowWidth = 380f;
 
     private void OnEnable()
@@ -27,9 +30,10 @@ public class DeckWindow : MonoBehaviour, IDropHandler
 
     private void SetWindowSize()
     {
-        int windowRow = (playerBattler.Memory.val + 4) / 5;
-        float windowHeight = commandWidth * windowRow + headHeight;
-        GetComponent<RectTransform>().sizeDelta = new Vector2(windowWidth, windowHeight);
+        int width = defaultCommandWidth * maxRow + 30;
+        int col = (playerBattler.Memory.val + 4) / 5;
+        float height =  defaultCommandWidth * col + headHeight;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -100,10 +104,11 @@ public class DeckWindow : MonoBehaviour, IDropHandler
     private void ArrangeCommands(List<CommandBlock> slotList)
     {
         slotList.RemoveAll(slot => slot == null);
+
         for (int i = 0; i < slotList.Count; i++)
         {
-            int x = (i % row) * commandWidth + commandWidth / 2 + padding;
-            int y = -commandWidth / 2 - padding;
+            int x = (i % maxRow) * defaultCommandWidth + defaultCommandWidth / 2 + padding;
+            int y = -defaultCommandWidth / 2 - padding;
             slotList[i].transform.localPosition = new Vector3(x, y, 0);
         }
     }

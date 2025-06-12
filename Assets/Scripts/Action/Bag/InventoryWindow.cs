@@ -20,9 +20,9 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     private Battler playerBattler;
 
-    private int headHeight = 20;
-    private int itemWidth = 70;
-    int row = 10;
+    private int paddingHeight = 20;
+    private int defaultItemWidth = 70;
+    int maxRow = 10;
     int padding = 10;
 
     private List<ItemBlock> itemBlockList = new List<ItemBlock>();
@@ -38,6 +38,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
     private void OnEnable()
     {
         playerBattler = playerUnit.Battler;
+        SetPanelSize();
         SetBlock();
     }
 
@@ -67,9 +68,9 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     public void SetPanelSize()
     {
-        int width = itemWidth * row + 30;
-        int column = (playerBattler.Bag.val - 1) / row + 1;
-        int height = itemWidth * column + headHeight;
+        int width = defaultItemWidth * maxRow + 30;
+        int col = (playerBattler.Bag.val - 1) / maxRow + 1;
+        int height = defaultItemWidth * col + paddingHeight;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
@@ -127,6 +128,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         SetBagItemBlock();
         SetBlockingBlock();
         ArrengeItemBlocks();
+        bagRatio.text = $"{playerBattler.BagItemList.Count}/{playerBattler.Bag.val}";
     }
 
     public void SetBagItemBlock()
@@ -160,7 +162,7 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
 
     private void SetBlockingBlock()
     {
-        int blockNum = (row - (playerBattler.Bag.val % row)) % row;
+        int blockNum = (maxRow - (playerBattler.Bag.val % maxRow)) % maxRow;
         blockingBlockList.Clear();
         for (int i = 0; i < blockNum; i++)
         {
@@ -176,22 +178,20 @@ public class InventoryWindow : MonoBehaviour, IDropHandler
         // まとめたリストで描画処理
         for (int i = 0; i < itemBlockList.Count; i++)
         {
-            int cardHalfWidth = itemWidth / 2;
-            int xPosition = (i % row) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((i / row) * itemWidth + cardHalfWidth) - padding;
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (i % maxRow) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((i / maxRow) * defaultItemWidth + cardHalfWidth) - padding;
             itemBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         // 右下からブロックを配置
         for (int i = 0; i < blockingBlockList.Count; i++)
         {
-            int cardHalfWidth = itemWidth / 2;
-            int xPosition = (playerBattler.Bag.val % row + i) * itemWidth + cardHalfWidth + padding;
-            int yPosition = -((playerBattler.Bag.val / row) * itemWidth + cardHalfWidth) - padding;
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (playerBattler.ColBag.val % maxRow + i) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.ColBag.val / maxRow) * defaultItemWidth + cardHalfWidth) - padding;
             blockingBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
-        int itemCount = playerBattler.BagItemList.Count;
-        bagRatio.text = $"{itemCount}/{playerBattler.Bag.val}";
     }
 
     public void AddItem(Item item)

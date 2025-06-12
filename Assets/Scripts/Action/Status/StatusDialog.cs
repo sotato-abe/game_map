@@ -13,8 +13,7 @@ public class StatusDialog : MonoBehaviour
     [SerializeField] GameObject rarityList;
 
     private float PaddingHeight = 130f;
-    // private float PaddingWidth = 90f;
-    private float dialogWidth = 600f;
+    private float dialogWidth = 550f;
 
     public void Setup(Battler battler)
     {

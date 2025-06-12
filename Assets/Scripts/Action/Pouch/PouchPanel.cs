@@ -16,14 +16,12 @@ public class PouchPanel : Panel
     private Battler playerBattler;
 
     int selectedItem = 0;
-
     private int paddingHeight = 20;
-    private int paddimgWidth = 20;
-    private int itemSize = 70;
+    private int defaultItemWidth = 70;
     int maxRow = 10;
     int padding = 10;
-    private List<ItemUnit> itemUnitList = new List<ItemUnit>();
-    private List<GameObject> blockList = new List<GameObject>();
+    private List<ItemUnit> itemBlockList = new List<ItemUnit>();
+    private List<GameObject> blockingBlockList = new List<GameObject>();
 
     private void Start()
     {
@@ -40,7 +38,7 @@ public class PouchPanel : Panel
 
     public void Update()
     {
-        if(itemUnitList.Count == 0)
+        if(itemBlockList.Count == 0)
         {
             return; // アイテムがない場合は何もしない
         }
@@ -77,14 +75,14 @@ public class PouchPanel : Panel
     {
         int row = playerBattler.Pouch.val < maxRow ? playerBattler.Pouch.val : maxRow;
         int column = (playerBattler.Pouch.val - 1) / row + 1;
-        int height = itemSize * column + paddingHeight;
-        int width = itemSize * row + paddimgWidth;
+        int height = defaultItemWidth * column + paddingHeight;
+        int width = defaultItemWidth * row + 20;
         GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
     }
 
     private void SetItemUnit()
     {
-        itemUnitList.Clear();
+        itemBlockList.Clear();
         foreach (Transform child in itemList.transform)
         {
             Destroy(child.gameObject);
@@ -100,7 +98,7 @@ public class PouchPanel : Panel
             itemUnitObject.gameObject.SetActive(true);
             ItemUnit itemUnit = itemUnitObject.GetComponent<ItemUnit>();
             itemUnit.Setup(item);
-            itemUnitList.Add(itemUnit);
+            itemBlockList.Add(itemUnit);
 
             if (itemNum == selectedItem)
             {
@@ -120,41 +118,41 @@ public class PouchPanel : Panel
             return;
 
         int blockNum = maxRow - (playerBattler.Pouch.val % maxRow);
-        blockList.Clear();
+        blockingBlockList.Clear();
 
         for (int i = 0; i < blockNum; i++)
         {
             GameObject blockObject = Instantiate(blockPrefab, itemList.transform);
             blockObject.gameObject.SetActive(true);
-            blockList.Add(blockObject);
+            blockingBlockList.Add(blockObject);
         }
     }
     //カードを整列させる
     public void ArrengeItemUnits()
     {
-        itemUnitList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
+        itemBlockList.RemoveAll(item => item == null); // 破棄されたオブジェクトを削除
 
-        for (int i = 0; i < itemUnitList.Count; i++)
+        for (int i = 0; i < itemBlockList.Count; i++)
         {
-            int cardHalfWidth = itemSize / 2;
-            int xPosition = (i % maxRow) * itemSize + cardHalfWidth + padding;
-            int yPosition = -((i / maxRow) * itemSize + cardHalfWidth) - padding;
-            itemUnitList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (i % maxRow) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((i / maxRow) * defaultItemWidth + cardHalfWidth) - padding;
+            itemBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
 
         // 右下からブロックを配置
-        for (int i = 0; i < blockList.Count; i++)
+        for (int i = 0; i < blockingBlockList.Count; i++)
         {
-            int cardHalfWidth = itemSize / 2;
-            int xPosition = (playerBattler.Pouch.val % maxRow + i) * itemSize + cardHalfWidth + padding;
-            int yPosition = -((playerBattler.Pouch.val / maxRow) * itemSize + cardHalfWidth) - padding;
-            blockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
+            int cardHalfWidth = defaultItemWidth / 2;
+            int xPosition = (playerBattler.Pouch.val % maxRow + i) * defaultItemWidth + cardHalfWidth + padding;
+            int yPosition = -((playerBattler.Pouch.val / maxRow) * defaultItemWidth + cardHalfWidth) - padding;
+            blockingBlockList[i].transform.localPosition = new Vector3(xPosition, yPosition, 0);
         }
     }
 
     public void SelectItem(ArrowType type)
     {
-        if (itemUnitList.Count > 0)
+        if (itemBlockList.Count > 0)
         {
             int targetItem = selectedItem; // 初期値を設定
 
@@ -166,12 +164,12 @@ public class PouchPanel : Panel
                     break;
 
                 case ArrowType.Right:
-                    if (selectedItem < itemUnitList.Count - 1)
+                    if (selectedItem < itemBlockList.Count - 1)
                         targetItem = selectedItem + 1;
                     break;
 
                 case ArrowType.Down:
-                    if (selectedItem <= itemUnitList.Count - maxRow)
+                    if (selectedItem <= itemBlockList.Count - maxRow)
                         targetItem = selectedItem + maxRow;
                     break;
 
@@ -183,8 +181,8 @@ public class PouchPanel : Panel
 
             if (targetItem != selectedItem) // アイテムが変わる場合のみ処理
             {
-                itemUnitList[selectedItem].SetTarget(false);
-                itemUnitList[targetItem].SetTarget(true);
+                itemBlockList[selectedItem].SetTarget(false);
+                itemBlockList[targetItem].SetTarget(true);
                 selectedItem = targetItem;
             }
 
