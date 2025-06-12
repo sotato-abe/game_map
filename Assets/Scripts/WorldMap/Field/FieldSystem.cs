@@ -95,6 +95,12 @@ public class FieldSystem : MonoBehaviour
 
     public void GetItem()
     {
+        if (playerBattler.BagItemList.Count >= playerBattler.ColBag.val)
+        {
+            messagePanel.AddMessage(MessageIconType.Item, $"バッグがいっぱいだ!!");
+            fieldPlayer.SetMoveFlg(true); // キャラクターの移動フラグを有効にする
+            return; // バッグがいっぱいなら処理を終了
+        }
         Item item = fieldData.GetRandomItem(); // ランダムなアイテムを取得
         int getProbability = 20;
         if (item == null || Random.Range(0, 100) < getProbability)

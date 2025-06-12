@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TurnOrderSystem : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class TurnOrderSystem : MonoBehaviour
     [SerializeField] GameObject turnLane;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] AttackSystem attackSystem;
+    [SerializeField] TurnBarText turnBarText;
     private TurnBattler targetTurnBattler;
     private List<TurnBattler> turnBattlerList = new List<TurnBattler>();
     private List<Battler> battlers = new List<Battler>(); // 保存用
@@ -33,6 +35,7 @@ public class TurnOrderSystem : MonoBehaviour
     {
         playerBattler = player;
         SetTurnBattler(playerBattler);
+        SetText();
     }
 
     public void SetTurnBattler(Battler battler)
@@ -56,6 +59,11 @@ public class TurnOrderSystem : MonoBehaviour
                 turnBattler.SetActive(isActive);  // TurnBattlerのSetActiveを呼び出し
             }
         }
+    }
+
+    public void SetText()
+    {
+        turnBarText.SetText("EMERGENCY!!");
     }
 
     public void ExecuteTurn(TurnBattler turnBattler)
