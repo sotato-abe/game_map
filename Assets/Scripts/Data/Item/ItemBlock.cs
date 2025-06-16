@@ -19,6 +19,9 @@ public class ItemBlock : Block
     public delegate void DeleteItemDelegate(Item item);
     public event DeleteItemDelegate OnDeleteItem;
 
+    public delegate void SellItemDelegate(Item item);
+    public event SellItemDelegate OnSellItem;
+
     public void Setup(Item item)
     {
         Item = item;
@@ -65,6 +68,11 @@ public class ItemBlock : Block
     public void RemoveItem()
     {
         OnDeleteItem?.Invoke(Item);
+    }
+
+    public void SellItem()
+    {
+        OnSellItem?.Invoke(Item);
     }
 
     private void ShowDialog(bool showFlg)

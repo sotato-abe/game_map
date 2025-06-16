@@ -16,6 +16,8 @@ public class TradeSystem : MonoBehaviour
     [SerializeField] SlidePanel rightUnitGroup;
     [SerializeField] FieldInfoPanel fieldInfoPanel;
     [SerializeField] FieldSystem fieldSystem;
+    [SerializeField] ShopPanel shopPanel;
+    [SerializeField] PlayerItemPanel playerItemPanel;
 
     private BuildingBase currentBuildingBase;
 
@@ -51,8 +53,15 @@ public class TradeSystem : MonoBehaviour
 
         fieldInfoPanel.SetupBuilding(currentBuildingBase);
         fieldInfoPanel.SetActive(true);
+        playerItemPanel.SetUp();
+        SetUpShop(currentBuildingBase);
 
         actionBoard.gameObject.SetActive(true);
+    }
+
+    private void SetUpShop(BuildingBase building)
+    {
+        shopPanel.SetUp(building);
     }
 
     public void TradeEnd()

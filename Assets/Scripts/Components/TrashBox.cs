@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-// ドロップされたItem,Commandを削除するためのTrashWindowクラス
-public class TrashWindow : Unit, IDropHandler
+// ドロップされたItem,Commandを削除するためのTrashBoxクラス
+public class TrashBox : Unit, IDropHandler
 {
     void Start()
     {
@@ -20,7 +20,7 @@ public class TrashWindow : Unit, IDropHandler
         StartCoroutine(OnPointer(false));
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public virtual void OnDrop(PointerEventData eventData)
     {
         CommandBlock droppedCommandBlock = eventData.pointerDrag?.GetComponent<CommandBlock>();
         ItemBlock droppedItemBlock = eventData.pointerDrag?.GetComponent<ItemBlock>();

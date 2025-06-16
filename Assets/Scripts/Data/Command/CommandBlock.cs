@@ -13,6 +13,9 @@ public class CommandBlock : Block
     public delegate void DeleteCommandDelegate(Command block);
     public event DeleteCommandDelegate OnDeleteCommand;
 
+    public delegate void SellCommandDelegate(Command block);
+    public event SellCommandDelegate OnSellCommand;
+
     public void Setup(Command command)
     {
         this.command = command;
@@ -41,5 +44,10 @@ public class CommandBlock : Block
     public void RemoveCommand()
     {
         OnDeleteCommand?.Invoke(command);
+    }
+
+    public void SellCommand()
+    {
+        OnSellCommand?.Invoke(command);
     }
 }

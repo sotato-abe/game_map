@@ -8,6 +8,7 @@ public enum BuildingType
     Hotel
 }
 
+// フィールドのタイル用のタイプ変換
 public static class BuildingTypeExtensions
 {
     public static TileType ConverTileType(this BuildingType buildingType)

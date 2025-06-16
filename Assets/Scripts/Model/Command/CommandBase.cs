@@ -20,6 +20,8 @@ public class CommandBase : ScriptableObject
     [SerializeField] private List<Enegy> damageList = new List<Enegy>();
     [SerializeField] private List<Enegy> recoveryList = new List<Enegy>();
     [SerializeField] private List<Enchant> enchantList = new List<Enchant>();
+    [SerializeField] int price;
+
 
     public string Name { get => name; }
     public RarityType Rarity { get => rarity; }
@@ -36,4 +38,5 @@ public class CommandBase : ScriptableObject
     public List<Enegy> DamageList { get => damageList; }
     public List<Enegy> RecoveryList { get => recoveryList; }
     public List<Enchant> EnchantList { get => enchantList; }
+    public int Price { get => price; }
 }
