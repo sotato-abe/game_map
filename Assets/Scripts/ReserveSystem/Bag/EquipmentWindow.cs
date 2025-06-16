@@ -30,6 +30,13 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     {
         playerBattler = playerUnit.Battler;
         SetEquipmentList();
+        SetAccessoryItemBlock();
+    }
+
+    private void OnEnable()
+    {
+        SetEquipmentList();
+        SetAccessoryItemBlock();
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -59,7 +66,7 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
         leg.ReSetSlot();
         armEquipmentList.Clear();
 
-        List<Equipment> equipments = playerBattler.EquipmentList;
+        List<Equipment> equipments = playerBattler.EquipmentList.FindAll(e => e.EquipmentBase.EquipmentType != EquipmentType.Accessory);
 
         for (int i = 0; i < equipments.Count; i++)
         {
@@ -127,6 +134,12 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
     private void SetAccessoryItemBlock()
     {
         // アイテムの数が3個以上ある時に、後ろの2つ以外をバックに戻す。
+        // 装備の中からアクセサリーを取得
+        accessoryEquipmentList.Clear();
+        List<Equipment> accessories = playerBattler.EquipmentList.FindAll(e => e.EquipmentBase.EquipmentType == EquipmentType.Accessory);
+
+        accessoryEquipmentList.AddRange(accessories);
+
         if (accessoryEquipmentList.Count > 3)
         {
             for (int i = 0; i < accessoryEquipmentList.Count - 2; i++)

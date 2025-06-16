@@ -13,7 +13,8 @@ public class PlayerItemPanel : Panel
     [SerializeField] PlayerItemList bagList;
     [SerializeField] PlayerItemList pouchList;
     [SerializeField] PlayerItemList equipmentList;
-    // [SerializeField] GameObject commandList;
+    [SerializeField] PlayerItemList storageList;
+    [SerializeField] PlayerItemList deckList;
     private void Start()
     {
         bagList.OnBuyItem += BuyAndAddBagItem; // アイテムをバッグに追加するイベント
@@ -25,11 +26,31 @@ public class PlayerItemPanel : Panel
         bagList.SetListSize(playerUnit.Battler.ColBag.val);
         pouchList.SetListSize(playerUnit.Battler.ColPouch.val);
         equipmentList.SetListSize(7);
-        // commandList.SetListSize(playerUnit.Battler.DeckList?.Count ?? 0);    
+        storageList.SetListSize(playerUnit.Battler.ColStorage.val);
+        deckList.SetListSize(playerUnit.Battler.ColMemory.val);
         SetPlayerItems(playerUnit.Battler.BagItemList?.Select(i => (Item)i).ToList(), bagList.itemList);
         SetPlayerItems(playerUnit.Battler.PouchList?.Select(i => (Item)i).ToList(), pouchList.itemList);
         SetPlayerItems(playerUnit.Battler.EquipmentList?.Select(i => (Item)i).ToList(), equipmentList.itemList);
-        // SetPlayerCommands(battler.DeckList);
+        SetPlayerCommands(playerUnit.Battler.StorageList, storageList.itemList);
+        SetPlayerCommands(playerUnit.Battler.DeckList, deckList.itemList);
+    }
+
+    public void ShowItemList()
+    {
+        storageList.gameObject.SetActive(false);
+        deckList.gameObject.SetActive(false);
+        bagList.gameObject.SetActive(true);
+        pouchList.gameObject.SetActive(true);
+        equipmentList.gameObject.SetActive(true);
+    }
+
+    public void ShowCommandList()
+    {
+        bagList.gameObject.SetActive(false);
+        pouchList.gameObject.SetActive(false);
+        equipmentList.gameObject.SetActive(false);
+        storageList.gameObject.SetActive(true);
+        deckList.gameObject.SetActive(true);
     }
 
     public void SetPlayerItems(List<Item> items, GameObject targetList)
@@ -45,6 +66,22 @@ public class PlayerItemPanel : Panel
             itemBlock.OnSellItem += SellItem;
             itemBlock.OnDeleteItem += DeleteItem; // アイテムを削除するためのイベント
             itemBlock.Setup(item);
+        }
+    }
+
+    public void SetPlayerCommands(List<Command> commands, GameObject targetList)
+    {
+        foreach (Transform block in targetList.transform)
+        {
+            Destroy(block.gameObject);
+        }
+        foreach (Command command in commands)
+        {
+            CommandBlock commandBlock = Instantiate(commandBlockPrefab, targetList.transform);
+            commandBlock.OnEndDragAction += ArrengeItemBlocks;
+            commandBlock.OnSellCommand += SellCommand;
+            commandBlock.OnDeleteCommand += DeleteCommand; // アイテムを削除するためのイベント
+            commandBlock.Setup(command);
         }
     }
 
@@ -90,31 +127,16 @@ public class PlayerItemPanel : Panel
         }
     }
 
-    // public void SetPlayerCommands(List<Command> commands)
-    // {
-    //     foreach (Transform block in commandList.transform)
-    //     {
-    //         Destroy(block.gameObject);
-    //     }
-    //     foreach (Command command in commands)
-    //     {
-    //         CommandBlock commandBlock = Instantiate(commandBlockPrefab, commandList.transform);
-    //         commandBlock.OnEndDragAction += ArrengeCommandBlocks;
-    //         commandBlock.OnSellCommand += SellItem;
-    //         commandBlock.OnDeleteCommand += DeleteCommand; // アイテムを削除するためのイベント
-    //         commandBlock.Setup(command);
-    //     }
-    // }
     public void ArrengeItemBlocks()
     {
         // それぞれのリストのGridLayoutGroupを再起動
-        foreach (PlayerItemList list in new PlayerItemList[] { bagList, pouchList, equipmentList })
+        foreach (PlayerItemList list in new PlayerItemList[] { bagList, pouchList, equipmentList, storageList, deckList })
         {
-            GridLayoutGroup grid = list.GetComponent<GridLayoutGroup>();
+            GridLayoutGroup grid = list.itemList.GetComponent<GridLayoutGroup>();
             if (grid != null)
             {
                 grid.enabled = false;
-                grid.enabled = true; // 再起動
+                grid.enabled = true;
             }
         }
     }
