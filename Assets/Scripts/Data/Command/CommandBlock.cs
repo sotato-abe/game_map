@@ -8,7 +8,7 @@ public class CommandBlock : Block
     public Command command { get; set; }
     [SerializeField] Image image;
     [SerializeField] Image maskImage;
-    [SerializeField] CommandDialog commandDialog;
+    // [SerializeField] CommandDialog commandDialog;
 
     public delegate void DeleteCommandDelegate(Command block);
     public event DeleteCommandDelegate OnDeleteCommand;
@@ -20,14 +20,14 @@ public class CommandBlock : Block
     {
         this.command = command;
         image.sprite = command.Base.Sprite;
-        commandDialog.Setup(command);
+        // commandDialog.Setup(command);
     }
 
     public void OnPointerEnter()
     {
         if (command != null)
         {
-            commandDialog.ShowDialog(true);
+            // commandDialog.ShowDialog(true);
             StartCoroutine(OnPointer(true));
         }
     }
@@ -36,7 +36,7 @@ public class CommandBlock : Block
     {
         if (command != null)
         {
-            commandDialog.ShowDialog(false);
+            // commandDialog.ShowDialog(false);
             StartCoroutine(OnPointer(false));
         }
     }

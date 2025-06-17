@@ -267,6 +267,9 @@ MonoBehaviour:
   fieldCharacterSystem: {fileID: 5370715734246583689, guid: 260b0589eaee3224eb90fee3212a2c63, type: 3}
   namePlate: {fileID: 6720021033736923671}
   levelUpPlate: {fileID: 7537224825092223483}
+  lifeEnegyBar: {fileID: 0}
+  batteryEnegyBar: {fileID: 0}
+  soulEnegyBar: {fileID: 0}
 --- !u!1 &2428576716109534836
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,8 +402,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
-  m_sharedMaterial: {fileID: 3526398151508342791, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 67b205576bfd60d4db638aa0d97c84d4, type: 2}
+  m_sharedMaterial: {fileID: -8383244497188144710, guid: 67b205576bfd60d4db638aa0d97c84d4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -599,8 +602,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: LvUP
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
-  m_sharedMaterial: {fileID: 3526398151508342791, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 67b205576bfd60d4db638aa0d97c84d4, type: 2}
+  m_sharedMaterial: {fileID: -8383244497188144710, guid: 67b205576bfd60d4db638aa0d97c84d4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1535,6 +1538,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5192105329702170914, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5192105329702170914, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
       propertyPath: m_fontColor.b
       value: 0
       objectReference: {fileID: 0}
@@ -1549,7 +1556,7 @@ PrefabInstance:
     - target: {fileID: 5192105329702170914, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 3526398151508342791, guid: 52419eaf2782d53498a998e94245b71b, type: 2}
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 5192105329702170914, guid: 77f232be8a482414b93f45faaf929c8e, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080

@@ -15,6 +15,8 @@ public class PlayerItemPanel : Panel
     [SerializeField] PlayerItemList equipmentList;
     [SerializeField] PlayerItemList storageList;
     [SerializeField] PlayerItemList deckList;
+    [SerializeField] SlidePanel itemScrollPanel;
+    [SerializeField] SlidePanel commandScrollPanel;
     private void Start()
     {
         bagList.OnBuyItem += BuyAndAddBagItem; // アイテムをバッグに追加するイベント
@@ -37,20 +39,14 @@ public class PlayerItemPanel : Panel
 
     public void ShowItemList()
     {
-        storageList.gameObject.SetActive(false);
-        deckList.gameObject.SetActive(false);
-        bagList.gameObject.SetActive(true);
-        pouchList.gameObject.SetActive(true);
-        equipmentList.gameObject.SetActive(true);
+        itemScrollPanel.SetActive(true);
+        commandScrollPanel.SetActive(false);
     }
 
     public void ShowCommandList()
     {
-        bagList.gameObject.SetActive(false);
-        pouchList.gameObject.SetActive(false);
-        equipmentList.gameObject.SetActive(false);
-        storageList.gameObject.SetActive(true);
-        deckList.gameObject.SetActive(true);
+        itemScrollPanel.SetActive(false);
+        commandScrollPanel.SetActive(true);
     }
 
     public void SetPlayerItems(List<Item> items, GameObject targetList)

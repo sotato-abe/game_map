@@ -8,7 +8,7 @@ public class EnchantIcon : Unit
 {
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI val;
-    [SerializeField] EnchantDialog dialog;
+    // [SerializeField] EnchantDialog dialog;
 
     Color32 buffColor = new Color32(3, 137, 229, 255);
     Color32 debuffColor = new Color32(245, 52, 124, 255);
@@ -20,18 +20,18 @@ public class EnchantIcon : Unit
     {
         val.text = enchant.Val.ToString();
         SetEnchantIcon(enchant.Type);
-        dialog.Setup(enchant);
+        // dialog.Setup(enchant);
     }
 
     public void OnPointerEnter()
     {
-        dialog.ShowDialog(true);
+        // dialog.ShowDialog(true);
         StartCoroutine(ChangeScale(true));
     }
 
     public void OnPointerExit()
     {
-        dialog.ShowDialog(false);
+        // dialog.ShowDialog(false);
         StartCoroutine(ChangeScale(false));
     }
 

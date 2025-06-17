@@ -12,7 +12,7 @@ public class PlayerItemList : MonoBehaviour, IDropHandler
     [SerializeField] int maxRow = 10;
     [SerializeField] public GameObject itemList;
     int defaultItemWidth = 70;
-    int paddingHeight = 10;
+    int paddingHeight = 20;
 
     public delegate void BuyItemDelegate(ItemBlock item);
     public event BuyItemDelegate OnBuyItem;
