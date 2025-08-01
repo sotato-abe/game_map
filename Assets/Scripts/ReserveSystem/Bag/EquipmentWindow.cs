@@ -35,8 +35,8 @@ public class EquipmentWindow : MonoBehaviour, IDropHandler
 
     private void OnEnable()
     {
-        SetEquipmentList();
-        SetAccessoryItemBlock();
+        // SetEquipmentList();
+        // SetAccessoryItemBlock();
     }
 
     public void OnDrop(PointerEventData eventData)
